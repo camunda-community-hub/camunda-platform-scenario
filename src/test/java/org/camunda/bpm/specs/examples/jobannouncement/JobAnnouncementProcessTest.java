@@ -1,11 +1,9 @@
-package org.camunda.bpm.specs;
+package org.camunda.bpm.specs.examples.jobannouncement;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.test.mock.Mocks;
-import org.camunda.bpm.specs.jobannouncement.JobAnnouncement;
-import org.camunda.bpm.specs.jobannouncement.JobAnnouncementService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

@@ -1,11 +1,10 @@
-package org.camunda.bpm.specs;
+package org.camunda.bpm.specs.examples.jobannouncement;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.test.mock.Mocks;
-import org.camunda.bpm.specs.jobannouncement.JobAnnouncement;
-import org.camunda.bpm.specs.jobannouncement.JobAnnouncementService;
+import org.camunda.bpm.specs.Scenario;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.camunda.bpm.specs.ProcessEngineSpecs.*;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
 import static org.mockito.Mockito.*;
 
 /**

@@ -1,11 +1,9 @@
 package org.camunda.bpm.specs;
 
-import org.camunda.bpm.engine.test.assertions.ProcessEngineTests;
-
 /**
- * Created by martin on 05.08.16.
+ * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessEngineSpecs extends ProcessEngineTests {
+public class ProcessEngineSpecs {
 
   public static ScenarioRunner run(Scenario scenario) {
     return new ScenarioRunner(scenario);

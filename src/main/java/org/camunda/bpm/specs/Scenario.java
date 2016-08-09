@@ -1,9 +1,8 @@
 package org.camunda.bpm.specs;
 
-import org.camunda.bpm.engine.task.Task;
 
 /**
- * Created by martin on 05.08.16.
+ * @author Martin Schimak <martin.schimak@plexiti.com>
  */
 public interface Scenario {
 

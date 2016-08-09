@@ -4,7 +4,7 @@ import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 
 /**
- * Created by martin on 05.08.16.
+ * @author Martin Schimak <martin.schimak@plexiti.com>
  */
 public interface ExternalTaskAction {
 

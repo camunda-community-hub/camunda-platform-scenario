@@ -3,7 +3,7 @@ package org.camunda.bpm.specs;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 
 /**
- * Created by martin on 05.08.16.
+ * @author Martin Schimak <martin.schimak@plexiti.com>
  */
 public class ScenarioRunner {
 
@@ -13,34 +13,34 @@ public class ScenarioRunner {
     this.scenario = scenario;
   }
 
-  ScenarioRunner fromStart() {
+  public ScenarioRunner fromStart() {
     return this;
   }
 
-  ScenarioRunner fromBefore(String activityId, String... activityIds) {
+  public ScenarioRunner fromBefore(String activityId, String... activityIds) {
     return this;
   }
 
-  ScenarioRunner fromAfter(String activityId, String... activityIds) {
+  public ScenarioRunner fromAfter(String activityId, String... activityIds) {
     return this;
   }
 
-  ScenarioRunner fromStart(StartAction action) {
+  public ScenarioRunner fromStart(StartAction action) {
     return this;
   }
 
-  ScenarioRunner toBefore(String activityId, String... activityIds) {
+  public ScenarioRunner toBefore(String activityId, String... activityIds) {
     return this;
   }
 
-  ScenarioRunner toAfter(String activityId, String... activityIds) {
+  public ScenarioRunner toAfter(String activityId, String... activityIds) {
     return this;
   }
 
-  ScenarioRunner toEnd() {
+  public ScenarioRunner toEnd() {
     return this;
   }
 
-  ProcessInstance go() { return null; }
+  public ProcessInstance go() { return null; }
 
 }

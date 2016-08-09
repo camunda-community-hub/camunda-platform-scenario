@@ -7,6 +7,9 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Martin Schimak <martin.schimak@plexiti.com>
+ */
 public interface EventBasedGatewayAction {
 
   void execute(Map<String, EventSubscription> eventSubscriptions, Job timerJob, ProcessInstance processInstance);
