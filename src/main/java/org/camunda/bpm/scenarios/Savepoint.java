@@ -10,12 +10,12 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 public abstract class Savepoint<O> {
 
   protected ProcessEngine processEngine;
-  protected String executionId;
 
-  protected Savepoint(ProcessEngine processEngine, String executionId) {
+  protected Savepoint(ProcessEngine processEngine) {
     this.processEngine = processEngine;
-    this.executionId = executionId;
   }
+
+  protected abstract String getExecutionId();
 
   protected abstract O get();
 
@@ -74,7 +74,7 @@ public abstract class Savepoint<O> {
   }
 
   public ProcessInstance getProcessInstance() {
-    Execution execution = getRuntimeService().createExecutionQuery().executionId(executionId).singleResult();
+    Execution execution = getRuntimeService().createExecutionQuery().executionId(getExecutionId()).singleResult();
     return getRuntimeService().createProcessInstanceQuery().processInstanceId(execution.getProcessInstanceId()).singleResult();
   };
 

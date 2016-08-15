@@ -3,6 +3,7 @@ package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
+import org.camunda.bpm.engine.history.HistoricActivityInstance;
 
 import java.util.Map;
 
@@ -13,13 +14,22 @@ public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
 
   private static final String WORKER_ID = "workedId";
 
-  public ExternalTaskWaitstate(ProcessEngine processEngine, String executionId, String activityId) {
-    super(processEngine, executionId, activityId);
+  public ExternalTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+    super(processEngine, instance);
   }
 
   @Override
   protected ExternalTask get() {
-    return getExternalTaskService().createExternalTaskQuery().executionId(executionId).singleResult();
+    return getExternalTaskService().createExternalTaskQuery().executionId(getExecutionId()).singleResult();
+  }
+
+  protected static String getActivityType() {
+    return "serviceTask";
+  }
+
+  @Override
+  protected void execute(Scenario scenario) {
+    scenario.atExternalTask(getActivityId()).execute(this);
   }
 
   protected void leave() {

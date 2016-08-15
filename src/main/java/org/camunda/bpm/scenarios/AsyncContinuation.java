@@ -8,8 +8,16 @@ import org.camunda.bpm.engine.runtime.Job;
  */
 public class AsyncContinuation extends Savepoint<Job> {
 
+  protected String executionId;
+
   public AsyncContinuation(ProcessEngine processEngine, String executionId) {
-    super(processEngine, executionId);
+    super(processEngine);
+    this.executionId = executionId;
+  }
+
+  @Override
+  protected String getExecutionId() {
+    return executionId;
   }
 
   @Override

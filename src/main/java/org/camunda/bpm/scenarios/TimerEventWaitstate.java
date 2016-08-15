@@ -2,6 +2,7 @@ package org.camunda.bpm.scenarios;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
 
 import java.util.Map;
@@ -11,13 +12,22 @@ import java.util.Map;
  */
 public class TimerEventWaitstate extends Waitstate<Job> {
 
-  public TimerEventWaitstate(ProcessEngine processEngine, String executionId, String activityId) {
-    super(processEngine, executionId, activityId);
+  public TimerEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+    super(processEngine, instance);
   }
 
   @Override
   protected Job get() {
-    return getManagementService().createJobQuery().timers().executionId(executionId).singleResult();
+    return getManagementService().createJobQuery().timers().executionId(getExecutionId()).singleResult();
+  }
+
+  protected static String getActivityType() {
+    return "intermediateTimer";
+  }
+
+  @Override
+  protected void execute(Scenario scenario) {
+    scenario.atTimerEvent(getActivityId()).execute(this);
   }
 
   protected void leave() {

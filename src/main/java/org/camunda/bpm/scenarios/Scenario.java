@@ -20,8 +20,10 @@ public interface Scenario {
 
   WaitstateAction<EventBasedGatewayWaitstate> atEventBasedGateway(String activityId);
 
-  Scenario startsCallActivity(String activityId);
+  WaitstateAction<CallActivityWaitstate> atCallActivity(String activityId);
 
+  /* TODO
   Scenario startsProcessInstance(String activityId);
+  */
 
 }

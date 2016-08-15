@@ -1,6 +1,7 @@
 package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.task.Task;
 
 import java.util.Map;
@@ -10,13 +11,22 @@ import java.util.Map;
  */
 public class TaskWaitstate extends Waitstate<Task> {
 
-  public TaskWaitstate(ProcessEngine processEngine, String executionId, String activityId) {
-    super(processEngine, executionId, activityId);
+  public TaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+    super(processEngine, instance);
   }
 
   @Override
   protected Task get() {
-    return getTaskService().createTaskQuery().executionId(executionId).singleResult();
+    return getTaskService().createTaskQuery().executionId(getExecutionId()).singleResult();
+  }
+
+  protected static String getActivityType() {
+    return "userTask";
+  }
+
+  @Override
+  protected void execute(Scenario scenario) {
+    scenario.atTask(getActivityId()).execute(this);
   }
 
   protected void leave() {

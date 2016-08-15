@@ -2,11 +2,14 @@ package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
+import org.camunda.bpm.engine.history.HistoricActivityInstance;
+import org.camunda.bpm.engine.history.HistoricActivityInstanceQuery;
 import org.camunda.bpm.engine.impl.persistence.entity.MessageEntity;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,19 +24,25 @@ public class ScenarioRunner {
 
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
   private Map<String, Boolean> toActivityIds = new HashMap<String, Boolean>();
+  private List<String> excludedActivityInstanceIds = new ArrayList<String>();
   private Map<String, Object> startVariables = new HashMap<String, Object>();
 
   private Scenario scenario;
   private ProcessEngine processEngine;
   private ProcessInstance processInstance;
 
-  public ScenarioRunner startBy(ScenarioStarter scenarioStarter) {
+  public ScenarioRunner running(ScenarioStarter scenarioStarter) {
     this.scenarioStarter = scenarioStarter;
     return this;
   }
 
-  public ScenarioRunner startBy(String processDefinitionKey) {
+  public ScenarioRunner running(String processDefinitionKey) {
     this.processDefinitionKey = processDefinitionKey;
+    return this;
+  }
+
+  public ScenarioRunner running(ProcessInstance processInstance) {
+    this.processInstance = processInstance;
     return this;
   }
 
@@ -87,7 +96,7 @@ public class ScenarioRunner {
         this.processEngine = processEngine;
       }
     }
-    if (this.scenarioStarter == null) {
+    if (this.processInstance == null && this.scenarioStarter == null) {
       this.scenarioStarter = new ScenarioStarter() {
         @Override
         public ProcessInstance start() {
@@ -115,10 +124,45 @@ public class ScenarioRunner {
 
   public ProcessInstance run(Scenario scenario, ProcessEngine processEngine) {
     init(processEngine);
-    processInstance = scenarioStarter.start();
-    do {
-      continueAsynchronously();
-    } while(true);
+    if (processInstance == null)
+      processInstance = scenarioStarter.start();
+    for (boolean lastCall: new boolean[] { false, true }) {
+      Waitstate waitstate = nextWaitstate(lastCall);
+      while (waitstate != null) {
+        waitstate.execute(scenario);
+        if (waitstate.unfinished())
+          excludedActivityInstanceIds.add(waitstate.instance.getParentActivityInstanceId());
+        waitstate = nextWaitstate(lastCall);
+      }
+    }
+    return processInstance;
+  }
+
+  private Waitstate nextWaitstate(boolean lastCall) {
+    continueAsyncContinuations();
+    List<HistoricActivityInstance> instances = createWaitstateQuery().list();
+    for (HistoricActivityInstance instance: instances) {
+      if (instance.getActivityType().equals(TimerEventWaitstate.getActivityType()))
+        continue;
+      if (isAvailable(instance, lastCall))
+        return Waitstate.newInstance(processEngine, instance);
+    }
+    return nextTimerEventWaitstate(lastCall);
+  }
+
+  private Waitstate nextTimerEventWaitstate(boolean lastCall) {
+    List<HistoricActivityInstance> instances = createWaitstateQuery().activityType(TimerEventWaitstate.getActivityType()).list();
+    if (!instances.isEmpty()) {
+      List<Job> timers = processEngine.getManagementService().createJobQuery().timers().orderByJobDuedate().asc().list();
+      for (Job timer: timers) {
+        for (HistoricActivityInstance instance: instances) {
+          if (instance.getExecutionId().equals(timer.getExecutionId()))
+            if (isAvailable(instance, lastCall))
+              return Waitstate.newInstance(processEngine, instance);
+        }
+      }
+    }
+    return null;
   }
 
   private AsyncContinuation nextAsyncContinuation() {
@@ -133,12 +177,31 @@ public class ScenarioRunner {
     return null;
   }
 
-  private void continueAsynchronously() {
+  private void continueAsyncContinuations() {
     AsyncContinuation asyncContinuation = nextAsyncContinuation();
     while (asyncContinuation != null) {
       asyncContinuation.leave();
       asyncContinuation = nextAsyncContinuation();
     }
+  }
+
+  private HistoricActivityInstanceQuery createWaitstateQuery() {
+    return processEngine.getHistoryService().createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).unfinished();
+  }
+
+  private boolean isAvailable(HistoricActivityInstance instance, boolean lastCall) {
+    if (lastCall) {
+      for (String activityId: toActivityIds.keySet()) {
+        if (!toActivityIds.get(activityId))
+          if (activityId.equals(instance.getActivityId()))
+            return true;
+      }
+    } else {
+      if (!toActivityIds.keySet().contains(instance.getActivityId()))
+        if (!excludedActivityInstanceIds.contains(instance.getParentActivityInstanceId()))
+          return true;
+    }
+    return false;
   }
 
 }
