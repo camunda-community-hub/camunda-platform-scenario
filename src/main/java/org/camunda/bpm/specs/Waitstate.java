@@ -1,6 +1,6 @@
 package org.camunda.bpm.specs;
 
-import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.*;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -10,10 +10,6 @@ public abstract class Waitstate {
 
   protected ProcessEngine processEngine;
 
-  protected Waitstate() {
-    throw new NotImplementedException();
-  }
-
   protected Waitstate(ProcessEngine processEngine) {
     this.processEngine = processEngine;
   }
@@ -21,6 +17,58 @@ public abstract class Waitstate {
   protected abstract void leave();
 
   protected abstract void leave(Map<String, Object> variables);
+
+  public RuntimeService getRuntimeService() {
+    return processEngine.getRuntimeService();
+  }
+
+  public RepositoryService getRepositoryService() {
+    return processEngine.getRepositoryService();
+  }
+
+  public ProcessEngine getProcessEngine() {
+    return processEngine;
+  }
+
+  public FormService getFormService() {
+    return processEngine.getFormService();
+  }
+
+  public TaskService getTaskService() {
+    return processEngine.getTaskService();
+  }
+
+  public HistoryService getHistoryService() {
+    return processEngine.getHistoryService();
+  }
+
+  public IdentityService getIdentityService() {
+    return processEngine.getIdentityService();
+  }
+
+  public ManagementService getManagementService() {
+    return processEngine.getManagementService();
+  }
+
+  public AuthorizationService getAuthorizationService() {
+    return processEngine.getAuthorizationService();
+  }
+
+  public CaseService getCaseService() {
+    return processEngine.getCaseService();
+  }
+
+  public FilterService getFilterService() {
+    return processEngine.getFilterService();
+  }
+
+  public ExternalTaskService getExternalTaskService() {
+    return processEngine.getExternalTaskService();
+  }
+
+  public DecisionService getDecisionService() {
+    return processEngine.getDecisionService();
+  }
 
   public ProcessInstance getProcessInstance() {
     throw new NotImplementedException();
