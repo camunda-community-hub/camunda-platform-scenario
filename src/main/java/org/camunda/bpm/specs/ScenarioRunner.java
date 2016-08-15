@@ -9,7 +9,7 @@ public class ScenarioRunner {
 
   private Scenario scenario;
 
-  ScenarioRunner(Scenario scenario) {
+  public ScenarioRunner(Scenario scenario) {
     this.scenario = scenario;
   }
 
@@ -41,6 +41,6 @@ public class ScenarioRunner {
     return this;
   }
 
-  public ProcessInstance go() { return null; }
+  public ProcessInstance run() { return null; }
 
 }
