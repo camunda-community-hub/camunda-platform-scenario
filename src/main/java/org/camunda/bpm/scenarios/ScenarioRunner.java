@@ -3,6 +3,7 @@ package org.camunda.bpm.scenarios;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
 
@@ -34,33 +35,33 @@ public class ScenarioRunner {
   }
 
   public ScenarioRunner fromStart() {
-    return this;
+    throw new NotImplementedException();
   }
 
   public ScenarioRunner fromBefore(String activityId, String... activityIds) {
-    return this;
+    throw new NotImplementedException();
   }
 
   public ScenarioRunner fromAfter(String activityId, String... activityIds) {
-    return this;
+    throw new NotImplementedException();
   }
 
   public ScenarioRunner from(StartAction action) {
-    return this;
+    throw new NotImplementedException();
   }
 
   public ScenarioRunner toBefore(String activityId, String... activityIds) {
-    return this;
+    throw new NotImplementedException();
   }
 
   public ScenarioRunner toAfter(String activityId, String... activityIds) {
-    return this;
+    throw new NotImplementedException();
   }
 
   public ScenarioRunner toEnd() {
-    return this;
+    throw new NotImplementedException();
   }
 
-  public ProcessInstance run() { return null; }
+  public ProcessInstance run() { throw new NotImplementedException(); }
 
 }
