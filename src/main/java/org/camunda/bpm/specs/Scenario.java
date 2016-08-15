@@ -6,17 +6,19 @@ package org.camunda.bpm.specs;
  */
 public interface Scenario {
 
-  TaskAction atTask(String activityId);
+  WaitstateAction<TaskWaitstate> atTask(String activityId);
 
-  ExternalTaskAction atExternalTask(String activityId);
+  WaitstateAction<ExternalTaskWaitstate> atExternalTask(String activityId);
 
-  TimerEventAction atTimerEvent(String activityId);
+  WaitstateAction<TimerEventWaitstate> atTimerEvent(String activityId);
 
-  MessageEventAction atMessageEvent(String activityId);
+  WaitstateAction<MessageEventWaitstate> atMessageEvent(String activityId);
 
-  SignalEventAction atSignalEvent(String activityId);
+  WaitstateAction<ReceiveTaskWaitstate> atReceiveTask(String activityId);
 
-  EventBasedGatewayAction atEventBasedGateway(String activityId);
+  WaitstateAction<SignalEventWaitstate> atSignalEvent(String activityId);
+
+  WaitstateAction<EventBasedGatewayWaitstate> atEventBasedGateway(String activityId);
 
   Scenario startsCallActivity(String activityId);
 

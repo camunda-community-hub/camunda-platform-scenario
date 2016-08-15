@@ -7,6 +7,6 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
  */
 public interface StartAction {
 
-  ProcessInstance execute();
+  ProcessInstance start();
 
 }
