@@ -45,4 +45,8 @@ public class TaskWaitstate extends Waitstate<Task> {
     leave(variables);
   }
 
+  public Task getTask() {
+    return get();
+  }
+
 }

@@ -4,6 +4,7 @@ package org.camunda.bpm.scenarios;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
+import org.camunda.bpm.engine.runtime.EventSubscription;
 
 import java.util.Map;
 
@@ -62,6 +63,10 @@ public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
   public void handleFailure(String errorMessage, int retries, long retryTimeout) {
     fetchAndLock();
     getExternalTaskService().handleFailure(get().getId(), WORKER_ID, errorMessage, retries, retryTimeout);
+  }
+
+  public ExternalTask getExternalTask() {
+    return get();
   }
 
 }

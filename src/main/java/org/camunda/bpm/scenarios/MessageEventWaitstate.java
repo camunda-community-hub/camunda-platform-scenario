@@ -46,4 +46,8 @@ public class MessageEventWaitstate extends Waitstate<EventSubscription> {
     leave(variables);
   }
 
+  public EventSubscription getEventSubscription() {
+    return get();
+  }
+
 }

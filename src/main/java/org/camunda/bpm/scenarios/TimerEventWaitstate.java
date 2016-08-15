@@ -43,4 +43,8 @@ public class TimerEventWaitstate extends Waitstate<Job> {
     leave();
   }
 
+  public Job getTimer() {
+    return get();
+  }
+
 }

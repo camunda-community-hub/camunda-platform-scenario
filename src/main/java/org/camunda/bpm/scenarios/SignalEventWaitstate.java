@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.bpmn.parser.*;
 import org.camunda.bpm.engine.runtime.EventSubscription;
+import org.camunda.bpm.engine.runtime.Job;
 
 import java.util.Map;
 
@@ -45,6 +46,10 @@ public class SignalEventWaitstate extends Waitstate<EventSubscription> {
 
   public void receiveSignal(Map<String, Object> variables) {
     leave(variables);
+  }
+
+  public EventSubscription getEventSubscription() {
+    return get();
   }
 
 }

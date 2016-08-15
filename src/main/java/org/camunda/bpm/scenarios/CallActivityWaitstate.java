@@ -41,4 +41,8 @@ public class CallActivityWaitstate extends Waitstate<ProcessInstance> {
     return new ScenarioRunner().running(get());
   }
 
+  public ProcessInstance getCalledProcessInstance() {
+    return get();
+  }
+
 }
