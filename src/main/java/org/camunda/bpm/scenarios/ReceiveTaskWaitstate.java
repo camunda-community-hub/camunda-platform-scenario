@@ -8,8 +8,8 @@ import org.camunda.bpm.engine.ProcessEngine;
  */
 public class ReceiveTaskWaitstate extends MessageEventWaitstate {
 
-  public ReceiveTaskWaitstate(ProcessEngine processEngine) {
-    super(processEngine);
+  public ReceiveTaskWaitstate(ProcessEngine processEngine, String executionId) {
+    super(processEngine, executionId);
   }
 
 }

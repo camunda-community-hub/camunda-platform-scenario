@@ -1,6 +1,7 @@
 package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.task.Task;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
@@ -8,10 +9,15 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class TaskWaitstate extends Waitstate {
+public class TaskWaitstate extends Waitstate<Task> {
 
-  public TaskWaitstate(ProcessEngine processEngine) {
-    super(processEngine);
+  public TaskWaitstate(ProcessEngine processEngine, String executionId) {
+    super(processEngine, executionId);
+  }
+
+  @Override
+  protected Task get() {
+    return getTaskService().createTaskQuery().executionId(executionId).singleResult();
   }
 
   protected void leave() {

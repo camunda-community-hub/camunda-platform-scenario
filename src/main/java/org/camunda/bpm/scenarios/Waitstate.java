@@ -6,13 +6,17 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
 
-public abstract class Waitstate {
+public abstract class Waitstate<O> {
 
   protected ProcessEngine processEngine;
+  protected String executionId;
 
-  protected Waitstate(ProcessEngine processEngine) {
+  protected Waitstate(ProcessEngine processEngine, String executionId) {
     this.processEngine = processEngine;
+    this.executionId = executionId;
   }
+
+  protected abstract O get();
 
   protected abstract void leave();
 

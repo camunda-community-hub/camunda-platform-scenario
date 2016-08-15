@@ -2,6 +2,7 @@ package org.camunda.bpm.scenarios;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.runtime.Job;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
@@ -9,10 +10,15 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class TimerEventWaitstate extends Waitstate {
+public class TimerEventWaitstate extends Waitstate<Job> {
 
-  public TimerEventWaitstate(ProcessEngine processEngine) {
-    super(processEngine);
+  public TimerEventWaitstate(ProcessEngine processEngine, String executionId) {
+    super(processEngine, executionId);
+  }
+
+  @Override
+  protected Job get() {
+    return getManagementService().createJobQuery().executionId(executionId).singleResult();
   }
 
   protected void leave() {
