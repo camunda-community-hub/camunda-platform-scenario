@@ -2,11 +2,13 @@ package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
+import org.camunda.bpm.engine.impl.persistence.entity.MessageEntity;
+import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +25,7 @@ public class ScenarioRunner {
 
   private Scenario scenario;
   private ProcessEngine processEngine;
+  private ProcessInstance processInstance;
 
   public ScenarioRunner startBy(ScenarioStarter scenarioStarter) {
     this.scenarioStarter = scenarioStarter;
@@ -68,19 +71,21 @@ public class ScenarioRunner {
   }
 
   private void init(ProcessEngine processEngine) {
-    if (processEngine == null) {
-      Map<String, ProcessEngine> processEngines = ProcessEngines.getProcessEngines();
-      if (processEngines.size() == 1) {
-        this.processEngine = processEngines.values().iterator().next();
+    if (this.processEngine == null || processEngine != null) {
+      if (processEngine == null) {
+        Map<String, ProcessEngine> processEngines = ProcessEngines.getProcessEngines();
+        if (processEngines.size() == 1) {
+          this.processEngine = processEngines.values().iterator().next();
+        }
+        String message = processEngines.size() == 0 ? "No ProcessEngine found to be " +
+            "registered with " + ProcessEngines.class.getSimpleName() + "!"
+            : String.format(processEngines.size() + " ProcessEngines initialized. " +
+            "Explicitely initialise engine by calling " + ScenarioRunner.class.getSimpleName() +
+            "(scenario, engine)");
+        throw new IllegalStateException(message);
+      } else {
+        this.processEngine = processEngine;
       }
-      String message = processEngines.size() == 0 ? "No ProcessEngine found to be " +
-          "registered with " + ProcessEngines.class.getSimpleName() + "!"
-          : String.format(processEngines.size() + " ProcessEngines initialized. " +
-          "Explicitely initialise engine by calling " + ScenarioRunner.class.getSimpleName() +
-          "(scenario, engine)");
-      throw new IllegalStateException(message);
-    } else {
-      this.processEngine = processEngine;
     }
     if (this.scenarioStarter == null) {
       this.scenarioStarter = new ScenarioStarter() {
@@ -104,8 +109,36 @@ public class ScenarioRunner {
     }
   }
 
-  public ProcessInstance run(Scenario scenario) { throw new NotImplementedException(); }
+  public ProcessInstance run(Scenario scenario) {
+    return run(scenario, null);
+  }
 
-  public ProcessInstance run(Scenario scenario, ProcessEngine processEngine) { throw new NotImplementedException(); }
+  public ProcessInstance run(Scenario scenario, ProcessEngine processEngine) {
+    init(processEngine);
+    processInstance = scenarioStarter.start();
+    do {
+      continueAsynchronously();
+    } while(true);
+  }
+
+  private AsyncContinuation nextAsyncContinuation() {
+    List<Job> jobs = processEngine.getManagementService().createJobQuery().list();
+    for (Job job: jobs) {
+      if (job instanceof MessageEntity) {
+        MessageEntity entity = (MessageEntity) job;
+        if ("async-continuation".equals(entity.getJobHandlerType()))
+          return new AsyncContinuation(processEngine, job.getExecutionId());
+      }
+    }
+    return null;
+  }
+
+  private void continueAsynchronously() {
+    AsyncContinuation asyncContinuation = nextAsyncContinuation();
+    while (asyncContinuation != null) {
+      asyncContinuation.leave();
+      asyncContinuation = nextAsyncContinuation();
+    }
+  }
 
 }
