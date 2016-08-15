@@ -1,8 +1,7 @@
-package org.camunda.bpm.specs;
+package org.camunda.bpm.scenarios;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
 

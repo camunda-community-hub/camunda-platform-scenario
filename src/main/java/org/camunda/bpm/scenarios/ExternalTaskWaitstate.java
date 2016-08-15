@@ -1,4 +1,4 @@
-package org.camunda.bpm.specs;
+package org.camunda.bpm.scenarios;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
@@ -9,9 +9,9 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class MessageEventWaitstate extends Waitstate {
+public class ExternalTaskWaitstate extends Waitstate {
 
-  public MessageEventWaitstate(ProcessEngine processEngine) {
+  public ExternalTaskWaitstate(ProcessEngine processEngine) {
     super(processEngine);
   }
 
@@ -23,11 +23,11 @@ public class MessageEventWaitstate extends Waitstate {
     throw new NotImplementedException();
   };
 
-  public void receiveMessage() {
+  public void completeExternalTask() {
     leave();
   }
 
-  public void receiveMessage(Map<String, Object> variables) {
+  public void completeExternalTask(Map<String, Object> variables) {
     leave(variables);
   }
 

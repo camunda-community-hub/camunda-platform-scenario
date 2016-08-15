@@ -1,4 +1,4 @@
-package org.camunda.bpm.specs;
+package org.camunda.bpm.scenarios;
 
 
 /**

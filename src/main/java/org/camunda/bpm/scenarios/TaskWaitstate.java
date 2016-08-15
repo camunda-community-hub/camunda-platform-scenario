@@ -1,5 +1,4 @@
-package org.camunda.bpm.specs;
-
+package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -9,9 +8,9 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class SignalEventWaitstate extends Waitstate {
+public class TaskWaitstate extends Waitstate {
 
-  public SignalEventWaitstate(ProcessEngine processEngine) {
+  public TaskWaitstate(ProcessEngine processEngine) {
     super(processEngine);
   }
 
@@ -23,11 +22,11 @@ public class SignalEventWaitstate extends Waitstate {
     throw new NotImplementedException();
   };
 
-  public void receiveSignal() {
+  public void completeTask() {
     leave();
   }
 
-  public void receiveSignal(Map<String, Object> variables) {
+  public void completeTask(Map<String, Object> variables) {
     leave(variables);
   }
 
