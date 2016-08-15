@@ -25,7 +25,7 @@ public class ScenarioRunner {
     return this;
   }
 
-  public ScenarioRunner fromStart(StartAction action) {
+  public ScenarioRunner from(StartAction action) {
     return this;
   }
 
