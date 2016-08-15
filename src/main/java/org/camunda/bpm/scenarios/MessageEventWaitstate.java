@@ -3,7 +3,6 @@ package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.EventSubscription;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
 
@@ -12,8 +11,8 @@ import java.util.Map;
  */
 public class MessageEventWaitstate extends Waitstate<EventSubscription> {
 
-  public MessageEventWaitstate(ProcessEngine processEngine, String executionId) {
-    super(processEngine, executionId);
+  public MessageEventWaitstate(ProcessEngine processEngine, String executionId, String activityId) {
+    super(processEngine, executionId, activityId);
   }
 
   @Override
@@ -22,12 +21,12 @@ public class MessageEventWaitstate extends Waitstate<EventSubscription> {
   }
 
   protected void leave() {
-    throw new NotImplementedException();
-  };
+    getRuntimeService().signalEventReceived(get().getEventName(), get().getExecutionId());
+  }
 
   protected void leave(Map<String, Object> variables) {
-    throw new NotImplementedException();
-  };
+    getRuntimeService().signalEventReceived(get().getEventName(), get().getExecutionId(), variables);
+  }
 
   public void receiveMessage() {
     leave();

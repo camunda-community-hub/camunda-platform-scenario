@@ -2,7 +2,6 @@ package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.task.Task;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
 
@@ -11,8 +10,8 @@ import java.util.Map;
  */
 public class TaskWaitstate extends Waitstate<Task> {
 
-  public TaskWaitstate(ProcessEngine processEngine, String executionId) {
-    super(processEngine, executionId);
+  public TaskWaitstate(ProcessEngine processEngine, String executionId, String activityId) {
+    super(processEngine, executionId, activityId);
   }
 
   @Override
@@ -21,12 +20,12 @@ public class TaskWaitstate extends Waitstate<Task> {
   }
 
   protected void leave() {
-    throw new NotImplementedException();
-  };
+    getTaskService().complete(get().getId());
+  }
 
   protected void leave(Map<String, Object> variables) {
-    throw new NotImplementedException();
-  };
+    getTaskService().complete(get().getId(), variables);
+  }
 
   public void completeTask() {
     leave();

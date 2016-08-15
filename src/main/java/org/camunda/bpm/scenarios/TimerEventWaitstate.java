@@ -3,7 +3,6 @@ package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.Job;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
 
@@ -12,29 +11,26 @@ import java.util.Map;
  */
 public class TimerEventWaitstate extends Waitstate<Job> {
 
-  public TimerEventWaitstate(ProcessEngine processEngine, String executionId) {
-    super(processEngine, executionId);
+  public TimerEventWaitstate(ProcessEngine processEngine, String executionId, String activityId) {
+    super(processEngine, executionId, activityId);
   }
 
   @Override
   protected Job get() {
-    return getManagementService().createJobQuery().executionId(executionId).singleResult();
+    return getManagementService().createJobQuery().timers().executionId(executionId).singleResult();
   }
 
   protected void leave() {
-    throw new NotImplementedException();
-  };
+    getManagementService().executeJob(get().getId());
+  }
 
   protected void leave(Map<String, Object> variables) {
-    throw new NotImplementedException();
-  };
-
-  public void triggerTimer() {
+    getRuntimeService().setVariables(getProcessInstance().getId(), variables);
     leave();
   }
 
-  public void triggerTimer(Map<String, Object> variables) {
-    leave(variables);
+  public void triggerTimer() {
+    leave();
   }
 
 }

@@ -1,8 +1,7 @@
 package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.*;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import org.camunda.bpm.engine.runtime.*;
 
 import java.util.Map;
 
@@ -10,8 +9,9 @@ public abstract class Waitstate<O> {
 
   protected ProcessEngine processEngine;
   protected String executionId;
+  protected String activityId;
 
-  protected Waitstate(ProcessEngine processEngine, String executionId) {
+  protected Waitstate(ProcessEngine processEngine, String executionId, String activityId) {
     this.processEngine = processEngine;
     this.executionId = executionId;
   }
@@ -75,27 +75,21 @@ public abstract class Waitstate<O> {
   }
 
   public ProcessInstance getProcessInstance() {
-    throw new NotImplementedException();
+    Execution execution = getRuntimeService().createExecutionQuery().executionId(executionId).activityId(activityId).singleResult();
+    return getRuntimeService().createProcessInstanceQuery().processInstanceId(execution.getProcessInstanceId()).singleResult();
   };
 
-  public void receiveSignal(String signalName) {
-    throw new NotImplementedException();
-  };
+  public SignalEventReceivedBuilder createSignal(String signalName) {
+    return getRuntimeService().createSignalEvent(signalName);
+  }
 
-  public void receiveSignal(String signalName, Map<String, Object> variables) {
-    throw new NotImplementedException();
-  };
-
-  public void receiveMessage(String messageName) {
-    throw new NotImplementedException();
-  };
-
-  public void receiveMessage(String messageName, Map<String, Object> variables) {
-    throw new NotImplementedException();
-  };
+  public MessageCorrelationBuilder createMessage(String messageName) {
+    return getRuntimeService().createMessageCorrelation(messageName);
+  }
 
   public void triggerTimer(String activityId) {
-    throw new NotImplementedException();
-  };
+    Job job = getManagementService().createJobQuery().processInstanceId(getProcessInstance().getId()).activityId(activityId).timers().singleResult();
+    getManagementService().executeJob(job.getId());
+  }
 
 }

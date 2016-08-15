@@ -3,7 +3,6 @@ package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Map;
 
@@ -12,8 +11,10 @@ import java.util.Map;
  */
 public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
 
-  public ExternalTaskWaitstate(ProcessEngine processEngine, String executionId) {
-    super(processEngine, executionId);
+  private static final String WORKER_ID = "workedId";
+
+  public ExternalTaskWaitstate(ProcessEngine processEngine, String executionId, String activityId) {
+    super(processEngine, executionId, activityId);
   }
 
   @Override
@@ -22,12 +23,18 @@ public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
   }
 
   protected void leave() {
-    throw new NotImplementedException();
-  };
+    fetchAndLock();
+    getExternalTaskService().complete(get().getId(), WORKER_ID);
+  }
 
   protected void leave(Map<String, Object> variables) {
-    throw new NotImplementedException();
-  };
+    fetchAndLock();
+    getExternalTaskService().complete(get().getId(), WORKER_ID, variables);
+  }
+
+  protected void fetchAndLock() {
+    getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID);
+  }
 
   public void completeExternalTask() {
     leave();
@@ -35,6 +42,16 @@ public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
 
   public void completeExternalTask(Map<String, Object> variables) {
     leave(variables);
+  }
+
+  public void handleBpmnError(String errorCode) {
+    fetchAndLock();
+    getExternalTaskService().handleBpmnError(get().getId(), WORKER_ID, errorCode);
+  }
+
+  public void handleFailure(String errorMessage, int retries, long retryTimeout) {
+    fetchAndLock();
+    getExternalTaskService().handleFailure(get().getId(), WORKER_ID, errorMessage, retries, retryTimeout);
   }
 
 }
