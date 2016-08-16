@@ -32,7 +32,7 @@ public abstract class Waitstate<O> extends Savepoint<O> {
       return new CallActivityWaitstate(processEngine, instance);
     } else if (EventBasedGatewayWaitstate.getActivityType().equals(instance.getActivityType())) {
       return new EventBasedGatewayWaitstate(processEngine, instance);
-    } else if (ExternalTaskWaitstate.getActivityType().equals(instance.getActivityType())) {
+    } else if (ExternalTaskWaitstate.getActivityTypes().contains(instance.getActivityType())) {
       return new ExternalTaskWaitstate(processEngine, instance);
     } else if (MessageEventWaitstate.getActivityType().equals(instance.getActivityType())) {
       return new MessageEventWaitstate(processEngine, instance);

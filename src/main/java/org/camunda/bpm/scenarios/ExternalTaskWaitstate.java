@@ -6,6 +6,8 @@ import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +15,7 @@ import java.util.Map;
  */
 public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
 
-  private static final String WORKER_ID = "workedId";
+  private static final String WORKER_ID = "workerId";
 
   public ExternalTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
@@ -24,8 +26,8 @@ public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
     return getExternalTaskService().createExternalTaskQuery().executionId(getExecutionId()).singleResult();
   }
 
-  protected static String getActivityType() {
-    return "serviceTask";
+  protected static List<String> getActivityTypes() {
+    return Arrays.asList("serviceTask", "sendTask", "intermediateMessageThrow");
   }
 
   @Override
@@ -44,7 +46,7 @@ public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
   }
 
   protected void fetchAndLock() {
-    getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID);
+    getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID).topic(get().getTopicName(), Long.MAX_VALUE).execute();
   }
 
   public void completeExternalTask() {

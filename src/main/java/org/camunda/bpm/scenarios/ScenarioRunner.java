@@ -85,13 +85,14 @@ public class ScenarioRunner {
         Map<String, ProcessEngine> processEngines = ProcessEngines.getProcessEngines();
         if (processEngines.size() == 1) {
           this.processEngine = processEngines.values().iterator().next();
+        } else {
+          String message = processEngines.size() == 0 ? "No ProcessEngine found to be " +
+              "registered with " + ProcessEngines.class.getSimpleName() + "!"
+              : String.format(processEngines.size() + " ProcessEngines initialized. " +
+              "Explicitely initialise engine by calling " + ScenarioRunner.class.getSimpleName() +
+              "(scenario, engine)");
+          throw new IllegalStateException(message);
         }
-        String message = processEngines.size() == 0 ? "No ProcessEngine found to be " +
-            "registered with " + ProcessEngines.class.getSimpleName() + "!"
-            : String.format(processEngines.size() + " ProcessEngines initialized. " +
-            "Explicitely initialise engine by calling " + ScenarioRunner.class.getSimpleName() +
-            "(scenario, engine)");
-        throw new IllegalStateException(message);
       } else {
         this.processEngine = processEngine;
       }
