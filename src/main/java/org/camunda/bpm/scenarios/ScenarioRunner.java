@@ -112,7 +112,7 @@ public class ScenarioRunner {
           if (startVariables != null) {
             builder.setVariables(startVariables);
           }
-          return builder.execute();
+          return builder.executeWithVariablesInReturn();
         }
       };
     }
