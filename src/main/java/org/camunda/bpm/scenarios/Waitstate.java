@@ -56,7 +56,7 @@ public abstract class Waitstate<O> extends Savepoint<O> {
   protected abstract void leave(Map<String, Object> variables);
 
   protected boolean unfinished() {
-    return getHistoryService().createHistoricActivityInstanceQuery().activityId(getActivityId()).unfinished().singleResult() != null;
+    return getHistoryService().createHistoricActivityInstanceQuery().activityInstanceId(instance.getId()).unfinished().singleResult() != null;
   }
 
   public SignalEventReceivedBuilder createSignal(String signalName) {
