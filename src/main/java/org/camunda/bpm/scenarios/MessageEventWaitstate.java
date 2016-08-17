@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class MessageEventWaitstate extends Waitstate<EventSubscription> {
 
-  public MessageEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected MessageEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 

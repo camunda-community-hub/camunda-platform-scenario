@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class TimerEventWaitstate extends Waitstate<Job> {
 
-  public TimerEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected TimerEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 

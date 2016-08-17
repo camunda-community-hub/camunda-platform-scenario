@@ -24,7 +24,7 @@ public class ScenarioRunner {
 
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
   private Map<String, Boolean> toActivityIds = new HashMap<String, Boolean>();
-  private List<String> excludedActivityInstanceIds = new ArrayList<String>();
+  private List<String> excludedHistoricActivityInstanceIds = new ArrayList<String>();
   private Map<String, Object> startVariables = new HashMap<String, Object>();
 
   private Scenario scenario;
@@ -132,7 +132,7 @@ public class ScenarioRunner {
       while (waitstate != null) {
         waitstate.execute(scenario);
         if (waitstate.unfinished())
-          excludedActivityInstanceIds.add(waitstate.instance.getParentActivityInstanceId());
+          excludedHistoricActivityInstanceIds.add(waitstate.instance.getId());
         waitstate = nextWaitstate(lastCall);
       }
     }
@@ -199,7 +199,7 @@ public class ScenarioRunner {
       }
     } else {
       if (!toActivityIds.keySet().contains(instance.getActivityId()))
-        if (!excludedActivityInstanceIds.contains(instance.getParentActivityInstanceId()))
+        if (!excludedHistoricActivityInstanceIds.contains(instance.getId()))
           return true;
     }
     return false;

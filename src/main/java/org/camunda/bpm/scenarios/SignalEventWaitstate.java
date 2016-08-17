@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class SignalEventWaitstate extends Waitstate<EventSubscription> {
 
-  public SignalEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected SignalEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 

@@ -44,8 +44,9 @@ public abstract class Waitstate<O> extends Savepoint<O> {
       return new TaskWaitstate(processEngine, instance);
     } else if (TimerEventWaitstate.getActivityType().equals(instance.getActivityType())) {
       return new TimerEventWaitstate(processEngine, instance);
+    } else {
+      return new IgnoredWaitstate(processEngine, instance);
     }
-    return null;
   }
 
   protected abstract void execute(Scenario scenario);

@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class CallActivityWaitstate extends Waitstate<ProcessInstance> {
 
-  public CallActivityWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected CallActivityWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 

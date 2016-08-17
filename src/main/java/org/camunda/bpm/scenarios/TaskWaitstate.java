@@ -11,13 +11,13 @@ import java.util.Map;
  */
 public class TaskWaitstate extends Waitstate<Task> {
 
-  public TaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected TaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 
   @Override
   protected Task get() {
-    return getTaskService().createTaskQuery().executionId(getExecutionId()).singleResult();
+    return getTaskService().createTaskQuery().activityInstanceIdIn(instance.getId()).singleResult();
   }
 
   protected static String getActivityType() {

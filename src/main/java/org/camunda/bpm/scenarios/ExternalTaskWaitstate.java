@@ -17,7 +17,7 @@ public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
 
   private static final String WORKER_ID = "workerId";
 
-  public ExternalTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected ExternalTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 

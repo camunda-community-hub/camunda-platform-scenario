@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class ReceiveTaskWaitstate extends MessageEventWaitstate {
 
-  public ReceiveTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected ReceiveTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 
