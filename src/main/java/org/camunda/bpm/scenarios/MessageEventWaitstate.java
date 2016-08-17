@@ -31,11 +31,11 @@ public class MessageEventWaitstate extends Waitstate<EventSubscription> {
   }
 
   protected void leave() {
-    getRuntimeService().signalEventReceived(get().getEventName(), get().getExecutionId());
+    getRuntimeService().messageEventReceived(get().getEventName(), get().getExecutionId());
   }
 
   protected void leave(Map<String, Object> variables) {
-    getRuntimeService().signalEventReceived(get().getEventName(), get().getExecutionId(), variables);
+    getRuntimeService().messageEventReceived(get().getEventName(), get().getExecutionId(), variables);
   }
 
   public void receiveMessage() {
