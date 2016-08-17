@@ -4,7 +4,7 @@ package org.camunda.bpm.scenarios;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface Scenario {
+public interface Scenario extends VerifiableScenario {
 
   WaitstateAction<TaskWaitstate> atTask(String activityId);
 

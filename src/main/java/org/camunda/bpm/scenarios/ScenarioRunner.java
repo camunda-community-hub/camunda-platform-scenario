@@ -25,6 +25,7 @@ public class ScenarioRunner {
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
   private Map<String, Boolean> toActivityIds = new HashMap<String, Boolean>();
   private List<String> excludedHistoricActivityInstanceIds = new ArrayList<String>();
+  private List<String> executedHistoricActivityInstanceIds = new ArrayList<String>();
   private Map<String, Object> startVariables = new HashMap<String, Object>();
 
   private Scenario scenario;
@@ -79,7 +80,8 @@ public class ScenarioRunner {
     }
   }
 
-  private void init(ProcessEngine processEngine) {
+  private void init(Scenario scenario, ProcessEngine processEngine) {
+    this.scenario = scenario;
     if (this.processEngine == null || processEngine != null) {
       if (processEngine == null) {
         Map<String, ProcessEngine> processEngines = ProcessEngines.getProcessEngines();
@@ -124,18 +126,20 @@ public class ScenarioRunner {
   }
 
   public ProcessInstance run(Scenario scenario, ProcessEngine processEngine) {
-    init(processEngine);
+    init(scenario, processEngine);
     if (processInstance == null)
       processInstance = scenarioStarter.start();
     for (boolean lastCall: new boolean[] { false, true }) {
       Waitstate waitstate = nextWaitstate(lastCall);
       while (waitstate != null) {
+        setExecutedHistoricActivityIds(false);
         waitstate.execute(scenario);
         if (waitstate.unfinished())
           excludedHistoricActivityInstanceIds.add(waitstate.instance.getId());
         waitstate = nextWaitstate(lastCall);
       }
     }
+    setExecutedHistoricActivityIds(true);
     return processInstance;
   }
 
@@ -203,6 +207,40 @@ public class ScenarioRunner {
           return true;
     }
     return false;
+  }
+
+  private void setExecutedHistoricActivityIds(boolean includeUnfinished) {
+    List<HistoricActivityInstance> instances = processEngine.getHistoryService()
+        .createHistoricActivityInstanceQuery()
+        .processInstanceId(processInstance.getId()).canceled().list();
+    for (HistoricActivityInstance instance: instances) {
+      if (!executedHistoricActivityInstanceIds.contains(instance.getId())) {
+        scenario.hasPassed(instance.getActivityId());
+        scenario.hasCanceled(instance.getActivityId());
+        executedHistoricActivityInstanceIds.add(instance.getId());
+      }
+    }
+    instances = processEngine.getHistoryService()
+        .createHistoricActivityInstanceQuery()
+        .processInstanceId(processInstance.getId()).finished().list();
+    for (HistoricActivityInstance instance: instances) {
+      if (!executedHistoricActivityInstanceIds.contains(instance.getId())) {
+        scenario.hasPassed(instance.getActivityId());
+        scenario.hasCompleted(instance.getActivityId());
+        executedHistoricActivityInstanceIds.add(instance.getId());
+      }
+    }
+    if (includeUnfinished) {
+      instances = processEngine.getHistoryService()
+          .createHistoricActivityInstanceQuery()
+          .processInstanceId(processInstance.getId()).unfinished().list();
+      for (HistoricActivityInstance instance: instances) {
+        if (!executedHistoricActivityInstanceIds.contains(instance.getId())) {
+          scenario.isWaitingAt(instance.getActivityId());
+          executedHistoricActivityInstanceIds.add(instance.getId());
+        }
+      }
+    }
   }
 
 }
