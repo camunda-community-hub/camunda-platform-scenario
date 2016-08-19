@@ -1,29 +1,36 @@
 package org.camunda.bpm.scenarios;
 
 
+import org.camunda.bpm.scenarios.runner.ScenarioRunnerImpl;
+import org.camunda.bpm.scenarios.waitstate.*;
+
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface Scenario extends VerifiableScenario {
+public abstract class Scenario implements VerifiableScenario {
 
-  WaitstateAction<TaskWaitstate> atTask(String activityId);
+  public static ScenarioRunner run(String processDefinitionKey) {
+    return new ScenarioRunnerImpl().running(processDefinitionKey);
+  }
 
-  WaitstateAction<ExternalTaskWaitstate> atExternalTask(String activityId);
+  public static ScenarioRunner run(ScenarioStarter scenarioStarter) {
+    return new ScenarioRunnerImpl().running(scenarioStarter);
+  }
 
-  WaitstateAction<TimerEventWaitstate> atTimerEvent(String activityId);
+  public abstract WaitstateAction<UserTaskWaitstate> atTask(String activityId);
 
-  WaitstateAction<MessageEventWaitstate> atMessageEvent(String activityId);
+  public abstract WaitstateAction<ServiceTaskWaitstate> atExternalTask(String activityId);
 
-  WaitstateAction<ReceiveTaskWaitstate> atReceiveTask(String activityId);
+  public abstract WaitstateAction<TimerIntermediateCatchEventWaitstate> atTimerEvent(String activityId);
 
-  WaitstateAction<SignalEventWaitstate> atSignalEvent(String activityId);
+  public abstract WaitstateAction<MessageIntermediateCatchEventWaitstate> atMessageEvent(String activityId);
 
-  WaitstateAction<EventBasedGatewayWaitstate> atEventBasedGateway(String activityId);
+  public abstract WaitstateAction<ReceiveTaskWaitstate> atReceiveTask(String activityId);
 
-  WaitstateAction<CallActivityWaitstate> atCallActivity(String activityId);
+  public abstract WaitstateAction<SignalIntermediateCatchEventWaitstate> atSignalEvent(String activityId);
 
-  /* TODO
-  Scenario startsProcessInstance(String activityId);
-  */
+  public abstract WaitstateAction<EventBasedGatewayWaitstate> atEventBasedGateway(String activityId);
+
+  public abstract WaitstateAction<CallActivityWaitstate> atCallActivity(String activityId);
 
 }

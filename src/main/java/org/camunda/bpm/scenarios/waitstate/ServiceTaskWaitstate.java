@@ -1,33 +1,28 @@
-package org.camunda.bpm.scenarios;
+package org.camunda.bpm.scenarios.waitstate;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.engine.runtime.EventSubscription;
+import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.delegate.ExternalTaskDelegate;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
+public class ServiceTaskWaitstate extends ExternalTaskDelegate {
 
   private static final String WORKER_ID = "workerId";
 
-  protected ExternalTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected ServiceTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 
   @Override
   protected ExternalTask get() {
     return getExternalTaskService().createExternalTaskQuery().executionId(getExecutionId()).singleResult();
-  }
-
-  protected static List<String> getActivityTypes() {
-    return Arrays.asList("serviceTask", "sendTask", "intermediateMessageThrow");
   }
 
   @Override
@@ -49,11 +44,11 @@ public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
     getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID).topic(get().getTopicName(), Long.MAX_VALUE).execute();
   }
 
-  public void completeExternalTask() {
+  public void complete() {
     leave();
   }
 
-  public void completeExternalTask(Map<String, Object> variables) {
+  public void complete(Map<String, Object> variables) {
     leave(variables);
   }
 
@@ -65,10 +60,6 @@ public class ExternalTaskWaitstate extends Waitstate<ExternalTask> {
   public void handleFailure(String errorMessage, int retries, long retryTimeout) {
     fetchAndLock();
     getExternalTaskService().handleFailure(get().getId(), WORKER_ID, errorMessage, retries, retryTimeout);
-  }
-
-  public ExternalTask getExternalTask() {
-    return get();
   }
 
 }

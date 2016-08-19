@@ -1,81 +1,80 @@
-package org.camunda.bpm.scenarios;
+package org.camunda.bpm.scenarios.delegate;
 
 import org.camunda.bpm.engine.*;
-import org.camunda.bpm.engine.runtime.Execution;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class Savepoint<O> {
+public abstract class ProcessEngineServicesDelegate implements ProcessEngineServices {
 
   protected ProcessEngine processEngine;
 
-  protected Savepoint(ProcessEngine processEngine) {
+  public ProcessEngineServicesDelegate(ProcessEngine processEngine) {
     this.processEngine = processEngine;
-  }
-
-  protected abstract String getExecutionId();
-
-  protected abstract O get();
-
-  protected abstract void leave();
-
-  public RuntimeService getRuntimeService() {
-    return processEngine.getRuntimeService();
-  }
-
-  public RepositoryService getRepositoryService() {
-    return processEngine.getRepositoryService();
   }
 
   public ProcessEngine getProcessEngine() {
     return processEngine;
   }
 
+  @Override
+  public RuntimeService getRuntimeService() {
+    return processEngine.getRuntimeService();
+  }
+
+  @Override
+  public RepositoryService getRepositoryService() {
+    return processEngine.getRepositoryService();
+  }
+
+  @Override
   public FormService getFormService() {
     return processEngine.getFormService();
   }
 
+  @Override
   public TaskService getTaskService() {
     return processEngine.getTaskService();
   }
 
+  @Override
   public HistoryService getHistoryService() {
     return processEngine.getHistoryService();
   }
 
+  @Override
   public IdentityService getIdentityService() {
     return processEngine.getIdentityService();
   }
 
+  @Override
   public ManagementService getManagementService() {
     return processEngine.getManagementService();
   }
 
+  @Override
   public AuthorizationService getAuthorizationService() {
     return processEngine.getAuthorizationService();
   }
 
+  @Override
   public CaseService getCaseService() {
     return processEngine.getCaseService();
   }
 
+  @Override
   public FilterService getFilterService() {
     return processEngine.getFilterService();
   }
 
+  @Override
   public ExternalTaskService getExternalTaskService() {
     return processEngine.getExternalTaskService();
   }
 
+  @Override
   public DecisionService getDecisionService() {
     return processEngine.getDecisionService();
   }
-
-  public ProcessInstance getProcessInstance() {
-    Execution execution = getRuntimeService().createExecutionQuery().executionId(getExecutionId()).singleResult();
-    return getRuntimeService().createProcessInstanceQuery().processInstanceId(execution.getProcessInstanceId()).singleResult();
-  };
 
 }

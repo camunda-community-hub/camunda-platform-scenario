@@ -1,7 +1,8 @@
-package org.camunda.bpm.scenarios;
+package org.camunda.bpm.scenarios.runner;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.Job;
+import org.camunda.bpm.scenarios.waitstate.Savepoint;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -13,10 +14,11 @@ public class AsyncContinuation extends Savepoint<Job> {
   protected AsyncContinuation(ProcessEngine processEngine, String executionId) {
     super(processEngine);
     this.executionId = executionId;
+    this.delegate = get();
   }
 
   @Override
-  protected String getExecutionId() {
+  public String getExecutionId() {
     return executionId;
   }
 

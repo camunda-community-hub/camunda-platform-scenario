@@ -1,14 +1,16 @@
-package org.camunda.bpm.scenarios;
+package org.camunda.bpm.scenarios.waitstate;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
+import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.runner.Waitstate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class IgnoredWaitstate extends Waitstate{
+public class IgnoredWaitstate extends Waitstate {
 
   public IgnoredWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
@@ -31,7 +33,7 @@ public class IgnoredWaitstate extends Waitstate{
 
   @Override
   protected Object get() {
-    throw new UnsupportedOperationException();
+    return null;
   }
 
 }

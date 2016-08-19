@@ -1,28 +1,26 @@
-package org.camunda.bpm.scenarios;
+package org.camunda.bpm.scenarios.waitstate;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
+import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.delegate.JobDelegate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class TimerEventWaitstate extends Waitstate<Job> {
+public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
 
-  protected TimerEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected TimerIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 
   @Override
   protected Job get() {
     return getManagementService().createJobQuery().timers().executionId(getExecutionId()).singleResult();
-  }
-
-  protected static String getActivityType() {
-    return "intermediateTimer";
   }
 
   @Override
@@ -41,10 +39,6 @@ public class TimerEventWaitstate extends Waitstate<Job> {
 
   public void triggerTimer() {
     leave();
-  }
-
-  public Job getTimer() {
-    return get();
   }
 
 }

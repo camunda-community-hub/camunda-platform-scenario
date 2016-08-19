@@ -1,28 +1,26 @@
-package org.camunda.bpm.scenarios;
+package org.camunda.bpm.scenarios.waitstate;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
+import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.delegate.EventSubscriptionDelegate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class MessageEventWaitstate extends Waitstate<EventSubscription> {
+public class MessageIntermediateCatchEventWaitstate extends EventSubscriptionDelegate {
 
-  protected MessageEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected MessageIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 
   @Override
   protected EventSubscription get() {
     return getRuntimeService().createEventSubscriptionQuery().eventType("message").executionId(getExecutionId()).singleResult();
-  }
-
-  protected static String getActivityType() {
-    return "intermediateMessageCatch";
   }
 
   @Override
@@ -44,10 +42,6 @@ public class MessageEventWaitstate extends Waitstate<EventSubscription> {
 
   public void receiveMessage(Map<String, Object> variables) {
     leave(variables);
-  }
-
-  public EventSubscription getEventSubscription() {
-    return get();
   }
 
 }

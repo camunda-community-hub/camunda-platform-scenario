@@ -1,33 +1,28 @@
-package org.camunda.bpm.scenarios;
+package org.camunda.bpm.scenarios.waitstate;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.engine.runtime.Job;
+import org.camunda.bpm.scenarios.EventBasedGateway;
+import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.runner.Waitstate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGatewayWaitstate.EventBasedGateway> {
+public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> implements EventBasedGateway {
 
   protected EventBasedGatewayWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 
-  protected class EventBasedGateway {
-
-  }
-
   @Override
   protected EventBasedGateway get() {
-    return new EventBasedGateway();
-  }
-
-  protected static String getActivityType() {
-    return "eventBasedGateway";
+    return new EventBasedGateway() {};
   }
 
   @Override

@@ -1,27 +1,25 @@
-package org.camunda.bpm.scenarios;
+package org.camunda.bpm.scenarios.waitstate;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.delegate.TaskDelegate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class TaskWaitstate extends Waitstate<Task> {
+public class UserTaskWaitstate extends TaskDelegate {
 
-  protected TaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected UserTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 
   @Override
   protected Task get() {
-    return getTaskService().createTaskQuery().activityInstanceIdIn(instance.getId()).singleResult();
-  }
-
-  protected static String getActivityType() {
-    return "userTask";
+    return getTaskService().createTaskQuery().activityInstanceIdIn(historicActivityInstance.getId()).singleResult();
   }
 
   @Override
@@ -37,16 +35,12 @@ public class TaskWaitstate extends Waitstate<Task> {
     getTaskService().complete(get().getId(), variables);
   }
 
-  public void completeTask() {
+  public void complete() {
     leave();
   }
 
-  public void completeTask(Map<String, Object> variables) {
+  public void complete(Map<String, Object> variables) {
     leave(variables);
-  }
-
-  public Task getTask() {
-    return get();
   }
 
 }
