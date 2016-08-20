@@ -6,7 +6,7 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.ScenarioAction;
+import org.camunda.bpm.scenario.action.ScenarioAction;
 
 import java.util.Map;
 

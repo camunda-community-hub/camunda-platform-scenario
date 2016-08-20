@@ -17,8 +17,8 @@ public interface ScenarioRunner {
 
   ScenarioRunner toAfter(String activityId, String... activityIds);
 
-  ProcessInstance run(Scenario scenario);
+  ProcessInstance start(Scenario scenario);
 
-  ProcessInstance run(Scenario scenario, ProcessEngine processEngine);
+  ProcessInstance start(Scenario scenario, ProcessEngine processEngine);
 
 }

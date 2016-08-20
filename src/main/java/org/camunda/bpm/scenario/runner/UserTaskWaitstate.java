@@ -4,7 +4,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.ScenarioAction;
+import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 
 import java.util.Map;

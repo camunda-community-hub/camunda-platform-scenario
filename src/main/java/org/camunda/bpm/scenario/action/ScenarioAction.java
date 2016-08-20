@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario;
+package org.camunda.bpm.scenario.action;
 
 
 import org.camunda.bpm.scenario.runner.Waitstate;

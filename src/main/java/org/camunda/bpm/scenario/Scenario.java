@@ -1,6 +1,7 @@
 package org.camunda.bpm.scenario;
 
 
+import org.camunda.bpm.scenario.action.*;
 import org.camunda.bpm.scenario.runner.*;
 
 /**
@@ -9,31 +10,31 @@ import org.camunda.bpm.scenario.runner.*;
 public abstract class Scenario implements ScenarioHistory {
 
   public static ScenarioRunner run(String processDefinitionKey) {
-    return ScenarioRunnerImpl.run(processDefinitionKey);
+    return ScenarioRunnerImpl.start(processDefinitionKey);
   }
 
   public static ScenarioRunner run(ScenarioStarter scenarioStarter) {
-    return ScenarioRunnerImpl.run(scenarioStarter);
+    return ScenarioRunnerImpl.start(scenarioStarter);
   }
 
-  public abstract ScenarioAction<UserTaskWaitstate> atUserTask(String activityId);
+  public abstract UserTaskAction atUserTask(String activityId);
 
-  public abstract ScenarioAction<ServiceTaskWaitstate> atServiceTask(String activityId);
+  public abstract ServiceTaskAction atServiceTask(String activityId);
 
-  public abstract ScenarioAction<SendTaskWaitstate> atSendTask(String activityId);
+  public abstract SendTaskAction atSendTask(String activityId);
 
-  public abstract ScenarioAction<MessageIntermediateThrowEventWaitstate> atMessageIntermediateThrowEvent(String activityId);
+  public abstract MessageIntermediateThrowEventAction atMessageIntermediateThrowEvent(String activityId);
 
-  public abstract ScenarioAction<TimerIntermediateCatchEventWaitstate> atTimerIntermediateCatchEvent(String activityId);
+  public abstract TimerIntermediateCatchEventAction atTimerIntermediateCatchEvent(String activityId);
 
-  public abstract ScenarioAction<MessageIntermediateCatchEventWaitstate> atMessageIntermediateCatchEvent(String activityId);
+  public abstract MessageIntermediateCatchEventAction atMessageIntermediateCatchEvent(String activityId);
 
-  public abstract ScenarioAction<ReceiveTaskWaitstate> atReceiveTask(String activityId);
+  public abstract ReceiveTaskAction atReceiveTask(String activityId);
 
-  public abstract ScenarioAction<SignalIntermediateCatchEventWaitstate> atSignalIntermediateCatchEvent(String activityId);
+  public abstract SignalIntermediateCatchEventAction atSignalIntermediateCatchEvent(String activityId);
 
-  public abstract ScenarioAction<EventBasedGatewayWaitstate> atEventBasedGateway(String activityId);
+  public abstract EventBasedGatewayAction atEventBasedGateway(String activityId);
 
-  public abstract ScenarioAction<CallActivityWaitstate> atCallActivity(String activityId);
+  public abstract CallActivityAction atCallActivity(String activityId);
 
 }

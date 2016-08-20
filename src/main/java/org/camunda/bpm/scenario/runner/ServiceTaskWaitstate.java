@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.ScenarioAction;
+import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 
 import java.util.Map;

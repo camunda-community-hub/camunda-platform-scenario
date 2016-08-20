@@ -33,11 +33,11 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   private ProcessEngine processEngine;
   private ProcessInstance processInstance;
 
-  public static ScenarioRunner run(String processDefinitionKey) {
+  public static ScenarioRunner start(String processDefinitionKey) {
     return new ScenarioRunnerImpl().running(processDefinitionKey);
   }
 
-  public static ScenarioRunner run(ScenarioStarter scenarioStarter) {
+  public static ScenarioRunner start(ScenarioStarter scenarioStarter) {
     return new ScenarioRunnerImpl().running(scenarioStarter);
   }
 
@@ -136,12 +136,12 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   }
 
   @Override
-  public ProcessInstance run(Scenario scenario) {
-    return run(scenario, null);
+  public ProcessInstance start(Scenario scenario) {
+    return start(scenario, null);
   }
 
   @Override
-  public ProcessInstance run(Scenario scenario, ProcessEngine processEngine) {
+  public ProcessInstance start(Scenario scenario, ProcessEngine processEngine) {
     init(scenario, processEngine);
     if (processInstance == null)
       processInstance = scenarioStarter.start();
