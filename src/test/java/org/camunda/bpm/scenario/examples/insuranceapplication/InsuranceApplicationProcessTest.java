@@ -78,7 +78,7 @@ public class InsuranceApplicationProcessTest {
 
     when(insuranceApplicationScenario.atCallActivity("CallActivityDocumentRequest")).thenReturn((processInstance) -> {
       assertThat(processInstance).isStarted();
-      documentRequest = processInstance.runner().run(documentRequestScenario);
+      documentRequest = processInstance.runner().start(documentRequestScenario);
     });
 
     when(documentRequestScenario.atSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
@@ -115,7 +115,7 @@ public class InsuranceApplicationProcessTest {
 
     insuranceApplication = Scenario.run("InsuranceApplication")
         .variables(startVariables)
-        .run(insuranceApplicationScenario);
+        .start(insuranceApplicationScenario);
 
     // then
 
@@ -145,7 +145,7 @@ public class InsuranceApplicationProcessTest {
 
     insuranceApplication = Scenario.run("InsuranceApplication")
         .variables(startVariables)
-        .run(insuranceApplicationScenario);
+        .start(insuranceApplicationScenario);
 
     // then
 
@@ -170,7 +170,7 @@ public class InsuranceApplicationProcessTest {
 
     insuranceApplication = Scenario.run("InsuranceApplication")
         .variables(startVariables)
-        .run(insuranceApplicationScenario);
+        .start(insuranceApplicationScenario);
 
     // then
 
@@ -196,7 +196,7 @@ public class InsuranceApplicationProcessTest {
 
     insuranceApplication = Scenario.run("InsuranceApplication")
         .variables(startVariables)
-        .run(insuranceApplicationScenario);
+        .start(insuranceApplicationScenario);
 
     // then
 
@@ -229,7 +229,7 @@ public class InsuranceApplicationProcessTest {
 
     insuranceApplication = Scenario.run("InsuranceApplication")
         .variables(startVariables)
-        .run(insuranceApplicationScenario);
+        .start(insuranceApplicationScenario);
 
     // then
 
@@ -263,7 +263,7 @@ public class InsuranceApplicationProcessTest {
 
     insuranceApplication = Scenario.run("InsuranceApplication")
         .variables(startVariables)
-        .run(insuranceApplicationScenario);
+        .start(insuranceApplicationScenario);
 
     // then
 
@@ -298,7 +298,7 @@ public class InsuranceApplicationProcessTest {
 
     insuranceApplication = Scenario.run("InsuranceApplication")
         .variables(startVariables)
-        .run(insuranceApplicationScenario);
+        .start(insuranceApplicationScenario);
 
     // then
 
@@ -341,7 +341,7 @@ public class InsuranceApplicationProcessTest {
 
     insuranceApplication = Scenario.run("InsuranceApplication")
         .variables(startVariables)
-        .run(insuranceApplicationScenario);
+        .start(insuranceApplicationScenario);
 
     // then
 
