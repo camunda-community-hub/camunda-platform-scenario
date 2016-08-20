@@ -12,10 +12,7 @@ import org.camunda.bpm.scenarios.Scenario;
 import org.camunda.bpm.scenarios.ScenarioRunner;
 import org.camunda.bpm.scenarios.ScenarioStarter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -27,8 +24,9 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
 
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
   private Map<String, Boolean> toActivityIds = new HashMap<String, Boolean>();
-  private List<String> excludedHistoricActivityInstanceIds = new ArrayList<String>();
-  private List<String> executedHistoricActivityInstanceIds = new ArrayList<String>();
+  private Set<String> executedHistoricActivityInstances = new HashSet<String>();
+  private Set<String> startedHistoricActivityInstances = new HashSet<String>();
+  private Set<String> passedHistoricActivityInstances = new HashSet<String>();
   private Map<String, Object> startVariables = new HashMap<String, Object>();
 
   private Scenario scenario;
@@ -142,14 +140,14 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
     for (boolean lastCall: new boolean[] { false, true }) {
       Waitstate waitstate = nextWaitstate(lastCall);
       while (waitstate != null) {
-        setExecutedHistoricActivityIds(false);
+        setExecutedHistoricActivityIds();
         waitstate.execute(scenario);
         if (waitstate.unfinished())
-          excludedHistoricActivityInstanceIds.add(waitstate.historicActivityInstance.getId());
+          executedHistoricActivityInstances.add(waitstate.historicActivityInstance.getId());
         waitstate = nextWaitstate(lastCall);
       }
     }
-    setExecutedHistoricActivityIds(true);
+    setExecutedHistoricActivityIds();
     return processInstance;
   }
 
@@ -213,42 +211,48 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
       }
     } else {
       if (!toActivityIds.keySet().contains(instance.getActivityId()))
-        if (!excludedHistoricActivityInstanceIds.contains(instance.getId()))
+        if (!executedHistoricActivityInstances.contains(instance.getId()))
           return true;
     }
     return false;
   }
 
-  private void setExecutedHistoricActivityIds(boolean includeUnfinished) {
+  private void setExecutedHistoricActivityIds() {
     List<HistoricActivityInstance> instances = processEngine.getHistoryService()
         .createHistoricActivityInstanceQuery()
         .processInstanceId(processInstance.getId()).canceled().list();
     for (HistoricActivityInstance instance: instances) {
-      if (!executedHistoricActivityInstanceIds.contains(instance.getId())) {
+      if (!passedHistoricActivityInstances.contains(instance.getId())) {
+        if (!startedHistoricActivityInstances.contains(instance.getId())) {
+          scenario.hasStarted(instance.getActivityId());
+          startedHistoricActivityInstances.add(instance.getId());
+        }
         scenario.hasPassed(instance.getActivityId());
         scenario.hasCanceled(instance.getActivityId());
-        executedHistoricActivityInstanceIds.add(instance.getId());
+        passedHistoricActivityInstances.add(instance.getId());
       }
     }
     instances = processEngine.getHistoryService()
         .createHistoricActivityInstanceQuery()
         .processInstanceId(processInstance.getId()).finished().list();
     for (HistoricActivityInstance instance: instances) {
-      if (!executedHistoricActivityInstanceIds.contains(instance.getId())) {
+      if (!passedHistoricActivityInstances.contains(instance.getId())) {
+        if (!startedHistoricActivityInstances.contains(instance.getId())) {
+          scenario.hasStarted(instance.getActivityId());
+          startedHistoricActivityInstances.add(instance.getId());
+        }
         scenario.hasPassed(instance.getActivityId());
         scenario.hasCompleted(instance.getActivityId());
-        executedHistoricActivityInstanceIds.add(instance.getId());
+        passedHistoricActivityInstances.add(instance.getId());
       }
     }
-    if (includeUnfinished) {
-      instances = processEngine.getHistoryService()
-          .createHistoricActivityInstanceQuery()
-          .processInstanceId(processInstance.getId()).unfinished().list();
-      for (HistoricActivityInstance instance: instances) {
-        if (!executedHistoricActivityInstanceIds.contains(instance.getId())) {
-          scenario.isWaitingAt(instance.getActivityId());
-          executedHistoricActivityInstanceIds.add(instance.getId());
-        }
+    instances = processEngine.getHistoryService()
+        .createHistoricActivityInstanceQuery()
+        .processInstanceId(processInstance.getId()).unfinished().list();
+    for (HistoricActivityInstance instance: instances) {
+      if (!startedHistoricActivityInstances.contains(instance.getId())) {
+        scenario.hasStarted(instance.getActivityId());
+        startedHistoricActivityInstances.add(instance.getId());
       }
     }
   }

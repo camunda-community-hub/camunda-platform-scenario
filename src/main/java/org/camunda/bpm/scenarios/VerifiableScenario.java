@@ -5,12 +5,12 @@ package org.camunda.bpm.scenarios;
  */
 public interface VerifiableScenario {
 
-  void hasCompleted(String activityId);
+  void hasStarted(String activityId);
 
   void hasPassed(String activityId);
 
-  void hasCanceled(String activityId);
+  void hasCompleted(String activityId);
 
-  void isWaitingAt(String activityId);
+  void hasCanceled(String activityId);
 
 }
