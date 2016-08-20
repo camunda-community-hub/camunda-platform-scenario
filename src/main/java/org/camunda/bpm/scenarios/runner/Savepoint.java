@@ -1,12 +1,10 @@
-package org.camunda.bpm.scenarios.waitstate;
+package org.camunda.bpm.scenarios.runner;
 
 import org.camunda.bpm.engine.*;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Execution;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.scenarios.runner.Waitstate;
 import org.camunda.bpm.scenarios.delegate.ProcessEngineServicesDelegate;
-import org.camunda.bpm.scenarios.waitstate.*;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -30,7 +28,7 @@ public abstract class Savepoint<I> extends ProcessEngineServicesDelegate {
     return getRuntimeService().createProcessInstanceQuery().processInstanceId(execution.getProcessInstanceId()).singleResult();
   };
 
-  public static Waitstate newInstance(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected static Waitstate newInstance(ProcessEngine processEngine, HistoricActivityInstance instance) {
     if ("callActivity".equals(instance.getActivityType())) {
       return new CallActivityWaitstate(processEngine, instance);
     } else if ("eventBasedGateway".equals(instance.getActivityType())) {

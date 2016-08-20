@@ -2,7 +2,6 @@ package org.camunda.bpm.scenarios;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.scenarios.runner.ScenarioRunnerImpl;
 
 import java.util.Map;
 

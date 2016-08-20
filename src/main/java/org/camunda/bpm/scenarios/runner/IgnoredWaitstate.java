@@ -1,10 +1,9 @@
-package org.camunda.bpm.scenarios.waitstate;
+package org.camunda.bpm.scenarios.runner;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenarios.Scenario;
-import org.camunda.bpm.scenarios.WaitstateAction;
-import org.camunda.bpm.scenarios.runner.Waitstate;
+import org.camunda.bpm.scenarios.ScenarioAction;
 
 import java.util.Map;
 
@@ -13,7 +12,7 @@ import java.util.Map;
  */
 public class IgnoredWaitstate extends Waitstate<Object> {
 
-  public IgnoredWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected IgnoredWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 
@@ -23,7 +22,7 @@ public class IgnoredWaitstate extends Waitstate<Object> {
   }
 
   @Override
-  protected WaitstateAction<IgnoredWaitstate> action(Scenario scenario) {
+  protected ScenarioAction<IgnoredWaitstate> action(Scenario scenario) {
     return null;
   }
 

@@ -1,13 +1,12 @@
 package org.camunda.bpm.scenarios;
 
 
-import org.camunda.bpm.scenarios.runner.ScenarioRunnerImpl;
-import org.camunda.bpm.scenarios.waitstate.*;
+import org.camunda.bpm.scenarios.runner.*;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class Scenario implements VerifiableScenario {
+public abstract class Scenario implements ScenarioHistory {
 
   public static ScenarioRunner run(String processDefinitionKey) {
     return new ScenarioRunnerImpl().running(processDefinitionKey);
@@ -17,24 +16,24 @@ public abstract class Scenario implements VerifiableScenario {
     return new ScenarioRunnerImpl().running(scenarioStarter);
   }
 
-  public abstract WaitstateAction<UserTaskWaitstate> atUserTask(String activityId);
+  public abstract ScenarioAction<UserTaskWaitstate> atUserTask(String activityId);
 
-  public abstract WaitstateAction<ServiceTaskWaitstate> atServiceTask(String activityId);
+  public abstract ScenarioAction<ServiceTaskWaitstate> atServiceTask(String activityId);
 
-  public abstract WaitstateAction<SendTaskWaitstate> atSendTask(String activityId);
+  public abstract ScenarioAction<SendTaskWaitstate> atSendTask(String activityId);
 
-  public abstract WaitstateAction<MessageIntermediateThrowEventWaitstate> atMessageIntermediateThrowEvent(String activityId);
+  public abstract ScenarioAction<MessageIntermediateThrowEventWaitstate> atMessageIntermediateThrowEvent(String activityId);
 
-  public abstract WaitstateAction<TimerIntermediateCatchEventWaitstate> atTimerIntermediateCatchEvent(String activityId);
+  public abstract ScenarioAction<TimerIntermediateCatchEventWaitstate> atTimerIntermediateCatchEvent(String activityId);
 
-  public abstract WaitstateAction<MessageIntermediateCatchEventWaitstate> atMessageIntermediateCatchEvent(String activityId);
+  public abstract ScenarioAction<MessageIntermediateCatchEventWaitstate> atMessageIntermediateCatchEvent(String activityId);
 
-  public abstract WaitstateAction<ReceiveTaskWaitstate> atReceiveTask(String activityId);
+  public abstract ScenarioAction<ReceiveTaskWaitstate> atReceiveTask(String activityId);
 
-  public abstract WaitstateAction<SignalIntermediateCatchEventWaitstate> atSignalIntermediateCatchEvent(String activityId);
+  public abstract ScenarioAction<SignalIntermediateCatchEventWaitstate> atSignalIntermediateCatchEvent(String activityId);
 
-  public abstract WaitstateAction<EventBasedGatewayWaitstate> atEventBasedGateway(String activityId);
+  public abstract ScenarioAction<EventBasedGatewayWaitstate> atEventBasedGateway(String activityId);
 
-  public abstract WaitstateAction<CallActivityWaitstate> atCallActivity(String activityId);
+  public abstract ScenarioAction<CallActivityWaitstate> atCallActivity(String activityId);
 
 }

@@ -1,14 +1,12 @@
-package org.camunda.bpm.scenarios.waitstate;
+package org.camunda.bpm.scenarios.runner;
 
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.engine.runtime.Job;
-import org.camunda.bpm.scenarios.EventBasedGateway;
 import org.camunda.bpm.scenarios.Scenario;
-import org.camunda.bpm.scenarios.WaitstateAction;
-import org.camunda.bpm.scenarios.runner.Waitstate;
+import org.camunda.bpm.scenarios.ScenarioAction;
 
 import java.util.Map;
 
@@ -27,7 +25,7 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
   }
 
   @Override
-  protected WaitstateAction<EventBasedGatewayWaitstate> action(Scenario scenario) {
+  protected ScenarioAction<EventBasedGatewayWaitstate> action(Scenario scenario) {
     return scenario.atEventBasedGateway(getActivityId());
   }
 

@@ -2,7 +2,6 @@ package org.camunda.bpm.scenarios.runner;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.Job;
-import org.camunda.bpm.scenarios.waitstate.Savepoint;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
