@@ -51,9 +51,4 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     getManagementService().executeJob(job.getId());
   }
 
-  @Override
-  public boolean equals(Object o) {
-    return o instanceof Waitstate && getActivityId().equals(((Waitstate) o).getActivityId());
-  }
-
 }
