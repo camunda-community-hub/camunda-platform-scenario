@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.WaitstateAction;
 import org.camunda.bpm.scenarios.runner.ScenarioRunnerImpl;
 import org.camunda.bpm.scenarios.delegate.ProcessInstanceDelegate;
 
@@ -28,8 +29,8 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
   }
 
   @Override
-  protected void execute(Scenario scenario) {
-    scenario.atCallActivity(getActivityId()).execute(this);
+  protected WaitstateAction<CallActivityWaitstate> action(Scenario scenario) {
+    return scenario.atCallActivity(getActivityId());
   }
 
   protected void leave() {

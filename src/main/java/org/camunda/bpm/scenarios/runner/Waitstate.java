@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.*;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.*;
 import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.WaitstateAction;
 import org.camunda.bpm.scenarios.waitstate.Savepoint;
 
 import java.util.Map;
@@ -30,7 +31,18 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     return historicActivityInstance.getActivityId();
   }
 
-  protected abstract void execute(Scenario scenario);
+  protected void execute(Scenario scenario) {
+    WaitstateAction action = action(scenario);
+    if (action == null)
+      throw new AssertionError("Process Instance {"
+          + getProcessInstance().getProcessDefinitionId() + ", "
+          + getProcessInstance().getProcessInstanceId() + "} "
+          + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
+          + " '" + historicActivityInstance.getActivityId() +"'.");
+    action.execute(this);
+  }
+
+  protected abstract WaitstateAction action(Scenario scenario);
 
   protected abstract void leave(Map<String, Object> variables);
 

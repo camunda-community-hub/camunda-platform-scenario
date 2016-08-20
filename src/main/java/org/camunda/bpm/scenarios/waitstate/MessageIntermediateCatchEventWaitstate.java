@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.WaitstateAction;
 import org.camunda.bpm.scenarios.delegate.EventSubscriptionDelegate;
 
 import java.util.Map;
@@ -24,8 +25,8 @@ public class MessageIntermediateCatchEventWaitstate extends EventSubscriptionDel
   }
 
   @Override
-  protected void execute(Scenario scenario) {
-    scenario.atMessageEvent(getActivityId()).execute(this);
+  protected WaitstateAction<MessageIntermediateCatchEventWaitstate> action(Scenario scenario) {
+    return scenario.atMessageIntermediateCatchEvent(getActivityId());
   }
 
   protected void leave() {

@@ -4,6 +4,7 @@ package org.camunda.bpm.scenarios.waitstate;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.WaitstateAction;
 
 import java.util.Map;
 
@@ -17,8 +18,8 @@ public class MessageIntermediateThrowEventWaitstate extends ServiceTaskWaitstate
   }
 
   @Override
-  protected void execute(Scenario scenario) {
-    scenario.atExternalTask(getActivityId()).execute(this);
+  protected WaitstateAction<MessageIntermediateThrowEventWaitstate> action(Scenario scenario) {
+    return scenario.atMessageIntermediateThrowEvent(getActivityId());
   }
 
   @Override

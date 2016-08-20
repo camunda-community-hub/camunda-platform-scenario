@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.WaitstateAction;
 import org.camunda.bpm.scenarios.delegate.TaskDelegate;
 
 import java.util.Map;
@@ -23,8 +24,8 @@ public class UserTaskWaitstate extends TaskDelegate {
   }
 
   @Override
-  protected void execute(Scenario scenario) {
-    scenario.atTask(getActivityId()).execute(this);
+  protected WaitstateAction action(Scenario scenario) {
+    return scenario.atUserTask(getActivityId());
   }
 
   protected void leave() {

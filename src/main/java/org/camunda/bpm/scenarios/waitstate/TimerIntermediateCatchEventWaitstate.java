@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.WaitstateAction;
 import org.camunda.bpm.scenarios.delegate.JobDelegate;
 
 import java.util.Map;
@@ -24,8 +25,8 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
   }
 
   @Override
-  protected void execute(Scenario scenario) {
-    scenario.atTimerEvent(getActivityId()).execute(this);
+  protected WaitstateAction action(Scenario scenario) {
+    return scenario.atTimerIntermediateCatchEvent(getActivityId());
   }
 
   protected void leave() {

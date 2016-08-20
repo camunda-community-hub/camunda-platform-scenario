@@ -17,17 +17,21 @@ public abstract class Scenario implements VerifiableScenario {
     return new ScenarioRunnerImpl().running(scenarioStarter);
   }
 
-  public abstract WaitstateAction<UserTaskWaitstate> atTask(String activityId);
+  public abstract WaitstateAction<UserTaskWaitstate> atUserTask(String activityId);
 
-  public abstract WaitstateAction<ServiceTaskWaitstate> atExternalTask(String activityId);
+  public abstract WaitstateAction<ServiceTaskWaitstate> atServiceTask(String activityId);
 
-  public abstract WaitstateAction<TimerIntermediateCatchEventWaitstate> atTimerEvent(String activityId);
+  public abstract WaitstateAction<SendTaskWaitstate> atSendTask(String activityId);
 
-  public abstract WaitstateAction<MessageIntermediateCatchEventWaitstate> atMessageEvent(String activityId);
+  public abstract WaitstateAction<MessageIntermediateThrowEventWaitstate> atMessageIntermediateThrowEvent(String activityId);
+
+  public abstract WaitstateAction<TimerIntermediateCatchEventWaitstate> atTimerIntermediateCatchEvent(String activityId);
+
+  public abstract WaitstateAction<MessageIntermediateCatchEventWaitstate> atMessageIntermediateCatchEvent(String activityId);
 
   public abstract WaitstateAction<ReceiveTaskWaitstate> atReceiveTask(String activityId);
 
-  public abstract WaitstateAction<SignalIntermediateCatchEventWaitstate> atSignalEvent(String activityId);
+  public abstract WaitstateAction<SignalIntermediateCatchEventWaitstate> atSignalIntermediateCatchEvent(String activityId);
 
   public abstract WaitstateAction<EventBasedGatewayWaitstate> atEventBasedGateway(String activityId);
 

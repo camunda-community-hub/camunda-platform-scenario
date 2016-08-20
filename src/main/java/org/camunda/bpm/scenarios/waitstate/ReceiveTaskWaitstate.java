@@ -4,6 +4,7 @@ package org.camunda.bpm.scenarios.waitstate;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.WaitstateAction;
 
 import java.util.Map;
 
@@ -17,8 +18,8 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
   }
 
   @Override
-  protected void execute(Scenario scenario) {
-    scenario.atReceiveTask(getActivityId()).execute(this);
+  protected WaitstateAction action(Scenario scenario) {
+    return scenario.atReceiveTask(getActivityId());
   }
 
   @Override

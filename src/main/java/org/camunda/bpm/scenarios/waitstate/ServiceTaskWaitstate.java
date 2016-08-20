@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.WaitstateAction;
 import org.camunda.bpm.scenarios.delegate.ExternalTaskDelegate;
 
 import java.util.Map;
@@ -26,8 +27,8 @@ public class ServiceTaskWaitstate extends ExternalTaskDelegate {
   }
 
   @Override
-  protected void execute(Scenario scenario) {
-    scenario.atExternalTask(getActivityId()).execute(this);
+  protected WaitstateAction action(Scenario scenario) {
+    return scenario.atServiceTask(getActivityId());
   }
 
   protected void leave() {

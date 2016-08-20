@@ -7,6 +7,7 @@ import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenarios.EventBasedGateway;
 import org.camunda.bpm.scenarios.Scenario;
+import org.camunda.bpm.scenarios.WaitstateAction;
 import org.camunda.bpm.scenarios.runner.Waitstate;
 
 import java.util.Map;
@@ -26,8 +27,8 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
   }
 
   @Override
-  protected void execute(Scenario scenario) {
-    scenario.atEventBasedGateway(getActivityId()).execute(this);
+  protected WaitstateAction<EventBasedGatewayWaitstate> action(Scenario scenario) {
+    return scenario.atEventBasedGateway(getActivityId());
   }
 
   protected void leave() {
