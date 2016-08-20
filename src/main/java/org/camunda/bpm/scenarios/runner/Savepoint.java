@@ -11,7 +11,7 @@ import org.camunda.bpm.scenarios.delegate.ProcessEngineServicesDelegate;
  */
 public abstract class Savepoint<I> extends ProcessEngineServicesDelegate {
 
-  protected I delegate;
+  protected I runtimeDelegate;
 
   protected Savepoint(ProcessEngine processEngine) {
     super(processEngine);
@@ -19,7 +19,7 @@ public abstract class Savepoint<I> extends ProcessEngineServicesDelegate {
 
   public abstract String getExecutionId();
 
-  protected abstract I get();
+  protected abstract I getRuntimeDelegate();
 
   protected abstract void leave();
 

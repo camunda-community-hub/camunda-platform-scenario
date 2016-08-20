@@ -19,12 +19,8 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
   }
 
   @Override
-  protected ProcessInstance get() {
-    return getRuntimeService().createProcessInstanceQuery().processInstanceId(historicActivityInstance.getCalledProcessInstanceId()).singleResult();
-  }
-
-  protected static String getActivityType() {
-    return "";
+  protected ProcessInstance getRuntimeDelegate() {
+    return getRuntimeService().createProcessInstanceQuery().processInstanceId(historicDelegate.getCalledProcessInstanceId()).singleResult();
   }
 
   @Override
@@ -41,7 +37,7 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
   }
 
   public ScenarioRunnerImpl runner() {
-    return new ScenarioRunnerImpl().running(get());
+    return new ScenarioRunnerImpl().running(getRuntimeDelegate());
   }
 
 }

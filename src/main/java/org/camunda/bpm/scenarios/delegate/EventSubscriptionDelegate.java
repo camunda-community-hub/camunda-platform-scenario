@@ -17,27 +17,27 @@ public abstract class EventSubscriptionDelegate extends Waitstate<EventSubscript
   }
 
   public String getId() {
-    return delegate.getId();
+    return runtimeDelegate.getId();
   }
 
   public String getEventType() {
-    return delegate.getEventType();
+    return runtimeDelegate.getEventType();
   }
 
   public String getEventName() {
-    return delegate.getEventName();
+    return runtimeDelegate.getEventName();
   }
 
   public String getProcessInstanceId() {
-    return delegate.getProcessInstanceId();
+    return runtimeDelegate.getProcessInstanceId();
   }
 
   public String getTenantId() {
-    return delegate.getTenantId();
+    return runtimeDelegate.getTenantId();
   }
 
   public Date getCreated() {
-    return delegate.getCreated();
+    return runtimeDelegate.getCreated();
   }
 
 }

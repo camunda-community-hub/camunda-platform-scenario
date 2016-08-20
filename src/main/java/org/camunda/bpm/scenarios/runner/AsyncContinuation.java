@@ -13,7 +13,7 @@ public class AsyncContinuation extends Savepoint<Job> {
   protected AsyncContinuation(ProcessEngine processEngine, String executionId) {
     super(processEngine);
     this.executionId = executionId;
-    this.delegate = get();
+    this.runtimeDelegate = getRuntimeDelegate();
   }
 
   @Override
@@ -22,13 +22,13 @@ public class AsyncContinuation extends Savepoint<Job> {
   }
 
   @Override
-  protected Job get() {
+  protected Job getRuntimeDelegate() {
     return getManagementService().createJobQuery().executionId(executionId).singleResult();
   }
 
   @Override
   protected void leave() {
-    getManagementService().executeJob(get().getId());
+    getManagementService().executeJob(runtimeDelegate.getId());
   }
 
 }

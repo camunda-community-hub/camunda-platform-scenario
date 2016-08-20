@@ -8,6 +8,6 @@ import org.camunda.bpm.scenarios.runner.Waitstate;
  */
 public interface ScenarioAction<W extends Waitstate> {
 
-  void execute(W waitstate);
+  void execute(W runtimeInstance);
 
 }

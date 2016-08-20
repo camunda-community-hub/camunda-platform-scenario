@@ -20,7 +20,7 @@ public class MessageIntermediateCatchEventWaitstate extends EventSubscriptionDel
   }
 
   @Override
-  protected EventSubscription get() {
+  protected EventSubscription getRuntimeDelegate() {
     return getRuntimeService().createEventSubscriptionQuery().eventType("message").executionId(getExecutionId()).singleResult();
   }
 
@@ -30,11 +30,11 @@ public class MessageIntermediateCatchEventWaitstate extends EventSubscriptionDel
   }
 
   protected void leave() {
-    getRuntimeService().messageEventReceived(get().getEventName(), get().getExecutionId());
+    getRuntimeService().messageEventReceived(getRuntimeDelegate().getEventName(), getRuntimeDelegate().getExecutionId());
   }
 
   protected void leave(Map<String, Object> variables) {
-    getRuntimeService().messageEventReceived(get().getEventName(), get().getExecutionId(), variables);
+    getRuntimeService().messageEventReceived(getRuntimeDelegate().getEventName(), getRuntimeDelegate().getExecutionId(), variables);
   }
 
   public void receiveMessage() {

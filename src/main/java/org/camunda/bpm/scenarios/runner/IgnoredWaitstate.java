@@ -37,7 +37,7 @@ public class IgnoredWaitstate extends Waitstate<Object> {
   }
 
   @Override
-  protected Object get() {
+  protected Object getRuntimeDelegate() {
     return null;
   }
 

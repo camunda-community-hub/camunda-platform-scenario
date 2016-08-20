@@ -22,7 +22,7 @@ public class ServiceTaskWaitstate extends ExternalTaskDelegate {
   }
 
   @Override
-  protected ExternalTask get() {
+  protected ExternalTask getRuntimeDelegate() {
     return getExternalTaskService().createExternalTaskQuery().executionId(getExecutionId()).singleResult();
   }
 
@@ -33,16 +33,16 @@ public class ServiceTaskWaitstate extends ExternalTaskDelegate {
 
   protected void leave() {
     fetchAndLock();
-    getExternalTaskService().complete(get().getId(), WORKER_ID);
+    getExternalTaskService().complete(getRuntimeDelegate().getId(), WORKER_ID);
   }
 
   protected void leave(Map<String, Object> variables) {
     fetchAndLock();
-    getExternalTaskService().complete(get().getId(), WORKER_ID, variables);
+    getExternalTaskService().complete(getRuntimeDelegate().getId(), WORKER_ID, variables);
   }
 
   protected void fetchAndLock() {
-    getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID).topic(get().getTopicName(), Long.MAX_VALUE).execute();
+    getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID).topic(getRuntimeDelegate().getTopicName(), Long.MAX_VALUE).execute();
   }
 
   public void complete() {
@@ -55,12 +55,12 @@ public class ServiceTaskWaitstate extends ExternalTaskDelegate {
 
   public void handleBpmnError(String errorCode) {
     fetchAndLock();
-    getExternalTaskService().handleBpmnError(get().getId(), WORKER_ID, errorCode);
+    getExternalTaskService().handleBpmnError(getRuntimeDelegate().getId(), WORKER_ID, errorCode);
   }
 
   public void handleFailure(String errorMessage, int retries, long retryTimeout) {
     fetchAndLock();
-    getExternalTaskService().handleFailure(get().getId(), WORKER_ID, errorMessage, retries, retryTimeout);
+    getExternalTaskService().handleFailure(getRuntimeDelegate().getId(), WORKER_ID, errorMessage, retries, retryTimeout);
   }
 
 }

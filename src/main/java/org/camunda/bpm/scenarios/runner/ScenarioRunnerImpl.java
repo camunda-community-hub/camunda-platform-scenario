@@ -33,17 +33,25 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   private ProcessEngine processEngine;
   private ProcessInstance processInstance;
 
-  public ScenarioRunnerImpl running(ScenarioStarter scenarioStarter) {
+  public static ScenarioRunner run(String processDefinitionKey) {
+    return new ScenarioRunnerImpl().running(processDefinitionKey);
+  }
+
+  public static ScenarioRunner run(ScenarioStarter scenarioStarter) {
+    return new ScenarioRunnerImpl().running(scenarioStarter);
+  }
+
+  protected ScenarioRunnerImpl running(ScenarioStarter scenarioStarter) {
     this.scenarioStarter = scenarioStarter;
     return this;
   }
 
-  public ScenarioRunnerImpl running(String processDefinitionKey) {
+  protected ScenarioRunnerImpl running(String processDefinitionKey) {
     this.processDefinitionKey = processDefinitionKey;
     return this;
   }
 
-  public ScenarioRunnerImpl running(ProcessInstance processInstance) {
+  protected ScenarioRunnerImpl running(ProcessInstance processInstance) {
     this.processInstance = processInstance;
     return this;
   }
@@ -143,7 +151,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
         setExecutedHistoricActivityIds();
         waitstate.execute(scenario);
         if (waitstate.unfinished())
-          executedHistoricActivityInstances.add(waitstate.historicActivityInstance.getId());
+          executedHistoricActivityInstances.add(waitstate.historicDelegate.getId());
         waitstate = nextWaitstate(lastCall);
       }
     }
@@ -227,7 +235,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
           scenario.hasStarted(instance.getActivityId());
           startedHistoricActivityInstances.add(instance.getId());
         }
-        scenario.hasPassed(instance.getActivityId());
+        scenario.hasFinished(instance.getActivityId());
         scenario.hasCanceled(instance.getActivityId());
         passedHistoricActivityInstances.add(instance.getId());
       }
@@ -241,7 +249,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
           scenario.hasStarted(instance.getActivityId());
           startedHistoricActivityInstances.add(instance.getId());
         }
-        scenario.hasPassed(instance.getActivityId());
+        scenario.hasFinished(instance.getActivityId());
         scenario.hasCompleted(instance.getActivityId());
         passedHistoricActivityInstances.add(instance.getId());
       }

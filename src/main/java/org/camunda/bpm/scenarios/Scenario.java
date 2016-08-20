@@ -9,11 +9,11 @@ import org.camunda.bpm.scenarios.runner.*;
 public abstract class Scenario implements ScenarioHistory {
 
   public static ScenarioRunner run(String processDefinitionKey) {
-    return new ScenarioRunnerImpl().running(processDefinitionKey);
+    return ScenarioRunnerImpl.run(processDefinitionKey);
   }
 
   public static ScenarioRunner run(ScenarioStarter scenarioStarter) {
-    return new ScenarioRunnerImpl().running(scenarioStarter);
+    return ScenarioRunnerImpl.run(scenarioStarter);
   }
 
   public abstract ScenarioAction<UserTaskWaitstate> atUserTask(String activityId);

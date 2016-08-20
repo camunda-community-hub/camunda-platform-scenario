@@ -15,35 +15,35 @@ public abstract class ProcessInstanceDelegate extends Waitstate<ProcessInstance>
   }
 
   public String getProcessDefinitionId() {
-    return delegate.getProcessDefinitionId();
+    return runtimeDelegate.getProcessDefinitionId();
   }
 
   public String getBusinessKey() {
-    return delegate.getBusinessKey();
+    return runtimeDelegate.getBusinessKey();
   }
 
   public String getCaseInstanceId() {
-    return delegate.getCaseInstanceId();
+    return runtimeDelegate.getCaseInstanceId();
   }
 
   public boolean isSuspended() {
-    return delegate.isSuspended();
+    return runtimeDelegate.isSuspended();
   }
 
   public String getId() {
-    return delegate.getId();
+    return runtimeDelegate.getId();
   }
 
   public boolean isEnded() {
-    return delegate.isEnded();
+    return runtimeDelegate.isEnded();
   }
 
   public String getProcessInstanceId() {
-    return delegate.getProcessInstanceId();
+    return runtimeDelegate.getProcessInstanceId();
   }
 
   public String getTenantId() {
-    return delegate.getTenantId();
+    return runtimeDelegate.getTenantId();
   }
 
 }

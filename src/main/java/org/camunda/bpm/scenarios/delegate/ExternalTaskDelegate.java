@@ -17,55 +17,55 @@ public abstract class ExternalTaskDelegate extends Waitstate<ExternalTask> imple
   }
 
   public String getId() {
-    return delegate.getId();
+    return runtimeDelegate.getId();
   }
 
   public String getTopicName() {
-    return delegate.getTopicName();
+    return runtimeDelegate.getTopicName();
   }
 
   public String getWorkerId() {
-    return delegate.getWorkerId();
+    return runtimeDelegate.getWorkerId();
   }
 
   public Date getLockExpirationTime() {
-    return delegate.getLockExpirationTime();
+    return runtimeDelegate.getLockExpirationTime();
   }
 
   public String getProcessInstanceId() {
-    return delegate.getProcessInstanceId();
+    return runtimeDelegate.getProcessInstanceId();
   }
 
   public String getActivityInstanceId() {
-    return delegate.getActivityInstanceId();
+    return runtimeDelegate.getActivityInstanceId();
   }
 
   public String getProcessDefinitionId() {
-    return delegate.getProcessDefinitionId();
+    return runtimeDelegate.getProcessDefinitionId();
   }
 
   public String getProcessDefinitionKey() {
-    return delegate.getProcessDefinitionKey();
+    return runtimeDelegate.getProcessDefinitionKey();
   }
 
   public Integer getRetries() {
-    return delegate.getRetries();
+    return runtimeDelegate.getRetries();
   }
 
   public String getErrorMessage() {
-    return delegate.getErrorMessage();
+    return runtimeDelegate.getErrorMessage();
   }
 
   public boolean isSuspended() {
-    return delegate.isSuspended();
+    return runtimeDelegate.isSuspended();
   }
 
   public String getTenantId() {
-    return delegate.getTenantId();
+    return runtimeDelegate.getTenantId();
   }
 
   public long getPriority() {
-    return delegate.getPriority();
+    return runtimeDelegate.getPriority();
   }
 
 }

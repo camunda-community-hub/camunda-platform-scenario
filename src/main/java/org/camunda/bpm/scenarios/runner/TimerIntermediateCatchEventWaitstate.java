@@ -20,7 +20,7 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
   }
 
   @Override
-  protected Job get() {
+  protected Job getRuntimeDelegate() {
     return getManagementService().createJobQuery().timers().executionId(getExecutionId()).singleResult();
   }
 
@@ -30,7 +30,7 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
   }
 
   protected void leave() {
-    getManagementService().executeJob(get().getId());
+    getManagementService().executeJob(getRuntimeDelegate().getId());
   }
 
   protected void leave(Map<String, Object> variables) {

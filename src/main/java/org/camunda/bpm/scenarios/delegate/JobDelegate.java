@@ -17,51 +17,51 @@ public abstract class JobDelegate extends Waitstate<Job> implements Job {
   }
 
   public String getId() {
-    return delegate.getId();
+    return runtimeDelegate.getId();
   }
 
   public Date getDuedate() {
-    return delegate.getDuedate();
+    return runtimeDelegate.getDuedate();
   }
 
   public String getProcessInstanceId() {
-    return delegate.getProcessInstanceId();
+    return runtimeDelegate.getProcessInstanceId();
   }
 
   public String getProcessDefinitionId() {
-    return delegate.getProcessDefinitionId();
+    return runtimeDelegate.getProcessDefinitionId();
   }
 
   public String getProcessDefinitionKey() {
-    return delegate.getProcessDefinitionKey();
+    return runtimeDelegate.getProcessDefinitionKey();
   }
 
   public int getRetries() {
-    return delegate.getRetries();
+    return runtimeDelegate.getRetries();
   }
 
   public String getExceptionMessage() {
-    return delegate.getExceptionMessage();
+    return runtimeDelegate.getExceptionMessage();
   }
 
   public String getDeploymentId() {
-    return delegate.getDeploymentId();
+    return runtimeDelegate.getDeploymentId();
   }
 
   public String getJobDefinitionId() {
-    return delegate.getJobDefinitionId();
+    return runtimeDelegate.getJobDefinitionId();
   }
 
   public boolean isSuspended() {
-    return delegate.isSuspended();
+    return runtimeDelegate.isSuspended();
   }
 
   public long getPriority() {
-    return delegate.getPriority();
+    return runtimeDelegate.getPriority();
   }
 
   public String getTenantId() {
-    return delegate.getTenantId();
+    return runtimeDelegate.getTenantId();
   }
 
 }

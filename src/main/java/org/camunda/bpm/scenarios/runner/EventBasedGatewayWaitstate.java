@@ -20,7 +20,7 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
   }
 
   @Override
-  protected EventBasedGateway get() {
+  protected EventBasedGateway getRuntimeDelegate() {
     return new EventBasedGateway() {};
   }
 
