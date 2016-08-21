@@ -3,8 +3,10 @@ package org.camunda.bpm.scenario.examples.insuranceapplication;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.camunda.bpm.engine.test.util.CamundaBpmApi;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.scenario.Scenario;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,6 +40,8 @@ public class InsuranceApplicationProcessTest {
 
   @Before
   public void setupDefaultScenario() {
+
+    Assume.assumeTrue(CamundaBpmApi.supports("7.4"));
 
     insuranceApplicationScenario = mock(Scenario.class);
     documentRequestScenario = mock(Scenario.class);
