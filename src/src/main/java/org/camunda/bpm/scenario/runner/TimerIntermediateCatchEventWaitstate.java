@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
 
-  protected TimerIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  public TimerIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 

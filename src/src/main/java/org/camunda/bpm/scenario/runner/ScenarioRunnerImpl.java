@@ -11,6 +11,7 @@ import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.ScenarioRunner;
 import org.camunda.bpm.scenario.ScenarioStarter;
+import org.camunda.bpm.scenario.util.Feature;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -234,18 +235,22 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   }
 
   private void setExecutedHistoricActivityIds() {
-    List<HistoricActivityInstance> instances = processEngine.getHistoryService()
-        .createHistoricActivityInstanceQuery()
-        .processInstanceId(processInstance.getId()).canceled().list();
-    for (HistoricActivityInstance instance: instances) {
-      if (!passedHistoricActivityInstances.contains(instance.getId())) {
-        if (!startedHistoricActivityInstances.contains(instance.getId())) {
-          scenario.hasStarted(instance.getActivityId());
-          startedHistoricActivityInstances.add(instance.getId());
+    List<HistoricActivityInstance> instances;
+    boolean supportsCanceled = Feature.isSupportedWithWarn(HistoricActivityInstanceQuery.class.getName(), "canceled");
+    if (supportsCanceled) {
+      instances = processEngine.getHistoryService()
+          .createHistoricActivityInstanceQuery()
+          .processInstanceId(processInstance.getId()).canceled().list();
+      for (HistoricActivityInstance instance: instances) {
+        if (!passedHistoricActivityInstances.contains(instance.getId())) {
+          if (!startedHistoricActivityInstances.contains(instance.getId())) {
+            scenario.hasStarted(instance.getActivityId());
+            startedHistoricActivityInstances.add(instance.getId());
+          }
+          scenario.hasFinished(instance.getActivityId());
+          scenario.hasCanceled(instance.getActivityId());
+          passedHistoricActivityInstances.add(instance.getId());
         }
-        scenario.hasFinished(instance.getActivityId());
-        scenario.hasCanceled(instance.getActivityId());
-        passedHistoricActivityInstances.add(instance.getId());
       }
     }
     instances = processEngine.getHistoryService()
@@ -258,7 +263,9 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
           startedHistoricActivityInstances.add(instance.getId());
         }
         scenario.hasFinished(instance.getActivityId());
-        scenario.hasCompleted(instance.getActivityId());
+        if (supportsCanceled) {
+          scenario.hasCompleted(instance.getActivityId());
+        }
         passedHistoricActivityInstances.add(instance.getId());
       }
     }

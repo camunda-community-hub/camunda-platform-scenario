@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class MessageIntermediateCatchEventWaitstate extends EventSubscriptionDelegate {
 
-  protected MessageIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  public MessageIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 

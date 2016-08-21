@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class SendTaskWaitstate extends ServiceTaskWaitstate {
 
-  protected SendTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  public SendTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
     super(processEngine, instance);
   }
 

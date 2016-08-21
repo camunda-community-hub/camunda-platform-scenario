@@ -26,7 +26,7 @@ public class UserTaskTest extends AbstractTest {
 
     Scenario.run("UserTaskTest").start(scenario);
 
-    verify(scenario, times(1)).hasCompleted("UserTask");
+    verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
   }
@@ -110,9 +110,9 @@ public class UserTaskTest extends AbstractTest {
     Scenario.run("UserTaskTest").toBefore("UserTask").start(otherScenario);
     Scenario.run("UserTaskTest").start(scenario);
 
-    verify(scenario, times(1)).hasCompleted("UserTask");
+    verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
-    verify(otherScenario, never()).hasCompleted("UserTask");
+    verify(otherScenario, never()).hasFinished("UserTask");
 
   }
 

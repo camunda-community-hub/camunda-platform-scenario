@@ -5,6 +5,9 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 
 import java.util.Map;
 
+/**
+ * @author Martin Schimak <martin.schimak@plexiti.com>
+ */
 public interface ScenarioRunner {
 
   ScenarioRunner variables(Map<String, Object> variables);

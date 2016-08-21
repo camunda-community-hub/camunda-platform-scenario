@@ -10,7 +10,6 @@ import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -18,7 +17,7 @@ import org.camunda.bpm.engine.TaskService;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class ProcessEngineServicesDelegate implements ProcessEngineServices {
+public abstract class ProcessEngineServicesDelegate {
 
   protected ProcessEngine processEngine;
 
@@ -30,62 +29,50 @@ public abstract class ProcessEngineServicesDelegate implements ProcessEngineServ
     return processEngine;
   }
 
-  @Override
   public RuntimeService getRuntimeService() {
     return processEngine.getRuntimeService();
   }
 
-  @Override
   public RepositoryService getRepositoryService() {
     return processEngine.getRepositoryService();
   }
 
-  @Override
   public FormService getFormService() {
     return processEngine.getFormService();
   }
 
-  @Override
   public TaskService getTaskService() {
     return processEngine.getTaskService();
   }
 
-  @Override
   public HistoryService getHistoryService() {
     return processEngine.getHistoryService();
   }
 
-  @Override
   public IdentityService getIdentityService() {
     return processEngine.getIdentityService();
   }
 
-  @Override
   public ManagementService getManagementService() {
     return processEngine.getManagementService();
   }
 
-  @Override
   public AuthorizationService getAuthorizationService() {
     return processEngine.getAuthorizationService();
   }
 
-  @Override
   public CaseService getCaseService() {
     return processEngine.getCaseService();
   }
 
-  @Override
   public FilterService getFilterService() {
     return processEngine.getFilterService();
   }
 
-  @Override
   public ExternalTaskService getExternalTaskService() {
     return processEngine.getExternalTaskService();
   }
 
-  @Override
   public DecisionService getDecisionService() {
     return processEngine.getDecisionService();
   }

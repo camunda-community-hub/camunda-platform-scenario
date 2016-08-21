@@ -8,12 +8,37 @@ import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
 public abstract class Waitstate<I> extends Savepoint<I> {
+
+  private static Map<String, String> classNames = new HashMap<String, String>(); static {
+    classNames.put("userTask", "UserTaskWaitstate");
+    classNames.put("intermediateSignalCatch", "SignalIntermediateCatchEventWaitstate");
+    classNames.put("intermediateMessageCatch", "MessageIntermediateCatchEventWaitstate");
+    classNames.put("receiveTask", "ReceiveTaskWaitstate");
+    classNames.put("intermediateTimer", "TimerIntermediateCatchEventWaitstate");
+    classNames.put("eventBasedGateway", "EventBasedGatewayWaitstate");
+    classNames.put("callActivity", "CallActivityWaitstate");
+    classNames.put("serviceTask", "ServiceTaskWaitstate");
+    classNames.put("sendTask", "SendTaskWaitstate");
+    classNames.put("intermediateMessageThrow", "MessageIntermediateThrowEventWaitstate");
+  }
+
+  protected static Waitstate newInstance(ProcessEngine engine, HistoricActivityInstance instance) {
+    if (classNames.containsKey(instance.getActivityType())) {
+      try {
+        return (Waitstate) Class.forName(Waitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessEngine.class, HistoricActivityInstance.class).newInstance(engine, instance);
+      } catch (Exception e) {
+        throw new IllegalArgumentException(e);
+      }
+    }
+    return new IgnoredWaitstate(engine, instance);
+  }
 
   protected HistoricActivityInstance historicDelegate;
 

@@ -24,9 +24,45 @@
 
     <profiles>
         <profile>
+            <id>7.0</id>
+            <modules>
+                <module>test-7.0</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.0.0-Final</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>7.1</id>
+            <modules>
+                <module>test-7.0</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.1.0-Final</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>7.2</id>
+            <modules>
+                <module>test-7.0</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.2.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
             <id>7.3</id>
             <modules>
-                <module>test-7.3</module>
+                <module>test-7.0</module>
             </modules>
             <activation>
                 <property>
@@ -38,7 +74,7 @@
         <profile>
             <id>7.4</id>
             <modules>
-                <module>test-7.3</module>
+                <module>test-7.0</module>
                 <module>test-7.4</module>
             </modules>
             <activation>
@@ -51,7 +87,7 @@
         <profile>
             <id>7.5</id>
             <modules>
-                <module>test-7.3</module>
+                <module>test-7.0</module>
                 <module>test-7.4</module>
             </modules>
             <activation>
@@ -64,7 +100,7 @@
         <profile>
             <id>LATEST</id>
             <modules>
-                <module>test-7.3</module>
+                <module>test-7.0</module>
                 <module>test-7.4</module>
             </modules>
             <activation>
@@ -77,7 +113,7 @@
         <profile>
             <id>RELEASE</id>
             <modules>
-                <module>test-7.3</module>
+                <module>test-7.0</module>
                 <module>test-7.4</module>
             </modules>
             <activation>
