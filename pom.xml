@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>camunda-bpm-assert-scenario</artifactId>
+    <artifactId>camunda-bpm-assert-scenario-parent</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <parent>
         <groupId>org.camunda.bpm.extension</groupId>
@@ -14,12 +14,81 @@
         <version>2.0-SNAPSHOT</version>
     </parent>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.camunda.bpm</groupId>
-            <artifactId>camunda-engine</artifactId>
-        </dependency>
-    </dependencies>
+    <properties>
+        <camunda-bpm.version>RELEASE</camunda-bpm.version>
+    </properties>
+
+    <modules>
+        <module>src</module>
+    </modules>
+
+    <profiles>
+        <profile>
+            <id>7.3</id>
+            <modules>
+                <module>test-7.3</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.3.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>7.4</id>
+            <modules>
+                <module>test-7.3</module>
+                <module>test-7.4</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.4.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>7.5</id>
+            <modules>
+                <module>test-7.3</module>
+                <module>test-7.4</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.5.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>LATEST</id>
+            <modules>
+                <module>test-7.3</module>
+                <module>test-7.4</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>LATEST</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>RELEASE</id>
+            <modules>
+                <module>test-7.3</module>
+                <module>test-7.4</module>
+            </modules>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>RELEASE</value>
+                </property>
+            </activation>
+        </profile>
+    </profiles>
 
     <developers>
         <developer>
