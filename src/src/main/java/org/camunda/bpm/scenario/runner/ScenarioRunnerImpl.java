@@ -99,8 +99,8 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
     }
   }
 
-  private void init(Scenario scenario, ProcessEngine processEngine) {
-    this.scenario = scenario;
+  @Override
+  public ScenarioRunner engine(ProcessEngine processEngine) {
     if (this.processEngine == null || processEngine != null) {
       if (processEngine == null) {
         Map<String, ProcessEngine> processEngines = ProcessEngines.getProcessEngines();
@@ -118,6 +118,12 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
         this.processEngine = processEngine;
       }
     }
+    return this;
+  }
+
+  private void init(Scenario scenario) {
+    engine(null);
+    this.scenario = scenario;
     if (this.processInstance == null && this.scenarioStarter == null) {
       this.scenarioStarter = new ScenarioStarter() {
         @Override
@@ -146,12 +152,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
 
   @Override
   public ProcessInstance start(Scenario scenario) {
-    return start(scenario, null);
-  }
-
-  @Override
-  public ProcessInstance start(Scenario scenario, ProcessEngine processEngine) {
-    init(scenario, processEngine);
+    init(scenario);
     if (processInstance == null)
       processInstance = scenarioStarter.start();
     for (boolean lastCall: new boolean[] { false, true }) {
