@@ -3,13 +3,13 @@ package org.camunda.bpm.scenario.examples.insuranceapplication;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.bpm.engine.test.util.CamundaBpmApi;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.scenario.Scenario;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Map;
 
@@ -22,94 +22,79 @@ import static org.mockito.Mockito.*;
 @Deployment(resources = {"InsuranceApplication.bpmn", "DocumentRequest.bpmn", "RiskCheck.dmn"})
 public class InsuranceApplicationProcessTest {
 
-  @Rule
-  public ProcessEngineRule rule = new ProcessEngineRule();
+  @Rule public ProcessEngineRule rule = new ProcessEngineRule();
 
-  static {
-    // LogUtil.readJavaUtilLoggingConfigFromClasspath(); // process engine
-    // LogFactory.useJdkLogging(); // MyBatis
-  }
+  // Mock all waitstates in main process and call activity with a scenario
+  @Mock private Scenario insuranceApplication;
+  @Mock private Scenario documentRequest;
+  private Map<String, Object> variables;
 
-  private Scenario insuranceApplicationScenario;
-  private Scenario documentRequestScenario;
-
-  private ProcessInstance insuranceApplication;
-  private ProcessInstance documentRequest;
-
-  private Map<String, Object> startVariables;
-
+  // Setup a default behaviour for all "completable" waitstates in your
+  // processes. You might want to override the behaviour in test methods.
   @Before
   public void setupDefaultScenario() {
 
-    Assume.assumeTrue(CamundaBpmApi.supports("7.4"));
+    MockitoAnnotations.initMocks(this);
 
-    insuranceApplicationScenario = mock(Scenario.class);
-    documentRequestScenario = mock(Scenario.class);
-
-    startVariables = Variables.createVariables()
+    variables = Variables.createVariables()
       .putValue("applicantAge", "30")
       .putValue("carManufacturer", "VW")
       .putValue("carType", "Golf");
 
-    when(insuranceApplicationScenario.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       task.complete(withVariables("approved", true));
     });
 
-    when(insuranceApplicationScenario.atUserTask("UserTaskCheckApplicationUnderwriter")).thenReturn((task) -> {
+    when(insuranceApplication.atUserTask("UserTaskCheckApplicationUnderwriter")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("underwriter");
       task.complete();
     });
 
-    when(insuranceApplicationScenario.atUserTask("UserTaskCheckApplicationTeamlead")).thenReturn((task) -> {
+    when(insuranceApplication.atUserTask("UserTaskCheckApplicationTeamlead")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("teamlead");
       task.complete();
     });
 
-    when(insuranceApplicationScenario.atUserTask("UserTaskSpeedUpManualCheck")).thenReturn((task) -> {
+    when(insuranceApplication.atUserTask("UserTaskSpeedUpManualCheck")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("management");
       task.complete();
     });
 
-    when(insuranceApplicationScenario.atSendTask("SendTaskSendPolicy")).thenReturn((externalTask) -> {
+    when(insuranceApplication.atSendTask("SendTaskSendPolicy")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
 
-    when(insuranceApplicationScenario.atSendTask("SendTaskSendRejection")).thenReturn((externalTask) -> {
+    when(insuranceApplication.atSendTask("SendTaskSendRejection")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
 
-    when(insuranceApplicationScenario.atCallActivity("CallActivityDocumentRequest")).thenReturn((processInstance) -> {
+    when(insuranceApplication.atCallActivity("CallActivityDocumentRequest")).thenReturn((processInstance) -> {
       assertThat(processInstance).isStarted();
-      documentRequest = processInstance.runner().start(documentRequestScenario);
+      processInstance.runner().start(documentRequest);
     });
 
-    when(documentRequestScenario.atSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
+    when(documentRequest.atSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
 
-    when(documentRequestScenario.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
+    when(documentRequest.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       assertThat(receiveTask.getEventType()).isEqualTo("message");
       assertThat(receiveTask.getEventName()).isEqualTo("MSG_DOCUMENT_RECEIVED");
       receiveTask.receiveMessage();
     });
 
-    when(documentRequestScenario.atUserTask("UserTaskCallCustomer")).thenReturn((task) -> {
+    when(documentRequest.atUserTask("UserTaskCallCustomer")).thenReturn((task) -> {
       task.complete();
     });
 
-    when(documentRequestScenario.atSendTask("SendTaskSendReminder")).thenReturn((externalTask) -> {
+    when(documentRequest.atSendTask("SendTaskSendReminder")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
 
-  }
-
-  @Test
-  public void testParsingAndDeployment() {
-    // nothing is done here, as we just want to check for exceptions during deployment
   }
 
   @Test
@@ -117,22 +102,15 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    insuranceApplication = Scenario.run("InsuranceApplication")
-        .variables(startVariables)
-        .start(insuranceApplicationScenario);
+    ProcessInstance pi = Scenario.run("InsuranceApplication") // either just start process by key ...
+      .variables(variables)
+      .start(insuranceApplication);
 
     // then
 
-    assertThat(insuranceApplication)
-        .isEnded()
-        .hasPassed("EndEventApplicationAccepted")
-        .hasNotPassed("SubProcessManualCheck")
-        .variables().containsEntry("riskAssessment", "green");
-
-    // and
-
-    verify(insuranceApplicationScenario, times(1)).hasCompleted("EndEventApplicationAccepted");
-    verify(insuranceApplicationScenario, never()).hasFinished("SubProcessManualCheck");
+    assertThat(pi).variables().containsEntry("riskAssessment", "green");
+    verify(insuranceApplication, never()).hasStarted("SubProcessManualCheck");
+    verify(insuranceApplication).hasFinished("EndEventApplicationAccepted");
 
   }
 
@@ -140,23 +118,23 @@ public class InsuranceApplicationProcessTest {
   public void testYellowScenario() {
 
     // given
-    startVariables = Variables.createVariables()
-        .putValue("applicantAge", 30)
-        .putValue("carManufacturer", "Porsche")
-        .putValue("carType", "911");
+    variables = Variables.createVariables()
+      .putValue("applicantAge", 30)
+      .putValue("carManufacturer", "Porsche")
+      .putValue("carType", "911");
 
     // when
 
-    insuranceApplication = Scenario.run("InsuranceApplication")
-        .variables(startVariables)
-        .start(insuranceApplicationScenario);
+    ProcessInstance pi = Scenario.run(() -> { // ... or define your own starter function
+        return rule.getRuntimeService().startProcessInstanceByKey("InsuranceApplication", variables);
+      })
+      .start(insuranceApplication);
 
     // then
 
-    assertThat(insuranceApplication)
-        .isEnded()
-        .hasPassed("SubProcessManualCheck", "EndEventApplicationAccepted")
-        .variables().containsEntry("riskAssessment", "yellow");
+    assertThat(pi).variables().containsEntry("riskAssessment", "yellow");
+    verify(insuranceApplication).hasCompleted("SubProcessManualCheck");
+    verify(insuranceApplication).hasFinished("EndEventApplicationAccepted");
 
   }
 
@@ -165,24 +143,23 @@ public class InsuranceApplicationProcessTest {
 
     // given
 
-    startVariables = Variables.createVariables()
-        .putValue("applicantAge", 20)
-        .putValue("carManufacturer", "Porsche")
-        .putValue("carType", "911");
+    variables = Variables.createVariables()
+      .putValue("applicantAge", 20)
+      .putValue("carManufacturer", "Porsche")
+      .putValue("carType", "911");
 
     // when
 
-    insuranceApplication = Scenario.run("InsuranceApplication")
-        .variables(startVariables)
-        .start(insuranceApplicationScenario);
+    ProcessInstance pi = Scenario.run("InsuranceApplication")
+      .variables(variables)
+      .start(insuranceApplication);
 
     // then
 
-    assertThat(insuranceApplication)
-        .isEnded()
-        .hasNotPassed("SubProcessManualCheck")
-        .hasPassed("EndEventApplicationRejected")
-        .variables().containsEntry("riskAssessment", "red");
+    assertThat(pi).variables().containsEntry("riskAssessment", "red");
+
+    verify(insuranceApplication, never()).hasStarted("SubProcessManualCheck");
+    verify(insuranceApplication).hasFinished("EndEventApplicationRejected");
 
   }
 
@@ -191,25 +168,25 @@ public class InsuranceApplicationProcessTest {
 
     // given
 
-    startVariables = Variables.createVariables()
-        .putValue("applicantAge", 30)
-        .putValue("carManufacturer", "Porsche")
-        .putValue("carType", "911");
+    variables = Variables.createVariables()
+      .putValue("applicantAge", 30)
+      .putValue("carManufacturer", "Porsche")
+      .putValue("carType", "911");
 
     // when
 
-    insuranceApplication = Scenario.run("InsuranceApplication")
-        .variables(startVariables)
-        .start(insuranceApplicationScenario);
+    ProcessInstance pi = Scenario.run("InsuranceApplication")
+      .variables(variables)
+      .start(insuranceApplication);
 
     // then
 
-    assertThat(insuranceApplication)
-        .isEnded()
-        .hasPassed("SubProcessManualCheck", "EndEventApplicationAccepted")
-        .variables()
-        .containsEntry("riskAssessment", "yellow")
-        .containsEntry("approved", true);
+    assertThat(pi).variables()
+      .containsEntry("riskAssessment", "yellow")
+      .containsEntry("approved", true);
+
+    verify(insuranceApplication).hasCompleted("SubProcessManualCheck");
+    verify(insuranceApplication).hasFinished("EndEventApplicationAccepted");
 
   }
 
@@ -218,31 +195,29 @@ public class InsuranceApplicationProcessTest {
 
     // given
 
-    startVariables = Variables.createVariables()
-        .putValue("applicantAge", 30)
-        .putValue("carManufacturer", "Porsche")
-        .putValue("carType", "911");
+    variables = Variables.createVariables()
+      .putValue("applicantAge", 30)
+      .putValue("carManufacturer", "Porsche")
+      .putValue("carType", "911");
 
-    // and
-
-    when(insuranceApplicationScenario.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       task.complete(withVariables("approved", false));
     });
 
     // when
 
-    insuranceApplication = Scenario.run("InsuranceApplication")
-        .variables(startVariables)
-        .start(insuranceApplicationScenario);
+    ProcessInstance pi = Scenario.run("InsuranceApplication")
+      .variables(variables)
+      .start(insuranceApplication);
 
     // then
 
-    assertThat(insuranceApplication)
-        .isEnded()
-        .hasPassed("SubProcessManualCheck", "EndEventApplicationRejected")
-        .variables()
-        .containsEntry("riskAssessment", "yellow")
-        .containsEntry("approved", false);
+    assertThat(pi).variables()
+      .containsEntry("riskAssessment", "yellow")
+      .containsEntry("approved", false);
+
+    verify(insuranceApplication).hasCompleted("SubProcessManualCheck");
+    verify(insuranceApplication).hasFinished("EndEventApplicationRejected");
 
   }
 
@@ -251,29 +226,26 @@ public class InsuranceApplicationProcessTest {
 
     // given
 
-    startVariables = Variables.createVariables()
+    variables = Variables.createVariables()
         .putValue("applicantAge", 30)
         .putValue("carManufacturer", "Porsche")
         .putValue("carType", "911");
 
-    // and
-
-    when(insuranceApplicationScenario.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
 
     // when
 
-    insuranceApplication = Scenario.run("InsuranceApplication")
-        .variables(startVariables)
-        .start(insuranceApplicationScenario);
+    Scenario.run("InsuranceApplication")
+      .variables(variables)
+      .start(insuranceApplication);
 
     // then
 
-    assertThat(insuranceApplication)
-        .isEnded()
-        .hasPassed("CallActivityDocumentRequest");
+    verify(insuranceApplication).hasCompleted("CallActivityDocumentRequest");
+
   }
 
   @Test
@@ -281,39 +253,31 @@ public class InsuranceApplicationProcessTest {
 
     // given
 
-    startVariables = Variables.createVariables()
-        .putValue("applicantAge", 30)
-        .putValue("carManufacturer", "Porsche")
-        .putValue("carType", "911");
+    variables = Variables.createVariables()
+      .putValue("applicantAge", 30)
+      .putValue("carManufacturer", "Porsche")
+      .putValue("carType", "911");
 
-    // and
-
-    when(insuranceApplicationScenario.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequestScenario.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
+    when(documentRequest.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       receiveTask.triggerTimer("BoundaryEventDaily");
       receiveTask.receiveMessage();
     });
 
     // when
 
-    insuranceApplication = Scenario.run("InsuranceApplication")
-        .variables(startVariables)
-        .start(insuranceApplicationScenario);
+    Scenario.run("InsuranceApplication")
+      .variables(variables)
+      .start(insuranceApplication);
 
     // then
 
-    assertThat(insuranceApplication)
-      .isEnded()
-      .hasPassed("CallActivityDocumentRequest");
-
-    // and
-
-    assertThat(documentRequest)
-      .hasPassed("SendTaskSendReminder");
+    verify(insuranceApplication).hasCompleted("CallActivityDocumentRequest");
+    verify(documentRequest).hasCompleted("SendTaskSendReminder");
 
   }
 
@@ -322,19 +286,17 @@ public class InsuranceApplicationProcessTest {
 
     // given
 
-    startVariables = Variables.createVariables()
+    variables = Variables.createVariables()
         .putValue("applicantAge", 30)
         .putValue("carManufacturer", "Porsche")
         .putValue("carType", "911");
 
-    // and
-
-    when(insuranceApplicationScenario.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequestScenario.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
+    when(documentRequest.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       receiveTask.triggerTimer("BoundaryEventDaily");
       receiveTask.triggerTimer("BoundaryEventDaily");
       receiveTask.triggerTimer("BoundaryEventDaily");
@@ -343,21 +305,24 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    insuranceApplication = Scenario.run("InsuranceApplication")
-        .variables(startVariables)
-        .start(insuranceApplicationScenario);
+    Scenario.run("InsuranceApplication")
+      .variables(variables)
+      .start(insuranceApplication);
 
     // then
 
-    verify(documentRequestScenario, times(1)).hasCompleted("UserTaskCallCustomer");
-    verify(documentRequestScenario, times(3)).hasCompleted("SendTaskSendReminder");
-    verify(documentRequestScenario).hasCanceled("ReceiveTaskWaitForDocuments");
-    verify(documentRequestScenario, never()).hasCompleted("ReceiveTaskWaitForDocuments");
+    verify(insuranceApplication).hasCompleted("EndEventApplicationAccepted");
 
-    // and
-    verify(insuranceApplicationScenario).hasCompleted("EndEventApplicationAccepted");
-    verify(insuranceApplicationScenario, times(15)).hasFinished(any());
+    verify(documentRequest, times(1)).hasCompleted("UserTaskCallCustomer");
+    verify(documentRequest, times(3)).hasCompleted("SendTaskSendReminder");
+    verify(documentRequest).hasCanceled("ReceiveTaskWaitForDocuments");
+    verify(documentRequest, never()).hasCompleted("ReceiveTaskWaitForDocuments");
 
+  }
+
+  @Test
+  public void testParsingAndDeployment() {
+    // nothing is done here, as we just want to check for exceptions during deployment
   }
 
 }
