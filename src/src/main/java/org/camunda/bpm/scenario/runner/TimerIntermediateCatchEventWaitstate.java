@@ -38,8 +38,8 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
     leave();
   }
 
-  public void triggerTimer() {
-    leave();
+  public void fastForwardTime() {
+    super.fastForwardTime(getDuedate());
   }
 
 }

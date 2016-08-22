@@ -2,13 +2,17 @@ package org.camunda.bpm.scenario.runner;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
+import org.camunda.bpm.engine.impl.calendar.DurationHelper;
+import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.MessageCorrelationBuilder;
 import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,9 +88,34 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     return getRuntimeService().createMessageCorrelation(messageName);
   }
 
-  public void triggerTimer(String activityId) {
-    Job job = getManagementService().createJobQuery().processInstanceId(getProcessInstance().getId()).activityId(activityId).timers().singleResult();
-    getManagementService().executeJob(job.getId());
+  public void fastForwardTime(String duration) {
+    Date end;
+    try {
+      if (duration == null || !duration.startsWith("P")) {
+        throw new IllegalArgumentException("Provided argument '" + duration + "' is not a duration expression.");
+      }
+      DurationHelper durationHelper = new DurationHelper(duration);
+      end = durationHelper.getDateAfter();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    fastForwardTime(end);
+  }
+
+  public void fastForwardTime(Date toDate) {
+    if (new Date().getTime() >= toDate.getTime())
+      throw new IllegalArgumentException("Provided argument '" + toDate + "' must not be in the past.");
+    List<Job> next;
+    do {
+      next = getManagementService().createJobQuery().timers().orderByJobDuedate().asc().listPage(0,1);
+      if (!next.isEmpty()) {
+        if (next.get(0).getDuedate().getTime() <= toDate.getTime()) {
+          ClockUtil.setCurrentTime(new Date(next.get(0).getDuedate().getTime() + 1));
+          getManagementService().executeJob(next.get(0).getId());
+        }
+      }
+    } while (!next.isEmpty() && next.get(0).getDuedate().getTime() <= toDate.getTime());
+    ClockUtil.setCurrentTime(toDate);
   }
 
 }
