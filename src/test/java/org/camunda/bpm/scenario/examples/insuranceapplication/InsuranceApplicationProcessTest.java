@@ -102,7 +102,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.run("InsuranceApplication") // either just start process by key ...
+    ProcessInstance pi = Scenario.process("InsuranceApplication") // either just start process by key ...
       .variables(variables)
       .start(insuranceApplication);
 
@@ -125,7 +125,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.run(() -> { // ... or define your own starter function
+    ProcessInstance pi = Scenario.process(() -> { // ... or define your own starter function
         return rule.getRuntimeService().startProcessInstanceByKey("InsuranceApplication", variables);
       })
       .start(insuranceApplication);
@@ -150,7 +150,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.run("InsuranceApplication")
+    ProcessInstance pi = Scenario.process("InsuranceApplication")
       .variables(variables)
       .start(insuranceApplication);
 
@@ -175,7 +175,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.run("InsuranceApplication")
+    ProcessInstance pi = Scenario.process("InsuranceApplication")
       .variables(variables)
       .start(insuranceApplication);
 
@@ -206,7 +206,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.run("InsuranceApplication")
+    ProcessInstance pi = Scenario.process("InsuranceApplication")
       .variables(variables)
       .start(insuranceApplication);
 
@@ -238,7 +238,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    Scenario.run("InsuranceApplication")
+    Scenario.process("InsuranceApplication")
       .variables(variables)
       .start(insuranceApplication);
 
@@ -270,7 +270,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    Scenario.run("InsuranceApplication")
+    Scenario.process("InsuranceApplication")
       .variables(variables)
       .start(insuranceApplication);
 
@@ -303,7 +303,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    Scenario.run("InsuranceApplication")
+    Scenario.process("InsuranceApplication")
       .variables(variables)
       .start(insuranceApplication);
 
