@@ -10,6 +10,7 @@ import org.camunda.bpm.scenario.action.ServiceTaskAction;
 import org.camunda.bpm.scenario.action.SignalIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.TimerIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.UserTaskAction;
+import org.camunda.bpm.scenario.runner.ScenarioHistory;
 import org.camunda.bpm.scenario.runner.ScenarioRunner;
 import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
 import org.camunda.bpm.scenario.runner.ScenarioStarter;

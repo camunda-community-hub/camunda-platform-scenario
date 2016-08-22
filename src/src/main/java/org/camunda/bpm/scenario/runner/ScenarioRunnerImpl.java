@@ -5,12 +5,14 @@ import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.history.HistoricActivityInstanceQuery;
 import org.camunda.bpm.engine.impl.persistence.entity.MessageEntity;
+import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.util.Feature;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -146,6 +148,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
         }
       };
     }
+    ClockUtil.setCurrentTime(new Date());
   }
 
   @Override

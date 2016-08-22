@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario;
+package org.camunda.bpm.scenario.runner;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
