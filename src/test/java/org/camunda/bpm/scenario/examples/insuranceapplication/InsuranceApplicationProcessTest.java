@@ -25,8 +25,8 @@ public class InsuranceApplicationProcessTest {
   @Rule public ProcessEngineRule rule = new ProcessEngineRule();
 
   // Mock all waitstates in main process and call activity with a scenario
-  @Mock private Scenario insuranceApplication;
-  @Mock private Scenario documentRequest;
+  @Mock private Scenario.Bpmn insuranceApplication;
+  @Mock private Scenario.Bpmn documentRequest;
   private Map<String, Object> variables;
 
   // Setup a default behaviour for all "completable" waitstates in your
@@ -72,7 +72,7 @@ public class InsuranceApplicationProcessTest {
 
     when(insuranceApplication.atCallActivity("CallActivityDocumentRequest")).thenReturn((processInstance) -> {
       assertThat(processInstance).isStarted();
-      processInstance.runner().start(documentRequest);
+      processInstance.runner().execute(documentRequest);
     });
 
     when(documentRequest.atSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
@@ -104,7 +104,7 @@ public class InsuranceApplicationProcessTest {
 
     ProcessInstance pi = Scenario.process("InsuranceApplication") // either just start process by key ...
       .variables(variables)
-      .start(insuranceApplication);
+      .execute(insuranceApplication);
 
     // then
 
@@ -128,7 +128,7 @@ public class InsuranceApplicationProcessTest {
     ProcessInstance pi = Scenario.process(() -> { // ... or define your own starter function
         return rule.getRuntimeService().startProcessInstanceByKey("InsuranceApplication", variables);
       })
-      .start(insuranceApplication);
+      .execute(insuranceApplication);
 
     // then
 
@@ -152,7 +152,7 @@ public class InsuranceApplicationProcessTest {
 
     ProcessInstance pi = Scenario.process("InsuranceApplication")
       .variables(variables)
-      .start(insuranceApplication);
+      .execute(insuranceApplication);
 
     // then
 
@@ -177,7 +177,7 @@ public class InsuranceApplicationProcessTest {
 
     ProcessInstance pi = Scenario.process("InsuranceApplication")
       .variables(variables)
-      .start(insuranceApplication);
+      .execute(insuranceApplication);
 
     // then
 
@@ -208,7 +208,7 @@ public class InsuranceApplicationProcessTest {
 
     ProcessInstance pi = Scenario.process("InsuranceApplication")
       .variables(variables)
-      .start(insuranceApplication);
+      .execute(insuranceApplication);
 
     // then
 
@@ -240,7 +240,7 @@ public class InsuranceApplicationProcessTest {
 
     Scenario.process("InsuranceApplication")
       .variables(variables)
-      .start(insuranceApplication);
+      .execute(insuranceApplication);
 
     // then
 
@@ -272,7 +272,7 @@ public class InsuranceApplicationProcessTest {
 
     Scenario.process("InsuranceApplication")
       .variables(variables)
-      .start(insuranceApplication);
+      .execute(insuranceApplication);
 
     // then
 
@@ -305,7 +305,7 @@ public class InsuranceApplicationProcessTest {
 
     Scenario.process("InsuranceApplication")
       .variables(variables)
-      .start(insuranceApplication);
+      .execute(insuranceApplication);
 
     // then
 
