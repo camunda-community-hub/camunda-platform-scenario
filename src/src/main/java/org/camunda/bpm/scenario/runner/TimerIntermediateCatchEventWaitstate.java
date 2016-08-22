@@ -25,7 +25,7 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
   }
 
   @Override
-  protected ScenarioAction action(Scenario scenario) {
+  protected ScenarioAction action(Scenario.Bpmn scenario) {
     return scenario.atTimerIntermediateCatchEvent(getActivityId());
   }
 

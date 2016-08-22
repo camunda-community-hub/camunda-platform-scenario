@@ -16,10 +16,10 @@ public class AbstractTest {
   public ProcessEngineRule rule = new ProcessEngineRule();
 
   @Mock
-  protected Scenario scenario;
+  protected Scenario.Bpmn scenario;
 
   @Mock
-  protected Scenario otherScenario;
+  protected Scenario.Bpmn otherScenario;
 
   @Before
   public void setup() {

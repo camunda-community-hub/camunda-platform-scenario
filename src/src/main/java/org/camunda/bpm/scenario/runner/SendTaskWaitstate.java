@@ -18,7 +18,7 @@ public class SendTaskWaitstate extends ServiceTaskWaitstate {
   }
 
   @Override
-  protected ScenarioAction action(Scenario scenario) {
+  protected ScenarioAction action(Scenario.Bpmn scenario) {
     return scenario.atSendTask(getActivityId());
   }
 

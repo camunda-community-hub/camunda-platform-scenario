@@ -26,7 +26,7 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
   }
 
   @Override
-  protected ScenarioAction<EventBasedGatewayWaitstate> action(Scenario scenario) {
+  protected ScenarioAction<EventBasedGatewayWaitstate> action(Scenario.Bpmn scenario) {
     return scenario.atEventBasedGateway(getActivityId());
   }
 

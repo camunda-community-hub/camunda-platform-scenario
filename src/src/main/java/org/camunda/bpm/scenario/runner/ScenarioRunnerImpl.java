@@ -9,8 +9,6 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.ScenarioRunner;
-import org.camunda.bpm.scenario.ScenarioStarter;
 import org.camunda.bpm.scenario.util.Feature;
 
 import java.util.HashMap;
@@ -34,7 +32,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   private Set<String> passedHistoricActivityInstances = new HashSet<String>();
   private Map<String, Object> startVariables = new HashMap<String, Object>();
 
-  private Scenario scenario;
+  private Scenario.Bpmn scenario;
   private ProcessEngine processEngine;
   private ProcessInstance processInstance;
 
@@ -121,7 +119,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
     return this;
   }
 
-  private void init(Scenario scenario) {
+  private void init(Scenario.Bpmn scenario) {
     engine(null);
     this.scenario = scenario;
     if (this.processInstance == null && this.scenarioStarter == null) {
@@ -151,7 +149,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   }
 
   @Override
-  public ProcessInstance start(Scenario scenario) {
+  public ProcessInstance execute(Scenario.Bpmn scenario) {
     init(scenario);
     if (processInstance == null)
       processInstance = scenarioStarter.start();

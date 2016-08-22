@@ -18,7 +18,7 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
   }
 
   @Override
-  protected ScenarioAction action(Scenario scenario) {
+  protected ScenarioAction action(Scenario.Bpmn scenario) {
     return scenario.atReceiveTask(getActivityId());
   }
 

@@ -24,7 +24,7 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("UserTaskTest").start(scenario);
+    Scenario.process("UserTaskTest").execute(scenario);
 
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -42,7 +42,7 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("UserTaskTest").start(scenario);
+    Scenario.process("UserTaskTest").execute(scenario);
 
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, never()).hasFinished("UserTask");
@@ -54,7 +54,7 @@ public class UserTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/UserTaskTest.bpmn"})
   public void testDoNotDealWithTask() {
 
-    Scenario.process("UserTaskTest").start(scenario);
+    Scenario.process("UserTaskTest").execute(scenario);
 
   }
 
@@ -69,7 +69,7 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("UserTaskTest").toBefore("UserTask").start(scenario);
+    Scenario.process("UserTaskTest").toBefore("UserTask").execute(scenario);
 
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, never()).hasFinished("UserTask");
@@ -88,7 +88,7 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("UserTaskTest").toAfter("UserTask").start(scenario);
+    Scenario.process("UserTaskTest").toAfter("UserTask").execute(scenario);
 
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
@@ -107,8 +107,8 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("UserTaskTest").toBefore("UserTask").start(otherScenario);
-    Scenario.process("UserTaskTest").start(scenario);
+    Scenario.process("UserTaskTest").toBefore("UserTask").execute(otherScenario);
+    Scenario.process("UserTaskTest").execute(scenario);
 
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");

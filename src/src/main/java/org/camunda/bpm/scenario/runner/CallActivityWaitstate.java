@@ -24,7 +24,7 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
   }
 
   @Override
-  protected ScenarioAction<CallActivityWaitstate> action(Scenario scenario) {
+  protected ScenarioAction<CallActivityWaitstate> action(Scenario.Bpmn scenario) {
     return scenario.atCallActivity(getActivityId());
   }
 

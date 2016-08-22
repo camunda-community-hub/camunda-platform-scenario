@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario;
+package org.camunda.bpm.scenario.runner;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 

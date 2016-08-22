@@ -27,7 +27,7 @@ public class ServiceTaskWaitstate extends ExternalTaskDelegate {
   }
 
   @Override
-  protected ScenarioAction action(Scenario scenario) {
+  protected ScenarioAction action(Scenario.Bpmn scenario) {
     return scenario.atServiceTask(getActivityId());
   }
 

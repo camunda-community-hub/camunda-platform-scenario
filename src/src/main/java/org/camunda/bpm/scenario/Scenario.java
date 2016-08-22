@@ -1,6 +1,5 @@
 package org.camunda.bpm.scenario;
 
-
 import org.camunda.bpm.scenario.action.CallActivityAction;
 import org.camunda.bpm.scenario.action.EventBasedGatewayAction;
 import org.camunda.bpm.scenario.action.MessageIntermediateCatchEventAction;
@@ -11,12 +10,14 @@ import org.camunda.bpm.scenario.action.ServiceTaskAction;
 import org.camunda.bpm.scenario.action.SignalIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.TimerIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.UserTaskAction;
+import org.camunda.bpm.scenario.runner.ScenarioRunner;
 import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
+import org.camunda.bpm.scenario.runner.ScenarioStarter;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class Scenario implements ScenarioHistory {
+public class Scenario {
 
   public static ScenarioRunner process(String processDefinitionKey) {
     return ScenarioRunnerImpl.start(processDefinitionKey);
@@ -26,24 +27,28 @@ public abstract class Scenario implements ScenarioHistory {
     return ScenarioRunnerImpl.start(scenarioStarter);
   }
 
-  public abstract UserTaskAction atUserTask(String activityId);
+  public interface Bpmn extends ScenarioHistory {
 
-  public abstract ServiceTaskAction atServiceTask(String activityId);
+    UserTaskAction atUserTask(String activityId);
 
-  public abstract SendTaskAction atSendTask(String activityId);
+    ServiceTaskAction atServiceTask(String activityId);
 
-  public abstract MessageIntermediateThrowEventAction atMessageIntermediateThrowEvent(String activityId);
+    SendTaskAction atSendTask(String activityId);
 
-  public abstract TimerIntermediateCatchEventAction atTimerIntermediateCatchEvent(String activityId);
+    MessageIntermediateThrowEventAction atMessageIntermediateThrowEvent(String activityId);
 
-  public abstract MessageIntermediateCatchEventAction atMessageIntermediateCatchEvent(String activityId);
+    TimerIntermediateCatchEventAction atTimerIntermediateCatchEvent(String activityId);
 
-  public abstract ReceiveTaskAction atReceiveTask(String activityId);
+    MessageIntermediateCatchEventAction atMessageIntermediateCatchEvent(String activityId);
 
-  public abstract SignalIntermediateCatchEventAction atSignalIntermediateCatchEvent(String activityId);
+    ReceiveTaskAction atReceiveTask(String activityId);
 
-  public abstract EventBasedGatewayAction atEventBasedGateway(String activityId);
+    SignalIntermediateCatchEventAction atSignalIntermediateCatchEvent(String activityId);
 
-  public abstract CallActivityAction atCallActivity(String activityId);
+    EventBasedGatewayAction atEventBasedGateway(String activityId);
+
+    CallActivityAction atCallActivity(String activityId);
+
+  }
 
 }

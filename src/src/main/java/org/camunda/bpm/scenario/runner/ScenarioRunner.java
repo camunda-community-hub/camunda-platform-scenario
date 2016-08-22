@@ -1,7 +1,8 @@
-package org.camunda.bpm.scenario;
+package org.camunda.bpm.scenario.runner;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.scenario.Scenario;
 
 import java.util.Map;
 
@@ -22,6 +23,6 @@ public interface ScenarioRunner {
 
   ScenarioRunner engine(ProcessEngine processEngine);
 
-  ProcessInstance start(Scenario scenario);
+  ProcessInstance execute(Scenario.Bpmn scenario);
 
 }

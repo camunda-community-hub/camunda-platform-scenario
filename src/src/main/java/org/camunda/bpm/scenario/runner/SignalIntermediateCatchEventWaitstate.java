@@ -25,7 +25,7 @@ public class SignalIntermediateCatchEventWaitstate extends EventSubscriptionDele
   }
 
   @Override
-  protected ScenarioAction action(Scenario scenario) {
+  protected ScenarioAction action(Scenario.Bpmn scenario) {
     return scenario.atSignalIntermediateCatchEvent(getActivityId());
   }
 
