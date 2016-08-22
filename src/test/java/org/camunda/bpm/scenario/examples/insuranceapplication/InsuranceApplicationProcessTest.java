@@ -264,7 +264,7 @@ public class InsuranceApplicationProcessTest {
     });
 
     when(documentRequest.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      receiveTask.triggerTimer("BoundaryEventDaily");
+      receiveTask.fastForwardTime("P1D");
       receiveTask.receiveMessage();
     });
 
@@ -277,6 +277,7 @@ public class InsuranceApplicationProcessTest {
     // then
 
     verify(insuranceApplication).hasCompleted("CallActivityDocumentRequest");
+    verify(insuranceApplication, never()).hasStarted("UserTaskSpeedUpManualCheck");
     verify(documentRequest).hasCompleted("SendTaskSendReminder");
 
   }
@@ -297,10 +298,7 @@ public class InsuranceApplicationProcessTest {
     });
 
     when(documentRequest.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      receiveTask.triggerTimer("BoundaryEventDaily");
-      receiveTask.triggerTimer("BoundaryEventDaily");
-      receiveTask.triggerTimer("BoundaryEventDaily");
-      receiveTask.triggerTimer("BoundaryEventOneWeek");
+      receiveTask.fastForwardTime("P7D");
     });
 
     // when
@@ -311,10 +309,11 @@ public class InsuranceApplicationProcessTest {
 
     // then
 
+    verify(insuranceApplication, times(1)).hasStarted("UserTaskSpeedUpManualCheck");
     verify(insuranceApplication).hasCompleted("EndEventApplicationAccepted");
 
     verify(documentRequest, times(1)).hasCompleted("UserTaskCallCustomer");
-    verify(documentRequest, times(3)).hasCompleted("SendTaskSendReminder");
+    verify(documentRequest, times(5)).hasCompleted("SendTaskSendReminder");
     verify(documentRequest).hasCanceled("ReceiveTaskWaitForDocuments");
     verify(documentRequest, never()).hasCompleted("ReceiveTaskWaitForDocuments");
 
