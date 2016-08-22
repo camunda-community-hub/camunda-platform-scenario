@@ -236,7 +236,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
 
   private void setExecutedHistoricActivityIds() {
     List<HistoricActivityInstance> instances;
-    boolean supportsCanceled = Feature.isSupportedWithWarn(HistoricActivityInstanceQuery.class.getName(), "canceled");
+    boolean supportsCanceled = Feature.warnIfNotSupported(HistoricActivityInstanceQuery.class.getName(), "canceled");
     if (supportsCanceled) {
       instances = processEngine.getHistoryService()
           .createHistoricActivityInstanceQuery()

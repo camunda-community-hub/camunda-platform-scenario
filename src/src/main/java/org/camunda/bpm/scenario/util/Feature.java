@@ -21,11 +21,11 @@ public class Feature {
     };
   }
 
-  public static boolean isSupportedWithWarn(String className) {
+  public static boolean warnIfNotSupported(String className) {
     return isSupported(className, null, true);
   }
 
-  public static boolean isSupportedWithWarn(String className, String methodName, Class<?>... parameterTypes) {
+  public static boolean warnIfNotSupported(String className, String methodName, Class<?>... parameterTypes) {
     return isSupported(className, methodName, true, parameterTypes);
   }
 
