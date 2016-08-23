@@ -24,7 +24,7 @@ public class UserTaskWaitstate extends TaskDelegate {
   }
 
   @Override
-  protected ScenarioAction action(Scenario.Bpmn scenario) {
+  protected ScenarioAction action(Scenario.Process scenario) {
     return scenario.atUserTask(getActivityId());
   }
 

@@ -61,7 +61,7 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     return historicDelegate.getActivityId();
   }
 
-  protected void execute(Scenario.Bpmn scenario) {
+  protected void execute(Scenario.Process scenario) {
     ScenarioAction action = action(scenario);
     if (action == null)
       throw new AssertionError("Process Instance {"
@@ -72,7 +72,7 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     action.execute(this);
   }
 
-  protected abstract ScenarioAction action(Scenario.Bpmn scenario);
+  protected abstract ScenarioAction action(Scenario.Process scenario);
 
   protected abstract void leave(Map<String, Object> variables);
 

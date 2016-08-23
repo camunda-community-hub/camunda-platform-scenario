@@ -17,12 +17,12 @@ public class IgnoredWaitstate extends Waitstate<Object> {
   }
 
   @Override
-  protected void execute(Scenario.Bpmn scenario) {
+  protected void execute(Scenario.Process scenario) {
     // do nothing
   }
 
   @Override
-  protected ScenarioAction<IgnoredWaitstate> action(Scenario.Bpmn scenario) {
+  protected ScenarioAction<IgnoredWaitstate> action(Scenario.Process scenario) {
     return null;
   }
 

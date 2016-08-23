@@ -1,6 +1,5 @@
 package org.camunda.bpm.scenario;
 
-import org.camunda.bpm.scenario.action.CallActivityAction;
 import org.camunda.bpm.scenario.action.EventBasedGatewayAction;
 import org.camunda.bpm.scenario.action.MessageIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.MessageIntermediateThrowEventAction;
@@ -10,8 +9,9 @@ import org.camunda.bpm.scenario.action.ServiceTaskAction;
 import org.camunda.bpm.scenario.action.SignalIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.TimerIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.UserTaskAction;
+import org.camunda.bpm.scenario.runner.CallActivityRunner;
 import org.camunda.bpm.scenario.runner.ScenarioHistory;
-import org.camunda.bpm.scenario.runner.ScenarioRunner;
+import org.camunda.bpm.scenario.runner.ProcessRunner;
 import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
 
 /**
@@ -19,11 +19,15 @@ import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
  */
 public class Scenario {
 
-  public static ScenarioRunner run(Bpmn scenario) {
+  public static ProcessRunner run(Process scenario) {
     return new ScenarioRunnerImpl(scenario);
   }
 
-  public interface Bpmn extends ScenarioHistory {
+  public static CallActivityRunner use(Process scenario) {
+    return new ScenarioRunnerImpl(scenario);
+  }
+
+  public interface Process extends ScenarioHistory {
 
     UserTaskAction atUserTask(String activityId);
 
@@ -43,7 +47,7 @@ public class Scenario {
 
     EventBasedGatewayAction atEventBasedGateway(String activityId);
 
-    CallActivityAction atCallActivity(String activityId);
+    CallActivityRunner atCallActivity(String activityId);
 
   }
 

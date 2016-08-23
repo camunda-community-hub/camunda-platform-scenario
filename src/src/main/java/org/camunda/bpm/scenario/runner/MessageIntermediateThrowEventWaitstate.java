@@ -18,7 +18,7 @@ public class MessageIntermediateThrowEventWaitstate extends ServiceTaskWaitstate
   }
 
   @Override
-  protected ScenarioAction<MessageIntermediateThrowEventWaitstate> action(Scenario.Bpmn scenario) {
+  protected ScenarioAction<MessageIntermediateThrowEventWaitstate> action(Scenario.Process scenario) {
     return scenario.atMessageIntermediateThrowEvent(getActivityId());
   }
 

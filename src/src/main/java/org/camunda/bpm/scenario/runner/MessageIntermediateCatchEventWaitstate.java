@@ -25,7 +25,7 @@ public class MessageIntermediateCatchEventWaitstate extends EventSubscriptionDel
   }
 
   @Override
-  protected ScenarioAction<MessageIntermediateCatchEventWaitstate> action(Scenario.Bpmn scenario) {
+  protected ScenarioAction<MessageIntermediateCatchEventWaitstate> action(Scenario.Process scenario) {
     return scenario.atMessageIntermediateCatchEvent(getActivityId());
   }
 

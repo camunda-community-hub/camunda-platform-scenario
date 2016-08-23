@@ -22,9 +22,9 @@ import java.util.Set;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ScenarioRunnerImpl implements ScenarioRunner {
+public class ScenarioRunnerImpl implements ProcessRunner {
 
-  private ScenarioStarter scenarioStarter;
+  private ProcessStarter scenarioStarter;
   private String processDefinitionKey;
 
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
@@ -34,28 +34,28 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   private Set<String> passedHistoricActivityInstances = new HashSet<String>();
   private Map<String, Object> startVariables = new HashMap<String, Object>();
 
-  private Scenario.Bpmn scenario;
+  private Scenario.Process scenario;
   private ProcessEngine processEngine;
   private ProcessInstance processInstance;
 
-  public ScenarioRunnerImpl(Scenario.Bpmn scenario) {
+  public ScenarioRunnerImpl(Scenario.Process scenario) {
     this.scenario = scenario;
   }
 
   @Override
-  public ScenarioRunner startBy(ScenarioStarter scenarioStarter) {
+  public ProcessRunner startBy(ProcessStarter scenarioStarter) {
     this.scenarioStarter = scenarioStarter;
     return this;
   }
 
   @Override
-  public ScenarioRunner startBy(String processDefinitionKey) {
+  public ProcessRunner startBy(String processDefinitionKey) {
     this.processDefinitionKey = processDefinitionKey;
     return this;
   }
 
   @Override
-  public ScenarioRunner startBy(String processDefinitionKey, Map<String, Object> variables) {
+  public ProcessRunner startBy(String processDefinitionKey, Map<String, Object> variables) {
     this.processDefinitionKey = processDefinitionKey;
     this.startVariables = variables;
     return this;
@@ -99,7 +99,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   }
 
   @Override
-  public ScenarioRunner engine(ProcessEngine processEngine) {
+  public ProcessRunner engine(ProcessEngine processEngine) {
     if (this.processEngine == null || processEngine != null) {
       if (processEngine == null) {
         Map<String, ProcessEngine> processEngines = ProcessEngines.getProcessEngines();
@@ -120,11 +120,11 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
     return this;
   }
 
-  private void init(Scenario.Bpmn scenario) {
+  private void init(Scenario.Process scenario) {
     engine(null);
     this.scenario = scenario;
     if (this.processInstance == null && this.scenarioStarter == null) {
-      this.scenarioStarter = new ScenarioStarter() {
+      this.scenarioStarter = new ProcessStarter() {
         @Override
         public ProcessInstance start() {
           if (fromActivityIds.isEmpty()) {

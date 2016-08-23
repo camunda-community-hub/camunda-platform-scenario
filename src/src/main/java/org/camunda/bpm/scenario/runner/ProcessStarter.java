@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ScenarioStarter {
+public interface ProcessStarter {
 
   ProcessInstance start();
 
