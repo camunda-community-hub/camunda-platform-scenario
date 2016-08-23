@@ -25,8 +25,8 @@ public class InsuranceApplicationProcessTest {
   @Rule public ProcessEngineRule rule = new ProcessEngineRule();
 
   // Mock all waitstates in main process and call activity with a scenario
-  @Mock private Scenario.Bpmn insuranceApplication;
-  @Mock private Scenario.Bpmn documentRequest;
+  @Mock private Scenario.Process insuranceApplication;
+  @Mock private Scenario.Process documentRequest;
   private Map<String, Object> variables;
 
   // Setup a default behaviour for all "completable" waitstates in your
@@ -70,10 +70,8 @@ public class InsuranceApplicationProcessTest {
       externalTask.complete();
     });
 
-    when(insuranceApplication.atCallActivity("CallActivityDocumentRequest")).thenReturn((processInstance) -> {
-      assertThat(processInstance).isStarted();
-      processInstance.run(documentRequest).execute();
-    });
+    when(insuranceApplication.atCallActivity("CallActivityDocumentRequest"))
+      .thenReturn(Scenario.use(documentRequest));
 
     when(documentRequest.atSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
