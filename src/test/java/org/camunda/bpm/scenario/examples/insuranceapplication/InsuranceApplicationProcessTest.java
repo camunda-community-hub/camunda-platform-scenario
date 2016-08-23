@@ -237,7 +237,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.run(insuranceApplication)
+    Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
         .execute();
 
@@ -269,7 +269,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.run(insuranceApplication)
+    Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
         .execute();
 
@@ -302,7 +302,7 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.run(insuranceApplication)
+    Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
         .execute();
 
