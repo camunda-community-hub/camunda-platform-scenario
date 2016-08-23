@@ -13,19 +13,14 @@ import org.camunda.bpm.scenario.action.UserTaskAction;
 import org.camunda.bpm.scenario.runner.ScenarioHistory;
 import org.camunda.bpm.scenario.runner.ScenarioRunner;
 import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
-import org.camunda.bpm.scenario.runner.ScenarioStarter;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
 public class Scenario {
 
-  public static ScenarioRunner process(String processDefinitionKey) {
-    return ScenarioRunnerImpl.start(processDefinitionKey);
-  }
-
-  public static ScenarioRunner process(ScenarioStarter scenarioStarter) {
-    return ScenarioRunnerImpl.start(scenarioStarter);
+  public static ScenarioRunner run(Bpmn scenario) {
+    return new ScenarioRunnerImpl(scenario);
   }
 
   public interface Bpmn extends ScenarioHistory {

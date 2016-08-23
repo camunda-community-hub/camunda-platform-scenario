@@ -24,7 +24,7 @@ public class ServiceTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("ServiceTaskTest").execute(scenario);
+    Scenario.run(scenario).startBy("ServiceTaskTest").execute();
 
     verify(scenario, times(1)).hasCompleted("ServiceTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -41,7 +41,7 @@ public class ServiceTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("ServiceTaskTest").execute(scenario);
+    Scenario.run(scenario).startBy("ServiceTaskTest").execute();
 
     verify(scenario, times(1)).hasStarted("ServiceTask");
     verify(scenario, never()).hasFinished("ServiceTask");
@@ -52,7 +52,7 @@ public class ServiceTaskTest extends AbstractTest {
   @Test(expected=AssertionError.class)
   public void testDoNotDealWithTask() {
 
-    Scenario.process("ServiceTaskTest").execute(scenario);
+    Scenario.run(scenario).startBy("ServiceTaskTest").execute();
 
   }
 
@@ -66,7 +66,7 @@ public class ServiceTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("ServiceTaskTest").toBefore("ServiceTask").execute(scenario);
+    Scenario.run(scenario).startBy("ServiceTaskTest").toBefore("ServiceTask").execute();
 
     verify(scenario, times(1)).hasStarted("ServiceTask");
     verify(scenario, never()).hasFinished("ServiceTask");
@@ -84,7 +84,7 @@ public class ServiceTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("ServiceTaskTest").toAfter("ServiceTask").execute(scenario);
+    Scenario.run(scenario).startBy("ServiceTaskTest").toAfter("ServiceTask").execute();
 
     verify(scenario, times(1)).hasStarted("ServiceTask");
     verify(scenario, times(1)).hasFinished("ServiceTask");
@@ -102,8 +102,8 @@ public class ServiceTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.process("ServiceTaskTest").toBefore("ServiceTask").execute(otherScenario);
-    Scenario.process("ServiceTaskTest").execute(scenario);
+    Scenario.run(otherScenario).startBy("ServiceTaskTest").toBefore("ServiceTask").execute();
+    Scenario.run(scenario).startBy("ServiceTaskTest").execute();
 
     verify(scenario, times(1)).hasCompleted("ServiceTask");
     verify(scenario, times(1)).hasFinished("EndEvent");

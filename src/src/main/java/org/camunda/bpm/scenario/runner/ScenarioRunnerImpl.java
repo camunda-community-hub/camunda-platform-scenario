@@ -38,32 +38,31 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   private ProcessEngine processEngine;
   private ProcessInstance processInstance;
 
-  public static ScenarioRunner start(String processDefinitionKey) {
-    return new ScenarioRunnerImpl().running(processDefinitionKey);
+  public ScenarioRunnerImpl(Scenario.Bpmn scenario) {
+    this.scenario = scenario;
   }
 
-  public static ScenarioRunner start(ScenarioStarter scenarioStarter) {
-    return new ScenarioRunnerImpl().running(scenarioStarter);
-  }
-
-  protected ScenarioRunnerImpl running(ScenarioStarter scenarioStarter) {
+  @Override
+  public ScenarioRunner startBy(ScenarioStarter scenarioStarter) {
     this.scenarioStarter = scenarioStarter;
     return this;
   }
 
-  protected ScenarioRunnerImpl running(String processDefinitionKey) {
+  @Override
+  public ScenarioRunner startBy(String processDefinitionKey) {
     this.processDefinitionKey = processDefinitionKey;
+    return this;
+  }
+
+  @Override
+  public ScenarioRunner startBy(String processDefinitionKey, Map<String, Object> variables) {
+    this.processDefinitionKey = processDefinitionKey;
+    this.startVariables = variables;
     return this;
   }
 
   protected ScenarioRunnerImpl running(ProcessInstance processInstance) {
     this.processInstance = processInstance;
-    return this;
-  }
-
-  @Override
-  public ScenarioRunnerImpl variables(Map<String, Object> variables) {
-    this.startVariables = variables;
     return this;
   }
 
@@ -152,7 +151,7 @@ public class ScenarioRunnerImpl implements ScenarioRunner {
   }
 
   @Override
-  public ProcessInstance execute(Scenario.Bpmn scenario) {
+  public ProcessInstance execute() {
     init(scenario);
     if (processInstance == null)
       processInstance = scenarioStarter.start();

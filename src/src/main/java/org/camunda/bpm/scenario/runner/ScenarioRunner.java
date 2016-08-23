@@ -11,7 +11,11 @@ import java.util.Map;
  */
 public interface ScenarioRunner {
 
-  ScenarioRunner variables(Map<String, Object> variables);
+  ScenarioRunner startBy(String processDefinitionKey);
+
+  ScenarioRunner startBy(String processDefinitionKey, Map<String, Object> variables);
+
+  ScenarioRunner startBy(ScenarioStarter starter);
 
   ScenarioRunner fromBefore(String activityId, String... activityIds);
 
@@ -23,6 +27,6 @@ public interface ScenarioRunner {
 
   ScenarioRunner engine(ProcessEngine processEngine);
 
-  ProcessInstance execute(Scenario.Bpmn scenario);
+  ProcessInstance execute();
 
 }

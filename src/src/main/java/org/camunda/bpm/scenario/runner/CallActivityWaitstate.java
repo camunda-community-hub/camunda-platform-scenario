@@ -36,8 +36,8 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
     throw new UnsupportedOperationException();
   }
 
-  public ScenarioRunnerImpl runner() {
-    return new ScenarioRunnerImpl().running(getRuntimeDelegate());
+  public ScenarioRunnerImpl run(Scenario.Bpmn scenario) {
+    return new ScenarioRunnerImpl(scenario).running(getRuntimeDelegate());
   }
 
 }
