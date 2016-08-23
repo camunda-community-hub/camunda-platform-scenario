@@ -8,6 +8,7 @@ import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.JobDelegate;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -40,6 +41,11 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
 
   public void fastForwardTime() {
     super.fastForwardTime(getDuedate());
+  }
+
+  @Override
+  protected Date getEndTime() {
+    return getDuedate();
   }
 
 }

@@ -118,4 +118,8 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     ClockUtil.setCurrentTime(toDate);
   }
 
+  protected Date getEndTime() {
+    return historicDelegate.getStartTime();
+  }
+
 }

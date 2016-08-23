@@ -12,9 +12,13 @@ import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.util.Feature;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +36,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
   private Set<String> executedHistoricActivityInstances = new HashSet<String>();
   private Set<String> startedHistoricActivityInstances = new HashSet<String>();
   private Set<String> passedHistoricActivityInstances = new HashSet<String>();
-  private Map<String, Object> startVariables = new HashMap<String, Object>();
+  private Map<String, Object> variables = new HashMap<String, Object>();
 
   private Scenario.Process scenario;
   private ProcessEngine processEngine;
@@ -57,7 +61,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
   @Override
   public ProcessRunner startBy(String processDefinitionKey, Map<String, Object> variables) {
     this.processDefinitionKey = processDefinitionKey;
-    this.startVariables = variables;
+    this.variables = variables;
     return this;
   }
 
@@ -128,7 +132,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
         @Override
         public ProcessInstance start() {
           if (fromActivityIds.isEmpty()) {
-            return ScenarioRunnerImpl.this.processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, startVariables);
+            return ScenarioRunnerImpl.this.processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
           } else {
             ProcessInstantiationBuilder builder = ScenarioRunnerImpl.this.processEngine.getRuntimeService().createProcessInstanceByKey(processDefinitionKey);
             for (String activityId: fromActivityIds.keySet()) {
@@ -139,8 +143,8 @@ public class ScenarioRunnerImpl implements ProcessRunner {
                 builder.startAfterActivity(activityId);
               }
             }
-            if (startVariables != null) {
-              builder.setVariables(startVariables);
+            if (variables != null) {
+              builder.setVariables(variables);
             }
             return builder.execute();
           }
@@ -171,27 +175,11 @@ public class ScenarioRunnerImpl implements ProcessRunner {
 
   private Waitstate nextWaitstate(boolean lastCall) {
     continueAsyncContinuations();
-    List<HistoricActivityInstance> instances = createWaitstateQuery().list();
-    for (HistoricActivityInstance instance: instances) {
-      if (instance.getActivityType().equals("intermediateTimer"))
-        continue;
-      if (isAvailable(instance, lastCall))
-        return Waitstate.newInstance(processEngine, instance);
-    }
-    return nextTimerEventWaitstate(lastCall);
-  }
-
-  private Waitstate nextTimerEventWaitstate(boolean lastCall) {
-    List<HistoricActivityInstance> instances = createWaitstateQuery().activityType("intermediateTimer").list();
-    if (!instances.isEmpty()) {
-      List<Job> timers = processEngine.getManagementService().createJobQuery().timers().orderByJobDuedate().asc().list();
-      for (Job timer: timers) {
-        for (HistoricActivityInstance instance: instances) {
-          if (instance.getExecutionId().equals(timer.getExecutionId()))
-            if (isAvailable(instance, lastCall))
-              return Waitstate.newInstance(processEngine, instance);
-        }
-      }
+    Iterator<Waitstate> it = getNextWaitstates().iterator();
+    while (it.hasNext()) {
+      Waitstate waitstate = it.next();
+      if (isAvailable(waitstate.historicDelegate, lastCall))
+        return waitstate;
     }
     return null;
   }
@@ -218,6 +206,21 @@ public class ScenarioRunnerImpl implements ProcessRunner {
 
   private HistoricActivityInstanceQuery createWaitstateQuery() {
     return processEngine.getHistoryService().createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).unfinished();
+  }
+
+  private List<Waitstate> getNextWaitstates() {
+    List<HistoricActivityInstance> instances = createWaitstateQuery().list();
+    List<Waitstate> waitstates = new ArrayList<Waitstate>();
+    for (HistoricActivityInstance instance: instances) {
+      waitstates.add(Waitstate.newInstance(processEngine, instance));
+    }
+    Collections.sort(waitstates, new Comparator<Waitstate>() {
+      @Override
+      public int compare(Waitstate one, Waitstate other) {
+        return one.getEndTime().compareTo(other.getEndTime());
+      }
+    });
+    return waitstates;
   }
 
   private boolean isAvailable(HistoricActivityInstance instance, boolean lastCall) {
