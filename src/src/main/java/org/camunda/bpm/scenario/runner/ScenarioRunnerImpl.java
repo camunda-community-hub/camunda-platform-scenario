@@ -28,7 +28,7 @@ import java.util.Set;
  */
 public class ScenarioRunnerImpl implements ProcessRunner {
 
-  private ProcessEngine processEngine;
+  protected ProcessEngine processEngine;
 
   private String processDefinitionKey;
   private ProcessStarter scenarioStarter;
@@ -36,6 +36,8 @@ public class ScenarioRunnerImpl implements ProcessRunner {
 
   private Scenario.Process scenario;
   private ProcessInstance processInstance;
+
+  private List<ScenarioRunnerImpl> runners = new ArrayList<ScenarioRunnerImpl>();
 
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
   private Map<String, Boolean> toActivityIds = new HashMap<String, Boolean>();
@@ -46,6 +48,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
 
   public ScenarioRunnerImpl(Scenario.Process scenario) {
     this.scenario = scenario;
+    this.runners.add(this);
   }
 
   @Override
@@ -143,7 +146,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
   }
 
   private AsyncContinuation nextAsyncContinuation() {
-    List<Job> jobs = processEngine.getManagementService().createJobQuery().list();
+    List<Job> jobs = processEngine.getManagementService().createJobQuery().processInstanceId(processInstance.getId()).list();
     for (Job job: jobs) {
       if (job instanceof MessageEntity) {
         MessageEntity entity = (MessageEntity) job;
