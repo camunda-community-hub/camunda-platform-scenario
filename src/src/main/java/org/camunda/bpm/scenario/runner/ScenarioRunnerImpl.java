@@ -28,19 +28,21 @@ import java.util.Set;
  */
 public class ScenarioRunnerImpl implements ProcessRunner {
 
-  private ProcessStarter scenarioStarter;
+  private ProcessEngine processEngine;
+
   private String processDefinitionKey;
+  private ProcessStarter scenarioStarter;
+  private Map<String, Object> variables = new HashMap<String, Object>();
+
+  private Scenario.Process scenario;
+  private ProcessInstance processInstance;
 
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
   private Map<String, Boolean> toActivityIds = new HashMap<String, Boolean>();
   private Set<String> executedHistoricActivityInstances = new HashSet<String>();
   private Set<String> startedHistoricActivityInstances = new HashSet<String>();
   private Set<String> passedHistoricActivityInstances = new HashSet<String>();
-  private Map<String, Object> variables = new HashMap<String, Object>();
-
-  private Scenario.Process scenario;
-  private ProcessEngine processEngine;
-  private ProcessInstance processInstance;
+  private Map<String, String> durations = new HashMap<String, String>();
 
   public ScenarioRunnerImpl(Scenario.Process scenario) {
     this.scenario = scenario;
@@ -65,41 +67,28 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     return this;
   }
 
-  protected ScenarioRunnerImpl running(ProcessInstance processInstance) {
-    this.processInstance = processInstance;
-    return this;
-  }
-
   @Override
   public ScenarioRunnerImpl fromBefore(String activityId, String... activityIds) {
-    put(true, true, activityId, activityIds);
+    setActivityIds(true, true, activityId, activityIds);
     return this;
   }
 
   @Override
   public ScenarioRunnerImpl fromAfter(String activityId, String... activityIds) {
-    put(true, false, activityId, activityIds);
+    setActivityIds(true, false, activityId, activityIds);
     return this;
   }
 
   @Override
   public ScenarioRunnerImpl toBefore(String activityId, String... activityIds) {
-    put(false, true, activityId, activityIds);
+    setActivityIds(false, true, activityId, activityIds);
     return this;
   }
 
   @Override
   public ScenarioRunnerImpl toAfter(String activityId, String... activityIds) {
-    put(false, false, activityId, activityIds);
+    setActivityIds(false, false, activityId, activityIds);
     return this;
-  }
-
-  private void put(Boolean from, Boolean before, String activityId, String... activityIds) {
-    Map<String, Boolean> map = from ? fromActivityIds : toActivityIds;
-    map.put(activityId, before);
-    for (String a: activityIds) {
-      map.put(a, before);
-    }
   }
 
   @Override
@@ -124,36 +113,6 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     return this;
   }
 
-  private void init(Scenario.Process scenario) {
-    engine(null);
-    this.scenario = scenario;
-    if (this.processInstance == null && this.scenarioStarter == null) {
-      this.scenarioStarter = new ProcessStarter() {
-        @Override
-        public ProcessInstance start() {
-          if (fromActivityIds.isEmpty()) {
-            return ScenarioRunnerImpl.this.processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
-          } else {
-            ProcessInstantiationBuilder builder = ScenarioRunnerImpl.this.processEngine.getRuntimeService().createProcessInstanceByKey(processDefinitionKey);
-            for (String activityId: fromActivityIds.keySet()) {
-              Boolean from = fromActivityIds.get(activityId);
-              if (from) {
-                builder.startBeforeActivity(activityId);
-              } else {
-                builder.startAfterActivity(activityId);
-              }
-            }
-            if (variables != null) {
-              builder.setVariables(variables);
-            }
-            return builder.execute();
-          }
-        }
-      };
-    }
-    ClockUtil.setCurrentTime(new Date());
-  }
-
   @Override
   public ProcessInstance execute() {
     init(scenario);
@@ -173,15 +132,12 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     return processInstance;
   }
 
-  private Waitstate nextWaitstate(boolean lastCall) {
-    continueAsyncContinuations();
-    Iterator<Waitstate> it = getNextWaitstates().iterator();
-    while (it.hasNext()) {
-      Waitstate waitstate = it.next();
-      if (isAvailable(waitstate.historicDelegate, lastCall))
-        return waitstate;
+  private void continueAsyncContinuations() {
+    AsyncContinuation asyncContinuation = nextAsyncContinuation();
+    while (asyncContinuation != null) {
+      asyncContinuation.leave();
+      asyncContinuation = nextAsyncContinuation();
     }
-    return null;
   }
 
   private AsyncContinuation nextAsyncContinuation() {
@@ -196,12 +152,15 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     return null;
   }
 
-  private void continueAsyncContinuations() {
-    AsyncContinuation asyncContinuation = nextAsyncContinuation();
-    while (asyncContinuation != null) {
-      asyncContinuation.leave();
-      asyncContinuation = nextAsyncContinuation();
+  private Waitstate nextWaitstate(boolean lastCall) {
+    continueAsyncContinuations();
+    Iterator<Waitstate> it = getNextWaitstates().iterator();
+    while (it.hasNext()) {
+      Waitstate waitstate = it.next();
+      if (isAvailable(waitstate.historicDelegate, lastCall))
+        return waitstate;
     }
+    return null;
   }
 
   private HistoricActivityInstanceQuery createWaitstateQuery() {
@@ -236,6 +195,13 @@ public class ScenarioRunnerImpl implements ProcessRunner {
           return true;
     }
     return false;
+  }
+
+  private String getDuration(HistoricActivityInstance instance) {
+    if (!durations.containsKey(instance.getId())) {
+      durations.put(instance.getId(), scenario.needsTimeUntilFinishing(instance.getActivityId()));
+    }
+    return durations.get(instance.getId());
   }
 
   private void setExecutedHistoricActivityIds() {
@@ -284,13 +250,47 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     }
   }
 
-  private Map<String, String> durations = new HashMap<String, String>();
+  protected ScenarioRunnerImpl running(ProcessInstance processInstance) {
+    this.processInstance = processInstance;
+    return this;
+  }
 
-  private String getDuration(HistoricActivityInstance instance) {
-    if (!durations.containsKey(instance.getId())) {
-      durations.put(instance.getId(), scenario.needsTimeUntilFinishing(instance.getActivityId()));
+  private void setActivityIds(Boolean from, Boolean before, String activityId, String... activityIds) {
+    Map<String, Boolean> map = from ? fromActivityIds : toActivityIds;
+    map.put(activityId, before);
+    for (String a: activityIds) {
+      map.put(a, before);
     }
-    return durations.get(instance.getId());
+  }
+
+  private void init(Scenario.Process scenario) {
+    engine(null);
+    this.scenario = scenario;
+    if (this.processInstance == null && this.scenarioStarter == null) {
+      this.scenarioStarter = new ProcessStarter() {
+        @Override
+        public ProcessInstance start() {
+          if (fromActivityIds.isEmpty()) {
+            return ScenarioRunnerImpl.this.processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
+          } else {
+            ProcessInstantiationBuilder builder = ScenarioRunnerImpl.this.processEngine.getRuntimeService().createProcessInstanceByKey(processDefinitionKey);
+            for (String activityId: fromActivityIds.keySet()) {
+              Boolean from = fromActivityIds.get(activityId);
+              if (from) {
+                builder.startBeforeActivity(activityId);
+              } else {
+                builder.startAfterActivity(activityId);
+              }
+            }
+            if (variables != null) {
+              builder.setVariables(variables);
+            }
+            return builder.execute();
+          }
+        }
+      };
+    }
+    ClockUtil.setCurrentTime(new Date());
   }
 
 }
