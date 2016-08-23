@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> implements EventBasedGateway {
 
-  public EventBasedGatewayWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
-    super(processEngine, instance);
+  public EventBasedGatewayWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
+    super(processEngine, instance, duration);
   }
 
   @Override
@@ -95,13 +95,6 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
   public void receiveMessage(String activityId, Map<String, Object> variables) {
     EventSubscription subscription = getMessageEventSubscription(activityId);
     getRuntimeService().messageEventReceived(subscription.getEventName(), subscription.getExecutionId(), variables);
-  }
-
-  public void fastForwardTime() {
-    Job timer = getTimer();
-    if (timer == null)
-      throw new IllegalStateException("Event Based Gateway does not have a timer job");
-    super.fastForwardTime(timer.getDuedate());
   }
 
 }

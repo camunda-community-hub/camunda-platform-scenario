@@ -13,8 +13,8 @@ import java.util.Date;
  */
 public abstract class TaskDelegate extends Waitstate<Task> implements Task {
 
-  public TaskDelegate(ProcessEngine processEngine, HistoricActivityInstance instance) {
-    super(processEngine, instance);
+  public TaskDelegate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
+    super(processEngine, instance, duration);
   }
 
   public String getId() {

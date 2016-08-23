@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public abstract class ExternalTaskDelegate extends Waitstate<ExternalTask> implements ExternalTask {
 
-  public ExternalTaskDelegate(ProcessEngine processEngine, HistoricActivityInstance instance) {
-    super(processEngine, instance);
+  public ExternalTaskDelegate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
+    super(processEngine, instance, duration);
   }
 
   public String getId() {

@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public abstract class EventSubscriptionDelegate extends Waitstate<EventSubscription> implements EventSubscription {
 
-  public EventSubscriptionDelegate(ProcessEngine processEngine, HistoricActivityInstance instance) {
-    super(processEngine, instance);
+  public EventSubscriptionDelegate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
+    super(processEngine, instance, duration);
   }
 
   public String getId() {

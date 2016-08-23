@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public abstract class JobDelegate extends Waitstate<Job> implements Job {
 
-  public JobDelegate(ProcessEngine processEngine, HistoricActivityInstance instance) {
-    super(processEngine, instance);
+  public JobDelegate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
+    super(processEngine, instance, duration);
   }
 
   public String getId() {

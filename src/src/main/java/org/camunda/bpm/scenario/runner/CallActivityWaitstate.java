@@ -15,8 +15,8 @@ import java.util.Map;
  */
 public class CallActivityWaitstate extends ProcessInstanceDelegate {
 
-  public CallActivityWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
-    super(processEngine, instance);
+  public CallActivityWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
+    super(processEngine, instance, duration);
   }
 
   @Override

@@ -164,7 +164,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
       while (waitstate != null) {
         setExecutedHistoricActivityIds();
         waitstate.execute(scenario);
-        if (waitstate.unfinished())
+        if (waitstate.isExecuted())
           executedHistoricActivityInstances.add(waitstate.historicDelegate.getId());
         waitstate = nextWaitstate(lastCall);
       }
@@ -212,7 +212,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     List<HistoricActivityInstance> instances = createWaitstateQuery().list();
     List<Waitstate> waitstates = new ArrayList<Waitstate>();
     for (HistoricActivityInstance instance: instances) {
-      waitstates.add(Waitstate.newInstance(processEngine, instance));
+      waitstates.add(Waitstate.newInstance(processEngine, instance, getDuration(instance)));
     }
     Collections.sort(waitstates, new Comparator<Waitstate>() {
       @Override
@@ -282,6 +282,15 @@ public class ScenarioRunnerImpl implements ProcessRunner {
         startedHistoricActivityInstances.add(instance.getId());
       }
     }
+  }
+
+  private Map<String, String> durations = new HashMap<String, String>();
+
+  private String getDuration(HistoricActivityInstance instance) {
+    if (!durations.containsKey(instance.getId())) {
+      durations.put(instance.getId(), scenario.needsTimeUntilFinishing(instance.getActivityId()));
+    }
+    return durations.get(instance.getId());
   }
 
 }

@@ -49,6 +49,8 @@ public class Scenario {
 
     CallActivityRunner atCallActivity(String activityId);
 
+    String needsTimeUntilFinishing(String activityId);
+
   }
 
 }

@@ -17,8 +17,8 @@ public class ServiceTaskWaitstate extends ExternalTaskDelegate {
 
   private static final String WORKER_ID = "workerId";
 
-  public ServiceTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
-    super(processEngine, instance);
+  public ServiceTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
+    super(processEngine, instance, duration);
   }
 
   @Override

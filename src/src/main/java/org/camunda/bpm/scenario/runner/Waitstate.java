@@ -20,6 +20,8 @@ import java.util.Map;
  */
 public abstract class Waitstate<I> extends Savepoint<I> {
 
+  protected boolean executed;
+
   private static Map<String, String> classNames = new HashMap<String, String>(); static {
     classNames.put("userTask", "UserTaskWaitstate");
     classNames.put("intermediateSignalCatch", "SignalIntermediateCatchEventWaitstate");
@@ -33,23 +35,25 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     classNames.put("intermediateMessageThrow", "MessageIntermediateThrowEventWaitstate");
   }
 
-  protected static Waitstate newInstance(ProcessEngine engine, HistoricActivityInstance instance) {
+  protected static Waitstate newInstance(ProcessEngine engine, HistoricActivityInstance instance, String duration) {
     if (classNames.containsKey(instance.getActivityType())) {
       try {
-        return (Waitstate) Class.forName(Waitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessEngine.class, HistoricActivityInstance.class).newInstance(engine, instance);
+        return (Waitstate) Class.forName(Waitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessEngine.class, HistoricActivityInstance.class, String.class).newInstance(engine, instance, duration);
       } catch (Exception e) {
         throw new IllegalArgumentException(e);
       }
     }
-    return new IgnoredWaitstate(engine, instance);
+    return new IgnoredWaitstate(engine, instance, duration);
   }
 
   protected HistoricActivityInstance historicDelegate;
+  protected String duration;
 
-  protected Waitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
+  protected Waitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
     super(processEngine);
     this.historicDelegate = instance;
     this.runtimeDelegate = getRuntimeDelegate();
+    this.duration = duration;
   }
 
   @Override
@@ -69,15 +73,18 @@ public abstract class Waitstate<I> extends Savepoint<I> {
           + getProcessInstance().getProcessInstanceId() + "} "
           + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
           + " '" + historicDelegate.getActivityId() +"'.");
-    action.execute(this);
+    if (fastForward()) {
+      action.execute(this);
+      executed = true;
+    }
   }
 
   protected abstract ScenarioAction action(Scenario.Process scenario);
 
   protected abstract void leave(Map<String, Object> variables);
 
-  protected boolean unfinished() {
-    return getHistoryService().createHistoricActivityInstanceQuery().activityInstanceId(historicDelegate.getId()).unfinished().singleResult() != null;
+  protected boolean isExecuted() {
+    return executed;
   }
 
   public SignalEventReceivedBuilder createSignal(String signalName) {
@@ -88,38 +95,43 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     return getRuntimeService().createMessageCorrelation(messageName);
   }
 
-  public void fastForwardTime(String duration) {
-    Date end;
-    try {
-      if (duration == null || !duration.startsWith("P")) {
-        throw new IllegalArgumentException("Provided argument '" + duration + "' is not a duration expression.");
+  protected boolean fastForward() {
+    Date endTime = getEndTime();
+    List<Job> next = getManagementService().createJobQuery().timers().orderByJobDuedate().asc().listPage(0,1);
+    if (!next.isEmpty()) {
+      Job timer = next.get(0);
+      if (!isSelf(timer) && timer.getDuedate().getTime() <= endTime.getTime()) {
+        ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime() + 1));
+        getManagementService().executeJob(timer.getId());
+        ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime()));
+        return false;
       }
-      DurationHelper durationHelper = new DurationHelper(duration);
-      end = durationHelper.getDateAfter();
-    } catch (Exception e) {
-      throw new RuntimeException(e);
     }
-    fastForwardTime(end);
+    ClockUtil.setCurrentTime(endTime);
+    return true;
   }
 
-  public void fastForwardTime(Date toDate) {
-    if (new Date().getTime() >= toDate.getTime())
-      throw new IllegalArgumentException("Provided argument '" + toDate + "' must not be in the past.");
-    List<Job> next;
-    do {
-      next = getManagementService().createJobQuery().timers().orderByJobDuedate().asc().listPage(0,1);
-      if (!next.isEmpty()) {
-        if (next.get(0).getDuedate().getTime() <= toDate.getTime()) {
-          ClockUtil.setCurrentTime(new Date(next.get(0).getDuedate().getTime() + 1));
-          getManagementService().executeJob(next.get(0).getId());
-        }
-      }
-    } while (!next.isEmpty() && next.get(0).getDuedate().getTime() <= toDate.getTime());
-    ClockUtil.setCurrentTime(toDate);
+  protected boolean isSelf(Job timer) {
+    return false;
   }
 
   protected Date getEndTime() {
-    return historicDelegate.getStartTime();
+    Date endTime = historicDelegate.getStartTime();
+    if (duration != null) {
+      try {
+        if (duration == null || !duration.startsWith("P")) {
+          throw new IllegalArgumentException("Provided argument '" + duration + "' is not a duration expression.");
+        }
+        Date now = ClockUtil.getCurrentTime();
+        ClockUtil.setCurrentTime(historicDelegate.getStartTime());
+        DurationHelper durationHelper = new DurationHelper(duration);
+        endTime = durationHelper.getDateAfter();
+        ClockUtil.setCurrentTime(now);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return endTime;
   }
 
 }

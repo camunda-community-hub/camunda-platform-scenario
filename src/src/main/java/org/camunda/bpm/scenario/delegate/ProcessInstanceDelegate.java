@@ -10,8 +10,8 @@ import org.camunda.bpm.scenario.runner.Waitstate;
  */
 public abstract class ProcessInstanceDelegate extends Waitstate<ProcessInstance> implements ProcessInstance {
 
-  public ProcessInstanceDelegate(ProcessEngine processEngine, HistoricActivityInstance instance) {
-    super(processEngine, instance);
+  public ProcessInstanceDelegate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
+    super(processEngine, instance, duration);
   }
 
   public String getProcessDefinitionId() {

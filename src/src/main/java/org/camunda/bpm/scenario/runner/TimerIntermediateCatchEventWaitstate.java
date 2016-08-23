@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
 
-  public TimerIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance) {
-    super(processEngine, instance);
+  public TimerIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
+    super(processEngine, instance, duration);
   }
 
   @Override
@@ -39,8 +39,13 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
     leave();
   }
 
-  public void fastForwardTime() {
-    super.fastForwardTime(getDuedate());
+  @Override
+  protected boolean isSelf(Job timer) {
+    return !timer.getId().equals(getId());
+  }
+
+  public void trigger() {
+    leave();
   }
 
   @Override
