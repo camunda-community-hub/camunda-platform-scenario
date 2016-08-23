@@ -262,8 +262,9 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", true));
     });
 
+    when(documentRequest.needsTimeUntilFinishing("ReceiveTaskWaitForDocuments")).thenReturn("P1D");
+
     when(documentRequest.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      receiveTask.fastForwardTime("P1D");
       receiveTask.receiveMessage();
     });
 
@@ -296,9 +297,7 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      receiveTask.fastForwardTime("P7D");
-    });
+    when(documentRequest.needsTimeUntilFinishing("ReceiveTaskWaitForDocuments")).thenReturn("P7D");
 
     // when
 
