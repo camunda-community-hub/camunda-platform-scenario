@@ -72,7 +72,7 @@ public class InsuranceApplicationProcessTest {
 
     when(insuranceApplication.atCallActivity("CallActivityDocumentRequest")).thenReturn((processInstance) -> {
       assertThat(processInstance).isStarted();
-      processInstance.runner().execute(documentRequest);
+      processInstance.run(documentRequest).execute();
     });
 
     when(documentRequest.atSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
@@ -102,9 +102,9 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.process("InsuranceApplication") // either just start process by key ...
-      .variables(variables)
-      .execute(insuranceApplication);
+    ProcessInstance pi = Scenario.run(insuranceApplication)
+        .startBy("InsuranceApplication", variables) // either just start process by key ...
+        .execute();
 
     // then
 
@@ -125,10 +125,11 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.process(() -> { // ... or define your own starter function
+    ProcessInstance pi = Scenario.run(insuranceApplication)
+      .startBy(() -> { // ... or define your own starter function
         return rule.getRuntimeService().startProcessInstanceByKey("InsuranceApplication", variables);
       })
-      .execute(insuranceApplication);
+      .execute();
 
     // then
 
@@ -150,9 +151,9 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.process("InsuranceApplication")
-      .variables(variables)
-      .execute(insuranceApplication);
+    ProcessInstance pi = Scenario.run(insuranceApplication)
+        .startBy("InsuranceApplication", variables)
+        .execute();
 
     // then
 
@@ -175,9 +176,9 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.process("InsuranceApplication")
-      .variables(variables)
-      .execute(insuranceApplication);
+    ProcessInstance pi = Scenario.run(insuranceApplication)
+        .startBy("InsuranceApplication", variables)
+        .execute();
 
     // then
 
@@ -206,9 +207,9 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    ProcessInstance pi = Scenario.process("InsuranceApplication")
-      .variables(variables)
-      .execute(insuranceApplication);
+    ProcessInstance pi = Scenario.run(insuranceApplication)
+        .startBy("InsuranceApplication", variables)
+        .execute();
 
     // then
 
@@ -238,9 +239,9 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    Scenario.process("InsuranceApplication")
-      .variables(variables)
-      .execute(insuranceApplication);
+    ProcessInstance pi = Scenario.run(insuranceApplication)
+        .startBy("InsuranceApplication", variables)
+        .execute();
 
     // then
 
@@ -270,9 +271,9 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    Scenario.process("InsuranceApplication")
-      .variables(variables)
-      .execute(insuranceApplication);
+    ProcessInstance pi = Scenario.run(insuranceApplication)
+        .startBy("InsuranceApplication", variables)
+        .execute();
 
     // then
 
@@ -303,9 +304,9 @@ public class InsuranceApplicationProcessTest {
 
     // when
 
-    Scenario.process("InsuranceApplication")
-      .variables(variables)
-      .execute(insuranceApplication);
+    ProcessInstance pi = Scenario.run(insuranceApplication)
+        .startBy("InsuranceApplication", variables)
+        .execute();
 
     // then
 
