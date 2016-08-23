@@ -122,9 +122,11 @@ public class ScenarioRunnerImpl implements ProcessRunner {
       Waitstate waitstate = nextWaitstate(lastCall);
       while (waitstate != null) {
         setExecutedHistoricActivityIds();
-        waitstate.execute(scenario);
-        if (waitstate.isExecuted())
+        boolean executable = fastForward(waitstate);
+        if (executable) {
+          waitstate.execute(scenario);
           executedHistoricActivityInstances.add(waitstate.historicDelegate.getId());
+        }
         waitstate = nextWaitstate(lastCall);
       }
     }
@@ -150,6 +152,22 @@ public class ScenarioRunnerImpl implements ProcessRunner {
       }
     }
     return null;
+  }
+
+  protected boolean fastForward(Waitstate waitstate) {
+    Date endTime = waitstate.getEndTime();
+    List<Job> next = processEngine.getManagementService().createJobQuery().timers().orderByJobDuedate().asc().listPage(0,1);
+    if (!next.isEmpty()) {
+      Job timer = next.get(0);
+      if (!waitstate.isSelf(timer) && timer.getDuedate().getTime() <= endTime.getTime()) {
+        ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime() + 1));
+        processEngine.getManagementService().executeJob(timer.getId());
+        ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime()));
+        return false;
+      }
+    }
+    ClockUtil.setCurrentTime(endTime);
+    return true;
   }
 
   private Waitstate nextWaitstate(boolean lastCall) {

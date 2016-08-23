@@ -20,8 +20,6 @@ import java.util.Map;
  */
 public abstract class Waitstate<I> extends Savepoint<I> {
 
-  protected boolean executed;
-
   private static Map<String, String> classNames = new HashMap<String, String>(); static {
     classNames.put("userTask", "UserTaskWaitstate");
     classNames.put("intermediateSignalCatch", "SignalIntermediateCatchEventWaitstate");
@@ -73,19 +71,12 @@ public abstract class Waitstate<I> extends Savepoint<I> {
           + getProcessInstance().getProcessInstanceId() + "} "
           + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
           + " '" + historicDelegate.getActivityId() +"'.");
-    if (fastForward()) {
-      action.execute(this);
-      executed = true;
-    }
+    action.execute(this);
   }
 
   protected abstract ScenarioAction action(Scenario.Process scenario);
 
   protected abstract void leave(Map<String, Object> variables);
-
-  protected boolean isExecuted() {
-    return executed;
-  }
 
   public SignalEventReceivedBuilder createSignal(String signalName) {
     return getRuntimeService().createSignalEvent(signalName);
@@ -93,22 +84,6 @@ public abstract class Waitstate<I> extends Savepoint<I> {
 
   public MessageCorrelationBuilder createMessage(String messageName) {
     return getRuntimeService().createMessageCorrelation(messageName);
-  }
-
-  protected boolean fastForward() {
-    Date endTime = getEndTime();
-    List<Job> next = getManagementService().createJobQuery().timers().orderByJobDuedate().asc().listPage(0,1);
-    if (!next.isEmpty()) {
-      Job timer = next.get(0);
-      if (!isSelf(timer) && timer.getDuedate().getTime() <= endTime.getTime()) {
-        ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime() + 1));
-        getManagementService().executeJob(timer.getId());
-        ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime()));
-        return false;
-      }
-    }
-    ClockUtil.setCurrentTime(endTime);
-    return true;
   }
 
   protected boolean isSelf(Job timer) {

@@ -18,7 +18,6 @@ public class IgnoredWaitstate extends Waitstate<Object> {
 
   @Override
   protected void execute(Scenario.Process scenario) {
-    this.executed = true;
   }
 
   @Override
