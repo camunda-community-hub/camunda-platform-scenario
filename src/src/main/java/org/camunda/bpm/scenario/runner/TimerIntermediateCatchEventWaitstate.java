@@ -1,7 +1,6 @@
 package org.camunda.bpm.scenario.runner;
 
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.Scenario;
@@ -16,7 +15,7 @@ import java.util.Map;
  */
 public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
 
-  public TimerIntermediateCatchEventWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public TimerIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
     if (duration != null) {
       throw new IllegalStateException("Found a duration '" + duration + "' set. " +

@@ -1,7 +1,6 @@
 package org.camunda.bpm.scenario.runner;
 
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.Scenario;
@@ -17,7 +16,7 @@ public class ServiceTaskWaitstate extends ExternalTaskDelegate {
 
   private static final String WORKER_ID = "workerId";
 
-  public ServiceTaskWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public ServiceTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

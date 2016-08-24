@@ -1,7 +1,6 @@
 package org.camunda.bpm.scenario.runner;
 
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
@@ -13,7 +12,7 @@ import java.util.Map;
  */
 public class SendTaskWaitstate extends ServiceTaskWaitstate {
 
-  public SendTaskWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public SendTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

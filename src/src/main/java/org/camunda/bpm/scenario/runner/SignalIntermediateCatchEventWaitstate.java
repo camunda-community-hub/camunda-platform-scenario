@@ -1,7 +1,6 @@
 package org.camunda.bpm.scenario.runner;
 
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.scenario.Scenario;
@@ -15,7 +14,7 @@ import java.util.Map;
  */
 public class SignalIntermediateCatchEventWaitstate extends EventSubscriptionDelegate {
 
-  public SignalIntermediateCatchEventWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public SignalIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

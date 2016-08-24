@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.delegate;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
+import org.camunda.bpm.scenario.runner.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.runner.Waitstate;
 
 /**
@@ -10,7 +10,7 @@ import org.camunda.bpm.scenario.runner.Waitstate;
  */
 public abstract class ProcessInstanceDelegate extends Waitstate<ProcessInstance> implements ProcessInstance {
 
-  public ProcessInstanceDelegate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public ProcessInstanceDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.delegate;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
-import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
+import org.camunda.bpm.scenario.runner.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.runner.Waitstate;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public abstract class JobDelegate extends Waitstate<Job> implements Job {
 
-  public JobDelegate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public JobDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

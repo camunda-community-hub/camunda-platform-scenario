@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.delegate;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
-import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
+import org.camunda.bpm.scenario.runner.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.runner.Waitstate;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public abstract class EventSubscriptionDelegate extends Waitstate<EventSubscription> implements EventSubscription {
 
-  public EventSubscriptionDelegate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public EventSubscriptionDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

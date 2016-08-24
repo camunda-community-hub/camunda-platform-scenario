@@ -4,7 +4,6 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.history.HistoricActivityInstanceQuery;
 import org.camunda.bpm.engine.impl.persistence.entity.MessageEntity;
-import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
@@ -23,9 +22,9 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ScenarioRunnerImpl implements ProcessRunner {
+public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessInstance> {
 
-  protected ScenarioExecutorImpl scenarioExecutor;
+  protected ScenarioExecutor scenarioExecutor;
 
   private String processDefinitionKey;
   private ProcessStarter scenarioStarter;
@@ -38,7 +37,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
   private Map<String, Boolean> toActivityIds = new HashMap<String, Boolean>();
   private Map<String, String> durations = new HashMap<String, String>();
 
-  public ScenarioRunnerImpl(ScenarioExecutorImpl scenarioExecutor, Scenario.Process scenario) {
+  public ProcessRunnerImpl(ScenarioExecutor scenarioExecutor, Scenario.Process scenario) {
     this.scenarioExecutor = scenarioExecutor;
     this.scenario = scenario;
   }
@@ -46,49 +45,50 @@ public class ScenarioRunnerImpl implements ProcessRunner {
   @Override
   public ProcessRunner startBy(ProcessStarter scenarioStarter) {
     this.scenarioStarter = scenarioStarter;
-    return scenarioExecutor == null ? this : scenarioExecutor;
+    return this;
   }
 
   @Override
   public ProcessRunner startBy(String processDefinitionKey) {
     this.processDefinitionKey = processDefinitionKey;
-    return scenarioExecutor == null ? this : scenarioExecutor;
+    return this;
   }
 
   @Override
   public ProcessRunner startBy(String processDefinitionKey, Map<String, Object> variables) {
     this.processDefinitionKey = processDefinitionKey;
     this.variables = variables;
-    return scenarioExecutor == null ? this : scenarioExecutor;
+    return this;
   }
 
   @Override
   public ProcessRunner fromBefore(String activityId, String... activityIds) {
     setActivityIds(true, true, activityId, activityIds);
-    return scenarioExecutor == null ? this : scenarioExecutor;
+    return this;
   }
 
   @Override
   public ProcessRunner fromAfter(String activityId, String... activityIds) {
     setActivityIds(true, false, activityId, activityIds);
-    return scenarioExecutor == null ? this : scenarioExecutor;
+    return this;
   }
 
   @Override
   public ProcessRunner toBefore(String activityId, String... activityIds) {
     setActivityIds(false, true, activityId, activityIds);
-    return scenarioExecutor == null ? this : scenarioExecutor;
+    return this;
   }
 
   @Override
   public ProcessRunner toAfter(String activityId, String... activityIds) {
     setActivityIds(false, false, activityId, activityIds);
-    return scenarioExecutor == null ? this : scenarioExecutor;
+    return this;
   }
 
   @Override
   public ProcessRunner engine(ProcessEngine processEngine) {
-    return scenarioExecutor.engine(processEngine);
+    scenarioExecutor.engine(processEngine);
+    return this;
   }
 
   @Override
@@ -111,7 +111,8 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     setExecutedHistoricActivityIds();
   }
 
-  protected ProcessInstance run() {
+  @Override
+  public ProcessInstance run() {
     if (this.processInstance == null && this.scenarioStarter == null) {
       this.scenarioStarter = new ProcessStarter() {
         @Override
@@ -141,7 +142,8 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     return this.processInstance;
   }
 
-  protected Waitstate nextWaitstate(boolean lastCall) {
+  @Override
+  public Waitstate nextWaitstate(boolean lastCall) {
     continueAsyncContinuations();
     Iterator<Waitstate> it = getNextWaitstates().iterator();
     while (it.hasNext()) {
@@ -194,12 +196,8 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     return null;
   }
 
-  private HistoricActivityInstanceQuery createWaitstateQuery() {
-    return scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).unfinished();
-  }
-
   private List<Waitstate> getNextWaitstates() {
-    List<HistoricActivityInstance> instances = createWaitstateQuery().list();
+    List<HistoricActivityInstance> instances = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).unfinished().list();
     List<Waitstate> waitstates = new ArrayList<Waitstate>();
     for (HistoricActivityInstance instance: instances) {
       waitstates.add(Waitstate.newInstance(this, instance, getDuration(instance)));
@@ -216,7 +214,6 @@ public class ScenarioRunnerImpl implements ProcessRunner {
   void setExecutedHistoricActivityIds() {
     List<HistoricActivityInstance> instances;
     boolean supportsCanceled = Feature.warnIfNotSupported(HistoricActivityInstanceQuery.class.getName(), "canceled");
-    // TODO determine executed historic activity ids for all runners
     if (supportsCanceled) {
       instances = scenarioExecutor.processEngine.getHistoryService()
           .createHistoricActivityInstanceQuery()
@@ -260,7 +257,8 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     }
   }
 
-  protected Job nextTimerUntil(Date endTime) {
+  @Override
+  public Job nextTimerUntil(Date endTime) {
     List<Job> next = scenarioExecutor.processEngine.getManagementService().createJobQuery().timers().processInstanceId(processInstance.getId()).orderByJobDuedate().asc().listPage(0,1);
     if (!next.isEmpty()) {
       Job timer = next.get(0);

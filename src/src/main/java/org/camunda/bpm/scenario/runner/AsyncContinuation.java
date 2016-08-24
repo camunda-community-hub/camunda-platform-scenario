@@ -1,6 +1,5 @@
 package org.camunda.bpm.scenario.runner;
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.Job;
 
 /**
@@ -10,7 +9,7 @@ public class AsyncContinuation extends Savepoint<Job> {
 
   protected String executionId;
 
-  protected AsyncContinuation(ScenarioRunnerImpl runner, String executionId) {
+  protected AsyncContinuation(ProcessRunnerImpl runner, String executionId) {
     super(runner);
     this.executionId = executionId;
     this.runtimeDelegate = getRuntimeDelegate();

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> implements EventBasedGateway {
 
-  public EventBasedGatewayWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public EventBasedGatewayWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

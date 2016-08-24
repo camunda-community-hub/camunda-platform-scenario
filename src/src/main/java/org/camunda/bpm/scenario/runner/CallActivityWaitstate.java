@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class CallActivityWaitstate extends ProcessInstanceDelegate {
 
-  public CallActivityWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public CallActivityWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 
@@ -28,7 +28,7 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
     return new CallActivityAction() {
       @Override
       public void execute(CallActivityWaitstate runtimeInstance) {
-        ScenarioRunnerImpl runner = (ScenarioRunnerImpl) scenario.atCallActivity(getActivityId());
+        ProcessRunnerImpl runner = (ProcessRunnerImpl) scenario.atCallActivity(getActivityId());
         runner.running(runtimeInstance);
       }
     };

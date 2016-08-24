@@ -1,7 +1,5 @@
 package org.camunda.bpm.scenario.runner;
 
-import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.runtime.Execution;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.delegate.ProcessEngineServicesDelegate;
 
@@ -10,10 +8,10 @@ import org.camunda.bpm.scenario.delegate.ProcessEngineServicesDelegate;
  */
 public abstract class Savepoint<I> extends ProcessEngineServicesDelegate {
 
-  protected ScenarioRunnerImpl runner;
+  protected ProcessRunnerImpl runner;
   protected I runtimeDelegate;
 
-  protected Savepoint(ScenarioRunnerImpl runner) {
+  protected Savepoint(ProcessRunnerImpl runner) {
     super(runner.scenarioExecutor.processEngine);
     this.runner = runner;
   }

@@ -12,8 +12,8 @@ import org.camunda.bpm.scenario.action.UserTaskAction;
 import org.camunda.bpm.scenario.runner.CallActivityRunner;
 import org.camunda.bpm.scenario.runner.ScenarioHistory;
 import org.camunda.bpm.scenario.runner.ProcessRunner;
-import org.camunda.bpm.scenario.runner.ScenarioExecutorImpl;
-import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
+import org.camunda.bpm.scenario.runner.ScenarioExecutor;
+import org.camunda.bpm.scenario.runner.ProcessRunnerImpl;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -21,11 +21,11 @@ import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
 public class Scenario {
 
   public static ProcessRunner run(Process scenario) {
-    return new ScenarioExecutorImpl(scenario);
+    return (ProcessRunner) new ScenarioExecutor(scenario).runners.get(0);
   }
 
   public static CallActivityRunner use(Process scenario) {
-    return new ScenarioRunnerImpl(null, scenario);
+    return new ProcessRunnerImpl(null, scenario);
   }
 
   public interface Process extends ScenarioHistory {

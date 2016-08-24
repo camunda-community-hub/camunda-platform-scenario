@@ -30,10 +30,10 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     classNames.put("intermediateMessageThrow", "MessageIntermediateThrowEventWaitstate");
   }
 
-  protected static Waitstate newInstance(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  protected static Waitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     if (classNames.containsKey(instance.getActivityType())) {
       try {
-        return (Waitstate) Class.forName(Waitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ScenarioRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
+        return (Waitstate) Class.forName(Waitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
       } catch (Exception e) {
         throw new IllegalArgumentException(e);
       }
@@ -44,7 +44,7 @@ public abstract class Waitstate<I> extends Savepoint<I> {
   protected HistoricActivityInstance historicDelegate;
   protected String duration;
 
-  protected Waitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  protected Waitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner);
     this.historicDelegate = instance;
     this.runtimeDelegate = getRuntimeDelegate();

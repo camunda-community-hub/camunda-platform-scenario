@@ -1,6 +1,5 @@
 package org.camunda.bpm.scenario.runner;
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.scenario.Scenario;
@@ -14,7 +13,7 @@ import java.util.Map;
  */
 public class UserTaskWaitstate extends TaskDelegate {
 
-  public UserTaskWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public UserTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 
