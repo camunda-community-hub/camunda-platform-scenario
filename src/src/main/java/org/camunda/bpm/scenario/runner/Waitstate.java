@@ -27,7 +27,7 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     classNames.put("callActivity", "CallActivityWaitstate");
     classNames.put("serviceTask", "ServiceTaskWaitstate");
     classNames.put("sendTask", "SendTaskWaitstate");
-    classNames.put("intermediateMessageThrow", "MessageIntermediateThrowEventWaitstate");
+    classNames.put("intermediateMessageThrowEvent", "MessageIntermediateThrowEventWaitstate");
   }
 
   protected static Waitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
