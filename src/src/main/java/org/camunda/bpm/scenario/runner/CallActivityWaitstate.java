@@ -1,6 +1,5 @@
 package org.camunda.bpm.scenario.runner;
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.Scenario;
@@ -15,8 +14,8 @@ import java.util.Map;
  */
 public class CallActivityWaitstate extends ProcessInstanceDelegate {
 
-  public CallActivityWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
-    super(processEngine, instance, duration);
+  public CallActivityWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+    super(runner, instance, duration);
   }
 
   @Override
@@ -30,7 +29,7 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
       @Override
       public void execute(CallActivityWaitstate runtimeInstance) {
         ScenarioRunnerImpl runner = (ScenarioRunnerImpl) scenario.atCallActivity(getActivityId());
-        runner.running(runtimeInstance).execute();
+        runner.running(runtimeInstance);
       }
     };
   }
@@ -41,10 +40,6 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
 
   protected void leave(Map<String, Object> variables) {
     throw new UnsupportedOperationException();
-  }
-
-  public ScenarioRunnerImpl run(Scenario.Process scenario) {
-    return new ScenarioRunnerImpl(scenario).running(getRuntimeDelegate());
   }
 
 }

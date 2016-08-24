@@ -1,10 +1,8 @@
 package org.camunda.bpm.scenario.runner;
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.calendar.DurationHelper;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
-import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.MessageCorrelationBuilder;
 import org.camunda.bpm.engine.runtime.SignalEventReceivedBuilder;
 import org.camunda.bpm.scenario.Scenario;
@@ -12,7 +10,6 @@ import org.camunda.bpm.scenario.action.ScenarioAction;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,22 +30,22 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     classNames.put("intermediateMessageThrow", "MessageIntermediateThrowEventWaitstate");
   }
 
-  protected static Waitstate newInstance(ProcessEngine engine, HistoricActivityInstance instance, String duration) {
+  protected static Waitstate newInstance(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     if (classNames.containsKey(instance.getActivityType())) {
       try {
-        return (Waitstate) Class.forName(Waitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessEngine.class, HistoricActivityInstance.class, String.class).newInstance(engine, instance, duration);
+        return (Waitstate) Class.forName(Waitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ScenarioRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
       } catch (Exception e) {
         throw new IllegalArgumentException(e);
       }
     }
-    return new IgnoredWaitstate(engine, instance, duration);
+    return new IgnoredWaitstate(runner, instance, duration);
   }
 
   protected HistoricActivityInstance historicDelegate;
   protected String duration;
 
-  protected Waitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
-    super(processEngine);
+  protected Waitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+    super(runner);
     this.historicDelegate = instance;
     this.runtimeDelegate = getRuntimeDelegate();
     this.duration = duration;
@@ -63,8 +60,8 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     return historicDelegate.getActivityId();
   }
 
-  protected void execute(Scenario.Process scenario) {
-    ScenarioAction action = action(scenario);
+  protected void execute() {
+    ScenarioAction action = action(runner.scenario);
     if (action == null)
       throw new AssertionError("Process Instance {"
           + getProcessInstance().getProcessDefinitionId() + ", "
@@ -72,6 +69,7 @@ public abstract class Waitstate<I> extends Savepoint<I> {
           + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
           + " '" + historicDelegate.getActivityId() +"'.");
     action.execute(this);
+    runner.setExecutedHistoricActivityIds();
   }
 
   protected abstract ScenarioAction action(Scenario.Process scenario);

@@ -10,8 +10,8 @@ public class AsyncContinuation extends Savepoint<Job> {
 
   protected String executionId;
 
-  protected AsyncContinuation(ProcessEngine processEngine, String executionId) {
-    super(processEngine);
+  protected AsyncContinuation(ScenarioRunnerImpl runner, String executionId) {
+    super(runner);
     this.executionId = executionId;
     this.runtimeDelegate = getRuntimeDelegate();
   }

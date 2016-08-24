@@ -1,8 +1,8 @@
 package org.camunda.bpm.scenario.delegate;
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
+import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
 import org.camunda.bpm.scenario.runner.Waitstate;
 
 import java.util.Date;
@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public abstract class ExternalTaskDelegate extends Waitstate<ExternalTask> implements ExternalTask {
 
-  public ExternalTaskDelegate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
-    super(processEngine, instance, duration);
+  public ExternalTaskDelegate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+    super(runner, instance, duration);
   }
 
   public String getId() {

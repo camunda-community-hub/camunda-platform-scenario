@@ -12,12 +12,12 @@ import java.util.Map;
  */
 public class IgnoredWaitstate extends Waitstate<Object> {
 
-  protected IgnoredWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
-    super(processEngine, instance, duration);
+  protected IgnoredWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+    super(runner, instance, duration);
   }
 
   @Override
-  protected void execute(Scenario.Process scenario) {
+  protected void execute() {
   }
 
   @Override

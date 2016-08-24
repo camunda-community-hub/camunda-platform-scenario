@@ -1,9 +1,9 @@
 package org.camunda.bpm.scenario.delegate;
 
-import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.task.DelegationState;
 import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
 import org.camunda.bpm.scenario.runner.Waitstate;
 
 import java.util.Date;
@@ -13,8 +13,8 @@ import java.util.Date;
  */
 public abstract class TaskDelegate extends Waitstate<Task> implements Task {
 
-  public TaskDelegate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
-    super(processEngine, instance, duration);
+  public TaskDelegate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+    super(runner, instance, duration);
   }
 
   public String getId() {

@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public class MessageIntermediateThrowEventWaitstate extends ServiceTaskWaitstate {
 
-  public MessageIntermediateThrowEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
-    super(processEngine, instance, duration);
+  public MessageIntermediateThrowEventWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+    super(runner, instance, duration);
   }
 
   @Override

@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public class SendTaskWaitstate extends ServiceTaskWaitstate {
 
-  public SendTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
-    super(processEngine, instance, duration);
+  public SendTaskWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+    super(runner, instance, duration);
   }
 
   @Override

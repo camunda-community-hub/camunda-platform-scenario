@@ -12,6 +12,7 @@ import org.camunda.bpm.scenario.action.UserTaskAction;
 import org.camunda.bpm.scenario.runner.CallActivityRunner;
 import org.camunda.bpm.scenario.runner.ScenarioHistory;
 import org.camunda.bpm.scenario.runner.ProcessRunner;
+import org.camunda.bpm.scenario.runner.ScenarioExecutorImpl;
 import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
 
 /**
@@ -20,11 +21,11 @@ import org.camunda.bpm.scenario.runner.ScenarioRunnerImpl;
 public class Scenario {
 
   public static ProcessRunner run(Process scenario) {
-    return new ScenarioRunnerImpl(scenario);
+    return new ScenarioExecutorImpl(scenario);
   }
 
   public static CallActivityRunner use(Process scenario) {
-    return new ScenarioRunnerImpl(scenario);
+    return new ScenarioRunnerImpl(null, scenario);
   }
 
   public interface Process extends ScenarioHistory {

@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class UserTaskWaitstate extends TaskDelegate {
 
-  public UserTaskWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
-    super(processEngine, instance, duration);
+  public UserTaskWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+    super(runner, instance, duration);
   }
 
   @Override

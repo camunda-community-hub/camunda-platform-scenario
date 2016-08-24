@@ -10,11 +10,12 @@ import org.camunda.bpm.scenario.delegate.ProcessEngineServicesDelegate;
  */
 public abstract class Savepoint<I> extends ProcessEngineServicesDelegate {
 
+  protected ScenarioRunnerImpl runner;
   protected I runtimeDelegate;
-  private ProcessInstance processInstance;
 
-  protected Savepoint(ProcessEngine processEngine) {
-    super(processEngine);
+  protected Savepoint(ScenarioRunnerImpl runner) {
+    super(runner.scenarioExecutor.processEngine);
+    this.runner = runner;
   }
 
   public abstract String getExecutionId();
@@ -24,11 +25,7 @@ public abstract class Savepoint<I> extends ProcessEngineServicesDelegate {
   protected abstract void leave();
 
   public ProcessInstance getProcessInstance() {
-    if (processInstance == null) {
-      Execution execution = getRuntimeService().createExecutionQuery().executionId(getExecutionId()).singleResult();
-      processInstance = getRuntimeService().createProcessInstanceQuery().processInstanceId(execution.getProcessInstanceId()).singleResult();
-    }
-    return processInstance;
+    return runner.processInstance;
   };
 
 }

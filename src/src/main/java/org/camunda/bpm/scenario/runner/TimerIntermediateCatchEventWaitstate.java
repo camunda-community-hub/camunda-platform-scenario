@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
 
-  public TimerIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
-    super(processEngine, instance, duration);
+  public TimerIntermediateCatchEventWaitstate(ScenarioRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+    super(runner, instance, duration);
     if (duration != null) {
       throw new IllegalStateException("Found a duration '" + duration + "' set. " +
           "Explicit durations are not supported for '" + getClass().getSimpleName()
@@ -25,13 +25,15 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
     }
   }
 
-  protected void execute(Scenario.Process scenario) {
-    ScenarioAction action = action(scenario);
+  @Override
+  protected void execute() {
+    ScenarioAction action = action(runner.scenario);
     if (action != null)
       action.execute(this);
     Job job = getManagementService().createJobQuery().timers().jobId(getId()).singleResult();
     if (job != null)
       getManagementService().executeJob(job.getId());
+    runner.setExecutedHistoricActivityIds();
   }
 
   @Override
