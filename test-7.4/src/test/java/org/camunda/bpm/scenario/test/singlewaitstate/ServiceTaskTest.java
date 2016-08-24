@@ -1,9 +1,10 @@
-package org.camunda.bpm.scenario.test;
+package org.camunda.bpm.scenario.test.singlewaitstate;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ServiceTaskAction;
 import org.camunda.bpm.scenario.runner.ServiceTaskWaitstate;
+import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
@@ -11,7 +12,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-@Deployment(resources = {"org/camunda/bpm/scenario/test/ServiceTaskTest.bpmn"})
+@Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/ServiceTaskTest.bpmn"})
 public class ServiceTaskTest extends AbstractTest {
 
   @Test

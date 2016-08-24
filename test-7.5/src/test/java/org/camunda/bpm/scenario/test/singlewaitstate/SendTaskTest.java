@@ -1,9 +1,10 @@
-package org.camunda.bpm.scenario.test;
+package org.camunda.bpm.scenario.test.singlewaitstate;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.SendTaskAction;
 import org.camunda.bpm.scenario.runner.SendTaskWaitstate;
+import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
 import static org.mockito.Mockito.never;
@@ -14,7 +15,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-@Deployment(resources = {"org/camunda/bpm/scenario/test/SendTaskTest.bpmn"})
+@Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SendTaskTest.bpmn"})
 public class SendTaskTest extends AbstractTest {
 
   @Test
