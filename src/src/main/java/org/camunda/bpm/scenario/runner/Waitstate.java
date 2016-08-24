@@ -86,10 +86,6 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     return getRuntimeService().createMessageCorrelation(messageName);
   }
 
-  protected boolean isSelf(Job timer) {
-    return false;
-  }
-
   protected Date getEndTime() {
     Date endTime = historicDelegate.getStartTime();
     if (duration != null) {

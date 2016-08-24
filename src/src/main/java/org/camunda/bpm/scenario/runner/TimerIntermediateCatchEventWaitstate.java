@@ -18,6 +18,20 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
 
   public TimerIntermediateCatchEventWaitstate(ProcessEngine processEngine, HistoricActivityInstance instance, String duration) {
     super(processEngine, instance, duration);
+    if (duration != null) {
+      throw new IllegalStateException("Found a duration '" + duration + "' set. " +
+          "Explicit durations are not supported for '" + getClass().getSimpleName()
+          + "'. Its duration always depends on the timer defined in the BPMN process.");
+    }
+  }
+
+  protected void execute(Scenario.Process scenario) {
+    ScenarioAction action = action(scenario);
+    if (action != null)
+      action.execute(this);
+    Job job = getManagementService().createJobQuery().timers().jobId(getId()).singleResult();
+    if (job != null)
+      getManagementService().executeJob(job.getId());
   }
 
   @Override
@@ -36,15 +50,6 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
 
   protected void leave(Map<String, Object> variables) {
     getRuntimeService().setVariables(getProcessInstance().getId(), variables);
-    leave();
-  }
-
-  @Override
-  protected boolean isSelf(Job timer) {
-    return !timer.getId().equals(getId());
-  }
-
-  public void trigger() {
     leave();
   }
 

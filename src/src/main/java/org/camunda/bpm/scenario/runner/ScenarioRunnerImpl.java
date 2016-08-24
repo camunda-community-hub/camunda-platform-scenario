@@ -163,7 +163,8 @@ public class ScenarioRunnerImpl implements ProcessRunner {
     List<Job> next = processEngine.getManagementService().createJobQuery().timers().orderByJobDuedate().asc().listPage(0,1);
     if (!next.isEmpty()) {
       Job timer = next.get(0);
-      if (!waitstate.isSelf(timer) && timer.getDuedate().getTime() <= endTime.getTime()) {
+      HistoricActivityInstance intermediateTimer = processEngine.getHistoryService().createHistoricActivityInstanceQuery().unfinished().executionId(timer.getExecutionId()).activityType("intermediateTimer").singleResult();
+      if (intermediateTimer == null && timer.getDuedate().getTime() <= endTime.getTime()) {
         ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime() + 1));
         processEngine.getManagementService().executeJob(timer.getId());
         ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime()));
