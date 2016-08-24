@@ -159,6 +159,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
 
   protected boolean fastForward(Waitstate waitstate) {
     Date endTime = waitstate.getEndTime();
+    // TODO determine next timer for all runners
     List<Job> next = processEngine.getManagementService().createJobQuery().timers().orderByJobDuedate().asc().listPage(0,1);
     if (!next.isEmpty()) {
       Job timer = next.get(0);
@@ -175,6 +176,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
 
   private Waitstate nextWaitstate(boolean lastCall) {
     continueAsyncContinuations();
+    // TODO determine next waitstate for all runners
     Iterator<Waitstate> it = getNextWaitstates().iterator();
     while (it.hasNext()) {
       Waitstate waitstate = it.next();
@@ -228,6 +230,7 @@ public class ScenarioRunnerImpl implements ProcessRunner {
   private void setExecutedHistoricActivityIds() {
     List<HistoricActivityInstance> instances;
     boolean supportsCanceled = Feature.warnIfNotSupported(HistoricActivityInstanceQuery.class.getName(), "canceled");
+    // TODO determine executed historic activity ids for all runners
     if (supportsCanceled) {
       instances = processEngine.getHistoryService()
           .createHistoricActivityInstanceQuery()
