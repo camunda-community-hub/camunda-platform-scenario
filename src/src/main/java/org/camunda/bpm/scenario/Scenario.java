@@ -38,17 +38,22 @@ public class Scenario {
     /**
      * @since Camunda BPM 7.0.0-Final
      */
+    TimerIntermediateCatchEventAction atTimerIntermediateCatchEvent(String activityId);
+
+    /**
+     * @since Camunda BPM 7.0.0-Final
+     */
     MessageIntermediateCatchEventAction atMessageIntermediateCatchEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    SignalIntermediateCatchEventAction atSignalIntermediateCatchEvent(String activityId);
+    ReceiveTaskAction atReceiveTask(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    ReceiveTaskAction atReceiveTask(String activityId);
+    SignalIntermediateCatchEventAction atSignalIntermediateCatchEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.4.0
@@ -64,8 +69,6 @@ public class Scenario {
      * @since Camunda BPM 7.5.0
      */
     MessageIntermediateThrowEventAction atMessageIntermediateThrowEvent(String activityId);
-
-    TimerIntermediateCatchEventAction atTimerIntermediateCatchEvent(String activityId);
 
     EventBasedGatewayAction atEventBasedGateway(String activityId);
 
