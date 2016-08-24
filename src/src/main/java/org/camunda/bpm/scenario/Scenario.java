@@ -46,6 +46,11 @@ public class Scenario {
     SignalIntermediateCatchEventAction atSignalIntermediateCatchEvent(String activityId);
 
     /**
+     * @since Camunda BPM 7.0.0-Final
+     */
+    ReceiveTaskAction atReceiveTask(String activityId);
+
+    /**
      * @since Camunda BPM 7.4.0
      */
     ServiceTaskAction atServiceTask(String activityId);
@@ -61,8 +66,6 @@ public class Scenario {
     MessageIntermediateThrowEventAction atMessageIntermediateThrowEvent(String activityId);
 
     TimerIntermediateCatchEventAction atTimerIntermediateCatchEvent(String activityId);
-
-    ReceiveTaskAction atReceiveTask(String activityId);
 
     EventBasedGatewayAction atEventBasedGateway(String activityId);
 
