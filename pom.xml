@@ -89,6 +89,7 @@
             <modules>
                 <module>test-7.0</module>
                 <module>test-7.4</module>
+                <module>test-7.5</module>
             </modules>
             <activation>
                 <property>
@@ -102,6 +103,7 @@
             <modules>
                 <module>test-7.0</module>
                 <module>test-7.4</module>
+                <module>test-7.5</module>
             </modules>
             <activation>
                 <property>
@@ -115,6 +117,7 @@
             <modules>
                 <module>test-7.0</module>
                 <module>test-7.4</module>
+                <module>test-7.5</module>
             </modules>
             <activation>
                 <activeByDefault>true</activeByDefault>
