@@ -30,12 +30,24 @@ public class Scenario {
 
   public interface Process extends ScenarioHistory {
 
+    /**
+     * @since Camunda BPM 7.0.0-Final
+     */
     UserTaskAction atUserTask(String activityId);
 
+    /**
+     * @since Camunda BPM 7.4.0
+     */
     ServiceTaskAction atServiceTask(String activityId);
 
+    /**
+     * @since Camunda BPM 7.5.0
+     */
     SendTaskAction atSendTask(String activityId);
 
+    /**
+     * @since Camunda BPM 7.5.0
+     */
     MessageIntermediateThrowEventAction atMessageIntermediateThrowEvent(String activityId);
 
     TimerIntermediateCatchEventAction atTimerIntermediateCatchEvent(String activityId);
