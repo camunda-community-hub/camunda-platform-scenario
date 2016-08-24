@@ -15,4 +15,6 @@ public interface ScenarioRunner<R> {
 
   Job nextTimerUntil(Date endTime);
 
+  void finish();
+
 }

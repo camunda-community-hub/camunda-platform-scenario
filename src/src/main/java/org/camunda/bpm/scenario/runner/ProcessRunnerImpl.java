@@ -211,6 +211,10 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
     return waitstates;
   }
 
+  public void finish() {
+    setExecutedHistoricActivityIds();
+  }
+
   void setExecutedHistoricActivityIds() {
     List<HistoricActivityInstance> instances;
     boolean supportsCanceled = Feature.warnIfNotSupported(HistoricActivityInstanceQuery.class.getName(), "canceled");

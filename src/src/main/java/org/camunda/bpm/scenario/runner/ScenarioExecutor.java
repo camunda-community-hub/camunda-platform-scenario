@@ -71,6 +71,9 @@ public class ScenarioExecutor {
         waitstate = nextWaitstate(lastCall);
       }
     }
+    for (ScenarioRunner runner: runners) {
+      runner.finish();
+    }
     return processInstance;
   }
 

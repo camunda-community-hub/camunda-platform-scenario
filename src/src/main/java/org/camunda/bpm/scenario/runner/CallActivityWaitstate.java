@@ -25,13 +25,16 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
 
   @Override
   protected ScenarioAction<CallActivityWaitstate> action(final Scenario.Process scenario) {
-    return new CallActivityAction() {
-      @Override
-      public void execute(CallActivityWaitstate runtimeInstance) {
-        ProcessRunnerImpl runner = (ProcessRunnerImpl) scenario.atCallActivity(getActivityId());
-        runner.running(runtimeInstance);
-      }
-    };
+    final ProcessRunnerImpl runner = (ProcessRunnerImpl) scenario.atCallActivity(getActivityId());
+    if (runner != null) {
+      return new CallActivityAction() {
+        @Override
+        public void execute(CallActivityWaitstate runtimeInstance) {
+          runner.running(runtimeInstance);
+        }
+      };
+    }
+    return null;
   }
 
   protected void leave() {
