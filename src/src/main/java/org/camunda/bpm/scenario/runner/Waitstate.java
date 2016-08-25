@@ -69,7 +69,7 @@ public abstract class Waitstate<I> extends Savepoint<I> {
           + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
           + " '" + historicDelegate.getActivityId() +"'.");
     action.execute(this);
-    runner.setExecutedHistoricActivityIds();
+    runner.setExecutedHistoricActivityIds(historicDelegate);
   }
 
   protected abstract ScenarioAction action(Scenario.Process scenario);

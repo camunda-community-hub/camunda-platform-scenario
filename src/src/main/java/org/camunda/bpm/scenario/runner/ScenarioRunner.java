@@ -11,7 +11,7 @@ public interface ScenarioRunner<R> {
 
   R run();
 
-  Waitstate nextWaitstate(boolean lastCall);
+  Waitstate nextWaitstate();
 
   Job nextTimerUntil(Date endTime);
 

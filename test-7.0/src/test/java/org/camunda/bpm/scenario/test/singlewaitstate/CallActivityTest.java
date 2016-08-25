@@ -116,7 +116,7 @@ public class CallActivityTest extends AbstractTest {
 
   }
 
-  @Test @Ignore
+  @Test
   @Deployment(resources = {
       "org/camunda/bpm/scenario/test/singlewaitstate/CallActivityTest.bpmn",
       "org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"

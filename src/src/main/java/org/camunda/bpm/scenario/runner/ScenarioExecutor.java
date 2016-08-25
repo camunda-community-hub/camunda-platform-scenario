@@ -25,7 +25,7 @@ public class ScenarioExecutor {
 
   public List<ScenarioRunner> runners = new ArrayList<ScenarioRunner>();
 
-  Set<String> executedHistoricActivityInstances = new HashSet<String>();
+  Set<String> unavailableHistoricActivityInstances = new HashSet<String>();
   Set<String> startedHistoricActivityInstances = new HashSet<String>();
   Set<String> passedHistoricActivityInstances = new HashSet<String>();
 
@@ -60,16 +60,14 @@ public class ScenarioExecutor {
     for (ScenarioRunner runner: runners) {
       processInstance = (ProcessInstance) runner.run(); // TODO delivers last started process instance for now...
     }
-    for (boolean lastCall: new boolean[] { false, true }) {
-      Waitstate waitstate = nextWaitstate(lastCall);
-      while (waitstate != null) {
-        boolean executable = fastForward(waitstate);
-        if (executable) {
-          waitstate.execute();
-          executedHistoricActivityInstances.add(waitstate.historicDelegate.getId());
-        }
-        waitstate = nextWaitstate(lastCall);
+    Waitstate waitstate = nextWaitstate();
+    while (waitstate != null) {
+      boolean executable = fastForward(waitstate);
+      if (executable) {
+        waitstate.execute();
+        unavailableHistoricActivityInstances.add(waitstate.historicDelegate.getId());
       }
+      waitstate = nextWaitstate();
     }
     for (ScenarioRunner runner: runners) {
       runner.finish();
@@ -77,10 +75,10 @@ public class ScenarioExecutor {
     return processInstance;
   }
 
-  protected Waitstate nextWaitstate(boolean lastCall) {
+  protected Waitstate nextWaitstate() {
     List<Waitstate> waitstates = new ArrayList<Waitstate>();
     for (ScenarioRunner runner: runners) {
-      Waitstate waitstate = runner.nextWaitstate(lastCall);
+      Waitstate waitstate = runner.nextWaitstate();
       if (waitstate != null)
         waitstates.add(waitstate);
     }

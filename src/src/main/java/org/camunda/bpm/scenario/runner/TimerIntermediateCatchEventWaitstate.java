@@ -32,7 +32,7 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
     Job job = getManagementService().createJobQuery().timers().jobId(getId()).singleResult();
     if (job != null)
       getManagementService().executeJob(job.getId());
-    runner.setExecutedHistoricActivityIds();
+    runner.setExecutedHistoricActivityIds(historicDelegate);
   }
 
   @Override
