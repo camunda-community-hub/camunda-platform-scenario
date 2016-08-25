@@ -98,7 +98,7 @@ public class ScenarioExecutor {
     Date endTime = waitstate.getEndTime();
     List<Job> timers = new ArrayList<Job>();
     for (ScenarioRunner runner: runners) {
-      Job timer = runner.nextTimerUntil(endTime);
+      Job timer = runner.nextTimerUntil(waitstate);
       if (timer != null)
         timers.add(timer);
     }

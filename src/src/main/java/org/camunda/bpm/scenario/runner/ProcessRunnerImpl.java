@@ -260,13 +260,13 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   @Override
-  public Job nextTimerUntil(Date endTime) {
+  public Job nextTimerUntil(Waitstate waitstate) {
     List<Job> next = scenarioExecutor.processEngine.getManagementService().createJobQuery().timers().processInstanceId(processInstance.getId()).orderByJobDuedate().asc().listPage(0,1);
     if (!next.isEmpty()) {
       Job timer = next.get(0);
       HistoricActivityInstance intermediateTimer = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().unfinished().executionId(timer.getExecutionId()).activityType("intermediateTimer").singleResult();
       HistoricActivityInstance eventBasedGateway = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().unfinished().executionId(timer.getExecutionId()).activityType("eventBasedGateway").singleResult();
-      if (intermediateTimer == null && eventBasedGateway == null && timer.getDuedate().getTime() <= endTime.getTime()) {
+      if (intermediateTimer == null && eventBasedGateway == null && timer.getDuedate().getTime() <= waitstate.getEndTime().getTime()) {
         return timer;
       }
     }

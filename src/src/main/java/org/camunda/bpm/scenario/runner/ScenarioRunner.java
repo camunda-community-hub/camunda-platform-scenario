@@ -13,7 +13,7 @@ public interface ScenarioRunner<R> {
 
   Waitstate nextWaitstate();
 
-  Job nextTimerUntil(Date endTime);
+  Job nextTimerUntil(Waitstate waitstate);
 
   void finish();
 
