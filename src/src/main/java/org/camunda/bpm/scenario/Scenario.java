@@ -46,7 +46,8 @@ public class Scenario {
     MessageIntermediateCatchEventAction atMessageIntermediateCatchEvent(String activityId);
 
     /**
-     * @since Camunda BPM 7.0.0-Final
+     * @since Camunda BPM 7.0.0-Final (as signallable execution only)
+     * @since Camunda BPM 7.1.0-Final (as message event subscription)
      */
     ReceiveTaskAction atReceiveTask(String activityId);
 
@@ -59,6 +60,11 @@ public class Scenario {
      * @since Camunda BPM 7.0.0-Final
      */
     CallActivityRunner atCallActivity(String activityId);
+
+    /**
+     * @since Camunda BPM 7.1.0-Final
+     */
+    EventBasedGatewayAction atEventBasedGateway(String activityId);
 
     /**
      * @since Camunda BPM 7.4.0
@@ -74,8 +80,6 @@ public class Scenario {
      * @since Camunda BPM 7.5.0
      */
     MessageIntermediateThrowEventAction atMessageIntermediateThrowEvent(String activityId);
-
-    EventBasedGatewayAction atEventBasedGateway(String activityId);
 
     String needsTimeUntilFinishing(String activityId);
 

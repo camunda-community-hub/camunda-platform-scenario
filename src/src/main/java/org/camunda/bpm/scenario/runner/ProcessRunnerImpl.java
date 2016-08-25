@@ -265,7 +265,8 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
     if (!next.isEmpty()) {
       Job timer = next.get(0);
       HistoricActivityInstance intermediateTimer = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().unfinished().executionId(timer.getExecutionId()).activityType("intermediateTimer").singleResult();
-      if (intermediateTimer == null && timer.getDuedate().getTime() <= endTime.getTime()) {
+      HistoricActivityInstance eventBasedGateway = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().unfinished().executionId(timer.getExecutionId()).activityType("eventBasedGateway").singleResult();
+      if (intermediateTimer == null && eventBasedGateway == null && timer.getDuedate().getTime() <= endTime.getTime()) {
         return timer;
       }
     }

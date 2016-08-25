@@ -7,6 +7,7 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,22 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
 
   public EventBasedGatewayWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
+  }
+
+  @Override
+  protected void execute() {
+    Job job = getTimer();
+    if (job == null) {
+      super.execute();
+    } else {
+      ScenarioAction action = action(runner.scenario);
+      if (action != null)
+        action.execute(this);
+      job = getManagementService().createJobQuery().timers().jobId(job.getId()).singleResult();
+      if (job != null)
+        getManagementService().executeJob(job.getId());
+      runner.setExecutedHistoricActivityIds(historicDelegate);
+    }
   }
 
   @Override
@@ -54,7 +71,7 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
   }
 
   public Job getTimer() {
-    List<Job> jobs = getManagementService().createJobQuery().timers().executionId(getExecutionId()).orderByJobDuedate().listPage(0, 1);
+    List<Job> jobs = getManagementService().createJobQuery().timers().executionId(getExecutionId()).orderByJobDuedate().asc().listPage(0, 1);
     return jobs.isEmpty() ? null : jobs.get(0);
   }
 
@@ -94,6 +111,21 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
   public void receiveMessage(String activityId, Map<String, Object> variables) {
     EventSubscription subscription = getMessageEventSubscription(activityId);
     getRuntimeService().messageEventReceived(subscription.getEventName(), subscription.getExecutionId(), variables);
+  }
+
+  @Override
+  protected Date getEndTime() {
+    Job timer = getTimer();
+    if (timer != null) {
+      if (duration != null) {
+        throw new IllegalStateException("Found a duration '" + duration + "' set. " +
+          "Explicit durations are not supported for '" + getClass().getSimpleName() +
+          "' with timer events. Its duration always depends on the timer defined " +
+          "in the BPMN process.");
+      }
+      return timer.getDuedate();
+    }
+    return super.getEndTime();
   }
 
 }
