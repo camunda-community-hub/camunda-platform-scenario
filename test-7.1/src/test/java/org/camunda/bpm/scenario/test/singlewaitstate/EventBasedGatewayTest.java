@@ -54,16 +54,11 @@ public class EventBasedGatewayTest extends AbstractTest {
 
   }
 
-  @Test
+  @Test(expected=AssertionError.class)
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayTest.bpmn"})
   public void testDoNotDealWithEventBasedGateway() {
 
-    // Not even dealing with the activity ID means process moves forward here
-
     Scenario.run(scenario).startBy("EventBasedGatewayTest").execute();
-
-    verify(scenario, times(1)).hasFinished("TimerIntermediateCatchEvent");
-    verify(scenario, times(1)).hasFinished("EndEvent");
 
   }
 

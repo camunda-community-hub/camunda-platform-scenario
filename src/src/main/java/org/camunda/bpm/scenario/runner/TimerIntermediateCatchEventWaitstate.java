@@ -27,8 +27,13 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
   @Override
   protected void execute() {
     ScenarioAction action = action(runner.scenario);
-    if (action != null)
-      action.execute(this);
+    if (action == null)
+      throw new AssertionError("Process Instance {"
+          + getProcessInstance().getProcessDefinitionId() + ", "
+          + getProcessInstance().getProcessInstanceId() + "} "
+          + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
+          + " '" + historicDelegate.getActivityId() +"'.");
+    action.execute(this);
     Job job = getManagementService().createJobQuery().timers().jobId(getId()).singleResult();
     if (job != null)
       getManagementService().executeJob(job.getId());

@@ -53,16 +53,11 @@ public class TimerIntermediateCatchEventTest extends AbstractTest {
 
   }
 
-  @Test
+  @Test(expected=AssertionError.class)
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateCatchEventTest.bpmn"})
   public void testDoNotDealWithTimerEvent() {
 
-    // Not even dealing with the activity ID means process moves forward here
-
     Scenario.run(scenario).startBy("TimerIntermediateCatchEventTest").execute();
-
-    verify(scenario, times(1)).hasFinished("TimerIntermediateCatchEvent");
-    verify(scenario, times(1)).hasFinished("EndEvent");
 
   }
 
@@ -82,6 +77,13 @@ public class TimerIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateCatchEventTest.bpmn"})
   public void testToAfterTimerIntermediateCatchEvent() {
 
+    when(scenario.atTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
+      @Override
+      public void execute(TimerIntermediateCatchEventWaitstate timer) {
+        // Do nothing means process moves forward here
+      }
+    });
+
     Scenario.run(scenario).startBy("TimerIntermediateCatchEventTest").toAfter("TimerIntermediateCatchEvent").execute();
 
     verify(scenario, times(1)).hasStarted("TimerIntermediateCatchEvent");
@@ -93,6 +95,13 @@ public class TimerIntermediateCatchEventTest extends AbstractTest {
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateCatchEventTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
+
+    when(scenario.atTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
+      @Override
+      public void execute(TimerIntermediateCatchEventWaitstate timer) {
+        // Do nothing means process moves forward here
+      }
+    });
 
     Scenario.run(otherScenario).startBy("TimerIntermediateCatchEventTest").toBefore("TimerIntermediateCatchEvent").execute();
     Scenario.run(scenario).startBy("TimerIntermediateCatchEventTest").execute();
