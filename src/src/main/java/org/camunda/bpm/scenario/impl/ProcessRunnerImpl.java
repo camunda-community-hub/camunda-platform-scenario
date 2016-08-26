@@ -1,6 +1,7 @@
 package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.history.HistoricActivityInstanceQuery;
 import org.camunda.bpm.engine.impl.persistence.entity.MessageEntity;
@@ -63,12 +64,18 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
 
   @Override
   public ProcessRunner fromBefore(String activityId, String... activityIds) {
+    Api.feature(RuntimeService.class.getName(), "createProcessInstanceByKey", String.class)
+        .fail("Outdated Camunda BPM version used will not allow to start process instances " +
+            "at explicitely selected activity IDs");
     setActivityIds(true, true, activityId, activityIds);
     return this;
   }
 
   @Override
   public ProcessRunner fromAfter(String activityId, String... activityIds) {
+    Api.feature(RuntimeService.class.getName(), "createProcessInstanceByKey", String.class)
+        .fail("Outdated Camunda BPM version used will not allow to start process instances " +
+            "at explicitely selected activity IDs");
     setActivityIds(true, false, activityId, activityIds);
     return this;
   }
@@ -208,7 +215,10 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
 
   void setExecutedHistoricActivityIds(HistoricActivityInstance finished) {
     List<HistoricActivityInstance> instances;
-    boolean supportsCanceled = Feature.warnIfNotSupported(HistoricActivityInstanceQuery.class.getName(), "canceled");
+    boolean supportsCanceled = Api.feature(HistoricActivityInstanceQuery.class.getName(), "canceled")
+        .warn("Outdated Camunda BPM version used will not allow to use " +
+            "'" + Scenario.Process.class.getName().replace('$', '.') +
+            ".hasCanceled(String activityId)' and '.hasCompleted(String activityId)' methods.");
     if (supportsCanceled) {
       instances = scenarioExecutor.processEngine.getHistoryService()
           .createHistoricActivityInstanceQuery()
