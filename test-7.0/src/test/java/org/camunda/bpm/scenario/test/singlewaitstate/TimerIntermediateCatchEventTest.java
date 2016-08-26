@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.test.singlewaitstate;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.TimerIntermediateCatchEventAction;
-import org.camunda.bpm.scenario.runner.TimerIntermediateCatchEventWaitstate;
+import org.camunda.bpm.scenario.delegate.TimerJobDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
@@ -21,10 +21,10 @@ public class TimerIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateCatchEventTest.bpmn"})
   public void testTriggerTimer() {
 
-    when(scenario.atTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
+    when(scenario.actsOnTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
       @Override
-      public void execute(TimerIntermediateCatchEventWaitstate timer) {
-        timer.getManagementService().executeJob(timer.getId()); // normally not necessary for timers, but allowed ...
+      public void execute(TimerJobDelegate timer) {
+        rule.getManagementService().executeJob(timer.getId()); // normally not necessary for timers, but allowed ...
       }
     });
 
@@ -39,9 +39,9 @@ public class TimerIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateCatchEventTest.bpmn"})
   public void testDoNothing() {
 
-    when(scenario.atTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
+    when(scenario.actsOnTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
       @Override
-      public void execute(TimerIntermediateCatchEventWaitstate timer) {
+      public void execute(TimerJobDelegate timer) {
         // Do nothing means process moves forward here
       }
     });
@@ -77,9 +77,9 @@ public class TimerIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateCatchEventTest.bpmn"})
   public void testToAfterTimerIntermediateCatchEvent() {
 
-    when(scenario.atTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
+    when(scenario.actsOnTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
       @Override
-      public void execute(TimerIntermediateCatchEventWaitstate timer) {
+      public void execute(TimerJobDelegate timer) {
         // Do nothing means process moves forward here
       }
     });
@@ -96,9 +96,9 @@ public class TimerIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateCatchEventTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.atTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
+    when(scenario.actsOnTimerIntermediateCatchEvent("TimerIntermediateCatchEvent")).thenReturn(new TimerIntermediateCatchEventAction() {
       @Override
-      public void execute(TimerIntermediateCatchEventWaitstate timer) {
+      public void execute(TimerJobDelegate timer) {
         // Do nothing means process moves forward here
       }
     });

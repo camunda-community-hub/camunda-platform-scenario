@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.runtime.Job;
 

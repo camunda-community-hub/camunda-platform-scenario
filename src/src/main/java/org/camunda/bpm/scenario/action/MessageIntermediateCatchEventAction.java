@@ -1,13 +1,13 @@
 package org.camunda.bpm.scenario.action;
 
-import org.camunda.bpm.scenario.runner.MessageIntermediateCatchEventWaitstate;
+import org.camunda.bpm.scenario.delegate.MessageEventSubscriptionDelegate;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface MessageIntermediateCatchEventAction extends ScenarioAction<MessageIntermediateCatchEventWaitstate> {
+public interface MessageIntermediateCatchEventAction extends ScenarioAction<MessageEventSubscriptionDelegate> {
 
   @Override
-  void execute(MessageIntermediateCatchEventWaitstate eventSubscription);
+  void execute(MessageEventSubscriptionDelegate eventSubscription);
 
 }

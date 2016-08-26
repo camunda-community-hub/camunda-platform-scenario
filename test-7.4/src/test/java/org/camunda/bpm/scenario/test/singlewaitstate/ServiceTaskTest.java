@@ -3,11 +3,14 @@ package org.camunda.bpm.scenario.test.singlewaitstate;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ServiceTaskAction;
-import org.camunda.bpm.scenario.runner.ServiceTaskWaitstate;
+import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -18,9 +21,9 @@ public class ServiceTaskTest extends AbstractTest {
   @Test
   public void testCompleteTask() {
 
-    when(scenario.atServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
       @Override
-      public void execute(ServiceTaskWaitstate externalTask) {
+      public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
       }
     });
@@ -35,9 +38,9 @@ public class ServiceTaskTest extends AbstractTest {
   @Test
   public void testDoNothing() {
 
-    when(scenario.atServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
       @Override
-      public void execute(ServiceTaskWaitstate externalTask) {
+      public void execute(ExternalTaskDelegate externalTask) {
         // Deal with externalTask but do nothing here
       }
     });
@@ -60,9 +63,9 @@ public class ServiceTaskTest extends AbstractTest {
   @Test
   public void testToBeforeServiceTask() {
 
-    when(scenario.atServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
       @Override
-      public void execute(ServiceTaskWaitstate externalTask) {
+      public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
       }
     });
@@ -78,9 +81,9 @@ public class ServiceTaskTest extends AbstractTest {
   @Test
   public void testToAfterServiceTask() {
 
-    when(scenario.atServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
       @Override
-      public void execute(ServiceTaskWaitstate externalTask) {
+      public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
       }
     });
@@ -96,9 +99,9 @@ public class ServiceTaskTest extends AbstractTest {
   @Test
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.atServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
       @Override
-      public void execute(ServiceTaskWaitstate externalTask) {
+      public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
       }
     });

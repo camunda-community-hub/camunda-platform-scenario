@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ScenarioExecutor {
+public class ScenarioExecutorImpl {
 
   protected ProcessEngine processEngine;
 
@@ -29,7 +29,7 @@ public class ScenarioExecutor {
   Set<String> startedHistoricActivityInstances = new HashSet<String>();
   Set<String> passedHistoricActivityInstances = new HashSet<String>();
 
-  public ScenarioExecutor(Scenario.Process scenario) {
+  public ScenarioExecutorImpl(Scenario.Process scenario) {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
   }
 
@@ -43,7 +43,7 @@ public class ScenarioExecutor {
           String message = processEngines.size() == 0 ? "No ProcessEngine found to be " +
               "registered with " + ProcessEngines.class.getSimpleName() + "!"
               : String.format(processEngines.size() + " ProcessEngines initialized. " +
-              "Explicitely initialise engine by calling " + ScenarioExecutor.class.getSimpleName() +
+              "Explicitely initialise engine by calling " + ScenarioExecutorImpl.class.getSimpleName() +
               "(scenario, engine)");
           throw new IllegalStateException(message);
         }
@@ -78,7 +78,7 @@ public class ScenarioExecutor {
   protected Waitstate nextWaitstate() {
     List<Waitstate> waitstates = new ArrayList<Waitstate>();
     for (ScenarioRunner runner: runners) {
-      Waitstate waitstate = runner.nextWaitstate();
+      Waitstate waitstate = runner.next();
       if (waitstate != null)
         waitstates.add(waitstate);
     }
@@ -98,7 +98,7 @@ public class ScenarioExecutor {
     Date endTime = waitstate.getEndTime();
     List<Job> timers = new ArrayList<Job>();
     for (ScenarioRunner runner: runners) {
-      Job timer = runner.nextTimerUntil(waitstate);
+      Job timer = runner.next(waitstate);
       if (timer != null)
         timers.add(timer);
     }

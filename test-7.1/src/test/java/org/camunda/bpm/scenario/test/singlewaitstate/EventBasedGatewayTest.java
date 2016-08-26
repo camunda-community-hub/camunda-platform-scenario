@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.test.singlewaitstate;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.EventBasedGatewayAction;
-import org.camunda.bpm.scenario.runner.EventBasedGatewayWaitstate;
+import org.camunda.bpm.scenario.delegate.EventBasedGatewayDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
@@ -21,9 +21,9 @@ public class EventBasedGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayTest.bpmn"})
   public void testReceiveMessage() {
 
-    when(scenario.atEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
-      public void execute(EventBasedGatewayWaitstate gateway) {
+      public void execute(EventBasedGatewayDelegate gateway) {
         gateway.receiveMessage();
       }
     });
@@ -40,9 +40,9 @@ public class EventBasedGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayTest.bpmn"})
   public void testDoNothing() {
 
-    when(scenario.atEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
-      public void execute(EventBasedGatewayWaitstate gateway) {
+      public void execute(EventBasedGatewayDelegate gateway) {
         // Do nothing means process moves forward because of the timer
       }
     });
@@ -66,9 +66,9 @@ public class EventBasedGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayTest.bpmn"})
   public void testToBeforeEventBasedGateway() {
 
-    when(scenario.atEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
-      public void execute(EventBasedGatewayWaitstate gateway) {
+      public void execute(EventBasedGatewayDelegate gateway) {
         gateway.receiveMessage();
       }
     });
@@ -85,9 +85,9 @@ public class EventBasedGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayTest.bpmn"})
   public void testToAfterEventBasedGateway() {
 
-    when(scenario.atEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
-      public void execute(EventBasedGatewayWaitstate gateway) {
+      public void execute(EventBasedGatewayDelegate gateway) {
         gateway.receiveMessage();
       }
     });
@@ -105,9 +105,9 @@ public class EventBasedGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.atEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
-      public void execute(EventBasedGatewayWaitstate gateway) {
+      public void execute(EventBasedGatewayDelegate gateway) {
         gateway.receiveMessage();
       }
     });

@@ -1,12 +1,10 @@
 package org.camunda.bpm.scenario.test.singlewaitstate;
 
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.UserTaskAction;
-import org.camunda.bpm.scenario.runner.UserTaskWaitstate;
+import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 
@@ -30,10 +28,10 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testCompleteCallActivityUserTask() {
 
-    when(scenario.atCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(calledScenario.atUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(UserTaskWaitstate task) {
+      public void execute(TaskDelegate task) {
         task.complete();
       }
     });
@@ -54,10 +52,10 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testDoNothingCallActivityUserTask() {
 
-    when(scenario.atCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(calledScenario.atUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(UserTaskWaitstate task) {
+      public void execute(TaskDelegate task) {
         // Deal with task but do nothing here
       }
     });
@@ -91,7 +89,7 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testDoNotDealWithCallActivityUserTask() {
 
-    when(scenario.atCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
 
     Scenario.run(scenario).startBy("CallActivityTest").execute();
 
@@ -104,7 +102,7 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testToBeforeCallActivity() {
 
-    when(scenario.atCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
 
     Scenario.run(scenario).startBy("CallActivityTest").toBefore("CallActivity").execute();
 
@@ -123,10 +121,10 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testToAfterCallActivity() {
 
-    when(scenario.atCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(calledScenario.atUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(UserTaskWaitstate task) {
+      public void execute(TaskDelegate task) {
         task.complete();
       }
     });
@@ -148,11 +146,11 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.atCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(otherScenario.atCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(calledScenario.atUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(otherScenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(UserTaskWaitstate task) {
+      public void execute(TaskDelegate task) {
         task.complete();
       }
     });

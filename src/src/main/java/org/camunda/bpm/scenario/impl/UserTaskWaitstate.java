@@ -1,17 +1,17 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
-import org.camunda.bpm.scenario.delegate.TaskDelegate;
+import org.camunda.bpm.scenario.impl.delegate.TaskDelegateImpl;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class UserTaskWaitstate extends TaskDelegate {
+public class UserTaskWaitstate extends TaskDelegateImpl {
 
   public UserTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
@@ -24,7 +24,7 @@ public class UserTaskWaitstate extends TaskDelegate {
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.atUserTask(getActivityId());
+    return scenario.actsOnUserTask(getActivityId());
   }
 
   protected void leave() {
@@ -35,10 +35,12 @@ public class UserTaskWaitstate extends TaskDelegate {
     getTaskService().complete(getRuntimeDelegate().getId(), variables);
   }
 
+  @Override
   public void complete() {
     leave();
   }
 
+  @Override
   public void complete(Map<String, Object> variables) {
     leave(variables);
   }

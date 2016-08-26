@@ -1,13 +1,11 @@
 package org.camunda.bpm.scenario.action;
 
 
-import org.camunda.bpm.scenario.runner.Waitstate;
-
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ScenarioAction<W extends Waitstate> {
+public interface ScenarioAction<D> {
 
-  void execute(W runtimeInstance);
+  void execute(D runtimeDelegate);
 
 }

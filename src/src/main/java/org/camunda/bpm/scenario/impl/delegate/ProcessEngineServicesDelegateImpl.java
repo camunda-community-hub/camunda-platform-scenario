@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.delegate;
+package org.camunda.bpm.scenario.impl.delegate;
 
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.CaseService;
@@ -17,11 +17,11 @@ import org.camunda.bpm.engine.TaskService;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class ProcessEngineServicesDelegate {
+public abstract class ProcessEngineServicesDelegateImpl {
 
   protected ProcessEngine processEngine;
 
-  public ProcessEngineServicesDelegate(ProcessEngine processEngine) {
+  public ProcessEngineServicesDelegateImpl(ProcessEngine processEngine) {
     this.processEngine = processEngine;
   }
 

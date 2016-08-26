@@ -1,13 +1,13 @@
 package org.camunda.bpm.scenario.action;
 
-import org.camunda.bpm.scenario.runner.CallActivityWaitstate;
+import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface CallActivityAction extends ScenarioAction<CallActivityWaitstate> {
+public interface CallActivityAction extends ScenarioAction<ProcessInstanceDelegate> {
 
   @Override
-  void execute(CallActivityWaitstate processInstance);
+  void execute(ProcessInstanceDelegate processInstance);
 
 }

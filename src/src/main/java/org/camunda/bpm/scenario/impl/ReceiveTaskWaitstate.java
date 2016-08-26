@@ -1,9 +1,8 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
-import org.camunda.bpm.model.bpmn.instance.Event;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 
@@ -21,7 +20,7 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.atReceiveTask(getActivityId());
+    return scenario.actsOnReceiveTask(getActivityId());
   }
 
   @Override

@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.test.singlewaitstate;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.SignalIntermediateCatchEventAction;
-import org.camunda.bpm.scenario.runner.SignalIntermediateCatchEventWaitstate;
+import org.camunda.bpm.scenario.delegate.SignalEventSubscriptionDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
@@ -21,9 +21,9 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
   public void testReceiveSignal() {
 
-    when(scenario.atSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
+    when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
       @Override
-      public void execute(SignalIntermediateCatchEventWaitstate signalEventSubscription) {
+      public void execute(SignalEventSubscriptionDelegate signalEventSubscription) {
         signalEventSubscription.receiveSignal();
       }
     });
@@ -39,9 +39,9 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
   public void testDoNothing() {
 
-    when(scenario.atSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
+    when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
       @Override
-      public void execute(SignalIntermediateCatchEventWaitstate signalEventSubscription) {
+      public void execute(SignalEventSubscriptionDelegate signalEventSubscription) {
         // Deal with signalEventSubscription but do nothing here
       }
     });
@@ -66,9 +66,9 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
   public void testToBeforeSignalIntermediateCatchEvent() {
 
-    when(scenario.atSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
+    when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
       @Override
-      public void execute(SignalIntermediateCatchEventWaitstate signalEventSubscription) {
+      public void execute(SignalEventSubscriptionDelegate signalEventSubscription) {
         signalEventSubscription.receiveSignal();
       }
     });
@@ -85,9 +85,9 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
   public void testToAfterSignalIntermediateCatchEvent() {
 
-    when(scenario.atSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
+    when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
       @Override
-      public void execute(SignalIntermediateCatchEventWaitstate signalEventSubscription) {
+      public void execute(SignalEventSubscriptionDelegate signalEventSubscription) {
         signalEventSubscription.receiveSignal();
       }
     });
@@ -104,9 +104,9 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.atSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
+    when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
       @Override
-      public void execute(SignalIntermediateCatchEventWaitstate signalEventSubscription) {
+      public void execute(SignalEventSubscriptionDelegate signalEventSubscription) {
         signalEventSubscription.receiveSignal();
       }
     });

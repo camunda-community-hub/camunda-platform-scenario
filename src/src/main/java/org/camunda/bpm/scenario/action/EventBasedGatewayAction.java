@@ -1,13 +1,13 @@
 package org.camunda.bpm.scenario.action;
 
-import org.camunda.bpm.scenario.runner.EventBasedGatewayWaitstate;
+import org.camunda.bpm.scenario.delegate.EventBasedGatewayDelegate;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface EventBasedGatewayAction extends ScenarioAction<EventBasedGatewayWaitstate> {
+public interface EventBasedGatewayAction extends ScenarioAction<EventBasedGatewayDelegate> {
 
   @Override
-  void execute(EventBasedGatewayWaitstate eventBasedGateway);
+  void execute(EventBasedGatewayDelegate eventBasedGateway);
 
 }

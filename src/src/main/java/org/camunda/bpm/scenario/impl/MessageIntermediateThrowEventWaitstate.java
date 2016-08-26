@@ -1,24 +1,25 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
+import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class SendTaskWaitstate extends ServiceTaskWaitstate {
+public class MessageIntermediateThrowEventWaitstate extends ServiceTaskWaitstate {
 
-  public SendTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public MessageIntermediateThrowEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 
   @Override
-  protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.atSendTask(getActivityId());
+  protected ScenarioAction<ExternalTaskDelegate> action(Scenario.Process scenario) {
+    return scenario.actsOnMessageIntermediateThrowEvent(getActivityId());
   }
 
   @Override

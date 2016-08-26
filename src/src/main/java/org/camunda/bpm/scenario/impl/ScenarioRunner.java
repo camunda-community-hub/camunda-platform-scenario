@@ -1,8 +1,6 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.runtime.Job;
-
-import java.util.Date;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -11,9 +9,9 @@ public interface ScenarioRunner<R> {
 
   R run();
 
-  Waitstate nextWaitstate();
+  Waitstate next();
 
-  Job nextTimerUntil(Waitstate waitstate);
+  Job next(Waitstate waitstate);
 
   void finish();
 

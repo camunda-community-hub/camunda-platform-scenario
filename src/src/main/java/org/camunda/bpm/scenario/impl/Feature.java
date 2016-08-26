@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.util;
+package org.camunda.bpm.scenario.impl;
 
 import java.util.Arrays;
 import java.util.Iterator;

@@ -1,13 +1,13 @@
 package org.camunda.bpm.scenario.action;
 
-import org.camunda.bpm.scenario.runner.ReceiveTaskWaitstate;
+import org.camunda.bpm.scenario.delegate.MessageEventSubscriptionDelegate;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ReceiveTaskAction extends ScenarioAction<ReceiveTaskWaitstate> {
+public interface ReceiveTaskAction extends MessageIntermediateCatchEventAction {
 
   @Override
-  void execute(ReceiveTaskWaitstate eventSubscription);
+  void execute(MessageEventSubscriptionDelegate eventSubscription);
 
 }

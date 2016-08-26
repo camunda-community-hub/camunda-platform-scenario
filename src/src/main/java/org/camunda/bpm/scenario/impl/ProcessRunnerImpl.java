@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
@@ -8,12 +8,12 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.util.Feature;
+import org.camunda.bpm.scenario.runner.ProcessRunner;
+import org.camunda.bpm.scenario.runner.ProcessStarter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessInstance> {
 
-  protected ScenarioExecutor scenarioExecutor;
+  protected ScenarioExecutorImpl scenarioExecutor;
 
   private String processDefinitionKey;
   private ProcessStarter scenarioStarter;
@@ -37,7 +37,7 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   private Map<String, Boolean> toActivityIds = new HashMap<String, Boolean>();
   private Map<String, String> durations = new HashMap<String, String>();
 
-  public ProcessRunnerImpl(ScenarioExecutor scenarioExecutor, Scenario.Process scenario) {
+  public ProcessRunnerImpl(ScenarioExecutorImpl scenarioExecutor, Scenario.Process scenario) {
     this.scenarioExecutor = scenarioExecutor;
     this.scenario = scenario;
   }
@@ -143,7 +143,7 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   @Override
-  public Waitstate nextWaitstate() {
+  public Waitstate next() {
     continueAsyncContinuations();
     Iterator<Waitstate> it = getNextWaitstates().iterator();
     while (it.hasNext()) {
@@ -162,7 +162,7 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
 
   private String getDuration(HistoricActivityInstance instance) {
     if (!durations.containsKey(instance.getId())) {
-      durations.put(instance.getId(), scenario.needsTimeUntilFinishing(instance.getActivityId()));
+      durations.put(instance.getId(), scenario.waitsForActionOn(instance.getActivityId()));
     }
     return durations.get(instance.getId());
   }
@@ -260,7 +260,7 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   @Override
-  public Job nextTimerUntil(Waitstate waitstate) {
+  public Job next(Waitstate waitstate) {
     List<Job> next = scenarioExecutor.processEngine.getManagementService().createJobQuery().timers().processInstanceId(processInstance.getId()).orderByJobDuedate().asc().listPage(0,1);
     if (!next.isEmpty()) {
       Job timer = next.get(0);

@@ -1,11 +1,11 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
-import org.camunda.bpm.scenario.delegate.JobDelegate;
+import org.camunda.bpm.scenario.impl.delegate.TimerJobDelegateImpl;
 
 import java.util.Date;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
+public class TimerIntermediateCatchEventWaitstate extends TimerJobDelegateImpl {
 
   public TimerIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
@@ -47,7 +47,7 @@ public class TimerIntermediateCatchEventWaitstate extends JobDelegate {
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.atTimerIntermediateCatchEvent(getActivityId());
+    return scenario.actsOnTimerIntermediateCatchEvent(getActivityId());
   }
 
   protected void leave() {

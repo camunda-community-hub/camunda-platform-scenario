@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
@@ -6,13 +6,14 @@ import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.CallActivityAction;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
+import org.camunda.bpm.scenario.impl.delegate.ProcessInstanceDelegateImpl;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class CallActivityWaitstate extends ProcessInstanceDelegate {
+public class CallActivityWaitstate extends ProcessInstanceDelegateImpl {
 
   public CallActivityWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
@@ -24,13 +25,13 @@ public class CallActivityWaitstate extends ProcessInstanceDelegate {
   }
 
   @Override
-  protected ScenarioAction<CallActivityWaitstate> action(final Scenario.Process scenario) {
-    final ProcessRunnerImpl runner = (ProcessRunnerImpl) scenario.atCallActivity(getActivityId());
+  protected ScenarioAction<ProcessInstanceDelegate> action(final Scenario.Process scenario) {
+    final ProcessRunnerImpl runner = (ProcessRunnerImpl) scenario.actsOnCallActivity(getActivityId());
     if (runner != null) {
       return new CallActivityAction() {
         @Override
-        public void execute(CallActivityWaitstate runtimeInstance) {
-          runner.running(runtimeInstance);
+        public void execute(ProcessInstanceDelegate processInstance) {
+          runner.running((CallActivityWaitstate) processInstance);
         }
       };
     }

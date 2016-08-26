@@ -3,11 +3,14 @@ package org.camunda.bpm.scenario.test.singlewaitstate;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.UserTaskAction;
-import org.camunda.bpm.scenario.runner.UserTaskWaitstate;
+import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -18,9 +21,9 @@ public class UserTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
   public void testCompleteTask() {
 
-    when(scenario.atUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(UserTaskWaitstate task) {
+      public void execute(TaskDelegate task) {
         task.complete();
       }
     });
@@ -36,9 +39,9 @@ public class UserTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
   public void testDoNothing() {
 
-    when(scenario.atUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(UserTaskWaitstate task) {
+      public void execute(TaskDelegate task) {
         // Deal with task but do nothing here
       }
     });
@@ -63,9 +66,9 @@ public class UserTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
   public void testToBeforeUserTask() {
 
-    when(scenario.atUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(UserTaskWaitstate task) {
+      public void execute(TaskDelegate task) {
         task.complete();
       }
     });
@@ -82,9 +85,9 @@ public class UserTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
   public void testToAfterUserTask() {
 
-    when(scenario.atUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(UserTaskWaitstate task) {
+      public void execute(TaskDelegate task) {
         task.complete();
       }
     });
@@ -101,9 +104,9 @@ public class UserTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.atUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(UserTaskWaitstate task) {
+      public void execute(TaskDelegate task) {
         task.complete();
       }
     });

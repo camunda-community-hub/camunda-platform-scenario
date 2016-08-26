@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
@@ -10,15 +10,15 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class MessageIntermediateThrowEventWaitstate extends ServiceTaskWaitstate {
+public class SendTaskWaitstate extends ServiceTaskWaitstate {
 
-  public MessageIntermediateThrowEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public SendTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 
   @Override
-  protected ScenarioAction<MessageIntermediateThrowEventWaitstate> action(Scenario.Process scenario) {
-    return scenario.atMessageIntermediateThrowEvent(getActivityId());
+  protected ScenarioAction action(Scenario.Process scenario) {
+    return scenario.actsOnSendTask(getActivityId());
   }
 
   @Override

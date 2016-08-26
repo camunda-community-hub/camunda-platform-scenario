@@ -9,11 +9,11 @@ import org.camunda.bpm.scenario.action.ServiceTaskAction;
 import org.camunda.bpm.scenario.action.SignalIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.TimerIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.UserTaskAction;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ScenarioExecutorImpl;
 import org.camunda.bpm.scenario.runner.CallActivityRunner;
-import org.camunda.bpm.scenario.runner.ScenarioHistory;
 import org.camunda.bpm.scenario.runner.ProcessRunner;
-import org.camunda.bpm.scenario.runner.ScenarioExecutor;
-import org.camunda.bpm.scenario.runner.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.runner.VerifiableScenario;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -21,67 +21,70 @@ import org.camunda.bpm.scenario.runner.ProcessRunnerImpl;
 public class Scenario {
 
   public static ProcessRunner run(Process scenario) {
-    return (ProcessRunner) new ScenarioExecutor(scenario).runners.get(0);
+    return (ProcessRunner) new ScenarioExecutorImpl(scenario).runners.get(0);
   }
 
   public static CallActivityRunner use(Process scenario) {
     return new ProcessRunnerImpl(null, scenario);
   }
 
-  public interface Process extends ScenarioHistory {
+  public interface Process extends VerifiableScenario {
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    UserTaskAction atUserTask(String activityId);
+    UserTaskAction actsOnUserTask(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    TimerIntermediateCatchEventAction atTimerIntermediateCatchEvent(String activityId);
+    TimerIntermediateCatchEventAction actsOnTimerIntermediateCatchEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    MessageIntermediateCatchEventAction atMessageIntermediateCatchEvent(String activityId);
+    MessageIntermediateCatchEventAction actsOnMessageIntermediateCatchEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final (as signallable execution only)
      * @since Camunda BPM 7.1.0-Final (as message event subscription)
      */
-    ReceiveTaskAction atReceiveTask(String activityId);
+    ReceiveTaskAction actsOnReceiveTask(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    SignalIntermediateCatchEventAction atSignalIntermediateCatchEvent(String activityId);
+    SignalIntermediateCatchEventAction actsOnSignalIntermediateCatchEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    CallActivityRunner atCallActivity(String activityId);
+    CallActivityRunner actsOnCallActivity(String activityId);
 
     /**
      * @since Camunda BPM 7.1.0-Final
      */
-    EventBasedGatewayAction atEventBasedGateway(String activityId);
+    EventBasedGatewayAction actsOnEventBasedGateway(String activityId);
 
     /**
      * @since Camunda BPM 7.4.0
      */
-    ServiceTaskAction atServiceTask(String activityId);
+    ServiceTaskAction actsOnServiceTask(String activityId);
 
     /**
      * @since Camunda BPM 7.5.0
      */
-    SendTaskAction atSendTask(String activityId);
+    SendTaskAction actsOnSendTask(String activityId);
 
     /**
      * @since Camunda BPM 7.5.0
      */
-    MessageIntermediateThrowEventAction atMessageIntermediateThrowEvent(String activityId);
+    MessageIntermediateThrowEventAction actsOnMessageIntermediateThrowEvent(String activityId);
 
-    String needsTimeUntilFinishing(String activityId);
+    /**
+     * @since Camunda BPM 7.0.0
+     */
+    String waitsForActionOn(String activityId);
 
   }
 

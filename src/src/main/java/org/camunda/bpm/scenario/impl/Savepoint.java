@@ -1,12 +1,12 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.scenario.delegate.ProcessEngineServicesDelegate;
+import org.camunda.bpm.scenario.impl.delegate.ProcessEngineServicesDelegateImpl;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class Savepoint<I> extends ProcessEngineServicesDelegate {
+public abstract class Savepoint<I> extends ProcessEngineServicesDelegateImpl {
 
   protected ProcessRunnerImpl runner;
   protected I runtimeDelegate;

@@ -1,18 +1,18 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
-import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
+import org.camunda.bpm.scenario.impl.delegate.ExternalTaskDelegateImpl;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ServiceTaskWaitstate extends ExternalTaskDelegate {
+public class ServiceTaskWaitstate extends ExternalTaskDelegateImpl {
 
   private static final String WORKER_ID = "workerId";
 
@@ -27,7 +27,7 @@ public class ServiceTaskWaitstate extends ExternalTaskDelegate {
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.atServiceTask(getActivityId());
+    return scenario.actsOnServiceTask(getActivityId());
   }
 
   protected void leave() {
@@ -44,19 +44,23 @@ public class ServiceTaskWaitstate extends ExternalTaskDelegate {
     getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID).topic(getRuntimeDelegate().getTopicName(), Long.MAX_VALUE).execute();
   }
 
+  @Override
   public void complete() {
     leave();
   }
 
+  @Override
   public void complete(Map<String, Object> variables) {
     leave(variables);
   }
 
+  @Override
   public void handleBpmnError(String errorCode) {
     fetchAndLock();
     getExternalTaskService().handleBpmnError(getRuntimeDelegate().getId(), WORKER_ID, errorCode);
   }
 
+  @Override
   public void handleFailure(String errorMessage, int retries, long retryTimeout) {
     fetchAndLock();
     getExternalTaskService().handleFailure(getRuntimeDelegate().getId(), WORKER_ID, errorMessage, retries, retryTimeout);

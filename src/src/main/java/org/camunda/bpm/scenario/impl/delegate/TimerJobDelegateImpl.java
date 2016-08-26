@@ -1,18 +1,19 @@
-package org.camunda.bpm.scenario.delegate;
+package org.camunda.bpm.scenario.impl.delegate;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
-import org.camunda.bpm.scenario.runner.ProcessRunnerImpl;
-import org.camunda.bpm.scenario.runner.Waitstate;
+import org.camunda.bpm.scenario.delegate.TimerJobDelegate;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.Waitstate;
 
 import java.util.Date;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class JobDelegate extends Waitstate<Job> implements Job {
+public abstract class TimerJobDelegateImpl extends Waitstate<Job> implements TimerJobDelegate {
 
-  public JobDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public TimerJobDelegateImpl(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

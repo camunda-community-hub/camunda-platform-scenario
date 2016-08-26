@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.runner;
+package org.camunda.bpm.scenario.impl;
 
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
+import org.camunda.bpm.scenario.delegate.EventBasedGatewayDelegate;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> implements EventBasedGateway {
+public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGatewayDelegate> implements EventBasedGatewayDelegate {
 
   public EventBasedGatewayWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
@@ -42,13 +43,13 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
   }
 
   @Override
-  protected EventBasedGateway getRuntimeDelegate() {
-    return new EventBasedGateway() {};
+  protected EventBasedGatewayDelegate getRuntimeDelegate() {
+    return null;
   }
 
   @Override
-  protected ScenarioAction<EventBasedGatewayWaitstate> action(Scenario.Process scenario) {
-    return scenario.atEventBasedGateway(getActivityId());
+  protected ScenarioAction<EventBasedGatewayDelegate> action(Scenario.Process scenario) {
+    return scenario.actsOnEventBasedGateway(getActivityId());
   }
 
   protected void leave() {
@@ -59,6 +60,7 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
     getRuntimeService().messageEventReceived(getMessageEventSubscription().getEventName(), getMessageEventSubscription().getExecutionId(), variables);
   }
 
+  @Override
   public EventSubscription getSignalEventSubscription() {
     return getRuntimeService().createEventSubscriptionQuery().eventType("signal").executionId(getExecutionId()).singleResult();
   }
@@ -67,6 +69,7 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
     return getRuntimeService().createEventSubscriptionQuery().eventType("signal").activityId(activityId).executionId(getExecutionId()).singleResult();
   }
 
+  @Override
   public EventSubscription getMessageEventSubscription() {
     return getRuntimeService().createEventSubscriptionQuery().eventType("message").executionId(getExecutionId()).singleResult();
   }
@@ -75,16 +78,19 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
     return getRuntimeService().createEventSubscriptionQuery().eventType("message").activityId(activityId).executionId(getExecutionId()).singleResult();
   }
 
+  @Override
   public Job getTimer() {
     List<Job> jobs = getManagementService().createJobQuery().timers().executionId(getExecutionId()).orderByJobDuedate().asc().listPage(0, 1);
     return jobs.isEmpty() ? null : jobs.get(0);
   }
 
+  @Override
   public void receiveSignal() {
     EventSubscription subscription = getSignalEventSubscription();
     getRuntimeService().signalEventReceived(subscription.getEventName(), subscription.getExecutionId());
   }
 
+  @Override
   public void receiveSignal(Map<String, Object> variables) {
     EventSubscription subscription = getSignalEventSubscription();
     getRuntimeService().signalEventReceived(subscription.getEventName(), subscription.getExecutionId(), variables);
@@ -100,10 +106,12 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGateway> imp
     getRuntimeService().signalEventReceived(subscription.getEventName(), subscription.getExecutionId(), variables);
   }
 
+  @Override
   public void receiveMessage() {
     leave();
   }
 
+  @Override
   public void receiveMessage(Map<String, Object> variables) {
     leave(variables);
   }
