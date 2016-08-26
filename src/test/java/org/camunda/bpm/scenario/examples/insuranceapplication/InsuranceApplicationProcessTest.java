@@ -103,13 +103,9 @@ public class InsuranceApplicationProcessTest {
   @Test
   public void testGreenScenario() {
 
-    // when
-
     ProcessInstance pi = Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables) // either just start process by key ...
         .execute();
-
-    // then
 
     assertThat(pi).variables().containsEntry("riskAssessment", "green");
     verify(insuranceApplication, never()).hasStarted("SubProcessManualCheck");
@@ -120,21 +116,16 @@ public class InsuranceApplicationProcessTest {
   @Test
   public void testYellowScenario() {
 
-    // given
     variables = Variables.createVariables()
       .putValue("applicantAge", 30)
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
-
-    // when
 
     ProcessInstance pi = Scenario.run(insuranceApplication)
       .startBy(() -> { // ... or define your own starter function
         return rule.getRuntimeService().startProcessInstanceByKey("InsuranceApplication", variables);
       })
       .execute();
-
-    // then
 
     assertThat(pi).variables().containsEntry("riskAssessment", "yellow");
     verify(insuranceApplication).hasCompleted("SubProcessManualCheck");
@@ -145,20 +136,15 @@ public class InsuranceApplicationProcessTest {
   @Test
   public void testRedScenario() {
 
-    // given
-
     variables = Variables.createVariables()
       .putValue("applicantAge", 20)
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    // when
-
     ProcessInstance pi = Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
         .execute();
 
-    // then
 
     assertThat(pi).variables().containsEntry("riskAssessment", "red");
 
@@ -170,20 +156,14 @@ public class InsuranceApplicationProcessTest {
   @Test
   public void testManualApprovalScenario() {
 
-    // given
-
     variables = Variables.createVariables()
       .putValue("applicantAge", 30)
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    // when
-
     ProcessInstance pi = Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
         .execute();
-
-    // then
 
     assertThat(pi).variables()
       .containsEntry("riskAssessment", "yellow")
@@ -197,8 +177,6 @@ public class InsuranceApplicationProcessTest {
   @Test
   public void testManualRejectionScenario() {
 
-    // given
-
     variables = Variables.createVariables()
       .putValue("applicantAge", 30)
       .putValue("carManufacturer", "Porsche")
@@ -208,13 +186,9 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", false));
     });
 
-    // when
-
     ProcessInstance pi = Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
         .execute();
-
-    // then
 
     assertThat(pi).variables()
       .containsEntry("riskAssessment", "yellow")
@@ -228,8 +202,6 @@ public class InsuranceApplicationProcessTest {
   @Test
   public void testDocumentRequestScenario() {
 
-    // given
-
     variables = Variables.createVariables()
         .putValue("applicantAge", 30)
         .putValue("carManufacturer", "Porsche")
@@ -240,13 +212,9 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", true));
     });
 
-    // when
-
     Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
         .execute();
-
-    // then
 
     verify(insuranceApplication).hasCompleted("CallActivityDocumentRequest");
 
@@ -254,8 +222,6 @@ public class InsuranceApplicationProcessTest {
 
   @Test
   public void testDocumentRequestBitLateScenario() {
-
-    // given
 
     variables = Variables.createVariables()
       .putValue("applicantAge", 30)
@@ -273,19 +239,13 @@ public class InsuranceApplicationProcessTest {
       receiveTask.receiveMessage();
     });
 
-    // when
-
     Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
         .execute();
 
-    // then
-
     verify(insuranceApplication).hasCompleted("CallActivityDocumentRequest");
     verify(insuranceApplication, never()).hasStarted("UserTaskSpeedUpManualCheck");
     verify(documentRequest).hasCompleted("SendTaskSendReminder");
-
-    // and you could principally also ...
 
     verify(documentRequest, times(1)).waitsForActionOn("ReceiveTaskWaitForDocuments");
     verify(documentRequest, times(1)).actsOnReceiveTask("ReceiveTaskWaitForDocuments");
@@ -295,8 +255,6 @@ public class InsuranceApplicationProcessTest {
 
   @Test
   public void testDocumentRequestVeryLateScenario() {
-
-    // given
 
     variables = Variables.createVariables()
         .putValue("applicantAge", 30)
@@ -310,13 +268,9 @@ public class InsuranceApplicationProcessTest {
 
     when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P7D");
 
-    // when
-
     Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
         .execute();
-
-    // then
 
     verify(insuranceApplication, times(1)).hasStarted("UserTaskSpeedUpManualCheck");
     verify(insuranceApplication).hasCompleted("EndEventApplicationAccepted");
