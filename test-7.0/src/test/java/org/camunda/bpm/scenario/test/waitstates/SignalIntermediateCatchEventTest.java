@@ -64,44 +64,6 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/SignalIntermediateCatchEventTest.bpmn"})
-  public void testToBeforeSignalIntermediateCatchEvent() {
-
-    when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
-      @Override
-      public void execute(SignalEventSubscriptionDelegate signalEventSubscription) {
-        signalEventSubscription.receiveSignal();
-      }
-    });
-
-    Scenario.run(scenario).startBy("SignalIntermediateCatchEventTest").toBefore("SignalIntermediateCatchEvent").execute();
-
-    verify(scenario, times(1)).hasStarted("SignalIntermediateCatchEvent");
-    verify(scenario, never()).hasFinished("SignalIntermediateCatchEvent");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/SignalIntermediateCatchEventTest.bpmn"})
-  public void testToAfterSignalIntermediateCatchEvent() {
-
-    when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
-      @Override
-      public void execute(SignalEventSubscriptionDelegate signalEventSubscription) {
-        signalEventSubscription.receiveSignal();
-      }
-    });
-
-    Scenario.run(scenario).startBy("SignalIntermediateCatchEventTest").toAfter("SignalIntermediateCatchEvent").execute();
-
-    verify(scenario, times(1)).hasStarted("SignalIntermediateCatchEvent");
-    verify(scenario, times(1)).hasFinished("SignalIntermediateCatchEvent");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/SignalIntermediateCatchEventTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
@@ -111,7 +73,13 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("SignalIntermediateCatchEventTest").toBefore("SignalIntermediateCatchEvent").execute();
+    when(otherScenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
+      @Override
+      public void execute(SignalEventSubscriptionDelegate signalEventSubscription) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("SignalIntermediateCatchEventTest").execute();
     Scenario.run(scenario).startBy("SignalIntermediateCatchEventTest").execute();
 
     verify(scenario, times(1)).hasFinished("SignalIntermediateCatchEvent");

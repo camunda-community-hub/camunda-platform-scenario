@@ -138,48 +138,6 @@ public class EventSubprocessInterruptingTimerTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
-  public void testToBeforeUserTask() {
-
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").toBefore("UserTask").execute();
-
-    verify(scenario, never()).actsOnUserTask("UserTask");
-    verify(scenario, times(1)).hasStarted("UserTask");
-    verify(scenario, never()).hasFinished("UserTask");
-    verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventCanceled");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
-  public void testToAfterUserTask() {
-
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").toAfter("UserTask").execute();
-
-    verify(scenario, times(1)).actsOnUserTask("UserTask");
-    verify(scenario, times(1)).hasStarted("UserTask");
-    verify(scenario, times(1)).hasFinished("UserTask");
-    verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventCanceled");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -189,7 +147,13 @@ public class EventSubprocessInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("EventSubprocessInterruptingTimerTest").toBefore("UserTask").execute();
+    when(otherScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+      @Override
+      public void execute(TaskDelegate task) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("EventSubprocessInterruptingTimerTest").execute();
     Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");

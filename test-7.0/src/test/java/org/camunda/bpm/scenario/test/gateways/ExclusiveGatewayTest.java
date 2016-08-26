@@ -155,62 +155,6 @@ public class ExclusiveGatewayTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ExclusiveGatewayTest.bpmn"})
-  public void testToBeforeUserTask() {
-
-    when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    when(scenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("ExclusiveGatewayTest", variables).toBefore("UserTaskOne").execute();
-
-    verify(scenario, times(1)).hasStarted("UserTaskOne");
-    verify(scenario, never()).hasFinished("UserTaskOne");
-    verify(scenario, never()).hasStarted("UserTaskTwo");
-    verify(scenario, never()).hasFinished("UserTaskTwo");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ExclusiveGatewayTest.bpmn"})
-  public void testToAfterUserTask() {
-
-    when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    when(scenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("ExclusiveGatewayTest", variables).toAfter("UserTaskOne").execute();
-
-    verify(scenario, times(1)).hasStarted("UserTaskOne");
-    verify(scenario, times(1)).hasFinished("UserTaskOne");
-    verify(scenario, never()).hasStarted("UserTaskTwo");
-    verify(scenario, never()).hasFinished("UserTaskTwo");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ExclusiveGatewayTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
@@ -220,6 +164,12 @@ public class ExclusiveGatewayTest extends AbstractTest {
       }
     });
 
+    when(otherScenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
+      @Override
+      public void execute(TaskDelegate task) {
+      }
+    });
+
     when(scenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
@@ -227,7 +177,7 @@ public class ExclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("ExclusiveGatewayTest",variables).toBefore("UserTaskOne").execute();
+    Scenario.run(otherScenario).startBy("ExclusiveGatewayTest",variables).execute();
     Scenario.run(scenario).startBy("ExclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasFinished("UserTaskOne");

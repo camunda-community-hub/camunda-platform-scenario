@@ -61,42 +61,6 @@ public class ServiceTaskTest extends AbstractTest {
   }
 
   @Test
-  public void testToBeforeServiceTask() {
-
-    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
-      @Override
-      public void execute(ExternalTaskDelegate externalTask) {
-        externalTask.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("ServiceTaskTest").toBefore("ServiceTask").execute();
-
-    verify(scenario, times(1)).hasStarted("ServiceTask");
-    verify(scenario, never()).hasFinished("ServiceTask");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  public void testToAfterServiceTask() {
-
-    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
-      @Override
-      public void execute(ExternalTaskDelegate externalTask) {
-        externalTask.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("ServiceTaskTest").toAfter("ServiceTask").execute();
-
-    verify(scenario, times(1)).hasStarted("ServiceTask");
-    verify(scenario, times(1)).hasFinished("ServiceTask");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-  }
-
-  @Test
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
@@ -106,7 +70,13 @@ public class ServiceTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("ServiceTaskTest").toBefore("ServiceTask").execute();
+    when(otherScenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+      @Override
+      public void execute(ExternalTaskDelegate externalTask) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("ServiceTaskTest").execute();
     Scenario.run(scenario).startBy("ServiceTaskTest").execute();
 
     verify(scenario, times(1)).hasCompleted("ServiceTask");

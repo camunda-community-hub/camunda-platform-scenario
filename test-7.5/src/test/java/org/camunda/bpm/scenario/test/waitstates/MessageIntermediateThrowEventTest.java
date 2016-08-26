@@ -61,42 +61,6 @@ public class MessageIntermediateThrowEventTest extends AbstractTest {
   }
 
   @Test
-  public void testToBeforeMessageIntermediateThrowEvent() {
-
-    when(scenario.actsOnMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
-      @Override
-      public void execute(ExternalTaskDelegate externalTask) {
-        externalTask.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("MessageIntermediateThrowEventTest").toBefore("MessageIntermediateThrowEvent").execute();
-
-    verify(scenario, times(1)).hasStarted("MessageIntermediateThrowEvent");
-    verify(scenario, never()).hasFinished("MessageIntermediateThrowEvent");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  public void testToAfterMessageIntermediateThrowEvent() {
-
-    when(scenario.actsOnMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
-      @Override
-      public void execute(ExternalTaskDelegate externalTask) {
-        externalTask.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("MessageIntermediateThrowEventTest").toAfter("MessageIntermediateThrowEvent").execute();
-
-    verify(scenario, times(1)).hasStarted("MessageIntermediateThrowEvent");
-    verify(scenario, times(1)).hasFinished("MessageIntermediateThrowEvent");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-  }
-
-  @Test
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
@@ -106,7 +70,13 @@ public class MessageIntermediateThrowEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("MessageIntermediateThrowEventTest").toBefore("MessageIntermediateThrowEvent").execute();
+    when(otherScenario.actsOnMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
+      @Override
+      public void execute(ExternalTaskDelegate externalTask) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("MessageIntermediateThrowEventTest").execute();
     Scenario.run(scenario).startBy("MessageIntermediateThrowEventTest").execute();
 
     verify(scenario, times(1)).hasCompleted("MessageIntermediateThrowEvent");

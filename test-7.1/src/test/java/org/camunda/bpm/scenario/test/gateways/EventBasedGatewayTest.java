@@ -25,19 +25,4 @@ public class EventBasedGatewayTest extends org.camunda.bpm.scenario.test.waitsta
     super.testDoNotDealWithEventBasedGateway();
   }
 
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
-  public void testToBeforeEventBasedGateway() {
-    super.testToBeforeEventBasedGateway();
-  }
-
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
-  public void testToAfterEventBasedGateway() {
-    super.testToAfterEventBasedGateway();
-  }
-
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
-  public void testWhileOtherProcessInstanceIsRunning() {
-    super.testWhileOtherProcessInstanceIsRunning();
-  }
-
 }

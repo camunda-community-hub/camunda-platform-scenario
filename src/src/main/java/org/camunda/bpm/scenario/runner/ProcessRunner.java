@@ -16,10 +16,6 @@ public interface ProcessRunner extends CallActivityRunner {
 
   ProcessRunner startBy(ProcessStarter starter);
 
-  ProcessRunner toBefore(String activityId);
-
-  ProcessRunner toAfter(String activityId);
-
   ProcessRunner fromBefore(String activityId);
 
   ProcessRunner fromAfter(String activityId);

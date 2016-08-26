@@ -118,62 +118,6 @@ public class ParallelGatewayTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ParallelGatewayTest.bpmn"})
-  public void testToBeforeUserTask() {
-
-    when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    when(scenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("ParallelGatewayTest").toBefore("UserTaskOne").execute();
-
-    verify(scenario, times(1)).hasStarted("UserTaskOne");
-    verify(scenario, never()).hasFinished("UserTaskOne");
-    verify(scenario, times(1)).hasStarted("UserTaskTwo");
-    verify(scenario, times(1)).hasFinished("UserTaskTwo");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ParallelGatewayTest.bpmn"})
-  public void testToAfterUserTask() {
-
-    when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    when(scenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("ParallelGatewayTest").toAfter("UserTaskOne").execute();
-
-    verify(scenario, times(1)).hasStarted("UserTaskOne");
-    verify(scenario, times(1)).hasFinished("UserTaskOne");
-    verify(scenario, times(1)).hasStarted("UserTaskTwo");
-    verify(scenario, times(1)).hasFinished("UserTaskTwo");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ParallelGatewayTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
@@ -190,7 +134,19 @@ public class ParallelGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("ParallelGatewayTest").toBefore("UserTaskOne").toBefore("UserTaskTwo").execute();
+    when(otherScenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
+      @Override
+      public void execute(TaskDelegate task) {
+      }
+    });
+
+    when(otherScenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
+      @Override
+      public void execute(TaskDelegate task) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("ParallelGatewayTest").execute();
     Scenario.run(scenario).startBy("ParallelGatewayTest").execute();
 
     verify(scenario, times(1)).hasFinished("EndEvent");

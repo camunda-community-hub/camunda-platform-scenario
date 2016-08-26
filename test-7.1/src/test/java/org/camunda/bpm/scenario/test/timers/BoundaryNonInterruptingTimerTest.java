@@ -138,48 +138,6 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
-  public void testToBeforeUserTask() {
-
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").toBefore("UserTask").execute();
-
-    verify(scenario, never()).actsOnUserTask("UserTask");
-    verify(scenario, times(1)).hasStarted("UserTask");
-    verify(scenario, never()).hasFinished("UserTask");
-    verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventAdditional");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
-  public void testToAfterUserTask() {
-
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").toAfter("UserTask").execute();
-
-    verify(scenario, times(1)).actsOnUserTask("UserTask");
-    verify(scenario, times(1)).hasStarted("UserTask");
-    verify(scenario, times(1)).hasFinished("UserTask");
-    verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventAdditional");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -189,7 +147,13 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("BoundaryNonInterruptingTimerTest").toBefore("UserTask").execute();
+    when(otherScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+      @Override
+      public void execute(TaskDelegate task) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("BoundaryNonInterruptingTimerTest").execute();
     Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");

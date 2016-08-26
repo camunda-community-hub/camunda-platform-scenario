@@ -64,44 +64,6 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
-  public void testToBeforeMessageIntermediateCatchEvent() {
-
-    when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
-      @Override
-      public void execute(MessageEventSubscriptionDelegate messageEventSubscription) {
-        messageEventSubscription.receiveMessage();
-      }
-    });
-
-    Scenario.run(scenario).startBy("MessageIntermediateCatchEventTest").toBefore("MessageIntermediateCatchEvent").execute();
-
-    verify(scenario, times(1)).hasStarted("MessageIntermediateCatchEvent");
-    verify(scenario, never()).hasFinished("MessageIntermediateCatchEvent");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
-  public void testToAfterMessageIntermediateCatchEvent() {
-
-    when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
-      @Override
-      public void execute(MessageEventSubscriptionDelegate messageEventSubscription) {
-        messageEventSubscription.receiveMessage();
-      }
-    });
-
-    Scenario.run(scenario).startBy("MessageIntermediateCatchEventTest").toAfter("MessageIntermediateCatchEvent").execute();
-
-    verify(scenario, times(1)).hasStarted("MessageIntermediateCatchEvent");
-    verify(scenario, times(1)).hasFinished("MessageIntermediateCatchEvent");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
@@ -111,7 +73,13 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("MessageIntermediateCatchEventTest").toBefore("MessageIntermediateCatchEvent").execute();
+    when(otherScenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
+      @Override
+      public void execute(MessageEventSubscriptionDelegate messageEventSubscription) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("MessageIntermediateCatchEventTest").execute();
     Scenario.run(scenario).startBy("MessageIntermediateCatchEventTest").execute();
 
     verify(scenario, times(1)).hasFinished("MessageIntermediateCatchEvent");

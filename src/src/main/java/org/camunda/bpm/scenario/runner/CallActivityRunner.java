@@ -5,8 +5,4 @@ package org.camunda.bpm.scenario.runner;
  */
 public interface CallActivityRunner {
 
-  CallActivityRunner toBefore(String activityId);
-
-  CallActivityRunner toAfter(String activityId);
-
 }

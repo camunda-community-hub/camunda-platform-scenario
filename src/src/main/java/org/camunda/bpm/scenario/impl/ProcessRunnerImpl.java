@@ -35,7 +35,6 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   protected ProcessInstance processInstance;
 
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
-  private Map<String, Boolean> toActivityIds = new HashMap<String, Boolean>();
   private Map<String, String> durations = new HashMap<String, String>();
 
   public ProcessRunnerImpl(ScenarioExecutorImpl scenarioExecutor, Scenario.Process scenario) {
@@ -77,18 +76,6 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
         .fail("Outdated Camunda BPM version used will not allow to start process instances " +
             "at explicitely selected activity IDs");
     fromActivityIds.put(activityId, false);
-    return this;
-  }
-
-  @Override
-  public ProcessRunner toBefore(String activityId) {
-    toActivityIds.put(activityId, true);
-    return this;
-  }
-
-  @Override
-  public ProcessRunner toAfter(String activityId) {
-    toActivityIds.put(activityId, false);
     return this;
   }
 
@@ -154,8 +141,6 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   private boolean isAvailable(HistoricActivityInstance instance) {
-    if (toActivityIds.keySet().contains(instance.getActivityId()) && toActivityIds.get(instance.getActivityId()))
-      scenarioExecutor.unavailableHistoricActivityInstances.add(instance.getId());
     return !scenarioExecutor.unavailableHistoricActivityInstances.contains(instance.getId());
   }
 
@@ -248,13 +233,6 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
         .processInstanceId(processInstance.getId()).unfinished().list();
     for (HistoricActivityInstance instance: instances) {
       if (!scenarioExecutor.startedHistoricActivityInstances.contains(instance.getId())) {
-        if (finished != null) {
-          if (toActivityIds.keySet().contains(finished.getActivityId())) {
-            if (!toActivityIds.get(finished.getActivityId())) {
-              scenarioExecutor.unavailableHistoricActivityInstances.add(instance.getId());
-            }
-          }
-        }
         scenario.hasStarted(instance.getActivityId());
         scenarioExecutor.startedHistoricActivityInstances.add(instance.getId());
       }

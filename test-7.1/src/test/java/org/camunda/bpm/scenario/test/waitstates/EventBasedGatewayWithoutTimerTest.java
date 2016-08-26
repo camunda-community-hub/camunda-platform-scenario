@@ -65,45 +65,6 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayWithoutTimerTest.bpmn"})
-  public void testToBeforeEventBasedGateway() {
-
-    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
-      @Override
-      public void execute(EventBasedGatewayDelegate gateway) {
-        gateway.receiveMessage();
-      }
-    });
-
-    Scenario.run(scenario).startBy("EventBasedGatewayWithoutTimerTest").toBefore("EventBasedGateway").execute();
-
-    verify(scenario, times(1)).hasStarted("EventBasedGateway");
-    verify(scenario, never()).hasFinished("EventBasedGateway");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayWithoutTimerTest.bpmn"})
-  public void testToAfterEventBasedGateway() {
-
-    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
-      @Override
-      public void execute(EventBasedGatewayDelegate gateway) {
-        gateway.receiveMessage();
-      }
-    });
-
-    Scenario.run(scenario).startBy("EventBasedGatewayWithoutTimerTest").toAfter("EventBasedGateway").execute();
-
-    verify(scenario, times(1)).hasStarted("EventBasedGateway");
-    verify(scenario, times(1)).hasFinished("EventBasedGateway");
-    verify(scenario, times(1)).hasFinished("MessageIntermediateCatchEvent");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayWithoutTimerTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
@@ -113,7 +74,13 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("EventBasedGatewayWithoutTimerTest").toBefore("EventBasedGateway").execute();
+    when(otherScenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+      @Override
+      public void execute(EventBasedGatewayDelegate gateway) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("EventBasedGatewayWithoutTimerTest").execute();
     Scenario.run(scenario).startBy("EventBasedGatewayWithoutTimerTest").execute();
 
     verify(scenario, times(1)).hasFinished("EventBasedGateway");

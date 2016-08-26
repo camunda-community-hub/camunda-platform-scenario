@@ -100,50 +100,6 @@ public class CallActivityTest extends AbstractTest {
       "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
       "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
-  public void testToBeforeCallActivity() {
-
-    when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-
-    Scenario.run(scenario).startBy("CallActivityTest").toBefore("CallActivity").execute();
-
-    verify(scenario, times(1)).hasStarted("CallActivity");
-    verify(scenario, never()).hasFinished("CallActivity");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-    verify(calledScenario, never()).hasStarted("UserTask");
-
-  }
-
-  @Test
-  @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
-  })
-  public void testToAfterCallActivity() {
-
-    when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("CallActivityTest").toAfter("CallActivity").execute();
-
-    verify(scenario, times(1)).hasStarted("CallActivity");
-    verify(scenario, times(1)).hasFinished("CallActivity");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-    verify(calledScenario, times(1)).hasFinished("UserTask");
-
-  }
-
-  @Test
-  @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
-  })
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
@@ -151,11 +107,15 @@ public class CallActivityTest extends AbstractTest {
     when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
+      }
+    }).thenReturn(new UserTaskAction() {
+      @Override
+      public void execute(TaskDelegate task) {
         task.complete();
       }
     });
 
-    Scenario.run(otherScenario).startBy("CallActivityTest").toBefore("CallActivity").execute();
+    Scenario.run(otherScenario).startBy("CallActivityTest").execute();
     Scenario.run(scenario).startBy("CallActivityTest").execute();
 
     verify(scenario, times(1)).hasFinished("CallActivity");

@@ -64,44 +64,6 @@ public class UserTaskTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
-  public void testToBeforeUserTask() {
-
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("UserTaskTest").toBefore("UserTask").execute();
-
-    verify(scenario, times(1)).hasStarted("UserTask");
-    verify(scenario, never()).hasFinished("UserTask");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
-  public void testToAfterUserTask() {
-
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
-      @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("UserTaskTest").toAfter("UserTask").execute();
-
-    verify(scenario, times(1)).hasStarted("UserTask");
-    verify(scenario, times(1)).hasFinished("UserTask");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -111,7 +73,13 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("UserTaskTest").toBefore("UserTask").execute();
+    when(otherScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+      @Override
+      public void execute(TaskDelegate task) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("UserTaskTest").execute();
     Scenario.run(scenario).startBy("UserTaskTest").execute();
 
     verify(scenario, times(1)).hasFinished("UserTask");

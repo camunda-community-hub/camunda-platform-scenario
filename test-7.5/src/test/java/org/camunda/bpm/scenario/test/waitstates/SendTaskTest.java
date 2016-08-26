@@ -61,42 +61,6 @@ public class SendTaskTest extends AbstractTest {
   }
 
   @Test
-  public void testToBeforeSendTask() {
-
-    when(scenario.actsOnSendTask("SendTask")).thenReturn(new SendTaskAction() {
-      @Override
-      public void execute(ExternalTaskDelegate externalTask) {
-        externalTask.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("SendTaskTest").toBefore("SendTask").execute();
-
-    verify(scenario, times(1)).hasStarted("SendTask");
-    verify(scenario, never()).hasFinished("SendTask");
-    verify(scenario, never()).hasFinished("EndEvent");
-
-  }
-
-  @Test
-  public void testToAfterSendTask() {
-
-    when(scenario.actsOnSendTask("SendTask")).thenReturn(new SendTaskAction() {
-      @Override
-      public void execute(ExternalTaskDelegate externalTask) {
-        externalTask.complete();
-      }
-    });
-
-    Scenario.run(scenario).startBy("SendTaskTest").toAfter("SendTask").execute();
-
-    verify(scenario, times(1)).hasStarted("SendTask");
-    verify(scenario, times(1)).hasFinished("SendTask");
-    verify(scenario, times(1)).hasFinished("EndEvent");
-
-  }
-
-  @Test
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnSendTask("SendTask")).thenReturn(new SendTaskAction() {
@@ -106,7 +70,13 @@ public class SendTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("SendTaskTest").toBefore("SendTask").execute();
+    when(otherScenario.actsOnSendTask("SendTask")).thenReturn(new SendTaskAction() {
+      @Override
+      public void execute(ExternalTaskDelegate externalTask) {
+      }
+    });
+
+    Scenario.run(otherScenario).startBy("SendTaskTest").execute();
     Scenario.run(scenario).startBy("SendTaskTest").execute();
 
     verify(scenario, times(1)).hasCompleted("SendTask");
