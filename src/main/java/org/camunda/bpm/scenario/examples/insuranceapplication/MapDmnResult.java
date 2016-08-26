@@ -3,7 +3,11 @@ package org.camunda.bpm.scenario.examples.insuranceapplication;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MapDmnResult implements ExecutionListener {
 

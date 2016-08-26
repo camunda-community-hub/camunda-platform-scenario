@@ -13,8 +13,13 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Map;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
-import static org.mockito.Mockito.*;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.assertThat;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.runtimeService;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.withVariables;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -41,54 +46,54 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "VW")
       .putValue("carType", "Golf");
 
-    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       task.complete(withVariables("approved", true));
     });
 
-    when(insuranceApplication.atUserTask("UserTaskCheckApplicationUnderwriter")).thenReturn((task) -> {
+    when(insuranceApplication.actsOnUserTask("UserTaskCheckApplicationUnderwriter")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("underwriter");
       task.complete();
     });
 
-    when(insuranceApplication.atUserTask("UserTaskCheckApplicationTeamlead")).thenReturn((task) -> {
+    when(insuranceApplication.actsOnUserTask("UserTaskCheckApplicationTeamlead")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("teamlead");
       task.complete();
     });
 
-    when(insuranceApplication.atUserTask("UserTaskSpeedUpManualCheck")).thenReturn((task) -> {
+    when(insuranceApplication.actsOnUserTask("UserTaskSpeedUpManualCheck")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("management");
       task.complete();
     });
 
-    when(insuranceApplication.atSendTask("SendTaskSendPolicy")).thenReturn((externalTask) -> {
+    when(insuranceApplication.actsOnSendTask("SendTaskSendPolicy")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
 
-    when(insuranceApplication.atSendTask("SendTaskSendRejection")).thenReturn((externalTask) -> {
+    when(insuranceApplication.actsOnSendTask("SendTaskSendRejection")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
 
-    when(insuranceApplication.atCallActivity("CallActivityDocumentRequest"))
+    when(insuranceApplication.actsOnCallActivity("CallActivityDocumentRequest"))
       .thenReturn(Scenario.use(documentRequest));
 
-    when(documentRequest.atSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
+    when(documentRequest.actsOnSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
 
-    when(documentRequest.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
+    when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       assertThat(receiveTask.getEventType()).isEqualTo("message");
       assertThat(receiveTask.getEventName()).isEqualTo("MSG_DOCUMENT_RECEIVED");
       receiveTask.receiveMessage();
     });
 
-    when(documentRequest.atUserTask("UserTaskCallCustomer")).thenReturn((task) -> {
+    when(documentRequest.actsOnUserTask("UserTaskCallCustomer")).thenReturn((task) -> {
       task.complete();
     });
 
-    when(documentRequest.atSendTask("SendTaskSendReminder")).thenReturn((externalTask) -> {
+    when(documentRequest.actsOnSendTask("SendTaskSendReminder")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
@@ -199,7 +204,7 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       task.complete(withVariables("approved", false));
     });
 
@@ -230,7 +235,7 @@ public class InsuranceApplicationProcessTest {
         .putValue("carManufacturer", "Porsche")
         .putValue("carType", "911");
 
-    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
@@ -257,14 +262,14 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.needsTimeUntilFinishing("ReceiveTaskWaitForDocuments")).thenReturn("P1D");
+    when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P1D");
 
-    when(documentRequest.atReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
+    when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       receiveTask.receiveMessage();
     });
 
@@ -280,6 +285,12 @@ public class InsuranceApplicationProcessTest {
     verify(insuranceApplication, never()).hasStarted("UserTaskSpeedUpManualCheck");
     verify(documentRequest).hasCompleted("SendTaskSendReminder");
 
+    // and you could principally also ...
+
+    verify(documentRequest, times(1)).waitsForActionOn("ReceiveTaskWaitForDocuments");
+    verify(documentRequest, times(1)).actsOnReceiveTask("ReceiveTaskWaitForDocuments");
+    verify(documentRequest, never()).waitsForActionOn("UserTaskCallCustomer");
+
   }
 
   @Test
@@ -292,12 +303,12 @@ public class InsuranceApplicationProcessTest {
         .putValue("carManufacturer", "Porsche")
         .putValue("carType", "911");
 
-    when(insuranceApplication.atUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.needsTimeUntilFinishing("ReceiveTaskWaitForDocuments")).thenReturn("P7D");
+    when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P7D");
 
     // when
 
