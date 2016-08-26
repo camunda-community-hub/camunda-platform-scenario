@@ -1,6 +1,5 @@
 package org.camunda.bpm.scenario.test.gateways;
 
-import org.camunda.bpm.engine.delegate.VariableScope;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.UserTaskAction;

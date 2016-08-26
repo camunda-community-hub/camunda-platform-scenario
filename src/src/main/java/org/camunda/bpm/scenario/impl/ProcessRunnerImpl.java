@@ -63,32 +63,32 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   @Override
-  public ProcessRunner fromBefore(String activityId, String... activityIds) {
+  public ProcessRunner fromBefore(String activityId) {
     Api.feature(RuntimeService.class.getName(), "createProcessInstanceByKey", String.class)
         .fail("Outdated Camunda BPM version used will not allow to start process instances " +
             "at explicitely selected activity IDs");
-    setActivityIds(true, true, activityId, activityIds);
+    fromActivityIds.put(activityId, true);
     return this;
   }
 
   @Override
-  public ProcessRunner fromAfter(String activityId, String... activityIds) {
+  public ProcessRunner fromAfter(String activityId) {
     Api.feature(RuntimeService.class.getName(), "createProcessInstanceByKey", String.class)
         .fail("Outdated Camunda BPM version used will not allow to start process instances " +
             "at explicitely selected activity IDs");
-    setActivityIds(true, false, activityId, activityIds);
+    fromActivityIds.put(activityId, false);
     return this;
   }
 
   @Override
-  public ProcessRunner toBefore(String activityId, String... activityIds) {
-    setActivityIds(false, true, activityId, activityIds);
+  public ProcessRunner toBefore(String activityId) {
+    toActivityIds.put(activityId, true);
     return this;
   }
 
   @Override
-  public ProcessRunner toAfter(String activityId, String... activityIds) {
-    setActivityIds(false, false, activityId, activityIds);
+  public ProcessRunner toAfter(String activityId) {
+    toActivityIds.put(activityId, false);
     return this;
   }
 
@@ -101,14 +101,6 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   @Override
   public ProcessInstance execute() {
     return scenarioExecutor.execute();
-  }
-
-  private void setActivityIds(Boolean from, Boolean before, String activityId, String... activityIds) {
-    Map<String, Boolean> map = from ? fromActivityIds : toActivityIds;
-    map.put(activityId, before);
-    for (String a: activityIds) {
-      map.put(a, before);
-    }
   }
 
   protected void running(CallActivityWaitstate waitstate) {

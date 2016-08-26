@@ -5,7 +5,6 @@ import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.UserTaskAction;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.mockito.Matchers.any;
@@ -32,7 +31,8 @@ public class RunToAfterActivityTest extends AbstractTest {
     });
 
     Scenario.run(scenario).startBy("RunToAfterActivityTest")
-      .toAfter("UserTaskOne", "UserTaskTwo")
+      .toAfter("UserTaskOne")
+      .toAfter("UserTaskTwo")
       .execute();
 
     verify(scenario, times(2)).actsOnUserTask(anyString());
