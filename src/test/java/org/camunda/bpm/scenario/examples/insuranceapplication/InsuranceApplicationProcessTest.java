@@ -75,7 +75,7 @@ public class InsuranceApplicationProcessTest {
       externalTask.complete();
     });
 
-    when(insuranceApplication.actsOnCallActivity("CallActivityDocumentRequest"))
+    when(insuranceApplication.runsCallActivity("CallActivityDocumentRequest"))
       .thenReturn(Scenario.use(documentRequest));
 
     when(documentRequest.actsOnSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
