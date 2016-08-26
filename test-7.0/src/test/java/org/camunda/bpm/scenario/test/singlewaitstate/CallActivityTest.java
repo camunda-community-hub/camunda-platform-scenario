@@ -28,7 +28,7 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testCompleteCallActivityUserTask() {
 
-    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
     when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
@@ -52,7 +52,7 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testDoNothingCallActivityUserTask() {
 
-    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
     when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
@@ -89,7 +89,7 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testDoNotDealWithCallActivityUserTask() {
 
-    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
 
     Scenario.run(scenario).startBy("CallActivityTest").execute();
 
@@ -102,7 +102,7 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testToBeforeCallActivity() {
 
-    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
 
     Scenario.run(scenario).startBy("CallActivityTest").toBefore("CallActivity").execute();
 
@@ -121,7 +121,7 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testToAfterCallActivity() {
 
-    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
     when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
@@ -146,8 +146,8 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(otherScenario.actsOnCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
+    when(otherScenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
     when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {

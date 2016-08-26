@@ -13,9 +13,9 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class TimerIntermediateCatchEventWaitstate extends TimerJobDelegateImpl {
+public class TimerIntermediateEventWaitstate extends TimerJobDelegateImpl {
 
-  public TimerIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public TimerIntermediateEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
     if (duration != null) {
       throw new IllegalStateException("Found a duration '" + duration + "' set. " +
@@ -47,7 +47,7 @@ public class TimerIntermediateCatchEventWaitstate extends TimerJobDelegateImpl {
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.actsOnTimerIntermediateCatchEvent(getActivityId());
+    return scenario.actsOnTimerIntermediateEvent(getActivityId());
   }
 
   protected void leave() {

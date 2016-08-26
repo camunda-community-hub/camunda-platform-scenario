@@ -30,15 +30,15 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0rmgfe4" sourceRef="MessageIntermediateCatchEvent" targetRef="EndEvent" />
     <bpmn:sequenceFlow id="SequenceFlow_1hln539" sourceRef="SignalIntermediateCatchEvent" targetRef="EndEvent" />
-    <bpmn:intermediateCatchEvent id="TimerIntermediateCatchEvent">
+    <bpmn:intermediateCatchEvent id="TimerIntermediateEvent">
       <bpmn:incoming>SequenceFlow_0o5aw6f</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1vb2uvy</bpmn:outgoing>
       <bpmn:timerEventDefinition>
         <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT5M</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_0o5aw6f" sourceRef="EventBasedGateway" targetRef="TimerIntermediateCatchEvent" />
-    <bpmn:sequenceFlow id="SequenceFlow_1vb2uvy" sourceRef="TimerIntermediateCatchEvent" targetRef="EndEvent" />
+    <bpmn:sequenceFlow id="SequenceFlow_0o5aw6f" sourceRef="EventBasedGateway" targetRef="TimerIntermediateEvent" />
+    <bpmn:sequenceFlow id="SequenceFlow_1vb2uvy" sourceRef="TimerIntermediateEvent" targetRef="EndEvent" />
   </bpmn:process>
   <bpmn:message id="Message_184qabh" name="msg_MessageIntermediateCatchEvent" />
   <bpmn:signal id="Signal_01k4wpo" name="sig_SignalIntermediateCatchEvent" />
@@ -108,7 +108,7 @@
           <dc:Bounds x="414.5" y="178" width="90" height="20" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="IntermediateCatchEvent_1gy26ef_di" bpmnElement="TimerIntermediateCatchEvent">
+      <bpmndi:BPMNShape id="IntermediateCatchEvent_1gy26ef_di" bpmnElement="TimerIntermediateEvent">
         <dc:Bounds x="379" y="268" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="352" y="303.46290801186944" width="90" height="20" />

@@ -49,7 +49,7 @@ public class EventBasedGatewayTest extends AbstractTest {
 
     Scenario.run(scenario).startBy("EventBasedGatewayTest").execute();
 
-    verify(scenario, times(1)).hasFinished("TimerIntermediateCatchEvent");
+    verify(scenario, times(1)).hasFinished("TimerIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
   }

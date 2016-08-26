@@ -22,7 +22,7 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     classNames.put("intermediateSignalCatch", "SignalIntermediateCatchEventWaitstate");
     classNames.put("intermediateMessageCatch", "MessageIntermediateCatchEventWaitstate");
     classNames.put("receiveTask", "ReceiveTaskWaitstate");
-    classNames.put("intermediateTimer", "TimerIntermediateCatchEventWaitstate");
+    classNames.put("intermediateTimer", "TimerIntermediateEventWaitstate");
     classNames.put("eventBasedGateway", "EventBasedGatewayWaitstate");
     classNames.put("callActivity", "CallActivityWaitstate");
     classNames.put("serviceTask", "ServiceTaskWaitstate");

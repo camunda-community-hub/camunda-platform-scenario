@@ -7,7 +7,7 @@ import org.camunda.bpm.scenario.action.ReceiveTaskAction;
 import org.camunda.bpm.scenario.action.SendTaskAction;
 import org.camunda.bpm.scenario.action.ServiceTaskAction;
 import org.camunda.bpm.scenario.action.SignalIntermediateCatchEventAction;
-import org.camunda.bpm.scenario.action.TimerIntermediateCatchEventAction;
+import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.action.UserTaskAction;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.ScenarioExecutorImpl;
@@ -38,7 +38,7 @@ public class Scenario {
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    TimerIntermediateCatchEventAction actsOnTimerIntermediateCatchEvent(String activityId);
+    TimerIntermediateEventAction actsOnTimerIntermediateEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
@@ -59,7 +59,7 @@ public class Scenario {
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    CallActivityRunner actsOnCallActivity(String activityId);
+    CallActivityRunner runsCallActivity(String activityId);
 
     /**
      * @since Camunda BPM 7.1.0-Final
