@@ -7,6 +7,9 @@ import org.junit.Rule;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
@@ -20,6 +23,8 @@ public class AbstractTest {
 
   @Mock
   protected Scenario.Process otherScenario;
+
+  public Map<String, Object> variables = new HashMap<String, Object>();
 
   @Before
   public void setup() {
