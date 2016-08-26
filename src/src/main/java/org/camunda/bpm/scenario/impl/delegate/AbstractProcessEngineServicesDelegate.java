@@ -17,11 +17,11 @@ import org.camunda.bpm.engine.TaskService;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class ProcessEngineServicesDelegateImpl {
+public abstract class AbstractProcessEngineServicesDelegate {
 
   protected ProcessEngine processEngine;
 
-  public ProcessEngineServicesDelegateImpl(ProcessEngine processEngine) {
+  public AbstractProcessEngineServicesDelegate(ProcessEngine processEngine) {
     this.processEngine = processEngine;
   }
 

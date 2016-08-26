@@ -143,11 +143,11 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   @Override
-  public Waitstate next() {
+  public AbstractWaitstate next() {
     continueAsyncContinuations();
-    Iterator<Waitstate> it = getNextWaitstates().iterator();
+    Iterator<AbstractWaitstate> it = getNextWaitstates().iterator();
     while (it.hasNext()) {
-      Waitstate waitstate = it.next();
+      AbstractWaitstate waitstate = it.next();
       if (isAvailable(waitstate.historicDelegate))
         return waitstate;
     }
@@ -187,15 +187,15 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
     return null;
   }
 
-  private List<Waitstate> getNextWaitstates() {
+  private List<AbstractWaitstate> getNextWaitstates() {
     List<HistoricActivityInstance> instances = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).unfinished().list();
-    List<Waitstate> waitstates = new ArrayList<Waitstate>();
+    List<AbstractWaitstate> waitstates = new ArrayList<AbstractWaitstate>();
     for (HistoricActivityInstance instance: instances) {
-      waitstates.add(Waitstate.newInstance(this, instance, getDuration(instance)));
+      waitstates.add(AbstractWaitstate.newInstance(this, instance, getDuration(instance)));
     }
-    Collections.sort(waitstates, new Comparator<Waitstate>() {
+    Collections.sort(waitstates, new Comparator<AbstractWaitstate>() {
       @Override
-      public int compare(Waitstate one, Waitstate other) {
+      public int compare(AbstractWaitstate one, AbstractWaitstate other) {
         return one.getEndTime().compareTo(other.getEndTime());
       }
     });
@@ -260,7 +260,7 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   @Override
-  public Job next(Waitstate waitstate) {
+  public Job next(AbstractWaitstate waitstate) {
     List<Job> next = scenarioExecutor.processEngine.getManagementService().createJobQuery().timers().processInstanceId(processInstance.getId()).orderByJobDuedate().asc().listPage(0,1);
     if (!next.isEmpty()) {
       Job timer = next.get(0);

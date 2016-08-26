@@ -6,14 +6,14 @@ import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.SignalEventSubscriptionDelegate;
-import org.camunda.bpm.scenario.impl.delegate.SignalEventSubscriptionDelegateImpl;
+import org.camunda.bpm.scenario.impl.delegate.AbstractSignalEventSubscriptionDelegate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class SignalIntermediateCatchEventWaitstate extends SignalEventSubscriptionDelegateImpl {
+public class SignalIntermediateCatchEventWaitstate extends AbstractSignalEventSubscriptionDelegate {
 
   public SignalIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);

@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.runtime.Job;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class AsyncContinuation extends Savepoint<Job> {
+public class AsyncContinuation extends AbstractSavepoint<Job> {
 
   protected String executionId;
 

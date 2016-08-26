@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGatewayDelegate> implements EventBasedGatewayDelegate {
+public class EventBasedGatewayWaitstate extends AbstractWaitstate<EventBasedGatewayDelegate> implements EventBasedGatewayDelegate {
 
   public EventBasedGatewayWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);

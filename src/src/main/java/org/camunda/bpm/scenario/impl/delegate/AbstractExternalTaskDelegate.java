@@ -4,16 +4,16 @@ import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
-import org.camunda.bpm.scenario.impl.Waitstate;
+import org.camunda.bpm.scenario.impl.AbstractWaitstate;
 
 import java.util.Date;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class ExternalTaskDelegateImpl extends Waitstate<ExternalTask> implements ExternalTaskDelegate {
+public abstract class AbstractExternalTaskDelegate extends AbstractWaitstate<ExternalTask> implements ExternalTaskDelegate {
 
-  public ExternalTaskDelegateImpl(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public AbstractExternalTaskDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

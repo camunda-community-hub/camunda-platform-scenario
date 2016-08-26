@@ -6,14 +6,14 @@ import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.CallActivityAction;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
-import org.camunda.bpm.scenario.impl.delegate.ProcessInstanceDelegateImpl;
+import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class CallActivityWaitstate extends ProcessInstanceDelegateImpl {
+public class CallActivityWaitstate extends AbstractProcessInstanceDelegate {
 
   public CallActivityWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);

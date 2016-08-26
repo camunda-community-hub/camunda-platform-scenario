@@ -5,14 +5,14 @@ import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
-import org.camunda.bpm.scenario.impl.delegate.ExternalTaskDelegateImpl;
+import org.camunda.bpm.scenario.impl.delegate.AbstractExternalTaskDelegate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ServiceTaskWaitstate extends ExternalTaskDelegateImpl {
+public class ServiceTaskWaitstate extends AbstractExternalTaskDelegate {
 
   private static final String WORKER_ID = "workerId";
 

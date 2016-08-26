@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class IgnoredWaitstate extends Waitstate<Object> {
+public class IgnoredWaitstate extends AbstractWaitstate<Object> {
 
   protected IgnoredWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);

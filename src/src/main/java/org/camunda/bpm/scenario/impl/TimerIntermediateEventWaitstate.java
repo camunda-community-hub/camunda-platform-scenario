@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
-import org.camunda.bpm.scenario.impl.delegate.TimerJobDelegateImpl;
+import org.camunda.bpm.scenario.impl.delegate.AbstractTimerJobDelegate;
 
 import java.util.Date;
 import java.util.Map;
@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class TimerIntermediateEventWaitstate extends TimerJobDelegateImpl {
+public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
 
   public TimerIntermediateEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);

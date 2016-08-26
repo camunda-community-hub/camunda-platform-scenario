@@ -4,14 +4,14 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
-import org.camunda.bpm.scenario.impl.Waitstate;
+import org.camunda.bpm.scenario.impl.AbstractWaitstate;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class ProcessInstanceDelegateImpl extends Waitstate<ProcessInstance> implements ProcessInstanceDelegate {
+public abstract class AbstractProcessInstanceDelegate extends AbstractWaitstate<ProcessInstance> implements ProcessInstanceDelegate {
 
-  public ProcessInstanceDelegateImpl(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public AbstractProcessInstanceDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

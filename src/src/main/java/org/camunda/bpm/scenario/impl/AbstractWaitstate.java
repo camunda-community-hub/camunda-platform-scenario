@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class Waitstate<I> extends Savepoint<I> {
+public abstract class AbstractWaitstate<I> extends AbstractSavepoint<I> {
 
   private static Map<String, String> classNames = new HashMap<String, String>(); static {
     classNames.put("userTask", "UserTaskWaitstate");
@@ -30,10 +30,10 @@ public abstract class Waitstate<I> extends Savepoint<I> {
     classNames.put("intermediateMessageThrowEvent", "MessageIntermediateThrowEventWaitstate");
   }
 
-  protected static Waitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  protected static AbstractWaitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     if (classNames.containsKey(instance.getActivityType())) {
       try {
-        return (Waitstate) Class.forName(Waitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
+        return (AbstractWaitstate) Class.forName(AbstractWaitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
       } catch (Exception e) {
         throw new IllegalArgumentException(e);
       }
@@ -44,7 +44,7 @@ public abstract class Waitstate<I> extends Savepoint<I> {
   protected HistoricActivityInstance historicDelegate;
   protected String duration;
 
-  protected Waitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  protected AbstractWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner);
     this.historicDelegate = instance;
     this.runtimeDelegate = getRuntimeDelegate();

@@ -9,9 +9,9 @@ public interface ScenarioRunner<R> {
 
   R run();
 
-  Waitstate next();
+  AbstractWaitstate next();
 
-  Job next(Waitstate waitstate);
+  Job next(AbstractWaitstate waitstate);
 
   void finish();
 
