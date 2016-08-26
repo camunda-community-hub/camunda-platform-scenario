@@ -103,8 +103,11 @@ public class InsuranceApplicationProcessTest {
   @Test
   public void testGreenScenario() {
 
+    variables.put("riskAssessment", "green");
+
     ProcessInstance pi = Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables) // either just start process by key ...
+        .fromBefore("EndEventApplicationAccepted")
         .execute();
 
     assertThat(pi).variables().containsEntry("riskAssessment", "green");
