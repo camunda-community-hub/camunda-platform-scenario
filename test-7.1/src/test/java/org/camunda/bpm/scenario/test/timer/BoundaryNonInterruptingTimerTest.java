@@ -15,10 +15,10 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class BoundaryInterruptingTimerTest extends AbstractTest {
+public class BoundaryNonInterruptingTimerTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testCompleteTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -28,18 +28,18 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventCanceled");
+    verify(scenario, never()).hasFinished("EndEventAdditional");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testExactlyReachingMaximalTimeForTask() {
 
     when(scenario.waitsForActionOn("UserTask")).thenReturn("PT5M");
@@ -51,18 +51,18 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").execute();
 
-    verify(scenario, never()).actsOnUserTask("UserTask");
+    verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
-    verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, times(1)).hasFinished("EndEventCanceled");
+    verify(scenario, times(1)).hasFinished("EndEventCompleted");
+    verify(scenario, times(1)).hasFinished("EndEventAdditional");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testTakeMuchTooLongForTask() {
 
     when(scenario.waitsForActionOn("UserTask")).thenReturn("PT6M");
@@ -74,18 +74,18 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").execute();
 
-    verify(scenario, never()).actsOnUserTask("UserTask");
+    verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
-    verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, times(1)).hasFinished("EndEventCanceled");
+    verify(scenario, times(1)).hasFinished("EndEventCompleted");
+    verify(scenario, times(1)).hasFinished("EndEventAdditional");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testTakeABitTimeForTask() {
 
     when(scenario.waitsForActionOn("UserTask")).thenReturn("PT4M");
@@ -97,18 +97,18 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventCanceled");
+    verify(scenario, never()).hasFinished("EndEventAdditional");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -118,26 +118,26 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, never()).hasFinished("UserTask");
     verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventCanceled");
+    verify(scenario, never()).hasFinished("EndEventAdditional");
 
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testDoNotDealWithTask() {
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").execute();
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testToBeforeUserTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -147,18 +147,18 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").toBefore("UserTask").execute();
+    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").toBefore("UserTask").execute();
 
     verify(scenario, never()).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, never()).hasFinished("UserTask");
     verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventCanceled");
+    verify(scenario, never()).hasFinished("EndEventAdditional");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testToAfterUserTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -168,18 +168,18 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").toAfter("UserTask").execute();
+    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").toAfter("UserTask").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventCanceled");
+    verify(scenario, never()).hasFinished("EndEventAdditional");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -189,14 +189,14 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("BoundaryInterruptingTimerTest").toBefore("UserTask").execute();
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(otherScenario).startBy("BoundaryNonInterruptingTimerTest").toBefore("UserTask").execute();
+    Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventCanceled");
+    verify(scenario, never()).hasFinished("EndEventAdditional");
 
   }
 
