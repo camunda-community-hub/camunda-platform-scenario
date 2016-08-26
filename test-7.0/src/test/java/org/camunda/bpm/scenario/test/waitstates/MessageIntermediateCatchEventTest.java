@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.singlewaitstate;
+package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class MessageIntermediateCatchEventTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/MessageIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testReceiveMessage() {
 
     when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
@@ -36,7 +36,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/MessageIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
@@ -55,7 +55,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/MessageIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testDoNotDealWithMessageEvent() {
 
     Scenario.run(scenario).startBy("MessageIntermediateCatchEventTest").execute();
@@ -63,7 +63,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/MessageIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testToBeforeMessageIntermediateCatchEvent() {
 
     when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
@@ -82,7 +82,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/MessageIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testToAfterMessageIntermediateCatchEvent() {
 
     when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
@@ -101,7 +101,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/MessageIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {

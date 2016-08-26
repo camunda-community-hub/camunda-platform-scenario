@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.timer;
+package org.camunda.bpm.scenario.test.timers;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -15,10 +15,10 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
+public class EventSubprocessInterruptingTimerTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/EventSubprocessNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testCompleteTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -28,18 +28,18 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventAdditional");
+    verify(scenario, never()).hasFinished("EndEventCanceled");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/EventSubprocessNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testExactlyReachingMaximalTimeForTask() {
 
     when(scenario.waitsForActionOn("UserTask")).thenReturn("PT5M");
@@ -51,18 +51,18 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").execute();
 
-    verify(scenario, times(1)).actsOnUserTask("UserTask");
+    verify(scenario, never()).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
-    verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, times(1)).hasFinished("EndEventAdditional");
+    verify(scenario, never()).hasFinished("EndEventCompleted");
+    verify(scenario, times(1)).hasFinished("EndEventCanceled");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/EventSubprocessNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testTakeMuchTooLongForTask() {
 
     when(scenario.waitsForActionOn("UserTask")).thenReturn("PT6M");
@@ -74,18 +74,18 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").execute();
 
-    verify(scenario, times(1)).actsOnUserTask("UserTask");
+    verify(scenario, never()).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
-    verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, times(1)).hasFinished("EndEventAdditional");
+    verify(scenario, never()).hasFinished("EndEventCompleted");
+    verify(scenario, times(1)).hasFinished("EndEventCanceled");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/EventSubprocessNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testTakeABitTimeForTask() {
 
     when(scenario.waitsForActionOn("UserTask")).thenReturn("PT4M");
@@ -97,18 +97,18 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventAdditional");
+    verify(scenario, never()).hasFinished("EndEventCanceled");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/EventSubprocessNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -118,26 +118,26 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, never()).hasFinished("UserTask");
     verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventAdditional");
+    verify(scenario, never()).hasFinished("EndEventCanceled");
 
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/EventSubprocessNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testDoNotDealWithTask() {
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").execute();
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/EventSubprocessNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testToBeforeUserTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -147,18 +147,18 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").toBefore("UserTask").execute();
+    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").toBefore("UserTask").execute();
 
     verify(scenario, never()).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, never()).hasFinished("UserTask");
     verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventAdditional");
+    verify(scenario, never()).hasFinished("EndEventCanceled");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/EventSubprocessNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testToAfterUserTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -168,18 +168,18 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").toAfter("UserTask").execute();
+    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").toAfter("UserTask").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventAdditional");
+    verify(scenario, never()).hasFinished("EndEventCanceled");
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/EventSubprocessNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessInterruptingTimerTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -189,14 +189,14 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("EventSubprocessNonInterruptingTimerTest").toBefore("UserTask").execute();
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(otherScenario).startBy("EventSubprocessInterruptingTimerTest").toBefore("UserTask").execute();
+    Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventAdditional");
+    verify(scenario, never()).hasFinished("EndEventCanceled");
 
   }
 

@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.singlewaitstate;
+package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class TimerIntermediateEventTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testTriggerTimer() {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
@@ -36,7 +36,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
@@ -54,7 +54,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testDoNotDealWithTimerEvent() {
 
     Scenario.run(scenario).startBy("TimerIntermediateEventTest").execute();
@@ -62,7 +62,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testToBeforeTimerIntermediateEvent() {
 
     Scenario.run(scenario).startBy("TimerIntermediateEventTest").toBefore("TimerIntermediateEvent").execute();
@@ -74,7 +74,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testToAfterTimerIntermediateEvent() {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
@@ -93,7 +93,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/TimerIntermediateEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {

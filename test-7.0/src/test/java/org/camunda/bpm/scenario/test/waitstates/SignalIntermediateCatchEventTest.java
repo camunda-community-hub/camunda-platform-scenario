@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.singlewaitstate;
+package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class SignalIntermediateCatchEventTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/SignalIntermediateCatchEventTest.bpmn"})
   public void testReceiveSignal() {
 
     when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
@@ -36,7 +36,7 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/SignalIntermediateCatchEventTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
@@ -55,7 +55,7 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/SignalIntermediateCatchEventTest.bpmn"})
   public void testDoNotDealWithSignalEvent() {
 
     Scenario.run(scenario).startBy("SignalIntermediateCatchEventTest").execute();
@@ -63,7 +63,7 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/SignalIntermediateCatchEventTest.bpmn"})
   public void testToBeforeSignalIntermediateCatchEvent() {
 
     when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
@@ -82,7 +82,7 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/SignalIntermediateCatchEventTest.bpmn"})
   public void testToAfterSignalIntermediateCatchEvent() {
 
     when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {
@@ -101,7 +101,7 @@ public class SignalIntermediateCatchEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/SignalIntermediateCatchEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/SignalIntermediateCatchEventTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnSignalIntermediateCatchEvent("SignalIntermediateCatchEvent")).thenReturn(new SignalIntermediateCatchEventAction() {

@@ -20,7 +20,7 @@ public class TimerIntermediateEventWaitstate extends TimerJobDelegateImpl {
     if (duration != null) {
       throw new IllegalStateException("Found a duration '" + duration + "' set. " +
           "Explicit durations are not supported for '" + getClass().getSimpleName()
-          + "'. Its duration always depends on the timer defined in the BPMN process.");
+          + "'. Its duration always depends on the timers defined in the BPMN process.");
     }
   }
 

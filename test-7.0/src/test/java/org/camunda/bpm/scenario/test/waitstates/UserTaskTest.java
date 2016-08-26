@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.singlewaitstate;
+package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class UserTaskTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
   public void testCompleteTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -36,7 +36,7 @@ public class UserTaskTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -55,7 +55,7 @@ public class UserTaskTest extends AbstractTest {
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
   public void testDoNotDealWithTask() {
 
     Scenario.run(scenario).startBy("UserTaskTest").execute();
@@ -63,7 +63,7 @@ public class UserTaskTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
   public void testToBeforeUserTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -82,7 +82,7 @@ public class UserTaskTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
   public void testToAfterUserTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -101,7 +101,7 @@ public class UserTaskTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {

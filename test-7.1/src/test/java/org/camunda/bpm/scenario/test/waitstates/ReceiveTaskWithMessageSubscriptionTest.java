@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.singlewaitstate;
+package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -15,10 +15,10 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ReceiveTaskTest extends AbstractTest {
+public class ReceiveTaskWithMessageSubscriptionTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/ReceiveTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testReceiveMessage() {
 
     when(scenario.actsOnReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
@@ -36,7 +36,7 @@ public class ReceiveTaskTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/ReceiveTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.actsOnReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
@@ -55,7 +55,7 @@ public class ReceiveTaskTest extends AbstractTest {
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/ReceiveTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testDoNotDealWithMessageEvent() {
 
     Scenario.run(scenario).startBy("ReceiveTaskTest").execute();
@@ -63,7 +63,7 @@ public class ReceiveTaskTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/ReceiveTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testToBeforeReceiveTask() {
 
     when(scenario.actsOnReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
@@ -82,7 +82,7 @@ public class ReceiveTaskTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/ReceiveTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testToAfterReceiveTask() {
 
     when(scenario.actsOnReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
@@ -101,7 +101,7 @@ public class ReceiveTaskTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/ReceiveTaskTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {

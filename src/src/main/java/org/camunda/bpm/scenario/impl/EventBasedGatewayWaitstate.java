@@ -133,7 +133,7 @@ public class EventBasedGatewayWaitstate extends Waitstate<EventBasedGatewayDeleg
       if (duration != null) {
         throw new IllegalStateException("Found a duration '" + duration + "' set. " +
           "Explicit durations are not supported for '" + getClass().getSimpleName() +
-          "' with timer events. Its duration always depends on the timer defined " +
+          "' with timers events. Its duration always depends on the timers defined " +
           "in the BPMN process.");
       }
       return timer.getDuedate();

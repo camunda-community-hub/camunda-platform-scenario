@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.singlewaitstate;
+package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -15,10 +15,10 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
+public class EventBasedGatewayTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayWithoutTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testReceiveMessage() {
 
     when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
@@ -28,7 +28,7 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventBasedGatewayWithoutTimerTest").execute();
+    Scenario.run(scenario).startBy("EventBasedGatewayTest").execute();
 
     verify(scenario, times(1)).hasFinished("EventBasedGateway");
     verify(scenario, times(1)).hasFinished("MessageIntermediateCatchEvent");
@@ -37,34 +37,33 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayWithoutTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
       public void execute(EventBasedGatewayDelegate gateway) {
-        // Do nothing means process remains here because of no timer
+        // Do nothing means process moves forward because of the timers
       }
     });
 
-    Scenario.run(scenario).startBy("EventBasedGatewayWithoutTimerTest").execute();
+    Scenario.run(scenario).startBy("EventBasedGatewayTest").execute();
 
-    verify(scenario, times(1)).hasStarted("EventBasedGateway");
-    verify(scenario, never()).hasFinished("EventBasedGateway");
-    verify(scenario, never()).hasFinished("EndEvent");
+    verify(scenario, times(1)).hasFinished("TimerIntermediateEvent");
+    verify(scenario, times(1)).hasFinished("EndEvent");
 
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayWithoutTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testDoNotDealWithEventBasedGateway() {
 
-    Scenario.run(scenario).startBy("EventBasedGatewayWithoutTimerTest").execute();
+    Scenario.run(scenario).startBy("EventBasedGatewayTest").execute();
 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayWithoutTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testToBeforeEventBasedGateway() {
 
     when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
@@ -74,7 +73,7 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventBasedGatewayWithoutTimerTest").toBefore("EventBasedGateway").execute();
+    Scenario.run(scenario).startBy("EventBasedGatewayTest").toBefore("EventBasedGateway").execute();
 
     verify(scenario, times(1)).hasStarted("EventBasedGateway");
     verify(scenario, never()).hasFinished("EventBasedGateway");
@@ -83,7 +82,7 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayWithoutTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testToAfterEventBasedGateway() {
 
     when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
@@ -93,7 +92,7 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventBasedGatewayWithoutTimerTest").toAfter("EventBasedGateway").execute();
+    Scenario.run(scenario).startBy("EventBasedGatewayTest").toAfter("EventBasedGateway").execute();
 
     verify(scenario, times(1)).hasStarted("EventBasedGateway");
     verify(scenario, times(1)).hasFinished("EventBasedGateway");
@@ -103,7 +102,7 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/EventBasedGatewayWithoutTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
@@ -113,8 +112,8 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("EventBasedGatewayWithoutTimerTest").toBefore("EventBasedGateway").execute();
-    Scenario.run(scenario).startBy("EventBasedGatewayWithoutTimerTest").execute();
+    Scenario.run(otherScenario).startBy("EventBasedGatewayTest").toBefore("EventBasedGateway").execute();
+    Scenario.run(scenario).startBy("EventBasedGatewayTest").execute();
 
     verify(scenario, times(1)).hasFinished("EventBasedGateway");
     verify(scenario, times(1)).hasFinished("EndEvent");

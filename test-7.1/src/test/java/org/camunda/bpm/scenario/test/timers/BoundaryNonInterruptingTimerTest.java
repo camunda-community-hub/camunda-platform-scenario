@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.timer;
+package org.camunda.bpm.scenario.test.timers;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 public class BoundaryNonInterruptingTimerTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testCompleteTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -39,7 +39,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testExactlyReachingMaximalTimeForTask() {
 
     when(scenario.waitsForActionOn("UserTask")).thenReturn("PT5M");
@@ -62,7 +62,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testTakeMuchTooLongForTask() {
 
     when(scenario.waitsForActionOn("UserTask")).thenReturn("PT6M");
@@ -85,7 +85,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testTakeABitTimeForTask() {
 
     when(scenario.waitsForActionOn("UserTask")).thenReturn("PT4M");
@@ -108,7 +108,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -129,7 +129,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testDoNotDealWithTask() {
 
     Scenario.run(scenario).startBy("BoundaryNonInterruptingTimerTest").execute();
@@ -137,7 +137,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testToBeforeUserTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -158,7 +158,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testToAfterUserTask() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -179,7 +179,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timer/BoundaryNonInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {

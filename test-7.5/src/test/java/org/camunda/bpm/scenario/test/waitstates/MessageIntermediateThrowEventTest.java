@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.singlewaitstate;
+package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-@Deployment(resources = {"org/camunda/bpm/scenario/test/singlewaitstate/MessageIntermediateThrowEventTest.bpmn"})
+@Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateThrowEventTest.bpmn"})
 public class MessageIntermediateThrowEventTest extends AbstractTest {
 
   @Test

@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.singlewaitstate;
+package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -23,8 +23,8 @@ public class CallActivityTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {
-    "org/camunda/bpm/scenario/test/singlewaitstate/CallActivityTest.bpmn",
-    "org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"
+    "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+    "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testCompleteCallActivityUserTask() {
 
@@ -47,8 +47,8 @@ public class CallActivityTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/singlewaitstate/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"
+      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testDoNothingCallActivityUserTask() {
 
@@ -73,8 +73,8 @@ public class CallActivityTest extends AbstractTest {
 
   @Test(expected=AssertionError.class)
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/singlewaitstate/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"
+      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testDoNotDealWithCallActivity() {
 
@@ -84,8 +84,8 @@ public class CallActivityTest extends AbstractTest {
 
   @Test(expected=AssertionError.class)
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/singlewaitstate/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"
+      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testDoNotDealWithCallActivityUserTask() {
 
@@ -97,8 +97,8 @@ public class CallActivityTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/singlewaitstate/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"
+      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testToBeforeCallActivity() {
 
@@ -116,8 +116,8 @@ public class CallActivityTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/singlewaitstate/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"
+      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testToAfterCallActivity() {
 
@@ -141,8 +141,8 @@ public class CallActivityTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/singlewaitstate/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/singlewaitstate/UserTaskTest.bpmn"
+      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testWhileOtherProcessInstanceIsRunning() {
 
