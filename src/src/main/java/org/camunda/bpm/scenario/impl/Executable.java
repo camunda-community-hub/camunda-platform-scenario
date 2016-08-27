@@ -3,6 +3,8 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.persistence.entity.JobEntity;
 import org.camunda.bpm.engine.runtime.Job;
+import org.camunda.bpm.scenario.impl.job.IgnoredJob;
+import org.camunda.bpm.scenario.impl.waitstate.IgnoredWaitstate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +35,7 @@ public interface Executable<S> extends Comparable<S> {
       String type = instance.getActivityType();
       if (types.containsKey(type)) {
         try {
-          return (ExecutableWaitstate) Class.forName(ExecutableWaitstate.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
+          return (ExecutableWaitstate) Class.forName(IgnoredWaitstate.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
         } catch (Exception e) {
           throw new IllegalArgumentException(e);
         }
@@ -56,7 +58,7 @@ public interface Executable<S> extends Comparable<S> {
       String type = entity.getJobHandlerType();
       if (types.containsKey(type)) {
         try {
-          return (ExecutableJob) Class.forName(ExecutableJob.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, Job.class).newInstance(runner, job);
+          return (ExecutableJob) Class.forName(IgnoredJob.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, Job.class).newInstance(runner, job);
         } catch (Exception e) {
           throw new IllegalArgumentException(e);
         }

@@ -1,7 +1,9 @@
-package org.camunda.bpm.scenario.impl;
+package org.camunda.bpm.scenario.impl.job;
 
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.runtime.Job;
+import org.camunda.bpm.scenario.impl.ExecutableJob;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.Date;
 

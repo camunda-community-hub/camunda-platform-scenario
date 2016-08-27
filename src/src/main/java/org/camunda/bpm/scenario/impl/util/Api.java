@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.impl;
+package org.camunda.bpm.scenario.impl.util;
 
 import java.util.Arrays;
 import java.util.HashMap;

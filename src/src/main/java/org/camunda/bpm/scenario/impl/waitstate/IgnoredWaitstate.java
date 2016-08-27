@@ -1,8 +1,10 @@
-package org.camunda.bpm.scenario.impl;
+package org.camunda.bpm.scenario.impl.waitstate;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
+import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.Map;
 
@@ -11,7 +13,7 @@ import java.util.Map;
  */
 public class IgnoredWaitstate extends ExecutableWaitstate<Object> {
 
-  protected IgnoredWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  public IgnoredWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 

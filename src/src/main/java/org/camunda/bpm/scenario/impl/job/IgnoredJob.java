@@ -1,6 +1,8 @@
-package org.camunda.bpm.scenario.impl;
+package org.camunda.bpm.scenario.impl.job;
 
 import org.camunda.bpm.engine.runtime.Job;
+import org.camunda.bpm.scenario.impl.ExecutableJob;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.Date;
 
@@ -9,7 +11,7 @@ import java.util.Date;
  */
 public class IgnoredJob extends ExecutableJob {
 
-  protected IgnoredJob(ProcessRunnerImpl runner, Job job) {
+  public IgnoredJob(ProcessRunnerImpl runner, Job job) {
     super(runner, job);
   }
 

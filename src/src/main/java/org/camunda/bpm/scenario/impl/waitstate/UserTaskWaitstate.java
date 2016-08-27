@@ -1,9 +1,10 @@
-package org.camunda.bpm.scenario.impl;
+package org.camunda.bpm.scenario.impl.waitstate;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.AbstractTaskDelegate;
 
 import java.util.Map;

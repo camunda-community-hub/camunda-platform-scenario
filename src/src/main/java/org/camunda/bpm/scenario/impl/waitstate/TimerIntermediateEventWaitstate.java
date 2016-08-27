@@ -1,10 +1,11 @@
-package org.camunda.bpm.scenario.impl;
+package org.camunda.bpm.scenario.impl.waitstate;
 
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.AbstractTimerJobDelegate;
 
 import java.util.Date;
@@ -26,7 +27,7 @@ public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
 
   @Override
   public void execute() {
-    ScenarioAction action = action(runner.scenario);
+    ScenarioAction action = action(runner.getScenario());
     if (action == null)
       throw new AssertionError("Process Instance {"
           + getProcessInstance().getProcessDefinitionId() + ", "

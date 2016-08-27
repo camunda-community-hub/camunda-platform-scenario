@@ -9,6 +9,8 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.impl.util.Api;
+import org.camunda.bpm.scenario.impl.waitstate.CallActivityWaitstate;
 import org.camunda.bpm.scenario.runner.ProcessRunner;
 import org.camunda.bpm.scenario.runner.ProcessStarter;
 
@@ -96,7 +98,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
     return scenarioExecutor.execute();
   }
 
-  protected void running(CallActivityWaitstate waitstate) {
+  public void running(CallActivityWaitstate waitstate) {
     this.scenarioExecutor = waitstate.runner.scenarioExecutor;
     this.scenarioExecutor.runners.add(this);
     this.processInstance = waitstate;
@@ -196,7 +198,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
     setExecutedHistoricActivityIds(null);
   }
 
-  void setExecutedHistoricActivityIds(HistoricActivityInstance finished) {
+  public void setExecutedHistoricActivityIds(HistoricActivityInstance finished) {
     List<HistoricActivityInstance> instances;
     boolean supportsCanceled = Api.feature(HistoricActivityInstanceQuery.class.getName(), "canceled")
         .warn("Outdated Camunda BPM version used will not allow to use " +
@@ -257,6 +259,10 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
       }
     }
     return null;
+  }
+
+  public Scenario.Process getScenario() {
+    return scenario;
   }
 
 }
