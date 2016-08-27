@@ -8,20 +8,40 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ProcessRunner extends CallActivityRunner {
-
-  ProcessRunner startBy(String processDefinitionKey);
-
-  ProcessRunner startBy(String processDefinitionKey, Map<String, Object> variables);
-
-  ProcessRunner startBy(ProcessStarter starter);
-
-  ProcessRunner fromBefore(String activityId);
-
-  ProcessRunner fromAfter(String activityId);
+public interface ProcessRunner {
 
   ProcessRunner engine(ProcessEngine processEngine);
 
   ProcessInstance execute();
+
+  interface ProcessRunnerStartingByKey extends ProcessRunner {
+
+    ProcessRunnerStartingByKey fromBefore(String activityId);
+
+    ProcessRunnerStartingByKey fromAfter(String activityId);
+
+    ProcessInstance execute();
+
+  }
+
+  interface ProcessRunnerStartingByStarter extends ProcessRunner {
+
+    ProcessInstance execute();
+
+  }
+
+  interface ProcessRunnerStartBy {
+
+    ProcessRunnerStartingByKey startBy(String processDefinitionKey);
+
+    ProcessRunnerStartingByKey startBy(String processDefinitionKey, Map<String, Object> variables);
+
+    ProcessRunnerStartingByStarter startBy(ProcessStarter starter);
+
+  }
+
+  interface CallActivityRunner {
+
+  }
 
 }

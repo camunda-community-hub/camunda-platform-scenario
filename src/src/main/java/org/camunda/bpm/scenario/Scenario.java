@@ -11,7 +11,6 @@ import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.action.UserTaskAction;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.ScenarioExecutorImpl;
-import org.camunda.bpm.scenario.runner.CallActivityRunner;
 import org.camunda.bpm.scenario.runner.ProcessRunner;
 import org.camunda.bpm.scenario.runner.VerifiableScenario;
 
@@ -20,11 +19,11 @@ import org.camunda.bpm.scenario.runner.VerifiableScenario;
  */
 public class Scenario {
 
-  public static ProcessRunner run(Process scenario) {
-    return (ProcessRunner) new ScenarioExecutorImpl(scenario).runners.get(0);
+  public static ProcessRunner.ProcessRunnerStartBy run(Process scenario) {
+    return (ProcessRunner.ProcessRunnerStartBy) new ScenarioExecutorImpl(scenario).runners.get(0);
   }
 
-  public static CallActivityRunner use(Process scenario) {
+  public static ProcessRunner.CallActivityRunner call(Process scenario) {
     return new ProcessRunnerImpl(null, scenario);
   }
 
@@ -59,7 +58,7 @@ public class Scenario {
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    CallActivityRunner runsCallActivity(String activityId);
+    ProcessRunner.CallActivityRunner runsCallActivity(String activityId);
 
     /**
      * @since Camunda BPM 7.1.0-Final
