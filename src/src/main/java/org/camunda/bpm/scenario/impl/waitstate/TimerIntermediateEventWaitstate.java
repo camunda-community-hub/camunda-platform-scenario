@@ -38,11 +38,11 @@ public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
     Job job = getManagementService().createJobQuery().timers().jobId(getId()).singleResult();
     if (job != null)
       getManagementService().executeJob(job.getId());
-    runner.setExecutedHistoricActivityIds(historicDelegate);
+    runner.setExecuted(historicDelegate.getId());
   }
 
   @Override
-  protected Job getRuntimeDelegate() {
+  protected Job getDelegate() {
     return getManagementService().createJobQuery().timers().executionId(getExecutionId()).singleResult();
   }
 
@@ -52,7 +52,7 @@ public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
   }
 
   protected void leave() {
-    getManagementService().executeJob(getRuntimeDelegate().getId());
+    getManagementService().executeJob(getDelegate().getId());
   }
 
   protected void leave(Map<String, Object> variables) {

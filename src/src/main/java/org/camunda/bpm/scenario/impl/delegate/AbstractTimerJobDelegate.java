@@ -18,51 +18,51 @@ public abstract class AbstractTimerJobDelegate extends ExecutableWaitstate<Job> 
   }
 
   public String getId() {
-    return runtimeDelegate.getId();
+    return delegate.getId();
   }
 
   public Date getDuedate() {
-    return runtimeDelegate.getDuedate();
+    return delegate.getDuedate();
   }
 
   public String getProcessInstanceId() {
-    return runtimeDelegate.getProcessInstanceId();
+    return delegate.getProcessInstanceId();
   }
 
   public String getProcessDefinitionId() {
-    return runtimeDelegate.getProcessDefinitionId();
+    return delegate.getProcessDefinitionId();
   }
 
   public String getProcessDefinitionKey() {
-    return runtimeDelegate.getProcessDefinitionKey();
+    return delegate.getProcessDefinitionKey();
   }
 
   public int getRetries() {
-    return runtimeDelegate.getRetries();
+    return delegate.getRetries();
   }
 
   public String getExceptionMessage() {
-    return runtimeDelegate.getExceptionMessage();
+    return delegate.getExceptionMessage();
   }
 
   public String getDeploymentId() {
-    return runtimeDelegate.getDeploymentId();
+    return delegate.getDeploymentId();
   }
 
   public String getJobDefinitionId() {
-    return runtimeDelegate.getJobDefinitionId();
+    return delegate.getJobDefinitionId();
   }
 
   public boolean isSuspended() {
-    return runtimeDelegate.isSuspended();
+    return delegate.isSuspended();
   }
 
   public long getPriority() {
-    return runtimeDelegate.getPriority();
+    return delegate.getPriority();
   }
 
   public String getTenantId() {
-    return runtimeDelegate.getTenantId();
+    return delegate.getTenantId();
   }
 
 }

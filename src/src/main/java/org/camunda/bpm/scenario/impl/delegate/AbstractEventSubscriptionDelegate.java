@@ -18,27 +18,27 @@ public abstract class AbstractEventSubscriptionDelegate extends ExecutableWaitst
   }
 
   public String getId() {
-    return runtimeDelegate.getId();
+    return delegate.getId();
   }
 
   public String getEventType() {
-    return runtimeDelegate.getEventType();
+    return delegate.getEventType();
   }
 
   public String getEventName() {
-    return runtimeDelegate.getEventName();
+    return delegate.getEventName();
   }
 
   public String getProcessInstanceId() {
-    return runtimeDelegate.getProcessInstanceId();
+    return delegate.getProcessInstanceId();
   }
 
   public String getTenantId() {
-    return runtimeDelegate.getTenantId();
+    return delegate.getTenantId();
   }
 
   public Date getCreated() {
-    return runtimeDelegate.getCreated();
+    return delegate.getCreated();
   }
 
 }

@@ -18,7 +18,7 @@ public class ExecutableTimerJob extends ExecutableJob {
 
   @Override
   public Date isExecutableAt() {
-    return runtimeDelegate.getDuedate();
+    return delegate.getDuedate();
   }
 
   @Override

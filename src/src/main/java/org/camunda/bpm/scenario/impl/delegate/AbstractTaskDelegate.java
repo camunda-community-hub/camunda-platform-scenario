@@ -19,131 +19,131 @@ public abstract class AbstractTaskDelegate extends ExecutableWaitstate<Task> imp
   }
 
   public String getId() {
-    return runtimeDelegate.getId();
+    return delegate.getId();
   }
 
   public String getName() {
-    return runtimeDelegate.getName();
+    return delegate.getName();
   }
 
   public void setName(String name) {
-    runtimeDelegate.setName(name);
+    delegate.setName(name);
   }
 
   public String getDescription() {
-    return runtimeDelegate.getDescription();
+    return delegate.getDescription();
   }
 
   public void setDescription(String description) {
-    runtimeDelegate.setDescription(description);
+    delegate.setDescription(description);
   }
 
   public int getPriority() {
-    return runtimeDelegate.getPriority();
+    return delegate.getPriority();
   }
 
   public void setPriority(int priority) {
-    runtimeDelegate.setPriority(priority);
+    delegate.setPriority(priority);
   }
 
   public String getOwner() {
-    return runtimeDelegate.getOwner();
+    return delegate.getOwner();
   }
 
   public void setOwner(String owner) {
-    runtimeDelegate.setOwner(owner);
+    delegate.setOwner(owner);
   }
 
   public String getAssignee() {
-    return runtimeDelegate.getAssignee();
+    return delegate.getAssignee();
   }
 
   public void setAssignee(String assignee) {
-    runtimeDelegate.setAssignee(assignee);
+    delegate.setAssignee(assignee);
   }
 
   public DelegationState getDelegationState() {
-    return runtimeDelegate.getDelegationState();
+    return delegate.getDelegationState();
   }
 
   public void setDelegationState(DelegationState delegationState) {
-    runtimeDelegate.setDelegationState(delegationState);
+    delegate.setDelegationState(delegationState);
   }
 
   public String getProcessInstanceId() {
-    return runtimeDelegate.getProcessInstanceId();
+    return delegate.getProcessInstanceId();
   }
 
   public String getProcessDefinitionId() {
-    return runtimeDelegate.getProcessDefinitionId();
+    return delegate.getProcessDefinitionId();
   }
 
   public String getCaseInstanceId() {
-    return runtimeDelegate.getCaseInstanceId();
+    return delegate.getCaseInstanceId();
   }
 
   public void setCaseInstanceId(String caseInstanceId) {
-    runtimeDelegate.setCaseInstanceId(caseInstanceId);
+    delegate.setCaseInstanceId(caseInstanceId);
   }
 
   public String getCaseExecutionId() {
-    return runtimeDelegate.getCaseExecutionId();
+    return delegate.getCaseExecutionId();
   }
 
   public String getCaseDefinitionId() {
-    return runtimeDelegate.getCaseDefinitionId();
+    return delegate.getCaseDefinitionId();
   }
 
   public Date getCreateTime() {
-    return runtimeDelegate.getCreateTime();
+    return delegate.getCreateTime();
   }
 
   public String getTaskDefinitionKey() {
-    return runtimeDelegate.getTaskDefinitionKey();
+    return delegate.getTaskDefinitionKey();
   }
 
   public Date getDueDate() {
-    return runtimeDelegate.getDueDate();
+    return delegate.getDueDate();
   }
 
   public void setDueDate(Date dueDate) {
-    runtimeDelegate.setDueDate(dueDate);
+    delegate.setDueDate(dueDate);
   }
 
   public Date getFollowUpDate() {
-    return runtimeDelegate.getFollowUpDate();
+    return delegate.getFollowUpDate();
   }
 
   public void setFollowUpDate(Date dueDate) {
-    runtimeDelegate.setFollowUpDate(dueDate);
+    delegate.setFollowUpDate(dueDate);
   }
 
   public void delegate(String userId) {
-    runtimeDelegate.delegate(userId);
+    delegate.delegate(userId);
   }
 
   public void setParentTaskId(String parentTaskId) {
-    runtimeDelegate.setParentTaskId(parentTaskId);
+    delegate.setParentTaskId(parentTaskId);
   }
 
   public String getParentTaskId() {
-    return runtimeDelegate.getParentTaskId();
+    return delegate.getParentTaskId();
   }
 
   public boolean isSuspended() {
-    return runtimeDelegate.isSuspended();
+    return delegate.isSuspended();
   }
 
   public String getFormKey() {
-    return runtimeDelegate.getFormKey();
+    return delegate.getFormKey();
   }
 
   public String getTenantId() {
-    return runtimeDelegate.getTenantId();
+    return delegate.getTenantId();
   }
 
   public void setTenantId(String tenantId) {
-    runtimeDelegate.setTenantId(tenantId);
+    delegate.setTenantId(tenantId);
   }
 
 }

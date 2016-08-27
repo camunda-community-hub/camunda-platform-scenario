@@ -25,15 +25,15 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
   }
 
   @Override
-  protected EventSubscription getRuntimeDelegate() {
+  protected EventSubscription getDelegate() {
     return getRuntimeService().createEventSubscriptionQuery().eventType("message").executionId(getExecutionId()).singleResult();
   }
 
   @Override
   protected void leave() {
-    EventSubscription eventSubscription = getRuntimeDelegate();
+    EventSubscription eventSubscription = getDelegate();
     if (eventSubscription != null) {
-      getRuntimeService().messageEventReceived(getRuntimeDelegate().getEventName(), getRuntimeDelegate().getExecutionId());
+      getRuntimeService().messageEventReceived(getDelegate().getEventName(), getDelegate().getExecutionId());
     } else {
       getRuntimeService().signal(getExecutionId());
     }
@@ -41,9 +41,9 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
 
   @Override
   protected void leave(Map<String, Object> variables) {
-    EventSubscription eventSubscription = getRuntimeDelegate();
+    EventSubscription eventSubscription = getDelegate();
     if (eventSubscription != null) {
-      getRuntimeService().messageEventReceived(getRuntimeDelegate().getEventName(), getRuntimeDelegate().getExecutionId(), variables);
+      getRuntimeService().messageEventReceived(getDelegate().getEventName(), getDelegate().getExecutionId(), variables);
     } else {
       getRuntimeService().signal(getExecutionId());
     }
@@ -66,7 +66,7 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
 
   @Override
   public String getEventType() {
-    if (runtimeDelegate == null)
+    if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
           "used without a message event subscription.");
       return super.getEventType();
@@ -74,7 +74,7 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
 
   @Override
   public String getEventName() {
-    if (runtimeDelegate == null)
+    if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
           "used without a message event subscription.");
     return super.getEventName();
@@ -82,7 +82,7 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
 
   @Override
   public String getProcessInstanceId() {
-    if (runtimeDelegate == null)
+    if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
           "used without a message event subscription.");
     return super.getProcessInstanceId();
@@ -90,7 +90,7 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
 
   @Override
   public String getTenantId() {
-    if (runtimeDelegate == null)
+    if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
           "used without a message event subscription.");
     return super.getTenantId();
@@ -98,7 +98,7 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
 
   @Override
   public Date getCreated() {
-    if (runtimeDelegate == null)
+    if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
           "used without a message event subscription.");
     return super.getCreated();

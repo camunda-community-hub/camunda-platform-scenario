@@ -16,35 +16,35 @@ public abstract class AbstractProcessInstanceDelegate extends ExecutableWaitstat
   }
 
   public String getProcessDefinitionId() {
-    return runtimeDelegate.getProcessDefinitionId();
+    return delegate.getProcessDefinitionId();
   }
 
   public String getBusinessKey() {
-    return runtimeDelegate.getBusinessKey();
+    return delegate.getBusinessKey();
   }
 
   public String getCaseInstanceId() {
-    return runtimeDelegate.getCaseInstanceId();
+    return delegate.getCaseInstanceId();
   }
 
   public boolean isSuspended() {
-    return runtimeDelegate.isSuspended();
+    return delegate.isSuspended();
   }
 
   public String getId() {
-    return runtimeDelegate.getId();
+    return delegate.getId();
   }
 
   public boolean isEnded() {
-    return runtimeDelegate.isEnded();
+    return delegate.isEnded();
   }
 
   public String getProcessInstanceId() {
-    return runtimeDelegate.getProcessInstanceId();
+    return delegate.getProcessInstanceId();
   }
 
   public String getTenantId() {
-    return runtimeDelegate.getTenantId();
+    return delegate.getTenantId();
   }
 
 }

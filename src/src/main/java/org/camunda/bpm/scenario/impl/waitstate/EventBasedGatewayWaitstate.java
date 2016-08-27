@@ -40,12 +40,12 @@ public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGa
       job = getManagementService().createJobQuery().timers().jobId(job.getId()).singleResult();
       if (job != null)
         getManagementService().executeJob(job.getId());
-      runner.setExecutedHistoricActivityIds(historicDelegate);
+      runner.setExecuted(historicDelegate.getId());
     }
   }
 
   @Override
-  protected EventBasedGatewayDelegate getRuntimeDelegate() {
+  protected EventBasedGatewayDelegate getDelegate() {
     return null;
   }
 

@@ -29,21 +29,19 @@ import java.util.Set;
  */
 public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByKey, ProcessRunner.ProcessRunnerStartBy, ProcessRunner.ProcessRunnerStartingByStarter, ProcessRunner.CallActivityRunner, Runner {
 
-  protected ScenarioExecutorImpl scenarioExecutor;
-
   private String processDefinitionKey;
-  private ProcessStarter scenarioStarter;
-  private Map<String, Object> variables = new HashMap<String, Object>();
-
-  protected Scenario.Process scenario;
-  protected ProcessInstance processInstance;
-
+  private ProcessStarter processStarter;
+  private Map<String, Object> variables;
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
   private Map<String, String> durations = new HashMap<String, String>();
 
-  Set<String> unavailableHistoricActivityInstances = new HashSet<String>();
-  Set<String> startedHistoricActivityInstances = new HashSet<String>();
-  Set<String> passedHistoricActivityInstances = new HashSet<String>();
+  ScenarioExecutorImpl scenarioExecutor;
+  Scenario.Process scenario;
+  ProcessInstance processInstance;
+
+  Set<String> unavailable = new HashSet<String>();
+  Set<String> started = new HashSet<String>();
+  Set<String> executed = new HashSet<String>();
 
   public ProcessRunnerImpl(ScenarioExecutorImpl scenarioExecutor, Scenario.Process scenario) {
     this.scenarioExecutor = scenarioExecutor;
@@ -52,7 +50,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
 
   @Override
   public ProcessRunnerStartingByStarter startBy(ProcessStarter scenarioStarter) {
-    this.scenarioStarter = scenarioStarter;
+    this.processStarter = scenarioStarter;
     return this;
   }
 
@@ -102,12 +100,12 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
     this.scenarioExecutor = waitstate.runner.scenarioExecutor;
     this.scenarioExecutor.runners.add(this);
     this.processInstance = waitstate;
-    setExecutedHistoricActivityIds(null);
+    setExecuted(null);
   }
 
   protected ProcessInstance run() {
-    if (this.processInstance == null && this.scenarioStarter == null) {
-      this.scenarioStarter = new ProcessStarter() {
+    if (this.processInstance == null && this.processStarter == null) {
+      this.processStarter = new ProcessStarter() {
         @Override
         public ProcessInstance start() {
           if (fromActivityIds.isEmpty()) {
@@ -130,8 +128,8 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
         }
       };
     }
-    this.processInstance = scenarioStarter.start();
-    setExecutedHistoricActivityIds(null);
+    this.processInstance = processStarter.start();
+    setExecuted(null);
     return this.processInstance;
   }
 
@@ -146,12 +144,12 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
       if (isAvailable(waitstate.historicDelegate))
         return waitstate;
     }
-    setExecutedHistoricActivityIds(null);
+    setExecuted(null);
     return null;
   }
 
   private boolean isAvailable(HistoricActivityInstance instance) {
-    return !unavailableHistoricActivityInstances.contains(instance.getId());
+    return !unavailable.contains(instance.getId());
   }
 
   private String getDuration(HistoricActivityInstance instance) {
@@ -196,9 +194,9 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
     return waitstates;
   }
 
-  public void setExecutedHistoricActivityIds(HistoricActivityInstance finished) {
-    if (finished != null)
-      unavailableHistoricActivityInstances.add(finished.getId());
+  public void setExecuted(String id) {
+    if (id != null)
+      unavailable.add(id);
     List<HistoricActivityInstance> instances;
     boolean supportsCanceled = Api.feature(HistoricActivityInstanceQuery.class.getName(), "canceled")
         .warn("Outdated Camunda BPM version used will not allow to use " +
@@ -209,14 +207,14 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
           .createHistoricActivityInstanceQuery()
           .processInstanceId(processInstance.getId()).canceled().list();
       for (HistoricActivityInstance instance: instances) {
-        if (!passedHistoricActivityInstances.contains(instance.getId())) {
-          if (!startedHistoricActivityInstances.contains(instance.getId())) {
+        if (!executed.contains(instance.getId())) {
+          if (!started.contains(instance.getId())) {
             scenario.hasStarted(instance.getActivityId());
-            startedHistoricActivityInstances.add(instance.getId());
+            started.add(instance.getId());
           }
           scenario.hasFinished(instance.getActivityId());
           scenario.hasCanceled(instance.getActivityId());
-          passedHistoricActivityInstances.add(instance.getId());
+          executed.add(instance.getId());
         }
       }
     }
@@ -224,25 +222,25 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
         .createHistoricActivityInstanceQuery()
         .processInstanceId(processInstance.getId()).finished().list();
     for (HistoricActivityInstance instance: instances) {
-      if (!passedHistoricActivityInstances.contains(instance.getId())) {
-        if (!startedHistoricActivityInstances.contains(instance.getId())) {
+      if (!executed.contains(instance.getId())) {
+        if (!started.contains(instance.getId())) {
           scenario.hasStarted(instance.getActivityId());
-          startedHistoricActivityInstances.add(instance.getId());
+          started.add(instance.getId());
         }
         scenario.hasFinished(instance.getActivityId());
         if (supportsCanceled) {
           scenario.hasCompleted(instance.getActivityId());
         }
-        passedHistoricActivityInstances.add(instance.getId());
+        executed.add(instance.getId());
       }
     }
     instances = scenarioExecutor.processEngine.getHistoryService()
         .createHistoricActivityInstanceQuery()
         .processInstanceId(processInstance.getId()).unfinished().list();
     for (HistoricActivityInstance instance: instances) {
-      if (!startedHistoricActivityInstances.contains(instance.getId())) {
+      if (!started.contains(instance.getId())) {
         scenario.hasStarted(instance.getActivityId());
-        startedHistoricActivityInstances.add(instance.getId());
+        started.add(instance.getId());
       }
     }
   }

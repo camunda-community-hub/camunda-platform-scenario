@@ -11,24 +11,24 @@ import java.util.Date;
 public abstract class AbstractExecutable<I> extends AbstractProcessEngineServicesDelegate implements Executable<AbstractExecutable> {
 
   protected ProcessRunnerImpl runner;
-  protected I runtimeDelegate;
+  protected I delegate;
 
   protected AbstractExecutable(ProcessRunnerImpl runner) {
     super(runner.scenarioExecutor.processEngine);
     this.runner = runner;
   }
 
-  public abstract String getExecutionId();
-
-  protected abstract I getRuntimeDelegate();
-
-  protected abstract void leave();
-
-  public ProcessInstance getProcessInstance() {
+  protected ProcessInstance getProcessInstance() {
     return runner.processInstance;
   };
 
+  public abstract String getExecutionId();
+
+  protected abstract I getDelegate();
+
   protected abstract Date isExecutableAt();
+
+  protected abstract void leave();
 
   @Override
   public int compareTo(AbstractExecutable other) {

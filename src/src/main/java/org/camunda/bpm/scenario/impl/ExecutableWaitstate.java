@@ -22,7 +22,7 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
   protected ExecutableWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner);
     this.historicDelegate = instance;
-    this.runtimeDelegate = getRuntimeDelegate();
+    this.delegate = getDelegate();
     this.duration = duration;
   }
 
@@ -44,7 +44,7 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
           + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
           + " '" + historicDelegate.getActivityId() +"'.");
     action.execute(this);
-    runner.setExecutedHistoricActivityIds(historicDelegate);
+    runner.setExecuted(historicDelegate.getId());
   }
 
   protected abstract ScenarioAction action(Scenario.Process scenario);

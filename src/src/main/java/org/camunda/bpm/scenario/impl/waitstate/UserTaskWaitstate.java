@@ -19,7 +19,7 @@ public class UserTaskWaitstate extends AbstractTaskDelegate {
   }
 
   @Override
-  protected Task getRuntimeDelegate() {
+  protected Task getDelegate() {
     return getTaskService().createTaskQuery().activityInstanceIdIn(historicDelegate.getId()).singleResult();
   }
 
@@ -29,11 +29,11 @@ public class UserTaskWaitstate extends AbstractTaskDelegate {
   }
 
   protected void leave() {
-    getTaskService().complete(getRuntimeDelegate().getId());
+    getTaskService().complete(getDelegate().getId());
   }
 
   protected void leave(Map<String, Object> variables) {
-    getTaskService().complete(getRuntimeDelegate().getId(), variables);
+    getTaskService().complete(getDelegate().getId(), variables);
   }
 
   @Override

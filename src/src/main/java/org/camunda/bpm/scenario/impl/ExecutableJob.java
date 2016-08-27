@@ -9,22 +9,22 @@ public abstract class ExecutableJob extends AbstractExecutable<Job> {
 
   protected ExecutableJob(ProcessRunnerImpl runner, Job job) {
     super(runner);
-    this.runtimeDelegate = job;
+    this.delegate = job;
   }
 
   @Override
   public String getExecutionId() {
-    return runtimeDelegate.getExecutionId();
+    return delegate.getExecutionId();
   }
 
   @Override
-  protected Job getRuntimeDelegate() {
-    return getManagementService().createJobQuery().executionId(getExecutionId()).singleResult();
+  protected Job getDelegate() {
+    return getManagementService().createJobQuery().jobId(delegate.getId()).singleResult();
   }
 
   @Override
   protected void leave() {
-    getManagementService().executeJob(runtimeDelegate.getId());
+    getManagementService().executeJob(delegate.getId());
   }
 
 }

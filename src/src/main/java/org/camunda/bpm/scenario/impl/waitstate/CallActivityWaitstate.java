@@ -21,7 +21,7 @@ public class CallActivityWaitstate extends AbstractProcessInstanceDelegate {
   }
 
   @Override
-  protected ProcessInstance getRuntimeDelegate() {
+  protected ProcessInstance getDelegate() {
     return getRuntimeService().createProcessInstanceQuery().processInstanceId(historicDelegate.getCalledProcessInstanceId()).singleResult();
   }
 
