@@ -5,14 +5,10 @@ import org.camunda.bpm.engine.runtime.Job;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface Runner<R> {
-
-  R run();
+public interface Runner {
 
   Executable next();
 
   Job next(ExecutableWaitstate waitstate);
-
-  void finish();
 
 }

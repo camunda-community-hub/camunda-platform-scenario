@@ -27,7 +27,7 @@ import java.util.Set;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByKey, ProcessRunner.ProcessRunnerStartBy, ProcessRunner.ProcessRunnerStartingByStarter, ProcessRunner.CallActivityRunner, Runner<ProcessInstance> {
+public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByKey, ProcessRunner.ProcessRunnerStartBy, ProcessRunner.ProcessRunnerStartingByStarter, ProcessRunner.CallActivityRunner, Runner {
 
   protected ScenarioExecutorImpl scenarioExecutor;
 
@@ -105,8 +105,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
     setExecutedHistoricActivityIds(null);
   }
 
-  @Override
-  public ProcessInstance run() {
+  protected ProcessInstance run() {
     if (this.processInstance == null && this.scenarioStarter == null) {
       this.scenarioStarter = new ProcessStarter() {
         @Override
@@ -138,6 +137,8 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
 
   @Override
   public ExecutableWaitstate next() {
+    if (processInstance == null)
+      processInstance = run();
     continueAsyncContinuations();
     Iterator<ExecutableWaitstate> it = getNextWaitstates().iterator();
     while (it.hasNext()) {
@@ -145,6 +146,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
       if (isAvailable(waitstate.historicDelegate))
         return waitstate;
     }
+    setExecutedHistoricActivityIds(null);
     return null;
   }
 
@@ -192,10 +194,6 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
       }
     });
     return waitstates;
-  }
-
-  public void finish() {
-    setExecutedHistoricActivityIds(null);
   }
 
   public void setExecutedHistoricActivityIds(HistoricActivityInstance finished) {

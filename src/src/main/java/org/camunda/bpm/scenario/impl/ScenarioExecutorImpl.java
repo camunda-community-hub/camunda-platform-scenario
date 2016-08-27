@@ -49,10 +49,6 @@ public class ScenarioExecutorImpl {
   protected ProcessInstance execute() {
     engine(null);
     ClockUtil.reset();
-    ProcessInstance processInstance = null;
-    for (Runner runner: runners) {
-      processInstance = (ProcessInstance) runner.run(); // TODO delivers last started process instance for now...
-    }
     ExecutableWaitstate waitstate = nextWaitstate();
     while (waitstate != null) {
       boolean executable = fastForward(waitstate);
@@ -62,10 +58,7 @@ public class ScenarioExecutorImpl {
       }
       waitstate = nextWaitstate();
     }
-    for (Runner runner: runners) {
-      runner.finish();
-    }
-    return processInstance;
+    return ((ProcessRunnerImpl) runners.get(0)).processInstance;
   }
 
   protected ExecutableWaitstate nextWaitstate() {
