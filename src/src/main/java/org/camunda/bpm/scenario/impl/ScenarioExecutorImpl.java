@@ -23,7 +23,7 @@ public class ScenarioExecutorImpl {
 
   protected ProcessEngine processEngine;
 
-  public List<ScenarioRunner> runners = new ArrayList<ScenarioRunner>();
+  public List<Runner> runners = new ArrayList<Runner>();
 
   Set<String> unavailableHistoricActivityInstances = new HashSet<String>();
   Set<String> startedHistoricActivityInstances = new HashSet<String>();
@@ -57,7 +57,7 @@ public class ScenarioExecutorImpl {
     engine(null);
     ClockUtil.reset();
     ProcessInstance processInstance = null;
-    for (ScenarioRunner runner: runners) {
+    for (Runner runner: runners) {
       processInstance = (ProcessInstance) runner.run(); // TODO delivers last started process instance for now...
     }
     ExecutableWaitstate waitstate = nextWaitstate();
@@ -69,7 +69,7 @@ public class ScenarioExecutorImpl {
       }
       waitstate = nextWaitstate();
     }
-    for (ScenarioRunner runner: runners) {
+    for (Runner runner: runners) {
       runner.finish();
     }
     return processInstance;
@@ -77,7 +77,7 @@ public class ScenarioExecutorImpl {
 
   protected ExecutableWaitstate nextWaitstate() {
     List<ExecutableWaitstate> waitstates = new ArrayList<ExecutableWaitstate>();
-    for (ScenarioRunner runner: runners) {
+    for (Runner runner: runners) {
       ExecutableWaitstate waitstate = (ExecutableWaitstate) runner.next();
       if (waitstate != null)
         waitstates.add(waitstate);
@@ -91,23 +91,16 @@ public class ScenarioExecutorImpl {
 
   protected boolean fastForward(ExecutableWaitstate waitstate) {
     Date endTime = waitstate.isExecutableAt();
-    List<Job> timers = new ArrayList<Job>();
-    for (ScenarioRunner runner: runners) {
+    List<ExecutableJob> timers = new ArrayList<ExecutableJob>();
+    for (Runner runner: runners) {
       Job timer = runner.next(waitstate);
       if (timer != null)
-        timers.add(timer);
+        timers.add(Executable.Jobs.newInstance((ProcessRunnerImpl) runner, timer));
     }
     if (!timers.isEmpty()) {
-      Collections.sort(timers, new Comparator<Job>() {
-        @Override
-        public int compare(Job one, Job other) {
-          return one.getDuedate().compareTo(other.getDuedate());
-        }
-      });
-      Job timer = timers.get(0);
-      ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime() + 1));
-      processEngine.getManagementService().executeJob(timer.getId());
-      ClockUtil.setCurrentTime(new Date(timer.getDuedate().getTime()));
+      Collections.sort(timers);
+      ExecutableJob timer = timers.get(0);
+      timer.execute();
       return false;
     }
     ClockUtil.setCurrentTime(endTime);

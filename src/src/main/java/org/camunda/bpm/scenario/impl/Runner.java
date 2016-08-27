@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.runtime.Job;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ScenarioRunner<R> {
+public interface Runner<R> {
 
   R run();
 

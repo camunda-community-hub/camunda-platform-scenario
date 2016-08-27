@@ -17,30 +17,6 @@ import java.util.Map;
  */
 public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
 
-  private static Map<String, String> classNames = new HashMap<String, String>(); static {
-    classNames.put("userTask", "UserTaskWaitstate");
-    classNames.put("intermediateSignalCatch", "SignalIntermediateCatchEventWaitstate");
-    classNames.put("intermediateMessageCatch", "MessageIntermediateCatchEventWaitstate");
-    classNames.put("receiveTask", "ReceiveTaskWaitstate");
-    classNames.put("intermediateTimer", "TimerIntermediateEventWaitstate");
-    classNames.put("eventBasedGateway", "EventBasedGatewayWaitstate");
-    classNames.put("callActivity", "CallActivityWaitstate");
-    classNames.put("serviceTask", "ServiceTaskWaitstate");
-    classNames.put("sendTask", "SendTaskWaitstate");
-    classNames.put("intermediateMessageThrowEvent", "MessageIntermediateThrowEventWaitstate");
-  }
-
-  protected static ExecutableWaitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    if (classNames.containsKey(instance.getActivityType())) {
-      try {
-        return (ExecutableWaitstate) Class.forName(ExecutableWaitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
-      } catch (Exception e) {
-        throw new IllegalArgumentException(e);
-      }
-    }
-    return new IgnoredWaitstate(runner, instance, duration);
-  }
-
   protected HistoricActivityInstance historicDelegate;
   protected String duration;
 

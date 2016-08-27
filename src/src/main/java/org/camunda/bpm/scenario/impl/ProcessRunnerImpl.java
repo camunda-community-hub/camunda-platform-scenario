@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessInstance> {
+public class ProcessRunnerImpl implements ProcessRunner, Runner<ProcessInstance> {
 
   protected ScenarioExecutorImpl scenarioExecutor;
 
@@ -165,7 +165,7 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
       if (job instanceof MessageEntity) {
         MessageEntity entity = (MessageEntity) job;
         if ("async-continuation".equals(entity.getJobHandlerType()))
-          return new ExecutableJob(this, job);
+          return Executable.Jobs.newInstance(this, job);
       }
     }
     return null;
@@ -175,7 +175,7 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
     List<HistoricActivityInstance> instances = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).unfinished().list();
     List<ExecutableWaitstate> waitstates = new ArrayList<ExecutableWaitstate>();
     for (HistoricActivityInstance instance: instances) {
-      waitstates.add(ExecutableWaitstate.newInstance(this, instance, getDuration(instance)));
+      waitstates.add(Executable.Waitstates.newInstance(this, instance, getDuration(instance)));
     }
     Collections.sort(waitstates, new Comparator<ExecutableWaitstate>() {
       @Override

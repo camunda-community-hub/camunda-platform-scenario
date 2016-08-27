@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class AbstractExecutable<I> extends AbstractProcessEngineServicesDelegate implements Executable {
+public abstract class AbstractExecutable<I> extends AbstractProcessEngineServicesDelegate implements Executable<AbstractExecutable> {
 
   protected ProcessRunnerImpl runner;
   protected I runtimeDelegate;
@@ -28,8 +28,10 @@ public abstract class AbstractExecutable<I> extends AbstractProcessEngineService
     return runner.processInstance;
   };
 
+  protected abstract Date isExecutableAt();
+
   @Override
-  public int compareTo(Executable other) {
+  public int compareTo(AbstractExecutable other) {
     assert other != null;
     int compared = isExecutableAt().compareTo(other.isExecutableAt());
     if (compared == 0) {
