@@ -86,7 +86,7 @@ public class InsuranceApplicationProcessTest {
     when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       assertThat(receiveTask.getEventType()).isEqualTo("message");
       assertThat(receiveTask.getEventName()).isEqualTo("MSG_DOCUMENT_RECEIVED");
-      receiveTask.receiveMessage();
+      receiveTask.receive();
     });
 
     when(documentRequest.actsOnUserTask("UserTaskCallCustomer")).thenReturn((task) -> {
@@ -239,7 +239,7 @@ public class InsuranceApplicationProcessTest {
     when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P1D");
 
     when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      receiveTask.receiveMessage();
+      receiveTask.receive();
     });
 
     Scenario.run(insuranceApplication)
