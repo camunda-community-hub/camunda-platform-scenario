@@ -54,7 +54,6 @@ public class ScenarioExecutorImpl {
       boolean executable = fastForward(waitstate);
       if (executable) {
         waitstate.execute();
-        waitstate.runner.unavailableHistoricActivityInstances.add(waitstate.historicDelegate.getId());
       }
       waitstate = nextWaitstate();
     }

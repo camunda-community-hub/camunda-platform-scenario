@@ -19,6 +19,7 @@ public class IgnoredWaitstate extends ExecutableWaitstate<Object> {
 
   @Override
   public void execute() {
+    runner.setExecutedHistoricActivityIds(historicDelegate);
   }
 
   @Override

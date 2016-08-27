@@ -197,6 +197,8 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
   }
 
   public void setExecutedHistoricActivityIds(HistoricActivityInstance finished) {
+    if (finished != null)
+      unavailableHistoricActivityInstances.add(finished.getId());
     List<HistoricActivityInstance> instances;
     boolean supportsCanceled = Api.feature(HistoricActivityInstanceQuery.class.getName(), "canceled")
         .warn("Outdated Camunda BPM version used will not allow to use " +
