@@ -76,7 +76,7 @@ public class InsuranceApplicationProcessTest {
     });
 
     when(insuranceApplication.runsCallActivity("CallActivityDocumentRequest"))
-      .thenReturn(Scenario.use(documentRequest));
+      .thenReturn(Scenario.call(documentRequest));
 
     when(documentRequest.actsOnSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
