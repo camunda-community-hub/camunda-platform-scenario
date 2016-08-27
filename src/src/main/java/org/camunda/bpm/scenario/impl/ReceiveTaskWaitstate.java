@@ -49,13 +49,13 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
   }
 
   @Override
-  public void receiveMessage() {
-    super.receiveMessage();
+  public void receive() {
+    super.receive();
   }
 
   @Override
-  public void receiveMessage(Map<String, Object> variables) {
-    super.receiveMessage(variables);
+  public void receive(Map<String, Object> variables) {
+    super.receive(variables);
   }
 
   @Override

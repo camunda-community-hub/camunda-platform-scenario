@@ -2,8 +2,6 @@ package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.runtime.Job;
 
-import java.util.Date;
-
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */

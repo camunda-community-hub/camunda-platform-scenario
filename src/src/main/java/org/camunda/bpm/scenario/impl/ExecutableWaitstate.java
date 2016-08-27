@@ -9,7 +9,6 @@ import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

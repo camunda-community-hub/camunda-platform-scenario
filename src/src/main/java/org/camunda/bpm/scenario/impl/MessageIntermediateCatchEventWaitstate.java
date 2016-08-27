@@ -5,15 +5,15 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
-import org.camunda.bpm.scenario.delegate.MessageEventSubscriptionDelegate;
-import org.camunda.bpm.scenario.impl.delegate.AbstractMessageEventSubscriptionDelegate;
+import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
+import org.camunda.bpm.scenario.impl.delegate.AbstractEventSubscriptionDelegate;
 
 import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class MessageIntermediateCatchEventWaitstate extends AbstractMessageEventSubscriptionDelegate {
+public class MessageIntermediateCatchEventWaitstate extends AbstractEventSubscriptionDelegate {
 
   public MessageIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
@@ -25,7 +25,7 @@ public class MessageIntermediateCatchEventWaitstate extends AbstractMessageEvent
   }
 
   @Override
-  protected ScenarioAction<MessageEventSubscriptionDelegate> action(Scenario.Process scenario) {
+  protected ScenarioAction<EventSubscriptionDelegate> action(Scenario.Process scenario) {
     return scenario.actsOnMessageIntermediateCatchEvent(getActivityId());
   }
 
@@ -38,12 +38,12 @@ public class MessageIntermediateCatchEventWaitstate extends AbstractMessageEvent
   }
 
   @Override
-  public void receiveMessage() {
+  public void receive() {
     leave();
   }
 
   @Override
-  public void receiveMessage(Map<String, Object> variables) {
+  public void receive(Map<String, Object> variables) {
     leave(variables);
   }
 

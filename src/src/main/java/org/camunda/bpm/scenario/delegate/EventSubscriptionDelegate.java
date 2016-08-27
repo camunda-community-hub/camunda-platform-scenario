@@ -7,10 +7,10 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface MessageEventSubscriptionDelegate extends EventSubscription {
+public interface EventSubscriptionDelegate extends EventSubscription {
 
-  void receiveMessage();
+  void receive();
 
-  void receiveMessage(Map<String, Object> variables);
+  void receive(Map<String, Object> variables);
 
 }

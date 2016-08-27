@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.test.waitstates;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.MessageIntermediateCatchEventAction;
-import org.camunda.bpm.scenario.delegate.MessageEventSubscriptionDelegate;
+import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
@@ -23,8 +23,8 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
 
     when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
       @Override
-      public void execute(MessageEventSubscriptionDelegate messageEventSubscription) {
-        messageEventSubscription.receiveMessage();
+      public void execute(EventSubscriptionDelegate messageEventSubscription) {
+        messageEventSubscription.receive();
       }
     });
 
@@ -41,7 +41,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
 
     when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
       @Override
-      public void execute(MessageEventSubscriptionDelegate messageEventSubscription) {
+      public void execute(EventSubscriptionDelegate messageEventSubscription) {
         // Deal with messageEventSubscription but do nothing here
       }
     });
@@ -68,14 +68,14 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
 
     when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
       @Override
-      public void execute(MessageEventSubscriptionDelegate messageEventSubscription) {
-        messageEventSubscription.receiveMessage();
+      public void execute(EventSubscriptionDelegate messageEventSubscription) {
+        messageEventSubscription.receive();
       }
     });
 
     when(otherScenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
       @Override
-      public void execute(MessageEventSubscriptionDelegate messageEventSubscription) {
+      public void execute(EventSubscriptionDelegate messageEventSubscription) {
       }
     });
 

@@ -3,8 +3,8 @@ package org.camunda.bpm.scenario.impl.delegate;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>

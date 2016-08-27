@@ -3,8 +3,8 @@ package org.camunda.bpm.scenario.impl.delegate;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.delegate.TimerJobDelegate;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.Date;
 

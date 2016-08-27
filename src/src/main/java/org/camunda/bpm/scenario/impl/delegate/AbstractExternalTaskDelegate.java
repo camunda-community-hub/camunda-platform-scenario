@@ -3,8 +3,8 @@ package org.camunda.bpm.scenario.impl.delegate;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
+import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.Date;
 

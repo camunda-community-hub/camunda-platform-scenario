@@ -1,13 +1,13 @@
 package org.camunda.bpm.scenario.action;
 
-import org.camunda.bpm.scenario.delegate.SignalEventSubscriptionDelegate;
+import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface SignalIntermediateCatchEventAction extends ScenarioAction<SignalEventSubscriptionDelegate> {
+public interface SignalIntermediateCatchEventAction extends ScenarioAction<EventSubscriptionDelegate> {
 
   @Override
-  void execute(SignalEventSubscriptionDelegate eventSubscription);
+  void execute(EventSubscriptionDelegate signalEvent);
 
 }
