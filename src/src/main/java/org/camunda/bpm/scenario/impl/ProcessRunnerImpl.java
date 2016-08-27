@@ -129,11 +129,11 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   @Override
-  public AbstractWaitstate next() {
+  public ExecutableWaitstate next() {
     continueAsyncContinuations();
-    Iterator<AbstractWaitstate> it = getNextWaitstates().iterator();
+    Iterator<ExecutableWaitstate> it = getNextWaitstates().iterator();
     while (it.hasNext()) {
-      AbstractWaitstate waitstate = it.next();
+      ExecutableWaitstate waitstate = it.next();
       if (isAvailable(waitstate.historicDelegate))
         return waitstate;
     }
@@ -152,35 +152,35 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   private void continueAsyncContinuations() {
-    AsyncContinuation asyncContinuation = nextAsyncContinuation();
-    while (asyncContinuation != null) {
-      asyncContinuation.leave();
-      asyncContinuation = nextAsyncContinuation();
+    ExecutableJob executableJob = nextAsyncContinuation();
+    while (executableJob != null) {
+      executableJob.leave();
+      executableJob = nextAsyncContinuation();
     }
   }
 
-  private AsyncContinuation nextAsyncContinuation() {
+  private ExecutableJob nextAsyncContinuation() {
     List<Job> jobs = scenarioExecutor.processEngine.getManagementService().createJobQuery().processInstanceId(processInstance.getId()).list();
     for (Job job: jobs) {
       if (job instanceof MessageEntity) {
         MessageEntity entity = (MessageEntity) job;
         if ("async-continuation".equals(entity.getJobHandlerType()))
-          return new AsyncContinuation(this, job.getExecutionId());
+          return new ExecutableJob(this, job);
       }
     }
     return null;
   }
 
-  private List<AbstractWaitstate> getNextWaitstates() {
+  private List<ExecutableWaitstate> getNextWaitstates() {
     List<HistoricActivityInstance> instances = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).unfinished().list();
-    List<AbstractWaitstate> waitstates = new ArrayList<AbstractWaitstate>();
+    List<ExecutableWaitstate> waitstates = new ArrayList<ExecutableWaitstate>();
     for (HistoricActivityInstance instance: instances) {
-      waitstates.add(AbstractWaitstate.newInstance(this, instance, getDuration(instance)));
+      waitstates.add(ExecutableWaitstate.newInstance(this, instance, getDuration(instance)));
     }
-    Collections.sort(waitstates, new Comparator<AbstractWaitstate>() {
+    Collections.sort(waitstates, new Comparator<ExecutableWaitstate>() {
       @Override
-      public int compare(AbstractWaitstate one, AbstractWaitstate other) {
-        return one.getEndTime().compareTo(other.getEndTime());
+      public int compare(ExecutableWaitstate one, ExecutableWaitstate other) {
+        return one.isExecutableAt().compareTo(other.isExecutableAt());
       }
     });
     return waitstates;
@@ -240,13 +240,13 @@ public class ProcessRunnerImpl implements ProcessRunner, ScenarioRunner<ProcessI
   }
 
   @Override
-  public Job next(AbstractWaitstate waitstate) {
+  public Job next(ExecutableWaitstate waitstate) {
     List<Job> next = scenarioExecutor.processEngine.getManagementService().createJobQuery().timers().processInstanceId(processInstance.getId()).orderByJobDuedate().asc().listPage(0,1);
     if (!next.isEmpty()) {
       Job timer = next.get(0);
       HistoricActivityInstance intermediateTimer = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().unfinished().executionId(timer.getExecutionId()).activityType("intermediateTimer").singleResult();
       HistoricActivityInstance eventBasedGateway = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().unfinished().executionId(timer.getExecutionId()).activityType("eventBasedGateway").singleResult();
-      if (intermediateTimer == null && eventBasedGateway == null && timer.getDuedate().getTime() <= waitstate.getEndTime().getTime()) {
+      if (intermediateTimer == null && eventBasedGateway == null && timer.getDuedate().getTime() <= waitstate.isExecutableAt().getTime()) {
         return timer;
       }
     }

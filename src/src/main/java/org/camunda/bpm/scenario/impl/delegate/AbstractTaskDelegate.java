@@ -5,14 +5,14 @@ import org.camunda.bpm.engine.task.DelegationState;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
-import org.camunda.bpm.scenario.impl.AbstractWaitstate;
+import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
 
 import java.util.Date;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class AbstractTaskDelegate extends AbstractWaitstate<Task> implements TaskDelegate {
+public abstract class AbstractTaskDelegate extends ExecutableWaitstate<Task> implements TaskDelegate {
 
   public AbstractTaskDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);

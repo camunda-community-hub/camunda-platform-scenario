@@ -25,7 +25,7 @@ public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
   }
 
   @Override
-  protected void execute() {
+  public void execute() {
     ScenarioAction action = action(runner.scenario);
     if (action == null)
       throw new AssertionError("Process Instance {"
@@ -60,7 +60,7 @@ public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
   }
 
   @Override
-  protected Date getEndTime() {
+  public Date isExecutableAt() {
     return getDuedate();
   }
 

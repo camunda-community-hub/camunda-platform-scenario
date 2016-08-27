@@ -4,14 +4,14 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.scenario.delegate.SignalEventSubscriptionDelegate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
-import org.camunda.bpm.scenario.impl.AbstractWaitstate;
+import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
 
 import java.util.Date;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class AbstractSignalEventSubscriptionDelegate extends AbstractWaitstate<EventSubscription> implements SignalEventSubscriptionDelegate {
+public abstract class AbstractSignalEventSubscriptionDelegate extends ExecutableWaitstate<EventSubscription> implements SignalEventSubscriptionDelegate {
 
   public AbstractSignalEventSubscriptionDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);

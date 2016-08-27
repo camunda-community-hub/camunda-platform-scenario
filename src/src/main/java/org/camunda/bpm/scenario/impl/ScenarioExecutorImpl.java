@@ -60,7 +60,7 @@ public class ScenarioExecutorImpl {
     for (ScenarioRunner runner: runners) {
       processInstance = (ProcessInstance) runner.run(); // TODO delivers last started process instance for now...
     }
-    AbstractWaitstate waitstate = nextWaitstate();
+    ExecutableWaitstate waitstate = nextWaitstate();
     while (waitstate != null) {
       boolean executable = fastForward(waitstate);
       if (executable) {
@@ -75,27 +75,22 @@ public class ScenarioExecutorImpl {
     return processInstance;
   }
 
-  protected AbstractWaitstate nextWaitstate() {
-    List<AbstractWaitstate> waitstates = new ArrayList<AbstractWaitstate>();
+  protected ExecutableWaitstate nextWaitstate() {
+    List<ExecutableWaitstate> waitstates = new ArrayList<ExecutableWaitstate>();
     for (ScenarioRunner runner: runners) {
-      AbstractWaitstate waitstate = runner.next();
+      ExecutableWaitstate waitstate = (ExecutableWaitstate) runner.next();
       if (waitstate != null)
         waitstates.add(waitstate);
     }
     if (!waitstates.isEmpty()) {
-      Collections.sort(waitstates, new Comparator<AbstractWaitstate>() {
-        @Override
-        public int compare(AbstractWaitstate one, AbstractWaitstate other) {
-          return one.getEndTime().compareTo(other.getEndTime());
-        }
-      });
+      Collections.sort(waitstates);
       return waitstates.get(0);
     }
     return null;
   }
 
-  protected boolean fastForward(AbstractWaitstate waitstate) {
-    Date endTime = waitstate.getEndTime();
+  protected boolean fastForward(ExecutableWaitstate waitstate) {
+    Date endTime = waitstate.isExecutableAt();
     List<Job> timers = new ArrayList<Job>();
     for (ScenarioRunner runner: runners) {
       Job timer = runner.next(waitstate);

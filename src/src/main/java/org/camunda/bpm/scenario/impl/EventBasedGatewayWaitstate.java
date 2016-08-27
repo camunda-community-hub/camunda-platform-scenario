@@ -15,14 +15,14 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class EventBasedGatewayWaitstate extends AbstractWaitstate<EventBasedGatewayDelegate> implements EventBasedGatewayDelegate {
+public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGatewayDelegate> implements EventBasedGatewayDelegate {
 
   public EventBasedGatewayWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
   }
 
   @Override
-  protected void execute() {
+  public void execute() {
     Job job = getTimer();
     if (job == null) {
       super.execute();
@@ -127,7 +127,7 @@ public class EventBasedGatewayWaitstate extends AbstractWaitstate<EventBasedGate
   }
 
   @Override
-  protected Date getEndTime() {
+  public Date isExecutableAt() {
     Job timer = getTimer();
     if (timer != null) {
       if (duration != null) {
@@ -138,7 +138,7 @@ public class EventBasedGatewayWaitstate extends AbstractWaitstate<EventBasedGate
       }
       return timer.getDuedate();
     }
-    return super.getEndTime();
+    return super.isExecutableAt();
   }
 
 }

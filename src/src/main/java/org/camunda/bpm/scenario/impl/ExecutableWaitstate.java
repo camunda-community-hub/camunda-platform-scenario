@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class AbstractWaitstate<I> extends AbstractSavepoint<I> {
+public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
 
   private static Map<String, String> classNames = new HashMap<String, String>(); static {
     classNames.put("userTask", "UserTaskWaitstate");
@@ -30,10 +30,10 @@ public abstract class AbstractWaitstate<I> extends AbstractSavepoint<I> {
     classNames.put("intermediateMessageThrowEvent", "MessageIntermediateThrowEventWaitstate");
   }
 
-  protected static AbstractWaitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  protected static ExecutableWaitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     if (classNames.containsKey(instance.getActivityType())) {
       try {
-        return (AbstractWaitstate) Class.forName(AbstractWaitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
+        return (ExecutableWaitstate) Class.forName(ExecutableWaitstate.class.getPackage().getName() + "." + classNames.get(instance.getActivityType())).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
       } catch (Exception e) {
         throw new IllegalArgumentException(e);
       }
@@ -44,7 +44,7 @@ public abstract class AbstractWaitstate<I> extends AbstractSavepoint<I> {
   protected HistoricActivityInstance historicDelegate;
   protected String duration;
 
-  protected AbstractWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  protected ExecutableWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner);
     this.historicDelegate = instance;
     this.runtimeDelegate = getRuntimeDelegate();
@@ -60,7 +60,7 @@ public abstract class AbstractWaitstate<I> extends AbstractSavepoint<I> {
     return historicDelegate.getActivityId();
   }
 
-  protected void execute() {
+  public void execute() {
     ScenarioAction action = action(runner.scenario);
     if (action == null)
       throw new AssertionError("Process Instance {"
@@ -84,7 +84,7 @@ public abstract class AbstractWaitstate<I> extends AbstractSavepoint<I> {
     return getRuntimeService().createMessageCorrelation(messageName);
   }
 
-  protected Date getEndTime() {
+  public Date isExecutableAt() {
     Date endTime = historicDelegate.getStartTime();
     if (duration != null) {
       try {
