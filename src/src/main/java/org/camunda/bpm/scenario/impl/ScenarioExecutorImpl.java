@@ -25,10 +25,6 @@ public class ScenarioExecutorImpl {
 
   public List<Runner> runners = new ArrayList<Runner>();
 
-  Set<String> unavailableHistoricActivityInstances = new HashSet<String>();
-  Set<String> startedHistoricActivityInstances = new HashSet<String>();
-  Set<String> passedHistoricActivityInstances = new HashSet<String>();
-
   public ScenarioExecutorImpl(Scenario.Process scenario) {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
   }
@@ -65,7 +61,7 @@ public class ScenarioExecutorImpl {
       boolean executable = fastForward(waitstate);
       if (executable) {
         waitstate.execute();
-        unavailableHistoricActivityInstances.add(waitstate.historicDelegate.getId());
+        waitstate.runner.unavailableHistoricActivityInstances.add(waitstate.historicDelegate.getId());
       }
       waitstate = nextWaitstate();
     }

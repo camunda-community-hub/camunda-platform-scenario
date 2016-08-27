@@ -16,9 +16,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -36,6 +38,10 @@ public class ProcessRunnerImpl implements ProcessRunner, Runner<ProcessInstance>
 
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
   private Map<String, String> durations = new HashMap<String, String>();
+
+  Set<String> unavailableHistoricActivityInstances = new HashSet<String>();
+  Set<String> startedHistoricActivityInstances = new HashSet<String>();
+  Set<String> passedHistoricActivityInstances = new HashSet<String>();
 
   public ProcessRunnerImpl(ScenarioExecutorImpl scenarioExecutor, Scenario.Process scenario) {
     this.scenarioExecutor = scenarioExecutor;
@@ -141,7 +147,7 @@ public class ProcessRunnerImpl implements ProcessRunner, Runner<ProcessInstance>
   }
 
   private boolean isAvailable(HistoricActivityInstance instance) {
-    return !scenarioExecutor.unavailableHistoricActivityInstances.contains(instance.getId());
+    return !unavailableHistoricActivityInstances.contains(instance.getId());
   }
 
   private String getDuration(HistoricActivityInstance instance) {
@@ -201,14 +207,14 @@ public class ProcessRunnerImpl implements ProcessRunner, Runner<ProcessInstance>
           .createHistoricActivityInstanceQuery()
           .processInstanceId(processInstance.getId()).canceled().list();
       for (HistoricActivityInstance instance: instances) {
-        if (!scenarioExecutor.passedHistoricActivityInstances.contains(instance.getId())) {
-          if (!scenarioExecutor.startedHistoricActivityInstances.contains(instance.getId())) {
+        if (!passedHistoricActivityInstances.contains(instance.getId())) {
+          if (!startedHistoricActivityInstances.contains(instance.getId())) {
             scenario.hasStarted(instance.getActivityId());
-            scenarioExecutor.startedHistoricActivityInstances.add(instance.getId());
+            startedHistoricActivityInstances.add(instance.getId());
           }
           scenario.hasFinished(instance.getActivityId());
           scenario.hasCanceled(instance.getActivityId());
-          scenarioExecutor.passedHistoricActivityInstances.add(instance.getId());
+          passedHistoricActivityInstances.add(instance.getId());
         }
       }
     }
@@ -216,25 +222,25 @@ public class ProcessRunnerImpl implements ProcessRunner, Runner<ProcessInstance>
         .createHistoricActivityInstanceQuery()
         .processInstanceId(processInstance.getId()).finished().list();
     for (HistoricActivityInstance instance: instances) {
-      if (!scenarioExecutor.passedHistoricActivityInstances.contains(instance.getId())) {
-        if (!scenarioExecutor.startedHistoricActivityInstances.contains(instance.getId())) {
+      if (!passedHistoricActivityInstances.contains(instance.getId())) {
+        if (!startedHistoricActivityInstances.contains(instance.getId())) {
           scenario.hasStarted(instance.getActivityId());
-          scenarioExecutor.startedHistoricActivityInstances.add(instance.getId());
+          startedHistoricActivityInstances.add(instance.getId());
         }
         scenario.hasFinished(instance.getActivityId());
         if (supportsCanceled) {
           scenario.hasCompleted(instance.getActivityId());
         }
-        scenarioExecutor.passedHistoricActivityInstances.add(instance.getId());
+        passedHistoricActivityInstances.add(instance.getId());
       }
     }
     instances = scenarioExecutor.processEngine.getHistoryService()
         .createHistoricActivityInstanceQuery()
         .processInstanceId(processInstance.getId()).unfinished().list();
     for (HistoricActivityInstance instance: instances) {
-      if (!scenarioExecutor.startedHistoricActivityInstances.contains(instance.getId())) {
+      if (!startedHistoricActivityInstances.contains(instance.getId())) {
         scenario.hasStarted(instance.getActivityId());
-        scenarioExecutor.startedHistoricActivityInstances.add(instance.getId());
+        startedHistoricActivityInstances.add(instance.getId());
       }
     }
   }
