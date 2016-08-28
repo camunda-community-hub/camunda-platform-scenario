@@ -19,8 +19,8 @@ import org.camunda.bpm.scenario.runner.VerifiableScenario;
  */
 public class Scenario {
 
-  public static ProcessRunner.Executable.StartBy run(Process scenario) {
-    return (ProcessRunner.Executable.StartBy) new ScenarioExecutorImpl(scenario).runners.get(0);
+  public static ProcessRunner.ExecutableProcessRunner.StartBy run(Process scenario) {
+    return (ProcessRunner.ExecutableProcessRunner.StartBy) new ScenarioExecutorImpl(scenario).runners.get(0);
   }
 
   public static ProcessRunner use(Process scenario) {

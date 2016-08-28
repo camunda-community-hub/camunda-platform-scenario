@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessRunnerImpl implements ProcessRunner.Executable.StartingByKey, ProcessRunner.Executable.StartBy, ProcessRunner.Executable.StartingByStarter, ProcessRunner, Runner {
+public class ProcessRunnerImpl implements ProcessRunner.ExecutableProcessRunner.StartingByKey, ProcessRunner.ExecutableProcessRunner.StartBy, ProcessRunner.ExecutableProcessRunner.StartingByStarter, ProcessRunner, Runner {
 
   private String processDefinitionKey;
   private ProcessStarter processStarter;
@@ -82,7 +82,7 @@ public class ProcessRunnerImpl implements ProcessRunner.Executable.StartingByKey
   }
 
   @Override
-  public Executable engine(ProcessEngine processEngine) {
+  public ExecutableProcessRunner engine(ProcessEngine processEngine) {
     scenarioExecutor.init(processEngine);
     return this;
   }
@@ -135,14 +135,14 @@ public class ProcessRunnerImpl implements ProcessRunner.Executable.StartingByKey
   }
 
   @Override
-  public List<org.camunda.bpm.scenario.impl.Executable> next() {
+  public List<Executable> next() {
     run();
-    List<org.camunda.bpm.scenario.impl.Executable> executables = new ArrayList<org.camunda.bpm.scenario.impl.Executable>();
-    executables.addAll(org.camunda.bpm.scenario.impl.Executable.Jobs.next(this));
-    executables.addAll(org.camunda.bpm.scenario.impl.Executable.Waitstates.next(this));
+    List<Executable> executables = new ArrayList<Executable>();
+    executables.addAll(Executable.Jobs.next(this));
+    executables.addAll(Executable.Waitstates.next(this));
     if (executables.isEmpty())
       setExecuted(null);
-    return org.camunda.bpm.scenario.impl.Executable.Helpers.first(executables);
+    return Executable.Helpers.first(executables);
   }
 
   public String getDuration(HistoricActivityInstance instance) {
