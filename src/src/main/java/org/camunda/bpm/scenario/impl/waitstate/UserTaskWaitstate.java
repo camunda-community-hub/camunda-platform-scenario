@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class UserTaskWaitstate extends AbstractTaskDelegate {
 
-  public UserTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public UserTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   @Override

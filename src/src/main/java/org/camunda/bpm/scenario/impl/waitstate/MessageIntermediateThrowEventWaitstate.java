@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class MessageIntermediateThrowEventWaitstate extends ServiceTaskWaitstate {
 
-  public MessageIntermediateThrowEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public MessageIntermediateThrowEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   @Override

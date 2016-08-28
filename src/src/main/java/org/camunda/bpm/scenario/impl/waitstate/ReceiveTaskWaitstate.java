@@ -15,8 +15,8 @@ import java.util.Map;
  */
 public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate {
 
-  public ReceiveTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public ReceiveTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   @Override

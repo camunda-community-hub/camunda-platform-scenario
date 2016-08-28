@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class MessageIntermediateCatchEventWaitstate extends AbstractEventSubscriptionDelegate {
 
-  public MessageIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public MessageIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   @Override

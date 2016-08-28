@@ -19,8 +19,8 @@ import java.util.Map;
  */
 public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGatewayDelegate> implements EventBasedGatewayDelegate {
 
-  public EventBasedGatewayWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public EventBasedGatewayWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   @Override

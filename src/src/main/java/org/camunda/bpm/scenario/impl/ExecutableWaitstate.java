@@ -17,13 +17,11 @@ import java.util.Map;
 public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
 
   protected HistoricActivityInstance historicDelegate;
-  protected String duration;
 
-  protected ExecutableWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
+  protected ExecutableWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
     super(runner);
     this.historicDelegate = instance;
     this.delegate = getDelegate();
-    this.duration = duration;
   }
 
   @Override
@@ -54,6 +52,7 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
 
   public Date isExecutableAt() {
     Date endTime = historicDelegate.getStartTime();
+    String duration = runner.getDuration(historicDelegate);
     if (duration != null) {
       try {
         if (duration == null || !duration.startsWith("P")) {

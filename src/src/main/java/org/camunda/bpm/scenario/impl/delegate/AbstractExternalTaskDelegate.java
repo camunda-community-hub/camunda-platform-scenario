@@ -13,8 +13,8 @@ import java.util.Date;
  */
 public abstract class AbstractExternalTaskDelegate extends ExecutableWaitstate<ExternalTask> implements ExternalTaskDelegate {
 
-  public AbstractExternalTaskDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public AbstractExternalTaskDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   public String getId() {

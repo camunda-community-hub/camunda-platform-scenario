@@ -40,12 +40,12 @@ public interface Executable<S> extends Comparable<S> {
         String type = instance.getActivityType();
         if (types.containsKey(type)) {
           try {
-            return (ExecutableWaitstate) Class.forName(IgnoredWaitstate.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, runner.getDuration(instance));
+            return (ExecutableWaitstate) Class.forName(IgnoredWaitstate.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class).newInstance(runner, instance);
           } catch (Exception e) {
             throw new IllegalArgumentException(e);
           }
         }
-        return new IgnoredWaitstate(runner, instance, runner.getDuration(instance));
+        return new IgnoredWaitstate(runner, instance);
       }
       return null;
     }

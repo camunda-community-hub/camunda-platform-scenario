@@ -13,8 +13,8 @@ import java.util.Date;
  */
 public abstract class AbstractTimerJobDelegate extends ExecutableWaitstate<Job> implements TimerJobDelegate {
 
-  public AbstractTimerJobDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public AbstractTimerJobDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   public String getId() {

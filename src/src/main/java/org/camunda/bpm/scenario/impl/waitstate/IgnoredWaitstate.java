@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class IgnoredWaitstate extends ExecutableWaitstate<Object> {
 
-  public IgnoredWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public IgnoredWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   @Override

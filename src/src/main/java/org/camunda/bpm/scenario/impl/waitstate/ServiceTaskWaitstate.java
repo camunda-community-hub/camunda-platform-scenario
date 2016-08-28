@@ -17,8 +17,8 @@ public class ServiceTaskWaitstate extends AbstractExternalTaskDelegate {
 
   private static final String WORKER_ID = "workerId";
 
-  public ServiceTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public ServiceTaskWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   @Override

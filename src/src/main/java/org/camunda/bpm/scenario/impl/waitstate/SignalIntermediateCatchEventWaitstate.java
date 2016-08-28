@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class SignalIntermediateCatchEventWaitstate extends AbstractEventSubscriptionDelegate {
 
-  public SignalIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public SignalIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   @Override

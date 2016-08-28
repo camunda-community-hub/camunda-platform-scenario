@@ -11,8 +11,8 @@ import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
  */
 public abstract class AbstractProcessInstanceDelegate extends ExecutableWaitstate<ProcessInstance> implements ProcessInstanceDelegate {
 
-  public AbstractProcessInstanceDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public AbstractProcessInstanceDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   public String getProcessDefinitionId() {

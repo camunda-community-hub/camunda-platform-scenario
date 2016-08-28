@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
 
-  public TimerIntermediateEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-    super(runner, instance, duration);
+  public TimerIntermediateEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    super(runner, instance);
   }
 
   @Override
