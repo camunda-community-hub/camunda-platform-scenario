@@ -22,13 +22,13 @@ public abstract class ExecutableJob extends AbstractExecutable<Job> {
     return getManagementService().createJobQuery().jobId(delegate.getId()).singleResult();
   }
 
-  protected void leave() {
+  protected void executeJob() {
     getManagementService().executeJob(delegate.getId());
   }
 
   @Override
   public void execute() {
-    leave();
+    executeJob();
     runner.setExecuted(null);
   }
 

@@ -5,8 +5,10 @@ import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.impl.job.ExecutableTimerJob;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +54,7 @@ public class ScenarioExecutorImpl {
         throw new IllegalStateException(message);
       }
     }
-    ClockUtil.setCurrentTime(new Date());
+    ExecutableTimerJob.init();
   }
 
   protected void init(ProcessEngine processEngine) {
