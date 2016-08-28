@@ -7,8 +7,10 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.EventBasedGatewayDelegate;
+import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.delegate.EventSubscriptionDelegateImpl;
 
 import java.util.Date;
 import java.util.List;
@@ -34,71 +36,25 @@ public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGa
   }
 
   protected void leave() {
-    getRuntimeService().messageEventReceived(getMessageEventSubscription().getEventName(), getMessageEventSubscription().getExecutionId());
   }
 
   protected void leave(Map<String, Object> variables) {
-    getRuntimeService().messageEventReceived(getMessageEventSubscription().getEventName(), getMessageEventSubscription().getExecutionId(), variables);
   }
 
   @Override
-  public EventSubscription getSignalEventSubscription() {
-    return getRuntimeService().createEventSubscriptionQuery().eventType("signal").executionId(getExecutionId()).singleResult();
-  }
-
-  public EventSubscription getSignalEventSubscription(String activityId) {
-    return getRuntimeService().createEventSubscriptionQuery().eventType("signal").activityId(activityId).executionId(getExecutionId()).singleResult();
+  public List<EventSubscriptionDelegate> getEventSubscriptions() {
+    List<EventSubscription> eventSubscriptions = getRuntimeService().createEventSubscriptionQuery().executionId(getExecutionId()).list();
+    return EventSubscriptionDelegateImpl.newInstance(runner, eventSubscriptions);
   }
 
   @Override
-  public EventSubscription getMessageEventSubscription() {
-    return getRuntimeService().createEventSubscriptionQuery().eventType("message").executionId(getExecutionId()).singleResult();
-  }
-
-  public EventSubscription getMessageEventSubscription(String activityId) {
-    return getRuntimeService().createEventSubscriptionQuery().eventType("message").activityId(activityId).executionId(getExecutionId()).singleResult();
+  public EventSubscriptionDelegate getEventSubscription(String activityId) {
+    return EventSubscriptionDelegateImpl.newInstance(runner, getRuntimeService().createEventSubscriptionQuery().activityId(activityId).executionId(getExecutionId()).singleResult());
   }
 
   @Override
-  public void receiveSignal() {
-    EventSubscription subscription = getSignalEventSubscription();
-    getRuntimeService().signalEventReceived(subscription.getEventName(), subscription.getExecutionId());
-  }
-
-  @Override
-  public void receiveSignal(Map<String, Object> variables) {
-    EventSubscription subscription = getSignalEventSubscription();
-    getRuntimeService().signalEventReceived(subscription.getEventName(), subscription.getExecutionId(), variables);
-  }
-
-  public void receiveSignal(String activityId) {
-    EventSubscription subscription = getSignalEventSubscription(activityId);
-    getRuntimeService().signalEventReceived(subscription.getEventName(), subscription.getExecutionId());
-  }
-
-  public void receiveSignal(String activityId, Map<String, Object> variables) {
-    EventSubscription subscription = getSignalEventSubscription(activityId);
-    getRuntimeService().signalEventReceived(subscription.getEventName(), subscription.getExecutionId(), variables);
-  }
-
-  @Override
-  public void receiveMessage() {
-    leave();
-  }
-
-  @Override
-  public void receiveMessage(Map<String, Object> variables) {
-    leave(variables);
-  }
-
-  public void receiveMessage(String activityId) {
-    EventSubscription subscription = getMessageEventSubscription(activityId);
-    getRuntimeService().messageEventReceived(subscription.getEventName(), subscription.getExecutionId());
-  }
-
-  public void receiveMessage(String activityId, Map<String, Object> variables) {
-    EventSubscription subscription = getMessageEventSubscription(activityId);
-    getRuntimeService().messageEventReceived(subscription.getEventName(), subscription.getExecutionId(), variables);
+  public EventSubscriptionDelegate getEventSubscription() {
+    return EventSubscriptionDelegateImpl.newInstance(runner, getRuntimeService().createEventSubscriptionQuery().executionId(getExecutionId()).singleResult());
   }
 
 }

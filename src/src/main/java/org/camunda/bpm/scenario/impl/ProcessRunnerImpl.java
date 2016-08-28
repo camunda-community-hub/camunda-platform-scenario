@@ -91,6 +91,10 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
     return scenarioExecutor.execute();
   }
 
+  public ProcessEngine engine() {
+    return scenarioExecutor.processEngine;
+  }
+
   public void running(CallActivityWaitstate waitstate) {
     this.scenarioExecutor = waitstate.runner.scenarioExecutor;
     this.scenarioExecutor.runners.add(this);

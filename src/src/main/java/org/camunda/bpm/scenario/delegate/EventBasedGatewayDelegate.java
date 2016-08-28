@@ -3,6 +3,7 @@ package org.camunda.bpm.scenario.delegate;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.engine.runtime.Job;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,16 +11,10 @@ import java.util.Map;
  */
 public interface EventBasedGatewayDelegate {
 
-  EventSubscription getSignalEventSubscription();
+  List<EventSubscriptionDelegate> getEventSubscriptions();
 
-  EventSubscription getMessageEventSubscription();
+  EventSubscriptionDelegate getEventSubscription(String activityId);
 
-  void receiveSignal();
-
-  void receiveSignal(Map<String, Object> variables);
-
-  void receiveMessage();
-
-  void receiveMessage(Map<String, Object> variables);
+  EventSubscriptionDelegate getEventSubscription();
 
 }

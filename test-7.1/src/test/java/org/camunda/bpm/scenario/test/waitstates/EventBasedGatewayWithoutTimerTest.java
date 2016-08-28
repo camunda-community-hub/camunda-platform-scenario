@@ -24,7 +24,7 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
     when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
       public void execute(EventBasedGatewayDelegate gateway) {
-        gateway.receiveMessage();
+        gateway.getEventSubscription("MessageIntermediateCatchEvent").receive();
       }
     });
 
@@ -70,7 +70,7 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
     when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
       public void execute(EventBasedGatewayDelegate gateway) {
-        gateway.receiveMessage();
+        gateway.getEventSubscription("MessageIntermediateCatchEvent").receive();
       }
     });
 
