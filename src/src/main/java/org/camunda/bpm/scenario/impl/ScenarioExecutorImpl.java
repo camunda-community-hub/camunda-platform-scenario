@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class ScenarioExecutorImpl {
 
+  private boolean executed;
+
   public ProcessEngine processEngine;
   public List<Runner> runners = new ArrayList<Runner>();
 
@@ -41,6 +43,10 @@ public class ScenarioExecutorImpl {
   }
 
   protected void init() {
+    if (executed)
+      throw new IllegalStateException("Scenarios may use execute() just once per Scenario.run(). " +
+          "Please create a new Scenario.run().");
+    executed = true;
     if (processEngine == null) {
       Map<String, ProcessEngine> processEngines = ProcessEngines.getProcessEngines();
       if (processEngines.size() == 1) {
