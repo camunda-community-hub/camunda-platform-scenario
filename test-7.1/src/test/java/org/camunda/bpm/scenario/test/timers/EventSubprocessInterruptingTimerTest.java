@@ -122,9 +122,9 @@ public class EventSubprocessInterruptingTimerTest extends AbstractTest {
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
-    verify(scenario, never()).hasFinished("UserTask");
+    verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventCanceled");
+    verify(scenario, times(1)).hasFinished("EndEventCanceled");
 
   }
 

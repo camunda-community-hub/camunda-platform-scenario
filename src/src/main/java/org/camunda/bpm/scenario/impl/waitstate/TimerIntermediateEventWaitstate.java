@@ -18,27 +18,6 @@ public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
 
   public TimerIntermediateEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
     super(runner, instance, duration);
-    if (duration != null) {
-      throw new IllegalStateException("Found a duration '" + duration + "' set. " +
-          "Explicit durations are not supported for '" + getClass().getSimpleName()
-          + "'. Its duration always depends on the timers defined in the BPMN process.");
-    }
-  }
-
-  @Override
-  public void execute() {
-    ScenarioAction action = action(runner.getScenario());
-    if (action == null)
-      throw new AssertionError("Process Instance {"
-          + getProcessInstance().getProcessDefinitionId() + ", "
-          + getProcessInstance().getProcessInstanceId() + "} "
-          + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
-          + " '" + historicDelegate.getActivityId() +"'.");
-    action.execute(this);
-    Job job = getManagementService().createJobQuery().timers().jobId(getId()).singleResult();
-    if (job != null)
-      getManagementService().executeJob(job.getId());
-    runner.setExecuted(historicDelegate.getId());
   }
 
   @Override
@@ -58,11 +37,6 @@ public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
   protected void leave(Map<String, Object> variables) {
     getRuntimeService().setVariables(getProcessInstance().getId(), variables);
     leave();
-  }
-
-  @Override
-  public Date isExecutableAt() {
-    return getDuedate();
   }
 
 }

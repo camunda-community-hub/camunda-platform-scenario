@@ -1,14 +1,12 @@
 package org.camunda.bpm.scenario.impl;
 
-import org.camunda.bpm.engine.runtime.Job;
+import java.util.List;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
 public interface Runner {
 
-  Executable next();
-
-  Job next(ExecutableWaitstate waitstate);
+  List<Executable> next();
 
 }

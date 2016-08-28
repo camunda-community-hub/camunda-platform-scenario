@@ -6,6 +6,7 @@ import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -40,6 +41,11 @@ public class IgnoredWaitstate extends ExecutableWaitstate<Object> {
   @Override
   protected Object getDelegate() {
     return null;
+  }
+
+  @Override
+  public Date isExecutableAt() {
+    return new Date(Long.MAX_VALUE);
   }
 
 }

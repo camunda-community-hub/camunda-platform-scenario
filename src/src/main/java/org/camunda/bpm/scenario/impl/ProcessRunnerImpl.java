@@ -4,8 +4,6 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.history.HistoricActivityInstanceQuery;
-import org.camunda.bpm.engine.impl.persistence.entity.MessageEntity;
-import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
 import org.camunda.bpm.scenario.Scenario;
@@ -15,11 +13,8 @@ import org.camunda.bpm.scenario.runner.ProcessRunner;
 import org.camunda.bpm.scenario.runner.ProcessStarter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,7 +82,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
 
   @Override
   public ProcessRunner engine(ProcessEngine processEngine) {
-    scenarioExecutor.engine(processEngine);
+    scenarioExecutor.init(processEngine);
     return this;
   }
 
@@ -127,71 +122,29 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
           }
         }
       };
+    } if (processInstance == null) {
+      this.processInstance = processStarter.start();
+      setExecuted(null);
     }
-    this.processInstance = processStarter.start();
-    setExecuted(null);
     return this.processInstance;
   }
 
   @Override
-  public ExecutableWaitstate next() {
-    if (processInstance == null)
-      processInstance = run();
-    continueAsyncContinuations();
-    Iterator<ExecutableWaitstate> it = getNextWaitstates().iterator();
-    while (it.hasNext()) {
-      ExecutableWaitstate waitstate = it.next();
-      if (isAvailable(waitstate.historicDelegate))
-        return waitstate;
-    }
-    setExecuted(null);
-    return null;
+  public List<Executable> next() {
+    run();
+    List<Executable> executables = new ArrayList<Executable>();
+    executables.addAll(Executable.Jobs.next(this));
+    executables.addAll(Executable.Waitstates.next(this));
+    if (executables.isEmpty())
+      setExecuted(null);
+    return Executable.Helpers.first(executables);
   }
 
-  private boolean isAvailable(HistoricActivityInstance instance) {
-    return !unavailable.contains(instance.getId());
-  }
-
-  private String getDuration(HistoricActivityInstance instance) {
+  protected String getDuration(HistoricActivityInstance instance) {
     if (!durations.containsKey(instance.getId())) {
       durations.put(instance.getId(), scenario.waitsForActionOn(instance.getActivityId()));
     }
     return durations.get(instance.getId());
-  }
-
-  private void continueAsyncContinuations() {
-    ExecutableJob executableJob = nextAsyncContinuation();
-    while (executableJob != null) {
-      executableJob.leave();
-      executableJob = nextAsyncContinuation();
-    }
-  }
-
-  private ExecutableJob nextAsyncContinuation() {
-    List<Job> jobs = scenarioExecutor.processEngine.getManagementService().createJobQuery().processInstanceId(processInstance.getId()).list();
-    for (Job job: jobs) {
-      if (job instanceof MessageEntity) {
-        MessageEntity entity = (MessageEntity) job;
-        if ("async-continuation".equals(entity.getJobHandlerType()))
-          return Executable.Jobs.newInstance(this, job);
-      }
-    }
-    return null;
-  }
-
-  private List<ExecutableWaitstate> getNextWaitstates() {
-    List<HistoricActivityInstance> instances = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).unfinished().list();
-    List<ExecutableWaitstate> waitstates = new ArrayList<ExecutableWaitstate>();
-    for (HistoricActivityInstance instance: instances) {
-      waitstates.add(Executable.Waitstates.newInstance(this, instance, getDuration(instance)));
-    }
-    Collections.sort(waitstates, new Comparator<ExecutableWaitstate>() {
-      @Override
-      public int compare(ExecutableWaitstate one, ExecutableWaitstate other) {
-        return one.isExecutableAt().compareTo(other.isExecutableAt());
-      }
-    });
-    return waitstates;
   }
 
   public void setExecuted(String id) {
@@ -243,20 +196,6 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
         started.add(instance.getId());
       }
     }
-  }
-
-  @Override
-  public Job next(ExecutableWaitstate waitstate) {
-    List<Job> next = scenarioExecutor.processEngine.getManagementService().createJobQuery().timers().processInstanceId(processInstance.getId()).orderByJobDuedate().asc().listPage(0,1);
-    if (!next.isEmpty()) {
-      Job timer = next.get(0);
-      HistoricActivityInstance intermediateTimer = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().unfinished().executionId(timer.getExecutionId()).activityType("intermediateTimer").singleResult();
-      HistoricActivityInstance eventBasedGateway = scenarioExecutor.processEngine.getHistoryService().createHistoricActivityInstanceQuery().unfinished().executionId(timer.getExecutionId()).activityType("eventBasedGateway").singleResult();
-      if (intermediateTimer == null && eventBasedGateway == null && timer.getDuedate().getTime() <= waitstate.isExecutableAt().getTime()) {
-        return timer;
-      }
-    }
-    return null;
   }
 
   public Scenario.Process getScenario() {

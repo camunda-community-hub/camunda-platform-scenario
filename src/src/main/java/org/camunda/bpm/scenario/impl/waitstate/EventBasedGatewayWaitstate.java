@@ -24,27 +24,6 @@ public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGa
   }
 
   @Override
-  public void execute() {
-    Job job = getTimer();
-    if (job == null) {
-      super.execute();
-    } else {
-      ScenarioAction action = action(runner.getScenario());
-      if (action == null)
-        throw new AssertionError("Process Instance {"
-            + getProcessInstance().getProcessDefinitionId() + ", "
-            + getProcessInstance().getProcessInstanceId() + "} "
-            + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
-            + " '" + historicDelegate.getActivityId() +"'.");
-      action.execute(this);
-      job = getManagementService().createJobQuery().timers().jobId(job.getId()).singleResult();
-      if (job != null)
-        getManagementService().executeJob(job.getId());
-      runner.setExecuted(historicDelegate.getId());
-    }
-  }
-
-  @Override
   protected EventBasedGatewayDelegate getDelegate() {
     return null;
   }
@@ -78,12 +57,6 @@ public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGa
 
   public EventSubscription getMessageEventSubscription(String activityId) {
     return getRuntimeService().createEventSubscriptionQuery().eventType("message").activityId(activityId).executionId(getExecutionId()).singleResult();
-  }
-
-  @Override
-  public Job getTimer() {
-    List<Job> jobs = getManagementService().createJobQuery().timers().executionId(getExecutionId()).orderByJobDuedate().asc().listPage(0, 1);
-    return jobs.isEmpty() ? null : jobs.get(0);
   }
 
   @Override
@@ -126,21 +99,6 @@ public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGa
   public void receiveMessage(String activityId, Map<String, Object> variables) {
     EventSubscription subscription = getMessageEventSubscription(activityId);
     getRuntimeService().messageEventReceived(subscription.getEventName(), subscription.getExecutionId(), variables);
-  }
-
-  @Override
-  public Date isExecutableAt() {
-    Job timer = getTimer();
-    if (timer != null) {
-      if (duration != null) {
-        throw new IllegalStateException("Found a duration '" + duration + "' set. " +
-          "Explicit durations are not supported for '" + getClass().getSimpleName() +
-          "' with timers events. Its duration always depends on the timers defined " +
-          "in the BPMN process.");
-      }
-      return timer.getDuedate();
-    }
-    return super.isExecutableAt();
   }
 
 }

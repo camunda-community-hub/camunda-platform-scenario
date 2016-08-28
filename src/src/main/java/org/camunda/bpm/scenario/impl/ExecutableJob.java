@@ -27,4 +27,10 @@ public abstract class ExecutableJob extends AbstractExecutable<Job> {
     getManagementService().executeJob(delegate.getId());
   }
 
+  @Override
+  public void execute() {
+    leave();
+    runner.setExecuted(null);
+  }
+
 }

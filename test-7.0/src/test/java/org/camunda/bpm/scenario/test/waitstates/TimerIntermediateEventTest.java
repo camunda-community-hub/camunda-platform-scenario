@@ -1,6 +1,8 @@
 package org.camunda.bpm.scenario.test.waitstates;
 
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
+import org.camunda.bpm.engine.test.assertions.ProcessEngineTests;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.delegate.TimerJobDelegate;
@@ -41,11 +43,11 @@ public class TimerIntermediateEventTest extends AbstractTest {
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(TimerJobDelegate timer) {
-        // Do nothing means process moves forward here
+        // Deal with timerEventSubscription but do nothing here
       }
     });
 
-    Scenario.run(scenario).startBy("TimerIntermediateEventTest").execute();
+    ProcessInstance pi = Scenario.run(scenario).startBy("TimerIntermediateEventTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");

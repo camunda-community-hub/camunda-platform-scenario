@@ -43,6 +43,7 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
           + getProcessInstance().getProcessInstanceId() + "} "
           + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
           + " '" + historicDelegate.getActivityId() +"'.");
+    ClockUtil.setCurrentTime(isExecutableAt());
     action.execute(this);
     runner.setExecuted(historicDelegate.getId());
   }
@@ -50,14 +51,6 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
   protected abstract ScenarioAction action(Scenario.Process scenario);
 
   protected abstract void leave(Map<String, Object> variables);
-
-  public SignalEventReceivedBuilder createSignal(String signalName) {
-    return getRuntimeService().createSignalEvent(signalName);
-  }
-
-  public MessageCorrelationBuilder createMessage(String messageName) {
-    return getRuntimeService().createMessageCorrelation(messageName);
-  }
 
   public Date isExecutableAt() {
     Date endTime = historicDelegate.getStartTime();

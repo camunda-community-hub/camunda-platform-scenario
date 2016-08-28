@@ -124,7 +124,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, never()).hasFinished("UserTask");
     verify(scenario, never()).hasFinished("EndEventCompleted");
-    verify(scenario, never()).hasFinished("EndEventAdditional");
+    verify(scenario, times(1)).hasFinished("EndEventAdditional");
 
   }
 

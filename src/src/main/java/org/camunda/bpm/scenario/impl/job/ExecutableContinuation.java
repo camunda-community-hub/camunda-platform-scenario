@@ -20,9 +20,4 @@ public class ExecutableContinuation extends ExecutableJob {
     return new Date(0);
   }
 
-  @Override
-  public void execute() {
-    leave();
-  }
-
 }

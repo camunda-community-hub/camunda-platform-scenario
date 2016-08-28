@@ -3,10 +3,14 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.persistence.entity.JobEntity;
 import org.camunda.bpm.engine.runtime.Job;
-import org.camunda.bpm.scenario.impl.job.IgnoredJob;
+import org.camunda.bpm.scenario.impl.job.ExecutableContinuation;
 import org.camunda.bpm.scenario.impl.waitstate.IgnoredWaitstate;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,16 +35,26 @@ public interface Executable<S> extends Comparable<S> {
       types.put("intermediateMessageThrowEvent", "MessageIntermediateThrowEventWaitstate");
     }
 
-    static ExecutableWaitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String duration) {
-      String type = instance.getActivityType();
-      if (types.containsKey(type)) {
-        try {
-          return (ExecutableWaitstate) Class.forName(IgnoredWaitstate.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, duration);
-        } catch (Exception e) {
-          throw new IllegalArgumentException(e);
+    static ExecutableWaitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+      if (!runner.unavailable.contains(instance.getId())) {
+        String type = instance.getActivityType();
+        if (types.containsKey(type)) {
+          try {
+            return (ExecutableWaitstate) Class.forName(IgnoredWaitstate.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class, String.class).newInstance(runner, instance, runner.getDuration(instance));
+          } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+          }
         }
+        return new IgnoredWaitstate(runner, instance, runner.getDuration(instance));
       }
-      return new IgnoredWaitstate(runner, instance, duration);
+      return null;
+    }
+
+    static List<Executable> next(ProcessRunnerImpl runner) {
+      List<HistoricActivityInstance> instances = runner.scenarioExecutor.processEngine
+          .getHistoryService().createHistoricActivityInstanceQuery()
+          .processInstanceId(runner.processInstance.getId()).unfinished().list();
+      return Helpers.next(runner, instances);
     }
 
   }
@@ -50,6 +64,7 @@ public interface Executable<S> extends Comparable<S> {
     static Map<String, String> types = new HashMap<String, String>(); static {
       types.put("async-continuation", "ExecutableContinuation");
       types.put("timer-transition", "ExecutableTimerJob");
+      types.put("timer-intermediate-transition", "ExecutableTimerJob");
       types.put("timer-start-event-subprocess", "ExecutableTimerJob");
     }
 
@@ -58,12 +73,42 @@ public interface Executable<S> extends Comparable<S> {
       String type = entity.getJobHandlerType();
       if (types.containsKey(type)) {
         try {
-          return (ExecutableJob) Class.forName(IgnoredJob.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, Job.class).newInstance(runner, job);
+          return (ExecutableJob) Class.forName(ExecutableContinuation.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, Job.class).newInstance(runner, job);
         } catch (Exception e) {
           throw new IllegalArgumentException(e);
         }
       }
-      return new IgnoredJob(runner, job);
+      return null;
+    }
+
+    static List<Executable> next(ProcessRunnerImpl runner) {
+      List<Job> jobs = runner.scenarioExecutor.processEngine.getManagementService()
+          .createJobQuery().processInstanceId(runner.processInstance.getId()).list();
+      return Helpers.next(runner, jobs);
+    }
+
+  }
+
+  class Helpers {
+
+    static List<Executable> first(List<Executable> executables) {
+      Collections.sort(executables);
+      List<Executable> first = new ArrayList<Executable>();
+      if (!executables.isEmpty())
+        first.add(executables.get(0));
+      return first;
+    }
+
+    static List<Executable> next(ProcessRunnerImpl runner, List instances) {
+      List<Executable> executables = new ArrayList<Executable>();
+      for (Object instance: instances) {
+        Executable executable = instance instanceof Job
+            ? Jobs.newInstance(runner, (Job) instance)
+            : Waitstates.newInstance(runner, (HistoricActivityInstance) instance);
+        if (executable != null)
+          executables.add(executable);
+      }
+      return first(executables);
     }
 
   }

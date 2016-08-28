@@ -14,8 +14,6 @@ public interface EventBasedGatewayDelegate {
 
   EventSubscription getMessageEventSubscription();
 
-  Job getTimer();
-
   void receiveSignal();
 
   void receiveSignal(Map<String, Object> variables);

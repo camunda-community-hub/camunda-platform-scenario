@@ -22,10 +22,10 @@ public class ExecutableTimerJob extends ExecutableJob {
   }
 
   @Override
-  public void execute() {
+  public void leave() {
     // TODO (Camunda Bug?)
     ClockUtil.setCurrentTime(new Date(isExecutableAt().getTime() + 1));
-    leave();
+    super.leave();
   }
 
 }
