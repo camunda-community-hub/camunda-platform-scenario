@@ -107,9 +107,9 @@ public class InsuranceApplicationProcessTest {
     variables.put("riskAssessment", "green");
 
     ProcessInstance pi = Scenario.run(insuranceApplication)
-        .startBy("InsuranceApplication", variables) // either just start process by key ...
+        .startByKey("InsuranceApplication", variables) // either just start process by key ...
         .fromBefore("EndEventApplicationAccepted")
-        .execute();
+        .execute().getProcessInstance();
 
     assertThat(pi).variables().containsEntry("riskAssessment", "green");
     verify(insuranceApplication, never()).hasStarted("SubProcessManualCheck");
@@ -129,7 +129,7 @@ public class InsuranceApplicationProcessTest {
       .startBy(() -> { // ... or define your own starter function
         return rule.getRuntimeService().startProcessInstanceByKey("InsuranceApplication", variables);
       })
-      .execute();
+      .execute().getProcessInstance();
 
     assertThat(pi).variables().containsEntry("riskAssessment", "yellow");
     verify(insuranceApplication).hasCompleted("SubProcessManualCheck");
@@ -146,8 +146,8 @@ public class InsuranceApplicationProcessTest {
       .putValue("carType", "911");
 
     ProcessInstance pi = Scenario.run(insuranceApplication)
-        .startBy("InsuranceApplication", variables)
-        .execute();
+        .startByKey("InsuranceApplication", variables)
+        .execute().getProcessInstance();
 
 
     assertThat(pi).variables().containsEntry("riskAssessment", "red");
@@ -166,8 +166,8 @@ public class InsuranceApplicationProcessTest {
       .putValue("carType", "911");
 
     ProcessInstance pi = Scenario.run(insuranceApplication)
-        .startBy("InsuranceApplication", variables)
-        .execute();
+        .startByKey("InsuranceApplication", variables)
+        .execute().getProcessInstance();
 
     assertThat(pi).variables()
       .containsEntry("riskAssessment", "yellow")
@@ -191,8 +191,8 @@ public class InsuranceApplicationProcessTest {
     });
 
     ProcessInstance pi = Scenario.run(insuranceApplication)
-        .startBy("InsuranceApplication", variables)
-        .execute();
+        .startByKey("InsuranceApplication", variables)
+        .execute().getProcessInstance();
 
     assertThat(pi).variables()
       .containsEntry("riskAssessment", "yellow")
@@ -217,7 +217,7 @@ public class InsuranceApplicationProcessTest {
     });
 
     Scenario.run(insuranceApplication)
-        .startBy("InsuranceApplication", variables)
+        .startByKey("InsuranceApplication", variables)
         .execute();
 
     verify(insuranceApplication).hasCompleted("CallActivityDocumentRequest");
@@ -244,7 +244,7 @@ public class InsuranceApplicationProcessTest {
     });
 
     Scenario.run(insuranceApplication)
-        .startBy("InsuranceApplication", variables)
+        .startByKey("InsuranceApplication", variables)
         .execute();
 
     verify(insuranceApplication).hasCompleted("CallActivityDocumentRequest");
@@ -273,7 +273,7 @@ public class InsuranceApplicationProcessTest {
     when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P7DT1M");
 
     Scenario.run(insuranceApplication)
-        .startBy("InsuranceApplication", variables)
+        .startByKey("InsuranceApplication", variables)
         .execute();
 
     verify(insuranceApplication, times(1)).hasStarted("UserTaskSpeedUpManualCheck");
