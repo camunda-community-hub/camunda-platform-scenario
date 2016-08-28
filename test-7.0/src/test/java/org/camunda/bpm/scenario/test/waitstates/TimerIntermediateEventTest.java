@@ -3,7 +3,6 @@ package org.camunda.bpm.scenario.test.waitstates;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
-import org.camunda.bpm.engine.test.assertions.ProcessEngineTests;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
@@ -31,7 +30,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("TimerIntermediateEventTest").execute();
+    Scenario.run(scenario).startByKey("TimerIntermediateEventTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -49,7 +48,9 @@ public class TimerIntermediateEventTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario).startBy("TimerIntermediateEventTest").execute();
+    ProcessInstance pi = Scenario.run(scenario)
+        .startByKey("TimerIntermediateEventTest")
+        .execute().getProcessInstance();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -60,7 +61,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testDoNotDealWithTimerEvent() {
 
-    Scenario.run(scenario).startBy("TimerIntermediateEventTest").execute();
+    Scenario.run(scenario).startByKey("TimerIntermediateEventTest").execute();
 
   }
 

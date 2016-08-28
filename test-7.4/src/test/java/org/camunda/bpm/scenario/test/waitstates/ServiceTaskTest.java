@@ -28,7 +28,7 @@ public class ServiceTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ServiceTaskTest").execute();
+    Scenario.run(scenario).startByKey("ServiceTaskTest").execute();
 
     verify(scenario, times(1)).hasCompleted("ServiceTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -45,7 +45,7 @@ public class ServiceTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ServiceTaskTest").execute();
+    Scenario.run(scenario).startByKey("ServiceTaskTest").execute();
 
     verify(scenario, times(1)).hasStarted("ServiceTask");
     verify(scenario, never()).hasFinished("ServiceTask");
@@ -56,7 +56,7 @@ public class ServiceTaskTest extends AbstractTest {
   @Test(expected=AssertionError.class)
   public void testDoNotDealWithTask() {
 
-    Scenario.run(scenario).startBy("ServiceTaskTest").execute();
+    Scenario.run(scenario).startByKey("ServiceTaskTest").execute();
 
   }
 
@@ -76,8 +76,8 @@ public class ServiceTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("ServiceTaskTest").execute();
-    Scenario.run(scenario).startBy("ServiceTaskTest").execute();
+    Scenario.run(otherScenario).startByKey("ServiceTaskTest").execute();
+    Scenario.run(scenario).startByKey("ServiceTaskTest").execute();
 
     verify(scenario, times(1)).hasCompleted("ServiceTask");
     verify(scenario, times(1)).hasFinished("EndEvent");

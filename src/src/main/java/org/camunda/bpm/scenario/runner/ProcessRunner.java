@@ -1,7 +1,6 @@
 package org.camunda.bpm.scenario.runner;
 
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 
 import java.util.Map;
 
@@ -12,7 +11,7 @@ public interface ProcessRunner {
 
   ProcessRunner engine(ProcessEngine processEngine);
 
-  ProcessInstance execute();
+  ScenarioRun execute();
 
   interface ProcessRunnerStartingByKey extends ProcessRunner {
 
@@ -20,21 +19,21 @@ public interface ProcessRunner {
 
     ProcessRunnerStartingByKey fromAfter(String activityId);
 
-    ProcessInstance execute();
+    ScenarioRun execute();
 
   }
 
   interface ProcessRunnerStartingByStarter extends ProcessRunner {
 
-    ProcessInstance execute();
+    ScenarioRun execute();
 
   }
 
   interface ProcessRunnerStartBy {
 
-    ProcessRunnerStartingByKey startBy(String processDefinitionKey);
+    ProcessRunnerStartingByKey startByKey(String processDefinitionKey);
 
-    ProcessRunnerStartingByKey startBy(String processDefinitionKey, Map<String, Object> variables);
+    ProcessRunnerStartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables);
 
     ProcessRunnerStartingByStarter startBy(ProcessStarter starter);
 

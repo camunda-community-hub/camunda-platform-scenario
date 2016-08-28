@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.impl.job.ExecutableTimerJob;
+import org.camunda.bpm.scenario.runner.ScenarioRun;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,7 +28,7 @@ public class ScenarioExecutorImpl {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
   }
 
-  protected ProcessInstance execute() {
+  protected ScenarioRun execute() {
     init();
     List<Executable> executables;
     do {
@@ -39,7 +40,12 @@ public class ScenarioExecutorImpl {
       if (!executables.isEmpty())
         executables.get(0).execute();
     } while (!executables.isEmpty());
-    return ((ProcessRunnerImpl) runners.get(0)).processInstance;
+    return new ScenarioRun() {
+      @Override
+      public ProcessInstance getProcessInstance() {
+        return ((ProcessRunnerImpl) runners.get(0)).processInstance;
+      }
+    };
   }
 
   protected void init() {

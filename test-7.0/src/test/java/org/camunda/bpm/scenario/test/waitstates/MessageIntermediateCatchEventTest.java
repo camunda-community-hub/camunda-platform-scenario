@@ -28,7 +28,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("MessageIntermediateCatchEventTest").execute();
+    Scenario.run(scenario).startByKey("MessageIntermediateCatchEventTest").execute();
 
     verify(scenario, times(1)).hasFinished("MessageIntermediateCatchEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -46,7 +46,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("MessageIntermediateCatchEventTest").execute();
+    Scenario.run(scenario).startByKey("MessageIntermediateCatchEventTest").execute();
 
     verify(scenario, times(1)).hasStarted("MessageIntermediateCatchEvent");
     verify(scenario, never()).hasFinished("MessageIntermediateCatchEvent");
@@ -58,7 +58,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testDoNotDealWithMessageEvent() {
 
-    Scenario.run(scenario).startBy("MessageIntermediateCatchEventTest").execute();
+    Scenario.run(scenario).startByKey("MessageIntermediateCatchEventTest").execute();
 
   }
 
@@ -79,8 +79,8 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("MessageIntermediateCatchEventTest").execute();
-    Scenario.run(scenario).startBy("MessageIntermediateCatchEventTest").execute();
+    Scenario.run(otherScenario).startByKey("MessageIntermediateCatchEventTest").execute();
+    Scenario.run(scenario).startByKey("MessageIntermediateCatchEventTest").execute();
 
     verify(scenario, times(1)).hasFinished("MessageIntermediateCatchEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");

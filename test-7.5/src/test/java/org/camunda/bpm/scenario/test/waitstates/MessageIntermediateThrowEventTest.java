@@ -28,7 +28,7 @@ public class MessageIntermediateThrowEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("MessageIntermediateThrowEventTest").execute();
+    Scenario.run(scenario).startByKey("MessageIntermediateThrowEventTest").execute();
 
     verify(scenario, times(1)).hasCompleted("MessageIntermediateThrowEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -45,7 +45,7 @@ public class MessageIntermediateThrowEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("MessageIntermediateThrowEventTest").execute();
+    Scenario.run(scenario).startByKey("MessageIntermediateThrowEventTest").execute();
 
     verify(scenario, times(1)).hasStarted("MessageIntermediateThrowEvent");
     verify(scenario, never()).hasFinished("MessageIntermediateThrowEvent");
@@ -56,7 +56,7 @@ public class MessageIntermediateThrowEventTest extends AbstractTest {
   @Test(expected=AssertionError.class)
   public void testDoNotDealWithTask() {
 
-    Scenario.run(scenario).startBy("MessageIntermediateThrowEventTest").execute();
+    Scenario.run(scenario).startByKey("MessageIntermediateThrowEventTest").execute();
 
   }
 
@@ -76,8 +76,8 @@ public class MessageIntermediateThrowEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("MessageIntermediateThrowEventTest").execute();
-    Scenario.run(scenario).startBy("MessageIntermediateThrowEventTest").execute();
+    Scenario.run(otherScenario).startByKey("MessageIntermediateThrowEventTest").execute();
+    Scenario.run(scenario).startByKey("MessageIntermediateThrowEventTest").execute();
 
     verify(scenario, times(1)).hasCompleted("MessageIntermediateThrowEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");

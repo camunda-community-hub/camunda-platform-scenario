@@ -33,7 +33,7 @@ public class ExclusiveGatewayLoopTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ExclusiveGatewayLoopTest").execute();
+    Scenario.run(scenario).startByKey("ExclusiveGatewayLoopTest").execute();
 
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -58,7 +58,7 @@ public class ExclusiveGatewayLoopTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ExclusiveGatewayLoopTest").execute();
+    Scenario.run(scenario).startByKey("ExclusiveGatewayLoopTest").execute();
 
     verify(scenario, times(2)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -79,7 +79,7 @@ public class ExclusiveGatewayLoopTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ExclusiveGatewayLoopTest").execute();
+    Scenario.run(scenario).startByKey("ExclusiveGatewayLoopTest").execute();
 
     verify(scenario, times(10)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");

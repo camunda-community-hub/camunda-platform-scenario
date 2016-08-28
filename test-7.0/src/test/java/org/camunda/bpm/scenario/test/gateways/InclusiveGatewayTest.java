@@ -42,7 +42,7 @@ public class InclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("InclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("InclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, times(1)).hasFinished("UserTaskOne");
@@ -72,7 +72,7 @@ public class InclusiveGatewayTest extends AbstractTest {
 
     variables.put("two", false);
 
-    Scenario.run(scenario).startBy("InclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("InclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, times(1)).hasFinished("UserTaskOne");
@@ -102,7 +102,7 @@ public class InclusiveGatewayTest extends AbstractTest {
 
     variables.put("one", false);
 
-    Scenario.run(scenario).startBy("InclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("InclusiveGatewayTest", variables).execute();
 
     verify(scenario, never()).hasStarted("UserTaskOne");
     verify(scenario, never()).hasFinished("UserTaskOne");
@@ -130,7 +130,7 @@ public class InclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("InclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("InclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, never()).hasFinished("UserTaskOne");
@@ -158,7 +158,7 @@ public class InclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("InclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("InclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, never()).hasFinished("UserTaskOne");
@@ -187,7 +187,7 @@ public class InclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("InclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("InclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, times(1)).hasFinished("UserTaskOne");
@@ -208,7 +208,7 @@ public class InclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("InclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("InclusiveGatewayTest", variables).execute();
 
   }
 
@@ -242,8 +242,8 @@ public class InclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("InclusiveGatewayTest", variables).execute();
-    Scenario.run(scenario).startBy("InclusiveGatewayTest", variables).execute();
+    Scenario.run(otherScenario).startByKey("InclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("InclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasFinished("EndEvent");
     verify(otherScenario, never()).hasFinished("UserTaskOne");

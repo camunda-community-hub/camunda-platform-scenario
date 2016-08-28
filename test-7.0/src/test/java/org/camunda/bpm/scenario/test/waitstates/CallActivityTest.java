@@ -36,7 +36,7 @@ public class CallActivityTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("CallActivityTest").execute();
+    Scenario.run(scenario).startByKey("CallActivityTest").execute();
 
     verify(calledScenario, times(1)).hasFinished("UserTask");
 
@@ -60,7 +60,7 @@ public class CallActivityTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("CallActivityTest").execute();
+    Scenario.run(scenario).startByKey("CallActivityTest").execute();
 
     verify(scenario, times(1)).hasStarted("CallActivity");
     verify(scenario, never()).hasFinished("CallActivity");
@@ -78,7 +78,7 @@ public class CallActivityTest extends AbstractTest {
   })
   public void testDoNotDealWithCallActivity() {
 
-    Scenario.run(scenario).startBy("CallActivityTest").execute();
+    Scenario.run(scenario).startByKey("CallActivityTest").execute();
 
   }
 
@@ -91,7 +91,7 @@ public class CallActivityTest extends AbstractTest {
 
     when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.call(calledScenario));
 
-    Scenario.run(scenario).startBy("CallActivityTest").execute();
+    Scenario.run(scenario).startByKey("CallActivityTest").execute();
 
   }
 
@@ -115,8 +115,8 @@ public class CallActivityTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("CallActivityTest").execute();
-    Scenario.run(scenario).startBy("CallActivityTest").execute();
+    Scenario.run(otherScenario).startByKey("CallActivityTest").execute();
+    Scenario.run(scenario).startByKey("CallActivityTest").execute();
 
     verify(scenario, times(1)).hasFinished("CallActivity");
     verify(scenario, times(1)).hasFinished("EndEvent");

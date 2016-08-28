@@ -27,7 +27,7 @@ public class EventBasedGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventBasedGatewayTest").execute();
+    Scenario.run(scenario).startByKey("EventBasedGatewayTest").execute();
 
     verify(scenario, times(1)).hasFinished("EventBasedGateway");
     verify(scenario, times(1)).hasFinished("MessageIntermediateCatchEvent");
@@ -46,7 +46,7 @@ public class EventBasedGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventBasedGatewayTest").execute();
+    Scenario.run(scenario).startByKey("EventBasedGatewayTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -57,7 +57,7 @@ public class EventBasedGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testDoNotDealWithEventBasedGateway() {
 
-    Scenario.run(scenario).startBy("EventBasedGatewayTest").execute();
+    Scenario.run(scenario).startByKey("EventBasedGatewayTest").execute();
 
   }
 

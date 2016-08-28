@@ -43,7 +43,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario).startBy("ParallelTimerIntermediateTest").execute();
+    ProcessInstance pi = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute().getProcessInstance();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
@@ -79,7 +79,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario).startBy("ParallelTimerIntermediateTest").execute();
+    ProcessInstance pi = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute().getProcessInstance();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
@@ -115,7 +115,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario).startBy("ParallelTimerIntermediateTest").execute();
+    ProcessInstance pi = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute().getProcessInstance();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
@@ -151,7 +151,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario).startBy("ParallelTimerIntermediateTest").execute();
+    ProcessInstance pi = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute().getProcessInstance();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");

@@ -28,7 +28,7 @@ public class SendTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("SendTaskTest").execute();
+    Scenario.run(scenario).startByKey("SendTaskTest").execute();
 
     verify(scenario, times(1)).hasCompleted("SendTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -45,7 +45,7 @@ public class SendTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("SendTaskTest").execute();
+    Scenario.run(scenario).startByKey("SendTaskTest").execute();
 
     verify(scenario, times(1)).hasStarted("SendTask");
     verify(scenario, never()).hasFinished("SendTask");
@@ -56,7 +56,7 @@ public class SendTaskTest extends AbstractTest {
   @Test(expected=AssertionError.class)
   public void testDoNotDealWithTask() {
 
-    Scenario.run(scenario).startBy("SendTaskTest").execute();
+    Scenario.run(scenario).startByKey("SendTaskTest").execute();
 
   }
 
@@ -76,8 +76,8 @@ public class SendTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("SendTaskTest").execute();
-    Scenario.run(scenario).startBy("SendTaskTest").execute();
+    Scenario.run(otherScenario).startByKey("SendTaskTest").execute();
+    Scenario.run(scenario).startByKey("SendTaskTest").execute();
 
     verify(scenario, times(1)).hasCompleted("SendTask");
     verify(scenario, times(1)).hasFinished("EndEvent");

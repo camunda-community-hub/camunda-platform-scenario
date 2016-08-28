@@ -28,7 +28,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -50,7 +50,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -73,7 +73,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryInterruptingTimerTest").execute();
 
     verify(scenario, never()).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -96,7 +96,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -117,7 +117,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -131,7 +131,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryInterruptingTimerTest.bpmn"})
   public void testDoNotDealWithTask() {
 
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryInterruptingTimerTest").execute();
 
   }
 
@@ -153,8 +153,8 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("BoundaryInterruptingTimerTest").execute();
-    Scenario.run(scenario).startBy("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(otherScenario).startByKey("BoundaryInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");

@@ -28,7 +28,7 @@ public class ReceiveTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ReceiveTaskTest").execute();
+    Scenario.run(scenario).startByKey("ReceiveTaskTest").execute();
 
     verify(scenario, times(1)).hasFinished("ReceiveTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -46,7 +46,7 @@ public class ReceiveTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ReceiveTaskTest").execute();
+    Scenario.run(scenario).startByKey("ReceiveTaskTest").execute();
 
     verify(scenario, times(1)).hasStarted("ReceiveTask");
     verify(scenario, never()).hasFinished("ReceiveTask");
@@ -58,7 +58,7 @@ public class ReceiveTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testDoNotDealWithMessageEvent() {
 
-    Scenario.run(scenario).startBy("ReceiveTaskTest").execute();
+    Scenario.run(scenario).startByKey("ReceiveTaskTest").execute();
 
   }
 
@@ -79,8 +79,8 @@ public class ReceiveTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("ReceiveTaskTest").execute();
-    Scenario.run(scenario).startBy("ReceiveTaskTest").execute();
+    Scenario.run(otherScenario).startByKey("ReceiveTaskTest").execute();
+    Scenario.run(scenario).startByKey("ReceiveTaskTest").execute();
 
     verify(scenario, times(1)).hasFinished("ReceiveTask");
     verify(scenario, times(1)).hasFinished("EndEvent");

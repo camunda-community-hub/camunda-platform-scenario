@@ -11,6 +11,7 @@ import org.camunda.bpm.scenario.impl.util.Api;
 import org.camunda.bpm.scenario.impl.waitstate.CallActivityWaitstate;
 import org.camunda.bpm.scenario.runner.ProcessRunner;
 import org.camunda.bpm.scenario.runner.ProcessStarter;
+import org.camunda.bpm.scenario.runner.ScenarioRun;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,13 +51,13 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
   }
 
   @Override
-  public ProcessRunnerStartingByKey startBy(String processDefinitionKey) {
+  public ProcessRunnerStartingByKey startByKey(String processDefinitionKey) {
     this.processDefinitionKey = processDefinitionKey;
     return this;
   }
 
   @Override
-  public ProcessRunnerStartingByKey startBy(String processDefinitionKey, Map<String, Object> variables) {
+  public ProcessRunnerStartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables) {
     this.processDefinitionKey = processDefinitionKey;
     this.variables = variables;
     return this;
@@ -87,7 +88,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
   }
 
   @Override
-  public ProcessInstance execute() {
+  public ScenarioRun execute() {
     return scenarioExecutor.execute();
   }
 

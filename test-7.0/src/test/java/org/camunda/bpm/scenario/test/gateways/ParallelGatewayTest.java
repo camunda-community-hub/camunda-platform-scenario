@@ -35,7 +35,7 @@ public class ParallelGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ParallelGatewayTest").execute();
+    Scenario.run(scenario).startByKey("ParallelGatewayTest").execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, times(1)).hasFinished("UserTaskOne");
@@ -63,7 +63,7 @@ public class ParallelGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ParallelGatewayTest").execute();
+    Scenario.run(scenario).startByKey("ParallelGatewayTest").execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, never()).hasFinished("UserTaskOne");
@@ -91,7 +91,7 @@ public class ParallelGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ParallelGatewayTest").execute();
+    Scenario.run(scenario).startByKey("ParallelGatewayTest").execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, times(1)).hasFinished("UserTaskOne");
@@ -112,7 +112,7 @@ public class ParallelGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ParallelGatewayTest").execute();
+    Scenario.run(scenario).startByKey("ParallelGatewayTest").execute();
 
   }
 
@@ -146,8 +146,8 @@ public class ParallelGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("ParallelGatewayTest").execute();
-    Scenario.run(scenario).startBy("ParallelGatewayTest").execute();
+    Scenario.run(otherScenario).startByKey("ParallelGatewayTest").execute();
+    Scenario.run(scenario).startByKey("ParallelGatewayTest").execute();
 
     verify(scenario, times(1)).hasFinished("EndEvent");
     verify(otherScenario, never()).hasFinished("UserTaskOne");

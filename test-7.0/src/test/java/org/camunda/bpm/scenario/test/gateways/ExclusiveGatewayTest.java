@@ -40,7 +40,7 @@ public class ExclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ExclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("ExclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, times(1)).hasFinished("UserTaskOne");
@@ -71,7 +71,7 @@ public class ExclusiveGatewayTest extends AbstractTest {
 
     variables.put("one", false);
 
-    Scenario.run(scenario).startBy("ExclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("ExclusiveGatewayTest", variables).execute();
 
     verify(scenario, never()).hasStarted("UserTaskOne");
     verify(scenario, never()).hasFinished("UserTaskOne");
@@ -100,7 +100,7 @@ public class ExclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ExclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("ExclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, never()).hasFinished("UserTaskOne");
@@ -128,7 +128,7 @@ public class ExclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ExclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("ExclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasStarted("UserTaskOne");
     verify(scenario, times(1)).hasFinished("UserTaskOne");
@@ -149,7 +149,7 @@ public class ExclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("ExclusiveGatewayTest", variables).execute();
+    Scenario.run(scenario).startByKey("ExclusiveGatewayTest", variables).execute();
 
   }
 
@@ -177,8 +177,8 @@ public class ExclusiveGatewayTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("ExclusiveGatewayTest",variables).execute();
-    Scenario.run(scenario).startBy("ExclusiveGatewayTest", variables).execute();
+    Scenario.run(otherScenario).startByKey("ExclusiveGatewayTest",variables).execute();
+    Scenario.run(scenario).startByKey("ExclusiveGatewayTest", variables).execute();
 
     verify(scenario, times(1)).hasFinished("UserTaskOne");
     verify(scenario, times(1)).hasFinished("EndEvent");

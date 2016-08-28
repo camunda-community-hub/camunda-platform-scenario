@@ -28,7 +28,7 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("EventSubprocessNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -51,7 +51,7 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("EventSubprocessNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -74,7 +74,7 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("EventSubprocessNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -97,7 +97,7 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("EventSubprocessNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -118,7 +118,7 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("EventSubprocessNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
@@ -132,7 +132,7 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/EventSubprocessNonInterruptingTimerTest.bpmn"})
   public void testDoNotDealWithTask() {
 
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("EventSubprocessNonInterruptingTimerTest").execute();
 
   }
 
@@ -153,8 +153,8 @@ public class EventSubprocessNonInterruptingTimerTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
-    Scenario.run(scenario).startBy("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(otherScenario).startByKey("EventSubprocessNonInterruptingTimerTest").execute();
+    Scenario.run(scenario).startByKey("EventSubprocessNonInterruptingTimerTest").execute();
 
     verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");

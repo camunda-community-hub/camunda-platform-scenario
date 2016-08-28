@@ -28,7 +28,7 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("UserTaskTest").execute();
+    Scenario.run(scenario).startByKey("UserTaskTest").execute();
 
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -46,7 +46,7 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startBy("UserTaskTest").execute();
+    Scenario.run(scenario).startByKey("UserTaskTest").execute();
 
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, never()).hasFinished("UserTask");
@@ -58,7 +58,7 @@ public class UserTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"})
   public void testDoNotDealWithTask() {
 
-    Scenario.run(scenario).startBy("UserTaskTest").execute();
+    Scenario.run(scenario).startByKey("UserTaskTest").execute();
 
   }
 
@@ -79,8 +79,8 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startBy("UserTaskTest").execute();
-    Scenario.run(scenario).startBy("UserTaskTest").execute();
+    Scenario.run(otherScenario).startByKey("UserTaskTest").execute();
+    Scenario.run(scenario).startByKey("UserTaskTest").execute();
 
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
