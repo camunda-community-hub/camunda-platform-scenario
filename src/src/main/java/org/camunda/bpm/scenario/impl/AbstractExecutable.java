@@ -38,7 +38,7 @@ public abstract class AbstractExecutable<I> extends AbstractProcessEngineService
       if (this.getClass().equals(other.getClass())) {
         return 0;
       } else {
-        return other instanceof ExecutableJob ? 1 : -1;
+        return other instanceof ExecutableJob ? -1 : 1;
       }
     } else {
       return compared;

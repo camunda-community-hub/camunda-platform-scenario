@@ -47,13 +47,12 @@ public class EventSubprocessInterruptingTimerTest extends AbstractTest {
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
-        task.complete();
       }
     });
 
     Scenario.run(scenario).startBy("EventSubprocessInterruptingTimerTest").execute();
 
-    verify(scenario, never()).actsOnUserTask("UserTask");
+    verify(scenario, times(1)).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, never()).hasFinished("EndEventCompleted");
