@@ -62,6 +62,7 @@ public class InsuranceApplicationProcessTest {
 
     when(insuranceApplication.actsOnUserTask("UserTaskSpeedUpManualCheck")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("management");
+      assertThat(task.getProcessInstance()).isNotEnded();
       task.complete();
     });
 
