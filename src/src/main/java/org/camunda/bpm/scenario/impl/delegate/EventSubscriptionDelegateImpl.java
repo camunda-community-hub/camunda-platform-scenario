@@ -1,7 +1,9 @@
 package org.camunda.bpm.scenario.impl.delegate;
 
 import org.camunda.bpm.engine.runtime.EventSubscription;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
+import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.ArrayList;
@@ -31,6 +33,11 @@ public class EventSubscriptionDelegateImpl extends AbstractDelegate<EventSubscri
       delegates.add(newInstance(runner, eventSubscription));
     }
     return delegates;
+  }
+
+  @Override
+  public ProcessInstanceDelegate getProcessInstance() {
+    return ProcessInstanceDelegateImpl.newInstance(runner, runner.engine().getRuntimeService().createProcessInstanceQuery().processInstanceId(delegate.getProcessInstanceId()).singleResult());
   }
 
   @Override

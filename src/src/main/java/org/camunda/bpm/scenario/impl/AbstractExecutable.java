@@ -1,7 +1,9 @@
 package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessEngineServicesDelegate;
+import org.camunda.bpm.scenario.impl.delegate.ProcessInstanceDelegateImpl;
 
 import java.util.Date;
 
@@ -18,8 +20,8 @@ public abstract class AbstractExecutable<I> extends AbstractProcessEngineService
     this.runner = runner;
   }
 
-  protected ProcessInstance getProcessInstance() {
-    return runner.processInstance;
+  public ProcessInstanceDelegate getProcessInstance() {
+    return ProcessInstanceDelegateImpl.newInstance(runner, runner.processInstance);
   };
 
   public abstract String getExecutionId();

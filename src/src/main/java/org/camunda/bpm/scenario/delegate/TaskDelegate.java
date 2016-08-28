@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface TaskDelegate extends Task {
+public interface TaskDelegate extends Task, ProcessInstanceAwareDelegate {
 
   void complete();
 
