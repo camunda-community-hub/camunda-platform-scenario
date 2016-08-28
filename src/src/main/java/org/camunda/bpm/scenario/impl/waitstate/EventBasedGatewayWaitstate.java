@@ -3,7 +3,6 @@ package org.camunda.bpm.scenario.impl.waitstate;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
-import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.EventBasedGatewayDelegate;
@@ -12,9 +11,7 @@ import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.EventSubscriptionDelegateImpl;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>

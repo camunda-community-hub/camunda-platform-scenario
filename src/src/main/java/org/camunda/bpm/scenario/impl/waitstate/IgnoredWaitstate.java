@@ -7,7 +7,6 @@ import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>

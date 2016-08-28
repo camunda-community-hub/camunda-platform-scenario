@@ -9,38 +9,37 @@ import java.util.Map;
  */
 public interface ProcessRunner {
 
-  ProcessRunner engine(ProcessEngine processEngine);
+  interface Executable {
 
-  ScenarioRun execute();
-
-  interface ProcessRunnerStartingByKey extends ProcessRunner {
-
-    ProcessRunnerStartingByKey fromBefore(String activityId);
-
-    ProcessRunnerStartingByKey fromAfter(String activityId);
+    Executable engine(ProcessEngine processEngine);
 
     ScenarioRun execute();
 
+    interface StartingByKey extends Executable {
+
+      StartingByKey fromBefore(String activityId);
+
+      StartingByKey fromAfter(String activityId);
+
+      ScenarioRun execute();
+
+    }
+
+    interface StartingByStarter extends Executable {
+
+      ScenarioRun execute();
+
+    }
+
+    interface StartBy {
+
+      StartingByKey startByKey(String processDefinitionKey);
+
+      StartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables);
+
+      StartingByStarter startBy(ProcessStarter starter);
+
+    }
+
   }
-
-  interface ProcessRunnerStartingByStarter extends ProcessRunner {
-
-    ScenarioRun execute();
-
-  }
-
-  interface ProcessRunnerStartBy {
-
-    ProcessRunnerStartingByKey startByKey(String processDefinitionKey);
-
-    ProcessRunnerStartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables);
-
-    ProcessRunnerStartingByStarter startBy(ProcessStarter starter);
-
-  }
-
-  interface CallActivityRunner {
-
-  }
-
 }

@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByKey, ProcessRunner.ProcessRunnerStartBy, ProcessRunner.ProcessRunnerStartingByStarter, ProcessRunner.CallActivityRunner, Runner {
+public class ProcessRunnerImpl implements ProcessRunner.Executable.StartingByKey, ProcessRunner.Executable.StartBy, ProcessRunner.Executable.StartingByStarter, ProcessRunner, Runner {
 
   private String processDefinitionKey;
   private ProcessStarter processStarter;
@@ -45,26 +45,26 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
   }
 
   @Override
-  public ProcessRunnerStartingByStarter startBy(ProcessStarter scenarioStarter) {
+  public StartingByStarter startBy(ProcessStarter scenarioStarter) {
     this.processStarter = scenarioStarter;
     return this;
   }
 
   @Override
-  public ProcessRunnerStartingByKey startByKey(String processDefinitionKey) {
+  public StartingByKey startByKey(String processDefinitionKey) {
     this.processDefinitionKey = processDefinitionKey;
     return this;
   }
 
   @Override
-  public ProcessRunnerStartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables) {
+  public StartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables) {
     this.processDefinitionKey = processDefinitionKey;
     this.variables = variables;
     return this;
   }
 
   @Override
-  public ProcessRunnerStartingByKey fromBefore(String activityId) {
+  public StartingByKey fromBefore(String activityId) {
     Api.feature(RuntimeService.class.getName(), "createProcessInstanceByKey", String.class)
         .fail("Outdated Camunda BPM version used will not allow to start process instances " +
             "at explicitely selected activity IDs");
@@ -73,7 +73,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
   }
 
   @Override
-  public ProcessRunnerStartingByKey fromAfter(String activityId) {
+  public StartingByKey fromAfter(String activityId) {
     Api.feature(RuntimeService.class.getName(), "createProcessInstanceByKey", String.class)
         .fail("Outdated Camunda BPM version used will not allow to start process instances " +
             "at explicitely selected activity IDs");
@@ -82,7 +82,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
   }
 
   @Override
-  public ProcessRunner engine(ProcessEngine processEngine) {
+  public Executable engine(ProcessEngine processEngine) {
     scenarioExecutor.init(processEngine);
     return this;
   }
@@ -135,14 +135,14 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
   }
 
   @Override
-  public List<Executable> next() {
+  public List<org.camunda.bpm.scenario.impl.Executable> next() {
     run();
-    List<Executable> executables = new ArrayList<Executable>();
-    executables.addAll(Executable.Jobs.next(this));
-    executables.addAll(Executable.Waitstates.next(this));
+    List<org.camunda.bpm.scenario.impl.Executable> executables = new ArrayList<org.camunda.bpm.scenario.impl.Executable>();
+    executables.addAll(org.camunda.bpm.scenario.impl.Executable.Jobs.next(this));
+    executables.addAll(org.camunda.bpm.scenario.impl.Executable.Waitstates.next(this));
     if (executables.isEmpty())
       setExecuted(null);
-    return Executable.Helpers.first(executables);
+    return org.camunda.bpm.scenario.impl.Executable.Helpers.first(executables);
   }
 
   public String getDuration(HistoricActivityInstance instance) {

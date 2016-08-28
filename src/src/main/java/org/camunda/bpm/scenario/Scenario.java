@@ -19,11 +19,11 @@ import org.camunda.bpm.scenario.runner.VerifiableScenario;
  */
 public class Scenario {
 
-  public static ProcessRunner.ProcessRunnerStartBy run(Process scenario) {
-    return (ProcessRunner.ProcessRunnerStartBy) new ScenarioExecutorImpl(scenario).runners.get(0);
+  public static ProcessRunner.Executable.StartBy run(Process scenario) {
+    return (ProcessRunner.Executable.StartBy) new ScenarioExecutorImpl(scenario).runners.get(0);
   }
 
-  public static ProcessRunner.CallActivityRunner call(Process scenario) {
+  public static ProcessRunner use(Process scenario) {
     return new ProcessRunnerImpl(null, scenario);
   }
 
@@ -58,7 +58,7 @@ public class Scenario {
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    ProcessRunner.CallActivityRunner runsCallActivity(String activityId);
+    ProcessRunner runsCallActivity(String activityId);
 
     /**
      * @since Camunda BPM 7.1.0-Final

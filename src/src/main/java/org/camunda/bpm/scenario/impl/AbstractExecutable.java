@@ -1,6 +1,5 @@
 package org.camunda.bpm.scenario.impl;
 
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessEngineServicesDelegate;
 import org.camunda.bpm.scenario.impl.delegate.ProcessInstanceDelegateImpl;

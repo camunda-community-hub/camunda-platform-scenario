@@ -1,6 +1,5 @@
 package org.camunda.bpm.scenario.impl.job;
 
-import org.camunda.bpm.engine.impl.persistence.entity.TimerEntity;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.impl.ExecutableJob;
@@ -8,8 +7,6 @@ import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>

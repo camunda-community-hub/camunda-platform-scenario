@@ -25,7 +25,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate processInstance) {
-        Job job = rule.getManagementService().createJobQuery().activityId("TimerIntermediateEvent").singleResult();
+        Job job = rule.getManagementService().createJobQuery().processInstanceId(processInstance.getId()).singleResult();
         rule.getManagementService().executeJob(job.getId()); // not encouraged for timers, but possible and tested here...
       }
     });
