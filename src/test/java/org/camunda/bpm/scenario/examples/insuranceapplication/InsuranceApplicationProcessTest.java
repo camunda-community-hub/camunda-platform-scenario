@@ -236,7 +236,7 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P1D");
+    when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P1DT1M");
 
     when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       receiveTask.receive();
@@ -269,7 +269,7 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P7D");
+    when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P7DT1M");
 
     Scenario.run(insuranceApplication)
         .startBy("InsuranceApplication", variables)
