@@ -39,12 +39,4 @@ public class CallActivityWaitstate extends AbstractProcessInstanceDelegate {
     return null;
   }
 
-  protected void leave() {
-    throw new UnsupportedOperationException();
-  }
-
-  protected void leave(Map<String, Object> variables) {
-    throw new UnsupportedOperationException();
-  }
-
 }

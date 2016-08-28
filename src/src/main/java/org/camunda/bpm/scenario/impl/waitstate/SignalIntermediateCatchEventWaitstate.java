@@ -30,22 +30,14 @@ public class SignalIntermediateCatchEventWaitstate extends AbstractEventSubscrip
     return scenario.actsOnSignalIntermediateCatchEvent(getActivityId());
   }
 
-  protected void leave() {
-    getRuntimeService().signalEventReceived(getDelegate().getEventName(), getDelegate().getExecutionId());
-  }
-
-  protected void leave(Map<String, Object> variables) {
-    getRuntimeService().signalEventReceived(getDelegate().getEventName(), getDelegate().getExecutionId(), variables);
-  }
-
   @Override
   public void receive() {
-    leave();
+    getRuntimeService().signalEventReceived(getEventName(), getExecutionId());
   }
 
   @Override
   public void receive(Map<String, Object> variables) {
-    leave(variables);
+    getRuntimeService().signalEventReceived(getEventName(), getExecutionId(), variables);
   }
 
 }

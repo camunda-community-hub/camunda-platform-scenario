@@ -29,16 +29,6 @@ public class IgnoredWaitstate extends ExecutableWaitstate<Object> {
   }
 
   @Override
-  protected void leave() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  protected void leave(Map variables) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   protected Object getDelegate() {
     return null;
   }

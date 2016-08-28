@@ -30,13 +30,4 @@ public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
     return scenario.actsOnTimerIntermediateEvent(getActivityId());
   }
 
-  protected void leave() {
-    getManagementService().executeJob(getDelegate().getId());
-  }
-
-  protected void leave(Map<String, Object> variables) {
-    getRuntimeService().setVariables(getProcessInstance().getId(), variables);
-    leave();
-  }
-
 }

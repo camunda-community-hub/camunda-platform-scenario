@@ -30,33 +30,23 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
   }
 
   @Override
-  protected void leave() {
-    EventSubscription eventSubscription = getDelegate();
-    if (eventSubscription != null) {
-      getRuntimeService().messageEventReceived(getDelegate().getEventName(), getDelegate().getExecutionId());
-    } else {
-      getRuntimeService().signal(getExecutionId());
-    }
-  }
-
-  @Override
-  protected void leave(Map<String, Object> variables) {
-    EventSubscription eventSubscription = getDelegate();
-    if (eventSubscription != null) {
-      getRuntimeService().messageEventReceived(getDelegate().getEventName(), getDelegate().getExecutionId(), variables);
-    } else {
-      getRuntimeService().signal(getExecutionId());
-    }
-  }
-
-  @Override
   public void receive() {
-    super.receive();
+    EventSubscription eventSubscription = getDelegate();
+    if (eventSubscription != null) {
+      getRuntimeService().messageEventReceived(getEventName(), getExecutionId());
+    } else {
+      getRuntimeService().signal(getExecutionId());
+    }
   }
 
   @Override
   public void receive(Map<String, Object> variables) {
-    super.receive(variables);
+    EventSubscription eventSubscription = getDelegate();
+    if (eventSubscription != null) {
+      getRuntimeService().messageEventReceived(getEventName(), getExecutionId(), variables);
+    } else {
+      getRuntimeService().signal(getExecutionId());
+    }
   }
 
   @Override

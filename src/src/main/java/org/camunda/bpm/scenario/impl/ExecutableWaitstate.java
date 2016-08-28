@@ -48,8 +48,6 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
 
   protected abstract ScenarioAction action(Scenario.Process scenario);
 
-  protected abstract void leave(Map<String, Object> variables);
-
   public Date isExecutableAt() {
     Date endTime = historicDelegate.getStartTime();
     String duration = runner.getDuration(historicDelegate);

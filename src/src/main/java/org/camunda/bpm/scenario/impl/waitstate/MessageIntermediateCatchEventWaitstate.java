@@ -30,22 +30,14 @@ public class MessageIntermediateCatchEventWaitstate extends AbstractEventSubscri
     return scenario.actsOnMessageIntermediateCatchEvent(getActivityId());
   }
 
-  protected void leave() {
-    getRuntimeService().messageEventReceived(getDelegate().getEventName(), getDelegate().getExecutionId());
-  }
-
-  protected void leave(Map<String, Object> variables) {
-    getRuntimeService().messageEventReceived(getDelegate().getEventName(), getDelegate().getExecutionId(), variables);
-  }
-
   @Override
   public void receive() {
-    leave();
+    getRuntimeService().messageEventReceived(getEventName(), getExecutionId());
   }
 
   @Override
   public void receive(Map<String, Object> variables) {
-    leave(variables);
+    getRuntimeService().messageEventReceived(getEventName(), getExecutionId(), variables);
   }
 
 }

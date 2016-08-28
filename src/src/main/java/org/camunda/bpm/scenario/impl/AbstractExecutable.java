@@ -28,8 +28,6 @@ public abstract class AbstractExecutable<I> extends AbstractProcessEngineService
 
   protected abstract Date isExecutableAt();
 
-  protected abstract void leave();
-
   @Override
   public int compareTo(AbstractExecutable other) {
     assert other != null;

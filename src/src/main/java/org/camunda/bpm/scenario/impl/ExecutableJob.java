@@ -22,7 +22,6 @@ public abstract class ExecutableJob extends AbstractExecutable<Job> {
     return getManagementService().createJobQuery().jobId(delegate.getId()).singleResult();
   }
 
-  @Override
   protected void leave() {
     getManagementService().executeJob(delegate.getId());
   }

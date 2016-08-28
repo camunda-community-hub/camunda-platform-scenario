@@ -28,22 +28,14 @@ public class UserTaskWaitstate extends AbstractTaskDelegate {
     return scenario.actsOnUserTask(getActivityId());
   }
 
-  protected void leave() {
-    getTaskService().complete(getDelegate().getId());
-  }
-
-  protected void leave(Map<String, Object> variables) {
-    getTaskService().complete(getDelegate().getId(), variables);
-  }
-
   @Override
   public void complete() {
-    leave();
+    getTaskService().complete(getDelegate().getId());
   }
 
   @Override
   public void complete(Map<String, Object> variables) {
-    leave(variables);
+    getTaskService().complete(getDelegate().getId(), variables);
   }
 
 }

@@ -31,28 +31,20 @@ public class ServiceTaskWaitstate extends AbstractExternalTaskDelegate {
     return scenario.actsOnServiceTask(getActivityId());
   }
 
-  protected void leave() {
-    fetchAndLock();
-    getExternalTaskService().complete(getDelegate().getId(), WORKER_ID);
-  }
-
-  protected void leave(Map<String, Object> variables) {
-    fetchAndLock();
-    getExternalTaskService().complete(getDelegate().getId(), WORKER_ID, variables);
-  }
-
   protected void fetchAndLock() {
     getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID).topic(getDelegate().getTopicName(), Long.MAX_VALUE).execute();
   }
 
   @Override
   public void complete() {
-    leave();
+    fetchAndLock();
+    getExternalTaskService().complete(getDelegate().getId(), WORKER_ID);
   }
 
   @Override
   public void complete(Map<String, Object> variables) {
-    leave(variables);
+    fetchAndLock();
+    getExternalTaskService().complete(getDelegate().getId(), WORKER_ID, variables);
   }
 
   @Override

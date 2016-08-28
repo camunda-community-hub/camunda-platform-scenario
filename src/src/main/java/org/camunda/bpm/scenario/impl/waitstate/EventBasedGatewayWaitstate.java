@@ -35,12 +35,6 @@ public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGa
     return scenario.actsOnEventBasedGateway(getActivityId());
   }
 
-  protected void leave() {
-  }
-
-  protected void leave(Map<String, Object> variables) {
-  }
-
   @Override
   public List<EventSubscriptionDelegate> getEventSubscriptions() {
     List<EventSubscription> eventSubscriptions = getRuntimeService().createEventSubscriptionQuery().executionId(getExecutionId()).list();
