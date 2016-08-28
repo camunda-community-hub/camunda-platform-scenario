@@ -144,7 +144,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ProcessRunnerStartingByK
     return Executable.Helpers.first(executables);
   }
 
-  protected String getDuration(HistoricActivityInstance instance) {
+  public String getDuration(HistoricActivityInstance instance) {
     if (!durations.containsKey(instance.getId())) {
       durations.put(instance.getId(), scenario.waitsForActionOn(instance.getActivityId()));
     }
