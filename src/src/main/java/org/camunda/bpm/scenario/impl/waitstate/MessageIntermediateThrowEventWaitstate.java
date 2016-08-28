@@ -38,9 +38,4 @@ public class MessageIntermediateThrowEventWaitstate extends ServiceTaskWaitstate
     super.handleBpmnError(errorCode);
   }
 
-  @Override
-  public void handleFailure(String errorMessage, int retries, long retryTimeout) {
-    super.handleFailure(errorMessage, retries, retryTimeout);
-  }
-
 }

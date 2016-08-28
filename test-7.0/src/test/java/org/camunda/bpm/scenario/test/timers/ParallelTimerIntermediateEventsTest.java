@@ -6,7 +6,7 @@ import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.action.UserTaskAction;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
-import org.camunda.bpm.scenario.delegate.TimerJobDelegate;
+import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
@@ -26,13 +26,13 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
+      public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
+      public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
@@ -60,13 +60,13 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
+      public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
+      public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
@@ -96,13 +96,13 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
+      public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
+      public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
@@ -132,13 +132,13 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
+      public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
+      public void execute(ProcessInstanceDelegate timer) {
       }
     });
 

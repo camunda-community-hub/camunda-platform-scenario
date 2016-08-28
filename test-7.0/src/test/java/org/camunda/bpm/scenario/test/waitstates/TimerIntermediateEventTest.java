@@ -1,11 +1,12 @@
 package org.camunda.bpm.scenario.test.waitstates;
 
+import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.assertions.ProcessEngineTests;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
-import org.camunda.bpm.scenario.delegate.TimerJobDelegate;
+import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
@@ -24,8 +25,9 @@ public class TimerIntermediateEventTest extends AbstractTest {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
-        rule.getManagementService().executeJob(timer.getId()); // normally not necessary for timers, but allowed ...
+      public void execute(ProcessInstanceDelegate processInstance) {
+        Job job = rule.getManagementService().createJobQuery().activityId("TimerIntermediateEvent").singleResult();
+        rule.getManagementService().executeJob(job.getId()); // not encouraged for timers, but possible and tested here...
       }
     });
 
@@ -42,7 +44,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
 
     when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
-      public void execute(TimerJobDelegate timer) {
+      public void execute(ProcessInstanceDelegate timer) {
         // Deal with timerEventSubscription but do nothing here
       }
     });

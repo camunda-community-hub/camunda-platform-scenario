@@ -2,27 +2,24 @@ package org.camunda.bpm.scenario.impl.waitstate;
 
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.engine.runtime.Job;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
-import org.camunda.bpm.scenario.impl.delegate.AbstractTimerJobDelegate;
-
-import java.util.Date;
-import java.util.Map;
+import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class TimerIntermediateEventWaitstate extends AbstractTimerJobDelegate {
+public class TimerIntermediateEventWaitstate extends AbstractProcessInstanceDelegate {
 
   public TimerIntermediateEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 
   @Override
-  protected Job getDelegate() {
-    return getManagementService().createJobQuery().timers().executionId(getExecutionId()).singleResult();
+  protected ProcessInstance getDelegate() {
+    return getRuntimeService().createProcessInstanceQuery().processInstanceId(getProcessInstance().getId()).singleResult();
   }
 
   @Override

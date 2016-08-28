@@ -15,6 +15,4 @@ public interface ExternalTaskDelegate extends ExternalTask {
 
   void handleBpmnError(String errorCode);
 
-  void handleFailure(String errorMessage, int retries, long retryTimeout);
-
 }

@@ -53,10 +53,4 @@ public class ServiceTaskWaitstate extends AbstractExternalTaskDelegate {
     getExternalTaskService().handleBpmnError(getDelegate().getId(), WORKER_ID, errorCode);
   }
 
-  @Override
-  public void handleFailure(String errorMessage, int retries, long retryTimeout) {
-    fetchAndLock();
-    getExternalTaskService().handleFailure(getDelegate().getId(), WORKER_ID, errorMessage, retries, retryTimeout);
-  }
-
 }
