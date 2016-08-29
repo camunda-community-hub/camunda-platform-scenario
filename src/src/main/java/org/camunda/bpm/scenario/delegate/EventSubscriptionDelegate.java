@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface EventSubscriptionDelegate extends EventSubscription, ProcessInstanceAwareDelegate {
+public interface EventSubscriptionDelegate extends EventSubscription, ProcessInstanceAwareDelegate, DeferrableDelegate {
 
   void receive();
 
