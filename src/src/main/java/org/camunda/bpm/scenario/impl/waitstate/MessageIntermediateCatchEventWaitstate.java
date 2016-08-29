@@ -8,6 +8,7 @@ import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.AbstractEventSubscriptionDelegate;
+import org.camunda.bpm.scenario.impl.delegate.EventSubscriptionDelegateImpl;
 
 import java.util.Map;
 
@@ -16,8 +17,11 @@ import java.util.Map;
  */
 public class MessageIntermediateCatchEventWaitstate extends AbstractEventSubscriptionDelegate {
 
+  private EventSubscriptionDelegate eventSubscriptionDelegate;
+
   public MessageIntermediateCatchEventWaitstate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
     super(runner, instance);
+    eventSubscriptionDelegate = EventSubscriptionDelegateImpl.newInstance(this, delegate);
   }
 
   @Override
@@ -32,12 +36,12 @@ public class MessageIntermediateCatchEventWaitstate extends AbstractEventSubscri
 
   @Override
   public void receive() {
-    getRuntimeService().messageEventReceived(getEventName(), getExecutionId());
+    eventSubscriptionDelegate.receive();
   }
 
   @Override
   public void receive(Map<String, Object> variables) {
-    getRuntimeService().messageEventReceived(getEventName(), getExecutionId(), variables);
+    eventSubscriptionDelegate.receive(variables);
   }
 
 }

@@ -33,7 +33,7 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
   public void receive() {
     EventSubscription eventSubscription = getDelegate();
     if (eventSubscription != null) {
-      getRuntimeService().messageEventReceived(getEventName(), getExecutionId());
+      super.receive();
     } else {
       getRuntimeService().signal(getExecutionId());
     }
@@ -43,9 +43,9 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
   public void receive(Map<String, Object> variables) {
     EventSubscription eventSubscription = getDelegate();
     if (eventSubscription != null) {
-      getRuntimeService().messageEventReceived(getEventName(), getExecutionId(), variables);
+      super.receive(variables);
     } else {
-      getRuntimeService().signal(getExecutionId());
+      getRuntimeService().signal(getExecutionId(), variables);
     }
   }
 
