@@ -172,4 +172,71 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
 
   }
 
+  @Test(expected = Exception.class)
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/ParallelTimerIntermediateTest.bpmn"})
+  public void testDeferAnTimerIntermediateEventAction() {
+
+    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
+      @Override
+      public void execute(ProcessInstanceDelegate timer) {
+        timer.defer("PT3M", new DeferredAction() {
+          @Override
+          public void execute() throws Exception {
+            throw new Exception(); // expected
+          }
+        });
+      }
+    });
+
+    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
+      @Override
+      public void execute(ProcessInstanceDelegate timer) {
+      }
+    });
+
+    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+      @Override
+      public void execute(TaskDelegate task) {
+        task.complete();
+      }
+    });
+
+    Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
+
+  }
+
+
+  @Test
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/ParallelTimerIntermediateTest.bpmn"})
+  public void testDeferAnTimerIntermediateEventActionForTooLong() {
+
+    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
+      @Override
+      public void execute(ProcessInstanceDelegate timer) {
+        timer.defer("PT4M30S", new DeferredAction() {
+          @Override
+          public void execute() throws Exception {
+            throw new Exception(); // not expected
+          }
+        });
+      }
+    });
+
+    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
+      @Override
+      public void execute(ProcessInstanceDelegate timer) {
+      }
+    });
+
+    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+      @Override
+      public void execute(TaskDelegate task) {
+        task.complete();
+      }
+    });
+
+    Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
+
+  }
+
 }

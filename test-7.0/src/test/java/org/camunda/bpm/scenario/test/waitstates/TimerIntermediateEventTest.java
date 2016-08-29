@@ -4,10 +4,12 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
+import org.mockito.internal.exceptions.ExceptionIncludingMockitoWarnings;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -54,6 +56,66 @@ public class TimerIntermediateEventTest extends AbstractTest {
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
+
+  }
+
+  @Test(expected = Exception.class)
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
+  public void testDoSomethingDeferred() {
+
+    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
+      @Override
+      public void execute(final ProcessInstanceDelegate pi) {
+        pi.defer("PT3M", new DeferredAction() {
+          @Override
+          public void execute() throws Exception {
+            throw new Exception(); // expected
+          }
+        });
+      }
+    });
+
+    Scenario.run(scenario).startByKey("TimerIntermediateEventTest").execute();
+
+  }
+
+  @Test(expected = Exception.class)
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
+  public void testDoSomethingDeferredToExactlyTheTimer() {
+
+    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
+      @Override
+      public void execute(final ProcessInstanceDelegate pi) {
+        pi.defer("PT5M", new DeferredAction() {
+          @Override
+          public void execute() throws Exception {
+            throw new Exception(); // expected
+          }
+        });
+      }
+    });
+
+    Scenario.run(scenario).startByKey("TimerIntermediateEventTest").execute();
+
+  }
+
+  @Test
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
+  public void testDoSomethingTooLate() {
+
+    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
+      @Override
+      public void execute(final ProcessInstanceDelegate pi) {
+        pi.defer("PT8M", new DeferredAction() {
+          @Override
+          public void execute() throws Exception {
+            throw new Exception(); // not expected
+          }
+        });
+      }
+    });
+
+    Scenario.run(scenario).startByKey("TimerIntermediateEventTest").execute();
 
   }
 
