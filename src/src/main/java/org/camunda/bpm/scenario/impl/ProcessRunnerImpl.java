@@ -80,6 +80,12 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
   }
 
   @Override
+  public ToBeStartedBy run(Scenario.Process scenario) {
+    scenarioExecutor.runners.add(new ProcessRunnerImpl(scenarioExecutor, scenario));
+    return scenarioExecutor.toBeStartedBy();
+  }
+
+  @Override
   public ExecutableRunner engine(ProcessEngine processEngine) {
     scenarioExecutor.init(processEngine);
     return this;

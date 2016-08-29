@@ -79,11 +79,14 @@ public class UserTaskTest extends AbstractTest {
       }
     });
 
-    Scenario.run(otherScenario).startByKey("UserTaskTest").execute();
-    Scenario.run(scenario).startByKey("UserTaskTest").execute();
+    Scenario
+      .run(scenario).startByKey("UserTaskTest")
+      .run(otherScenario).startByKey("UserTaskTest")
+      .execute();
 
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
+    verify(otherScenario, times(1)).hasStarted("UserTask");
     verify(otherScenario, never()).hasFinished("UserTask");
 
   }
