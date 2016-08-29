@@ -37,7 +37,7 @@ public interface Executable<S> extends Comparable<S> {
     }
 
     static ExecutableWaitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
-      if (!runner.executed.contains(instance.getId())) {
+      if (!runner.isExecuted(instance)) {
         String type = instance.getActivityType();
         if (types.containsKey(type)) {
           try {
@@ -90,21 +90,39 @@ public interface Executable<S> extends Comparable<S> {
 
   }
 
-  class Deferred {
+  class Deferreds {
+
+    private static Map<String, List<DeferredExecutable>> executablesMap = new HashMap<String, List<DeferredExecutable>>();
 
     public static DeferredExecutable newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String period, DeferredAction action) {
       return new DeferredExecutable(runner, instance, period, action);
     }
 
     static List<Executable> next(ProcessRunnerImpl runner) {
-      List<Executable> executables = new ArrayList<Executable>();
-      Collection<List<DeferredExecutable>> executablesCollection = runner.deferredExecutables.values();
+      List<Executable> e = new ArrayList<Executable>();
+      Collection<List<DeferredExecutable>> executablesCollection = executablesMap.values();
       for (List<DeferredExecutable> executablesList: executablesCollection) {
         for (Executable executable: executablesList) {
-          executables.add(executable);
+          e.add(executable);
         }
       }
-      return Helpers.first(executables);
+      return Helpers.first(e);
+    }
+
+    static void add(DeferredExecutable executable) {
+      String id = executable.delegate.getId();
+      if (!executablesMap.containsKey(id))
+        executablesMap.put(id, new ArrayList<DeferredExecutable>());
+      List<DeferredExecutable> e = executablesMap.get(id);
+      e.add(executable);
+    }
+
+    static void remove(DeferredExecutable executable) {
+      String id = executable.delegate.getId();
+      List<DeferredExecutable> e = executablesMap.get(id);
+      e.remove(executable);
+      if (e.isEmpty())
+        executablesMap.remove(id);
     }
 
   }

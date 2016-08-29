@@ -104,7 +104,7 @@ public class Api {
     return buffer.toString();
   }
 
-  public boolean supported() {
+  private boolean supported() {
     try {
       Class.forName(className).getMethod(methodName, parameterTypes);
     } catch (ClassNotFoundException e) {

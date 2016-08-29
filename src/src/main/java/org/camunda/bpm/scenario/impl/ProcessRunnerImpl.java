@@ -3,7 +3,6 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.engine.history.HistoricActivityInstanceQuery;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
 import org.camunda.bpm.scenario.Scenario;
@@ -30,15 +29,13 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
   private Map<String, Object> variables;
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
 
+  private Set<String> executed = new HashSet<String>();
+  private Set<String> started = new HashSet<String>();
+  private Set<String> finished = new HashSet<String>();
+
   ScenarioExecutorImpl scenarioExecutor;
   Scenario.Process scenario;
   ProcessInstance processInstance;
-
-  Set<String> executed = new HashSet<String>();
-  Set<String> started = new HashSet<String>();
-  Set<String> finished = new HashSet<String>();
-
-  Map<String, List<DeferredExecutable>> deferredExecutables = new HashMap<String, List<DeferredExecutable>>();
 
   public ProcessRunnerImpl(ScenarioExecutorImpl scenarioExecutor, Scenario.Process scenario) {
     this.scenarioExecutor = scenarioExecutor;
@@ -101,10 +98,10 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
     this.scenarioExecutor = waitstate.runner.scenarioExecutor;
     this.scenarioExecutor.runners.add(this);
     this.processInstance = waitstate;
-    setExecuted(null);
+    setExecuted();
   }
 
-  protected ProcessInstance run() {
+  public ProcessInstance run() {
     if (this.processInstance == null && this.processStarter == null) {
       this.processStarter = new ProcessStarter() {
         @Override
@@ -130,7 +127,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
       };
     } if (processInstance == null) {
       this.processInstance = processStarter.start();
-      setExecuted(null);
+      setExecuted();
     }
     return this.processInstance;
   }
@@ -139,23 +136,20 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
   public List<Executable> next() {
     run();
     List<Executable> executables = new ArrayList<Executable>();
-    executables.addAll(Executable.Deferred.next(this));
+    executables.addAll(Executable.Deferreds.next(this));
     executables.addAll(Executable.Waitstates.next(this));
     executables.addAll(Executable.Jobs.next(this));
     if (executables.isEmpty())
-      setExecuted(null);
+      setExecuted();
     return Executable.Helpers.first(executables);
   }
 
-  public void setExecuted(String id) {
-    if (id != null)
-      executed.add(id);
+  public void setExecuted() {
     boolean supportsCanceled = Api.feature(HistoricActivityInstance.class.getName(), "isCanceled")
       .warn("Outdated Camunda BPM version used will not allow to use " +
-            "'" + Scenario.Process.class.getName().replace('$', '.') +
-            ".hasCanceled(String activityId)' and '.hasCompleted(String activityId)' methods.");
-    List<HistoricActivityInstance> instances;
-    instances = scenarioExecutor.processEngine.getHistoryService()
+          "'" + Scenario.Process.class.getName().replace('$', '.') +
+          ".hasCanceled(String activityId)' and '.hasCompleted(String activityId)' methods.");
+    List<HistoricActivityInstance> instances = scenarioExecutor.processEngine.getHistoryService()
         .createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).list();
     for (HistoricActivityInstance instance: instances) {
       if (!started.contains(instance.getId())) {
@@ -176,24 +170,13 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
     }
   }
 
-  protected void add(DeferredExecutable executable) {
-    String id = executable.delegate.getId();
-    if (!deferredExecutables.containsKey(id))
-      deferredExecutables.put(id, new ArrayList<DeferredExecutable>());
-    List<DeferredExecutable> executables = deferredExecutables.get(id);
-    executables.add(executable);
+  public void setExecuted(ExecutableWaitstate waitstate) {
+    executed.add(waitstate.historicDelegate.getId());
+    setExecuted();
   }
 
-  protected void remove(DeferredExecutable executable) {
-    String id = executable.delegate.getId();
-    List<DeferredExecutable> executables = deferredExecutables.get(id);
-    executables.remove(executable);
-    if (executables.isEmpty())
-      deferredExecutables.remove(id);
-  }
-
-  public Scenario.Process getScenario() {
-    return scenario;
+  public boolean isExecuted(HistoricActivityInstance instance) {
+    return executed.contains(instance.getId());
   }
 
 }

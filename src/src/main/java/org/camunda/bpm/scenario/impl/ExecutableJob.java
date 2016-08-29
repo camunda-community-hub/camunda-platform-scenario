@@ -29,7 +29,7 @@ public abstract class ExecutableJob extends AbstractExecutable<Job> {
   @Override
   public void execute() {
     executeJob();
-    runner.setExecuted(null);
+    runner.setExecuted();
   }
 
 }

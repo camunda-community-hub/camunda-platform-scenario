@@ -19,7 +19,7 @@ public class DeferredExecutable extends AbstractExecutable<HistoricActivityInsta
     this.delegate = instance;
     this.isExecutableAt = Time.dateAfter(period);
     this.action = action;
-    runner.add(this);
+    Deferreds.add(this);
   }
 
   @Override
@@ -47,7 +47,7 @@ public class DeferredExecutable extends AbstractExecutable<HistoricActivityInsta
         throw new RuntimeException(e);
       }
     }
-    runner.remove(this);
+    Deferreds.remove(this);
   }
 
 }

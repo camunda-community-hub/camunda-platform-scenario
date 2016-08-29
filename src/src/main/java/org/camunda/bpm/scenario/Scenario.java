@@ -20,7 +20,7 @@ import org.camunda.bpm.scenario.runner.VerifiableScenario;
 public class Scenario {
 
   public static ProcessRunner.ToBeStartedBy run(Process scenario) {
-    return (ProcessRunner.ToBeStartedBy) new ScenarioExecutorImpl(scenario).runners.get(0);
+    return new ScenarioExecutorImpl(scenario).toBeStartedBy();
   }
 
   public static ProcessRunner use(Process scenario) {

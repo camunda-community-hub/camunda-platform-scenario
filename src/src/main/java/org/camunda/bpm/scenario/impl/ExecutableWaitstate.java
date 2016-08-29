@@ -50,7 +50,7 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    runner.setExecuted(historicDelegate.getId());
+    runner.setExecuted(this);
   }
 
   protected abstract ScenarioAction action(Scenario.Process scenario);
@@ -60,7 +60,7 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
   }
 
   public void defer(String period, DeferredAction action) {
-    Executable.Deferred.newInstance(runner, historicDelegate, period, action);
+    Deferreds.newInstance(runner, historicDelegate, period, action);
   }
 
 }

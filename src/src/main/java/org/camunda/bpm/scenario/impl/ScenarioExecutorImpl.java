@@ -1,15 +1,19 @@
 package org.camunda.bpm.scenario.impl;
 
+import javafx.collections.transformation.SortedList;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.impl.util.Time;
+import org.camunda.bpm.scenario.runner.ProcessRunner;
 import org.camunda.bpm.scenario.runner.ScenarioRun;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -18,8 +22,8 @@ public class ScenarioExecutorImpl {
 
   private boolean executed;
 
-  public ProcessEngine processEngine;
-  public List<Runner> runners = new ArrayList<Runner>();
+  ProcessEngine processEngine;
+  List<Runner> runners = new ArrayList<Runner>();
 
   public ScenarioExecutorImpl(Scenario.Process scenario) {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
@@ -68,6 +72,10 @@ public class ScenarioExecutorImpl {
 
   protected void init(ProcessEngine processEngine) {
     this.processEngine = processEngine;
+  }
+
+  public ProcessRunner.ToBeStartedBy toBeStartedBy() {
+    return (ProcessRunner.ToBeStartedBy) runners.get(runners.size() - 1);
   }
 
 }
