@@ -2,7 +2,6 @@ package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.action.DeferredAction;
-import org.camunda.bpm.scenario.delegate.DeferrableDelegate;
 import org.camunda.bpm.scenario.impl.util.Time;
 
 import java.util.Date;

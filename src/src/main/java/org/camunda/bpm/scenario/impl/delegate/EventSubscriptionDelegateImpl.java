@@ -1,13 +1,10 @@
 package org.camunda.bpm.scenario.impl.delegate;
 
-import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
-import org.camunda.bpm.scenario.impl.Executable;
 import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.ArrayList;
 import java.util.Date;

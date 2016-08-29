@@ -4,7 +4,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.impl.job.ExecutableTimerJob;
+import org.camunda.bpm.scenario.impl.util.Time;
 import org.camunda.bpm.scenario.runner.ScenarioRun;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class ScenarioExecutorImpl {
         throw new IllegalStateException(message);
       }
     }
-    ExecutableTimerJob.init();
+    Time.init();
   }
 
   protected void init(ProcessEngine processEngine) {

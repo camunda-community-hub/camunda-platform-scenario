@@ -9,8 +9,6 @@ import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
 
-import java.util.Date;
-
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */

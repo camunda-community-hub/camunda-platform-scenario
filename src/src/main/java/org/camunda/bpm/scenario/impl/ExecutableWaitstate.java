@@ -1,13 +1,12 @@
 package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.engine.impl.calendar.DurationHelper;
-import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.delegate.ProcessInstanceDelegateImpl;
+import org.camunda.bpm.scenario.impl.util.Time;
 
 import java.util.Date;
 
@@ -45,7 +44,7 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
           + getProcessInstance().getProcessInstanceId() + "} "
           + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
           + " '" + historicDelegate.getActivityId() +"'.");
-    ClockUtil.setCurrentTime(isExecutableAt());
+    Time.set(isExecutableAt());
     try {
       action.execute(this);
     } catch (Exception e) {
