@@ -39,14 +39,4 @@ public class CallActivityWaitstate extends AbstractProcessInstanceDelegate {
     return null;
   }
 
-  @Override
-  public Date isExecutableAt() {
-    String duration = runner.getDuration(historicDelegate);
-    if (runner.getDuration(historicDelegate) != null)
-      throw new IllegalStateException(String.format("The explicit duration '%s' defined to wait for action " +
-          "on activity '%s' is not supported for call activities. Their overall execution duration always " +
-          "depends on the the called process instance's duration.", duration, getActivityId()));
-    return super.isExecutableAt();
-  }
-
 }

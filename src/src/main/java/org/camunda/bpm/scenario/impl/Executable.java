@@ -3,10 +3,12 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.persistence.entity.JobEntity;
 import org.camunda.bpm.engine.runtime.Job;
+import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.impl.job.ExecutableContinuation;
 import org.camunda.bpm.scenario.impl.waitstate.IgnoredWaitstate;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +86,25 @@ public interface Executable<S> extends Comparable<S> {
       List<Job> jobs = runner.scenarioExecutor.processEngine.getManagementService()
           .createJobQuery().processInstanceId(runner.processInstance.getId()).list();
       return Helpers.next(runner, jobs);
+    }
+
+  }
+
+  class Deferred {
+
+    public static DeferredExecutable newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String period, DeferredAction action) {
+      return new DeferredExecutable(runner, instance, period, action);
+    }
+
+    static List<Executable> next(ProcessRunnerImpl runner) {
+      List<Executable> executables = new ArrayList<Executable>();
+      Collection<List<DeferredExecutable>> executablesCollection = runner.deferredExecutables.values();
+      for (List<DeferredExecutable> executablesList: executablesCollection) {
+        for (Executable executable: executablesList) {
+          executables.add(executable);
+        }
+      }
+      return Helpers.first(executables);
     }
 
   }

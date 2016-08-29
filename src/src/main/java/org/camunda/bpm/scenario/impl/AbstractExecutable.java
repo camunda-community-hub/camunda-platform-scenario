@@ -1,8 +1,6 @@
 package org.camunda.bpm.scenario.impl;
 
-import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessEngineServicesDelegate;
-import org.camunda.bpm.scenario.impl.delegate.ProcessInstanceDelegateImpl;
 
 import java.util.Date;
 
@@ -19,10 +17,6 @@ public abstract class AbstractExecutable<I> extends AbstractProcessEngineService
     this.runner = runner;
   }
 
-  public ProcessInstanceDelegate getProcessInstance() {
-    return ProcessInstanceDelegateImpl.newInstance(runner, runner.processInstance);
-  };
-
   public abstract String getExecutionId();
 
   protected abstract I getDelegate();
@@ -36,8 +30,10 @@ public abstract class AbstractExecutable<I> extends AbstractProcessEngineService
     if (compared == 0) {
       if (this.getClass().equals(other.getClass())) {
         return 0;
+      } else if (other instanceof ExecutableJob) {
+        return -1;
       } else {
-        return other instanceof ExecutableJob ? -1 : 1;
+        return other instanceof ExecutableWaitstate ? -1 : 1;
       }
     } else {
       return compared;

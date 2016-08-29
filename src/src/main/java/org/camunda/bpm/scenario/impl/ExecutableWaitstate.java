@@ -4,7 +4,10 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.calendar.DurationHelper;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.action.ScenarioAction;
+import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
+import org.camunda.bpm.scenario.impl.delegate.ProcessInstanceDelegateImpl;
 
 import java.util.Date;
 
@@ -20,6 +23,10 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
     this.historicDelegate = instance;
     this.delegate = getDelegate();
   }
+
+  public ProcessInstanceDelegate getProcessInstance() {
+    return ProcessInstanceDelegateImpl.newInstance(this, runner.processInstance);
+  };
 
   @Override
   public String getExecutionId() {
@@ -46,23 +53,11 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
   protected abstract ScenarioAction action(Scenario.Process scenario);
 
   public Date isExecutableAt() {
-    Date endTime = historicDelegate.getStartTime();
-    String duration = runner.getDuration(historicDelegate);
-    if (duration != null) {
-      try {
-        if (duration == null || !duration.startsWith("P")) {
-          throw new IllegalArgumentException("Provided argument '" + duration + "' is not a duration expression.");
-        }
-        Date now = ClockUtil.getCurrentTime();
-        ClockUtil.setCurrentTime(historicDelegate.getStartTime());
-        DurationHelper durationHelper = new DurationHelper(duration);
-        endTime = durationHelper.getDateAfter();
-        ClockUtil.setCurrentTime(now);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return endTime;
+    return historicDelegate.getStartTime();
+  }
+
+  public void defer(String period, DeferredAction action) {
+    Executable.Deferred.newInstance(runner, historicDelegate, period, action);
   }
 
 }

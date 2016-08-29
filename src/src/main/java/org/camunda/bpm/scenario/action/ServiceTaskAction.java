@@ -8,6 +8,6 @@ import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 public interface ServiceTaskAction extends ScenarioAction<ExternalTaskDelegate> {
 
   @Override
-  void execute(ExternalTaskDelegate externalTask);
+  void execute(final ExternalTaskDelegate externalTask);
 
 }

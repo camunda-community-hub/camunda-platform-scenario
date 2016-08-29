@@ -80,11 +80,6 @@ public class Scenario {
      */
     MessageIntermediateThrowEventAction actsOnMessageIntermediateThrowEvent(String activityId);
 
-    /**
-     * @since Camunda BPM 7.0.0
-     */
-    String waitsForActionOn(String activityId);
-
   }
 
 }

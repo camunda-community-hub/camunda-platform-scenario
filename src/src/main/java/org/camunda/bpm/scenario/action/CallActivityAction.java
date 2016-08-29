@@ -8,6 +8,6 @@ import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 public interface CallActivityAction extends ScenarioAction<ProcessInstanceDelegate> {
 
   @Override
-  void execute(ProcessInstanceDelegate calledInstance);
+  void execute(final ProcessInstanceDelegate calledInstance);
 
 }

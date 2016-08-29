@@ -1,7 +1,11 @@
 package org.camunda.bpm.scenario.impl.delegate;
 
+import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
+import org.camunda.bpm.scenario.impl.Executable;
+import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 /**
@@ -9,15 +13,20 @@ import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
  */
 public class ProcessInstanceDelegateImpl extends AbstractDelegate<ProcessInstance> implements ProcessInstanceDelegate {
 
-  ProcessRunnerImpl runner;
+  ExecutableWaitstate waitstate;
 
-  protected ProcessInstanceDelegateImpl(ProcessRunnerImpl runner, ProcessInstance processInstance) {
+  protected ProcessInstanceDelegateImpl(ExecutableWaitstate waitstate, ProcessInstance processInstance) {
     super(processInstance);
-    this.runner = runner;
+    this.waitstate = waitstate;
   }
 
-  public static ProcessInstanceDelegate newInstance(ProcessRunnerImpl runner, ProcessInstance processInstance) {
-    return processInstance != null ? new ProcessInstanceDelegateImpl(runner, processInstance) : null;
+  public static ProcessInstanceDelegate newInstance(ExecutableWaitstate waitstate, ProcessInstance processInstance) {
+    return processInstance != null ? new ProcessInstanceDelegateImpl(waitstate, processInstance) : null;
+  }
+
+  @Override
+  public void defer(String period, DeferredAction action) {
+    waitstate.defer(period, action);
   }
 
   public String getProcessDefinitionId() {

@@ -35,17 +35,17 @@ public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGa
   @Override
   public List<EventSubscriptionDelegate> getEventSubscriptions() {
     List<EventSubscription> eventSubscriptions = getRuntimeService().createEventSubscriptionQuery().executionId(getExecutionId()).list();
-    return EventSubscriptionDelegateImpl.newInstance(runner, eventSubscriptions);
+    return EventSubscriptionDelegateImpl.newInstance(this, eventSubscriptions);
   }
 
   @Override
   public EventSubscriptionDelegate getEventSubscription(String activityId) {
-    return EventSubscriptionDelegateImpl.newInstance(runner, getRuntimeService().createEventSubscriptionQuery().activityId(activityId).executionId(getExecutionId()).singleResult());
+    return EventSubscriptionDelegateImpl.newInstance(this, getRuntimeService().createEventSubscriptionQuery().activityId(activityId).executionId(getExecutionId()).singleResult());
   }
 
   @Override
   public EventSubscriptionDelegate getEventSubscription() {
-    return EventSubscriptionDelegateImpl.newInstance(runner, getRuntimeService().createEventSubscriptionQuery().executionId(getExecutionId()).singleResult());
+    return EventSubscriptionDelegateImpl.newInstance(this, getRuntimeService().createEventSubscriptionQuery().executionId(getExecutionId()).singleResult());
   }
 
 }

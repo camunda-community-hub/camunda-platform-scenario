@@ -2,6 +2,7 @@ package org.camunda.bpm.scenario.test.timers;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.action.UserTaskAction;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
@@ -42,11 +43,15 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryInterruptingTimerTest.bpmn"})
   public void testExactlyReachingMaximalTimeForTask() {
 
-    when(scenario.waitsForActionOn("UserTask")).thenReturn("PT5M");
-
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(TaskDelegate task) {
+      public void execute(final TaskDelegate task) {
+        task.defer("PT5M", new DeferredAction() {
+          @Override
+          public void execute() {
+            // do nothing
+          }
+        });
       }
     });
 
@@ -64,18 +69,20 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryInterruptingTimerTest.bpmn"})
   public void testTakeMuchTooLongForTask() {
 
-    when(scenario.waitsForActionOn("UserTask")).thenReturn("PT6M");
-
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
+      public void execute(final TaskDelegate task) {
+        task.defer("PT6M", new DeferredAction() {
+          @Override
+          public void execute() {
+            task.complete();
+          }
+        });
       }
     });
 
     Scenario.run(scenario).startByKey("BoundaryInterruptingTimerTest").execute();
 
-    verify(scenario, never()).actsOnUserTask("UserTask");
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, never()).hasFinished("EndEventCompleted");
@@ -87,12 +94,15 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryInterruptingTimerTest.bpmn"})
   public void testTakeABitTimeForTask() {
 
-    when(scenario.waitsForActionOn("UserTask")).thenReturn("PT4M");
-
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
+      public void execute(final TaskDelegate task) {
+        task.defer("PT4M", new DeferredAction() {
+          @Override
+          public void execute() {
+            task.complete();
+          }
+        });
       }
     });
 

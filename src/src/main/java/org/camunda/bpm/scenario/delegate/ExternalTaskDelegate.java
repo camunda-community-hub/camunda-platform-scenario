@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ExternalTaskDelegate extends ExternalTask, ProcessInstanceAwareDelegate {
+public interface ExternalTaskDelegate extends ExternalTask, ProcessInstanceAwareDelegate, DeferrableDelegate {
 
   void complete();
 

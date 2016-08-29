@@ -8,6 +8,6 @@ import org.camunda.bpm.scenario.delegate.TaskDelegate;
 public interface UserTaskAction extends ScenarioAction<TaskDelegate> {
 
   @Override
-  void execute(TaskDelegate task);
+  void execute(final TaskDelegate task);
 
 }

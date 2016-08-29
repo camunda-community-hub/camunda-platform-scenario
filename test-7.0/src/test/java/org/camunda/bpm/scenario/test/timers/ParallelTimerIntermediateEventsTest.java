@@ -3,6 +3,7 @@ package org.camunda.bpm.scenario.test.timers;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.action.UserTaskAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
@@ -70,12 +71,15 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    when(scenario.waitsForActionOn("UserTask")).thenReturn("PT2M");
-
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
+      public void execute(final TaskDelegate task) {
+        task.defer("PT2M", new DeferredAction() {
+          @Override
+          public void execute() {
+            task.complete();
+          }
+        });
       }
     });
 
@@ -106,12 +110,15 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    when(scenario.waitsForActionOn("UserTask")).thenReturn("PT5M");
-
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
+      public void execute(final TaskDelegate task) {
+        task.defer("PT5M", new DeferredAction() {
+          @Override
+          public void execute() {
+            task.complete();
+          }
+        });
       }
     });
 
@@ -142,12 +149,15 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    when(scenario.waitsForActionOn("UserTask")).thenReturn("PT8M");
-
     when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
-      public void execute(TaskDelegate task) {
-        task.complete();
+      public void execute(final TaskDelegate task) {
+        task.defer("PT8M", new DeferredAction() {
+          @Override
+          public void execute() {
+            task.complete();
+          }
+        });
       }
     });
 

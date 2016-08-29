@@ -8,6 +8,6 @@ import org.camunda.bpm.scenario.delegate.EventBasedGatewayDelegate;
 public interface EventBasedGatewayAction extends ScenarioAction<EventBasedGatewayDelegate> {
 
   @Override
-  void execute(EventBasedGatewayDelegate gateway);
+  void execute(final EventBasedGatewayDelegate gateway);
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface EventBasedGatewayDelegate extends ProcessInstanceAwareDelegate {
+public interface EventBasedGatewayDelegate extends ProcessInstanceAwareDelegate, DeferrableDelegate {
 
   List<EventSubscriptionDelegate> getEventSubscriptions();
 

@@ -1,8 +1,12 @@
 package org.camunda.bpm.scenario.impl.delegate;
 
+import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.EventSubscription;
+import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
+import org.camunda.bpm.scenario.impl.Executable;
+import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
 import java.util.ArrayList;
@@ -15,45 +19,50 @@ import java.util.Map;
  */
 public class EventSubscriptionDelegateImpl extends AbstractDelegate<EventSubscription> implements EventSubscriptionDelegate {
 
-  ProcessRunnerImpl runner;
+  ExecutableWaitstate waitstate;
 
-  protected EventSubscriptionDelegateImpl(ProcessRunnerImpl runner, EventSubscription eventSubscription) {
+  protected EventSubscriptionDelegateImpl(ExecutableWaitstate waitstate, EventSubscription eventSubscription) {
     super(eventSubscription);
-    this.runner = runner;
+    this.waitstate = waitstate;
   }
 
-  public static EventSubscriptionDelegate newInstance(ProcessRunnerImpl runner, EventSubscription eventSubscription) {
-    return eventSubscription != null ? new EventSubscriptionDelegateImpl(runner, eventSubscription) : null;
+  public static EventSubscriptionDelegate newInstance(ExecutableWaitstate waitstate, EventSubscription eventSubscription) {
+    return eventSubscription != null ? new EventSubscriptionDelegateImpl(waitstate, eventSubscription) : null;
   }
 
-  public static List<EventSubscriptionDelegate> newInstance(ProcessRunnerImpl runner, List<EventSubscription> eventSubscriptions) {
+  public static List<EventSubscriptionDelegate> newInstance(ExecutableWaitstate waitstate, List<EventSubscription> eventSubscriptions) {
     List<EventSubscriptionDelegate> delegates = new ArrayList<EventSubscriptionDelegate>();
     for (EventSubscription eventSubscription: eventSubscriptions) {
-      delegates.add(newInstance(runner, eventSubscription));
+      delegates.add(newInstance(waitstate, eventSubscription));
     }
     return delegates;
   }
 
   @Override
   public ProcessInstanceDelegate getProcessInstance() {
-    return ProcessInstanceDelegateImpl.newInstance(runner, runner.engine().getRuntimeService().createProcessInstanceQuery().processInstanceId(delegate.getProcessInstanceId()).singleResult());
+    return ProcessInstanceDelegateImpl.newInstance(waitstate, waitstate.getRuntimeService().createProcessInstanceQuery().processInstanceId(delegate.getProcessInstanceId()).singleResult());
+  }
+
+  @Override
+  public void defer(String period, DeferredAction action) {
+    waitstate.defer(period, action);
   }
 
   @Override
   public void receive() {
     if (getEventType().equals("message")) {
-      runner.engine().getRuntimeService().messageEventReceived(getEventName(), getExecutionId());
+      waitstate.getRuntimeService().messageEventReceived(getEventName(), getExecutionId());
     } else {
-      runner.engine().getRuntimeService().signalEventReceived(getEventName(), getExecutionId());
+      waitstate.getRuntimeService().signalEventReceived(getEventName(), getExecutionId());
     }
   }
 
   @Override
   public void receive(Map<String, Object> variables) {
     if (getEventType().equals("message")) {
-      runner.engine().getRuntimeService().messageEventReceived(getEventName(), getExecutionId());
+      waitstate.getRuntimeService().messageEventReceived(getEventName(), getExecutionId());
     } else {
-      runner.engine().getRuntimeService().signalEventReceived(getEventName(), getExecutionId());
+      waitstate.getRuntimeService().signalEventReceived(getEventName(), getExecutionId());
     }
   }
 

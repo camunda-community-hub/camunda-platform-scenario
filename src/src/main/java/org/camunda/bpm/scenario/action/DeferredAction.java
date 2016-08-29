@@ -4,8 +4,8 @@ package org.camunda.bpm.scenario.action;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ScenarioAction<D> {
+public interface DeferredAction {
 
-  void execute(final D runtimeDelegate);
+  void execute();
 
 }
