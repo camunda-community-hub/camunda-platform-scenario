@@ -150,50 +150,28 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
   public void setExecuted(String id) {
     if (id != null)
       executed.add(id);
-    List<HistoricActivityInstance> instances;
-    boolean supportsCanceled = Api.feature(HistoricActivityInstanceQuery.class.getName(), "canceled")
-        .warn("Outdated Camunda BPM version used will not allow to use " +
+    boolean supportsCanceled = Api.feature(HistoricActivityInstance.class.getName(), "isCanceled")
+      .warn("Outdated Camunda BPM version used will not allow to use " +
             "'" + Scenario.Process.class.getName().replace('$', '.') +
             ".hasCanceled(String activityId)' and '.hasCompleted(String activityId)' methods.");
-    if (supportsCanceled) {
-      instances = scenarioExecutor.processEngine.getHistoryService()
-          .createHistoricActivityInstanceQuery()
-          .processInstanceId(processInstance.getId()).canceled().list();
-      for (HistoricActivityInstance instance: instances) {
-        if (!finished.contains(instance.getId())) {
-          if (!started.contains(instance.getId())) {
-            scenario.hasStarted(instance.getActivityId());
-            started.add(instance.getId());
-          }
-          scenario.hasFinished(instance.getActivityId());
-          scenario.hasCanceled(instance.getActivityId());
-          finished.add(instance.getId());
-        }
-      }
-    }
+    List<HistoricActivityInstance> instances;
     instances = scenarioExecutor.processEngine.getHistoryService()
-        .createHistoricActivityInstanceQuery()
-        .processInstanceId(processInstance.getId()).finished().list();
-    for (HistoricActivityInstance instance: instances) {
-      if (!finished.contains(instance.getId())) {
-        if (!started.contains(instance.getId())) {
-          scenario.hasStarted(instance.getActivityId());
-          started.add(instance.getId());
-        }
-        scenario.hasFinished(instance.getActivityId());
-        if (supportsCanceled) {
-          scenario.hasCompleted(instance.getActivityId());
-        }
-        finished.add(instance.getId());
-      }
-    }
-    instances = scenarioExecutor.processEngine.getHistoryService()
-        .createHistoricActivityInstanceQuery()
-        .processInstanceId(processInstance.getId()).unfinished().list();
+        .createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).list();
     for (HistoricActivityInstance instance: instances) {
       if (!started.contains(instance.getId())) {
         scenario.hasStarted(instance.getActivityId());
         started.add(instance.getId());
+      }
+      if (instance.getEndTime() != null && !finished.contains(instance.getId())) {
+        scenario.hasFinished(instance.getActivityId());
+        if (supportsCanceled) {
+          if (instance.isCanceled()) {
+            scenario.hasCanceled(instance.getActivityId());
+          } else {
+            scenario.hasCompleted(instance.getActivityId());
+          }
+        }
+        finished.add(instance.getId());
       }
     }
   }
