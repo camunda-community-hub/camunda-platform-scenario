@@ -237,10 +237,8 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P1DT1M");
-
     when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      receiveTask.receive();
+      receiveTask.defer("P1DT1M", receiveTask::receive);
     });
 
     Scenario.run(insuranceApplication)
@@ -251,9 +249,7 @@ public class InsuranceApplicationProcessTest {
     verify(insuranceApplication, never()).hasStarted("UserTaskSpeedUpManualCheck");
     verify(documentRequest).hasCompleted("SendTaskSendReminder");
 
-    verify(documentRequest, times(1)).waitsForActionOn("ReceiveTaskWaitForDocuments");
     verify(documentRequest, times(1)).actsOnReceiveTask("ReceiveTaskWaitForDocuments");
-    verify(documentRequest, never()).waitsForActionOn("UserTaskCallCustomer");
 
   }
 
@@ -270,7 +266,9 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.waitsForActionOn("ReceiveTaskWaitForDocuments")).thenReturn("P7DT1M");
+    when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
+      receiveTask.defer("P7DT1M", receiveTask::receive);
+    });
 
     Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables)
