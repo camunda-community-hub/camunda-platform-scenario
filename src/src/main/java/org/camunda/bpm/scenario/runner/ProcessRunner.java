@@ -9,13 +9,13 @@ import java.util.Map;
  */
 public interface ProcessRunner {
 
-  interface ExecutableProcessRunner {
+  interface ExecutableRunner {
 
-    ExecutableProcessRunner engine(ProcessEngine processEngine);
+    ExecutableRunner engine(ProcessEngine processEngine);
 
     ScenarioRun execute();
 
-    interface StartingByKey extends ExecutableProcessRunner {
+    interface StartingByKey extends ExecutableRunner {
 
       StartingByKey fromBefore(String activityId);
 
@@ -25,21 +25,22 @@ public interface ProcessRunner {
 
     }
 
-    interface StartingByStarter extends ExecutableProcessRunner {
+    interface StartingByStarter extends ExecutableRunner {
 
       ScenarioRun execute();
 
     }
 
-    interface StartBy {
+  }
 
-      StartingByKey startByKey(String processDefinitionKey);
+  interface ToBeStartedBy {
 
-      StartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables);
+    ExecutableRunner.StartingByKey startByKey(String processDefinitionKey);
 
-      StartingByStarter startBy(ProcessStarter starter);
+    ExecutableRunner.StartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables);
 
-    }
+    ExecutableRunner.StartingByStarter startBy(ProcessStarter starter);
 
   }
+
 }

@@ -37,7 +37,7 @@ public interface Executable<S> extends Comparable<S> {
     }
 
     static ExecutableWaitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
-      if (!runner.unavailable.contains(instance.getId())) {
+      if (!runner.executed.contains(instance.getId())) {
         String type = instance.getActivityType();
         if (types.containsKey(type)) {
           try {

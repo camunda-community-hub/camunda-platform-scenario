@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessRunnerImpl implements ProcessRunner.ExecutableProcessRunner.StartingByKey, ProcessRunner.ExecutableProcessRunner.StartBy, ProcessRunner.ExecutableProcessRunner.StartingByStarter, ProcessRunner, Runner {
+public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.StartingByKey, ProcessRunner.ToBeStartedBy, ProcessRunner.ExecutableRunner.StartingByStarter, ProcessRunner, Runner {
 
   private String processDefinitionKey;
   private ProcessStarter processStarter;
@@ -34,9 +34,9 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableProcessRunner.
   Scenario.Process scenario;
   ProcessInstance processInstance;
 
-  Set<String> unavailable = new HashSet<String>();
-  Set<String> started = new HashSet<String>();
   Set<String> executed = new HashSet<String>();
+  Set<String> started = new HashSet<String>();
+  Set<String> finished = new HashSet<String>();
 
   Map<String, List<DeferredExecutable>> deferredExecutables = new HashMap<String, List<DeferredExecutable>>();
 
@@ -83,7 +83,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableProcessRunner.
   }
 
   @Override
-  public ExecutableProcessRunner engine(ProcessEngine processEngine) {
+  public ExecutableRunner engine(ProcessEngine processEngine) {
     scenarioExecutor.init(processEngine);
     return this;
   }
@@ -149,7 +149,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableProcessRunner.
 
   public void setExecuted(String id) {
     if (id != null)
-      unavailable.add(id);
+      executed.add(id);
     List<HistoricActivityInstance> instances;
     boolean supportsCanceled = Api.feature(HistoricActivityInstanceQuery.class.getName(), "canceled")
         .warn("Outdated Camunda BPM version used will not allow to use " +
@@ -160,14 +160,14 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableProcessRunner.
           .createHistoricActivityInstanceQuery()
           .processInstanceId(processInstance.getId()).canceled().list();
       for (HistoricActivityInstance instance: instances) {
-        if (!executed.contains(instance.getId())) {
+        if (!finished.contains(instance.getId())) {
           if (!started.contains(instance.getId())) {
             scenario.hasStarted(instance.getActivityId());
             started.add(instance.getId());
           }
           scenario.hasFinished(instance.getActivityId());
           scenario.hasCanceled(instance.getActivityId());
-          executed.add(instance.getId());
+          finished.add(instance.getId());
         }
       }
     }
@@ -175,7 +175,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableProcessRunner.
         .createHistoricActivityInstanceQuery()
         .processInstanceId(processInstance.getId()).finished().list();
     for (HistoricActivityInstance instance: instances) {
-      if (!executed.contains(instance.getId())) {
+      if (!finished.contains(instance.getId())) {
         if (!started.contains(instance.getId())) {
           scenario.hasStarted(instance.getActivityId());
           started.add(instance.getId());
@@ -184,7 +184,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableProcessRunner.
         if (supportsCanceled) {
           scenario.hasCompleted(instance.getActivityId());
         }
-        executed.add(instance.getId());
+        finished.add(instance.getId());
       }
     }
     instances = scenarioExecutor.processEngine.getHistoryService()
