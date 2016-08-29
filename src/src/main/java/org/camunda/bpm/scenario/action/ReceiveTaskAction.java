@@ -8,6 +8,6 @@ import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 public interface ReceiveTaskAction extends MessageIntermediateCatchEventAction {
 
   @Override
-  void execute(final EventSubscriptionDelegate message);
+  void execute(final EventSubscriptionDelegate message) throws Exception;
 
 }

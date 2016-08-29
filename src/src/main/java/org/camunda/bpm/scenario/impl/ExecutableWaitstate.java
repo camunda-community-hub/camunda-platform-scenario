@@ -46,7 +46,11 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
           + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
           + " '" + historicDelegate.getActivityId() +"'.");
     ClockUtil.setCurrentTime(isExecutableAt());
-    action.execute(this);
+    try {
+      action.execute(this);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
     runner.setExecuted(historicDelegate.getId());
   }
 

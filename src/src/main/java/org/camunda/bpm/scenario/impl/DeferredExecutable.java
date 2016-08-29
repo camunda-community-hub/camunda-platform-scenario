@@ -42,7 +42,11 @@ public class DeferredExecutable extends AbstractExecutable<HistoricActivityInsta
   public void execute() {
     if (getDelegate() != null) {
       Time.set(isExecutableAt());
-      action.execute();
+      try {
+        action.execute();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      }
     }
     runner.remove(this);
   }

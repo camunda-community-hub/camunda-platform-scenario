@@ -6,6 +6,6 @@ package org.camunda.bpm.scenario.action;
  */
 public interface ScenarioAction<D> {
 
-  void execute(final D runtimeDelegate);
+  void execute(final D runtimeDelegate) throws Exception;
 
 }

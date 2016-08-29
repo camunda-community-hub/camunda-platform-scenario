@@ -6,6 +6,6 @@ package org.camunda.bpm.scenario.action;
  */
 public interface DeferredAction {
 
-  void execute();
+  void execute() throws Exception;
 
 }
