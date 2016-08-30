@@ -32,6 +32,7 @@ public interface Executable<S> extends Comparable<S> {
       types.put("eventBasedGateway", "EventBasedGatewayWaitstate");
       types.put("callActivity", "CallActivityWaitstate");
       types.put("serviceTask", "ServiceTaskWaitstate");
+      types.put("businessRuleTask", "BusinessRuleTaskWaitstate");
       types.put("sendTask", "SendTaskWaitstate");
       types.put("intermediateMessageThrowEvent", "MessageIntermediateThrowEventWaitstate");
     }

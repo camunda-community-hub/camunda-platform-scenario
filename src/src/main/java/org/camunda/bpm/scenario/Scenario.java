@@ -1,5 +1,6 @@
 package org.camunda.bpm.scenario;
 
+import org.camunda.bpm.scenario.action.BusinessRuleTaskAction;
 import org.camunda.bpm.scenario.action.EventBasedGatewayAction;
 import org.camunda.bpm.scenario.action.MessageIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.action.MessageIntermediateThrowEventAction;
@@ -79,6 +80,11 @@ public class Scenario {
      * @since Camunda BPM 7.5.0
      */
     MessageIntermediateThrowEventAction actsOnMessageIntermediateThrowEvent(String activityId);
+
+    /**
+     * @since Camunda BPM 7.5.0
+     */
+    BusinessRuleTaskAction actsOnBusinessRuleTask(String activityId);
 
   }
 
