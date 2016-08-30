@@ -26,7 +26,7 @@ public class SignalIntermediateCatchEventWaitstate extends AbstractEventSubscrip
 
   @Override
   protected EventSubscription getDelegate() {
-    return getRuntimeService().createEventSubscriptionQuery().eventType("signal").executionId(getExecutionId()).singleResult();
+    return getRuntimeService().createEventSubscriptionQuery().eventType("signal").activityId(getActivityId()).executionId(getExecutionId()).singleResult();
   }
 
   @Override

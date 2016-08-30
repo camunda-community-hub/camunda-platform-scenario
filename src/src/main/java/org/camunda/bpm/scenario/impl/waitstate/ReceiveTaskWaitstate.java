@@ -26,7 +26,7 @@ public class ReceiveTaskWaitstate extends MessageIntermediateCatchEventWaitstate
 
   @Override
   protected EventSubscription getDelegate() {
-    return getRuntimeService().createEventSubscriptionQuery().eventType("message").executionId(getExecutionId()).singleResult();
+    return getRuntimeService().createEventSubscriptionQuery().eventType("message").activityId(getActivityId()).executionId(getExecutionId()).singleResult();
   }
 
   @Override
