@@ -23,6 +23,10 @@ public class Time {
     ClockUtil.setCurrentTime(time);
   }
 
+  public static void reset() {
+    ClockUtil.reset();
+  }
+
   // ***
   // Necessary due to two possible Camunda Bugs with repeatable timers:
   // 1) in case their last execution is finished in the millisecond of

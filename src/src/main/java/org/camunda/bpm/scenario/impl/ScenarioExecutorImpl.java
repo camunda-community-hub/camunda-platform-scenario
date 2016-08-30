@@ -28,6 +28,7 @@ public class ScenarioExecutorImpl {
 
   protected ScenarioRun execute() {
     init();
+    Time.init();
     List<Executable> executables;
     do {
       executables = new ArrayList<Executable>();
@@ -38,6 +39,7 @@ public class ScenarioExecutorImpl {
       if (!executables.isEmpty())
         executables.get(0).execute();
     } while (!executables.isEmpty());
+    Time.reset();
     return new ScenarioRun() {
       @Override
       public ProcessInstance getProcessInstance() {
@@ -64,7 +66,6 @@ public class ScenarioExecutorImpl {
         throw new IllegalStateException(message);
       }
     }
-    Time.init();
   }
 
   protected void init(ProcessEngine processEngine) {
