@@ -32,4 +32,10 @@ public abstract class ExecutableJob extends AbstractExecutable<Job> {
     runner.setExecuted();
   }
 
+  @Override
+  public int compareTo(AbstractExecutable other) {
+    int compare = super.compareTo(other);
+    return compare == 0 ? idComparator.compare(delegate.getId(), ((ExecutableJob) other).delegate.getId()) : compare;
+  }
+
 }

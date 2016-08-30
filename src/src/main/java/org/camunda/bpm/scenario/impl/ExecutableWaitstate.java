@@ -63,4 +63,10 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
     Deferreds.newInstance(runner, historicDelegate, period, action);
   }
 
+  @Override
+  public int compareTo(AbstractExecutable other) {
+    int compare = super.compareTo(other);
+    return compare == 0 ? idComparator.compare(historicDelegate.getId(), ((ExecutableWaitstate) other).historicDelegate.getId()) : compare;
+  }
+
 }

@@ -1,6 +1,7 @@
 package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessEngineServicesDelegate;
+import org.camunda.bpm.scenario.impl.util.IdComparator;
 
 import java.util.Date;
 
@@ -8,6 +9,8 @@ import java.util.Date;
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
 public abstract class AbstractExecutable<I> extends AbstractProcessEngineServicesDelegate implements Executable<AbstractExecutable> {
+
+  protected static IdComparator idComparator = new IdComparator();
 
   protected ProcessRunnerImpl runner;
   protected I delegate;

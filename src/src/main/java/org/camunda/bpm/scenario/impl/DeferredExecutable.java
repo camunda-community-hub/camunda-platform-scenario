@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public class DeferredExecutable extends AbstractExecutable<HistoricActivityInstance> {
 
+  private static int sequence;
+  private Integer id = ++sequence;
   private Date isExecutableAt;
   private DeferredAction action;
 
@@ -48,6 +50,12 @@ public class DeferredExecutable extends AbstractExecutable<HistoricActivityInsta
       }
     }
     Deferreds.remove(this);
+  }
+
+  @Override
+  public int compareTo(AbstractExecutable other) {
+    int compare = super.compareTo(other);
+    return compare == 0 ? id.compareTo(((DeferredExecutable) other).id) : compare;
   }
 
 }
