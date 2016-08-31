@@ -1,7 +1,7 @@
 package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.action.DeferredAction;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
@@ -53,7 +53,7 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
     runner.setExecuted(this);
   }
 
-  protected abstract ScenarioAction action(Scenario.Process scenario);
+  protected abstract ScenarioAction action(ProcessScenario scenario);
 
   protected final ScenarioAction action() {
     return action(runner.scenario);

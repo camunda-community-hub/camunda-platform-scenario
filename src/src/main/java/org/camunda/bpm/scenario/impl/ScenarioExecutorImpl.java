@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.impl.util.Time;
 import org.camunda.bpm.scenario.runner.ProcessRunner;
 import org.camunda.bpm.scenario.runner.ScenarioRun;
@@ -22,7 +22,7 @@ public class ScenarioExecutorImpl {
   ProcessEngine processEngine;
   List<Runner> runners = new ArrayList<Runner>();
 
-  public ScenarioExecutorImpl(Scenario.Process scenario) {
+  public ScenarioExecutorImpl(ProcessScenario scenario) {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
   }
 

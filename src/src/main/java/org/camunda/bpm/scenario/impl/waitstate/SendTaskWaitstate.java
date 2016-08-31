@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.impl.waitstate;
 
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 
@@ -18,7 +18,7 @@ public class SendTaskWaitstate extends ServiceTaskWaitstate {
   }
 
   @Override
-  protected ScenarioAction action(Scenario.Process scenario) {
+  protected ScenarioAction action(ProcessScenario scenario) {
     return scenario.waitsAtSendTask(getActivityId());
   }
 

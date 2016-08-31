@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
-import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.impl.util.Api;
 import org.camunda.bpm.scenario.impl.waitstate.CallActivityWaitstate;
 import org.camunda.bpm.scenario.runner.ProcessRunner;
@@ -34,10 +34,10 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
   private Set<String> finished = new HashSet<String>();
 
   ScenarioExecutorImpl scenarioExecutor;
-  Scenario.Process scenario;
+  ProcessScenario scenario;
   ProcessInstance processInstance;
 
-  public ProcessRunnerImpl(ScenarioExecutorImpl scenarioExecutor, Scenario.Process scenario) {
+  public ProcessRunnerImpl(ScenarioExecutorImpl scenarioExecutor, ProcessScenario scenario) {
     this.scenarioExecutor = scenarioExecutor;
     this.scenario = scenario;
   }
@@ -80,7 +80,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
   }
 
   @Override
-  public ToBeStartedBy run(Scenario.Process scenario) {
+  public ToBeStartedBy run(ProcessScenario scenario) {
     scenarioExecutor.runners.add(new ProcessRunnerImpl(scenarioExecutor, scenario));
     return scenarioExecutor.toBeStartedBy();
   }
@@ -153,7 +153,7 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
   public void setExecuted() {
     boolean supportsCanceled = Api.feature(HistoricActivityInstance.class.getName(), "isCanceled")
       .warn("Outdated Camunda BPM version used will not allow to use " +
-          "'" + Scenario.Process.class.getName().replace('$', '.') +
+          "'" + ProcessScenario.class.getName().replace('$', '.') +
           ".hasCanceled(String activityId)' and '.hasCompleted(String activityId)' methods.");
     List<HistoricActivityInstance> instances = scenarioExecutor.processEngine.getHistoryService()
         .createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).list();

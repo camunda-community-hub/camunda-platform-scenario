@@ -1,7 +1,7 @@
 package org.camunda.bpm.scenario.test;
 
 import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.ProcessScenario;
 import org.junit.Before;
 import org.junit.Rule;
 import org.mockito.Mock;
@@ -19,10 +19,10 @@ public class AbstractTest {
   public ProcessEngineRule rule = new ProcessEngineRule();
 
   @Mock
-  protected Scenario.Process scenario;
+  protected ProcessScenario scenario;
 
   @Mock
-  protected Scenario.Process otherScenario;
+  protected ProcessScenario otherScenario;
 
   public Map<String, Object> variables = new HashMap<String, Object>();
 

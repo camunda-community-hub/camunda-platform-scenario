@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.impl.waitstate;
 
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
@@ -19,7 +19,7 @@ public class MessageIntermediateThrowEventWaitstate extends ServiceTaskWaitstate
   }
 
   @Override
-  protected ScenarioAction<ExternalTaskDelegate> action(Scenario.Process scenario) {
+  protected ScenarioAction<ExternalTaskDelegate> action(ProcessScenario scenario) {
     return scenario.waitsAtMessageIntermediateThrowEvent(getActivityId());
   }
 

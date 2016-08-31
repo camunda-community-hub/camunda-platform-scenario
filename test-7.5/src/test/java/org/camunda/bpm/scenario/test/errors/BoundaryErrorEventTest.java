@@ -7,7 +7,10 @@ import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>

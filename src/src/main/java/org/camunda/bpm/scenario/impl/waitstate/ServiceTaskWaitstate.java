@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.impl.waitstate;
 
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.AbstractExternalTaskDelegate;
@@ -27,7 +27,7 @@ public class ServiceTaskWaitstate extends AbstractExternalTaskDelegate {
   }
 
   @Override
-  protected ScenarioAction action(Scenario.Process scenario) {
+  protected ScenarioAction action(ProcessScenario scenario) {
     return scenario.waitsAtServiceTask(getActivityId());
   }
 
