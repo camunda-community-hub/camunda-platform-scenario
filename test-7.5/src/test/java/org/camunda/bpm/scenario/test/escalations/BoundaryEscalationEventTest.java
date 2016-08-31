@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class EscalationEventTest extends AbstractTest {
+public class BoundaryEscalationEventTest extends AbstractTest {
 
   void complete(final Map<String, Object> variables) {
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -27,12 +27,12 @@ public class EscalationEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/escalations/EscalationEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/escalations/BoundaryEscalationEventTest.bpmn"})
   public void testCompleteTask() {
 
     complete(withVariables("escalate", false));
 
-    Scenario.run(scenario).startByKey("EscalationEventTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryEscalationEventTest").execute();
 
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
@@ -42,12 +42,12 @@ public class EscalationEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/escalations/EscalationEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/escalations/BoundaryEscalationEventTest.bpmn"})
   public void testEscalateNonInterrupting() {
 
     complete(withVariables("escalate", true, "interrupt", false));
 
-    Scenario.run(scenario).startByKey("EscalationEventTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryEscalationEventTest").execute();
 
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
@@ -57,12 +57,12 @@ public class EscalationEventTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/escalations/EscalationEventTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/escalations/BoundaryEscalationEventTest.bpmn"})
   public void testEscalateInterrupting() {
 
     complete(withVariables("escalate", true, "interrupt", true));
 
-    Scenario.run(scenario).startByKey("EscalationEventTest").execute();
+    Scenario.run(scenario).startByKey("BoundaryEscalationEventTest").execute();
 
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, never()).hasFinished("EndEventCompleted");
