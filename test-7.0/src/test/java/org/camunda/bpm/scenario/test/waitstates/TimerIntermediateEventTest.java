@@ -10,9 +10,7 @@ import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>

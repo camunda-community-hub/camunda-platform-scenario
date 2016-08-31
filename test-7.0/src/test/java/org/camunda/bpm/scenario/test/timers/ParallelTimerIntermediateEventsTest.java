@@ -11,10 +11,8 @@ import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
