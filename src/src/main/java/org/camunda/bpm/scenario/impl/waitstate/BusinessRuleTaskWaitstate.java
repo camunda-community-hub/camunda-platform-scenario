@@ -19,7 +19,7 @@ public class BusinessRuleTaskWaitstate extends ServiceTaskWaitstate {
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.actsOnBusinessRuleTask(getActivityId());
+    return scenario.waitsAtBusinessRuleTask(getActivityId());
   }
 
   @Override

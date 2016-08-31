@@ -21,7 +21,7 @@ public class SendTaskTest extends AbstractTest {
   @Test
   public void testCompleteTask() {
 
-    when(scenario.actsOnSendTask("SendTask")).thenReturn(new SendTaskAction() {
+    when(scenario.waitsAtSendTask("SendTask")).thenReturn(new SendTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
@@ -38,7 +38,7 @@ public class SendTaskTest extends AbstractTest {
   @Test
   public void testDoNothing() {
 
-    when(scenario.actsOnSendTask("SendTask")).thenReturn(new SendTaskAction() {
+    when(scenario.waitsAtSendTask("SendTask")).thenReturn(new SendTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         // Deal with externalTask but do nothing here
@@ -63,14 +63,14 @@ public class SendTaskTest extends AbstractTest {
   @Test
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.actsOnSendTask("SendTask")).thenReturn(new SendTaskAction() {
+    when(scenario.waitsAtSendTask("SendTask")).thenReturn(new SendTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
       }
     });
 
-    when(otherScenario.actsOnSendTask("SendTask")).thenReturn(new SendTaskAction() {
+    when(otherScenario.waitsAtSendTask("SendTask")).thenReturn(new SendTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
       }

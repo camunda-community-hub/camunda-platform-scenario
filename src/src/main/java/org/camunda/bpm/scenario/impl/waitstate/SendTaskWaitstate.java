@@ -19,7 +19,7 @@ public class SendTaskWaitstate extends ServiceTaskWaitstate {
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.actsOnSendTask(getActivityId());
+    return scenario.waitsAtSendTask(getActivityId());
   }
 
   @Override

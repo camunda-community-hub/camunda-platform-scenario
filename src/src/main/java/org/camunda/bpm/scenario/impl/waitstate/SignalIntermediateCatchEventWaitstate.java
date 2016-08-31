@@ -31,7 +31,7 @@ public class SignalIntermediateCatchEventWaitstate extends AbstractEventSubscrip
 
   @Override
   protected ScenarioAction<EventSubscriptionDelegate> action(Scenario.Process scenario) {
-    return scenario.actsOnSignalIntermediateCatchEvent(getActivityId());
+    return scenario.waitsAtSignalIntermediateCatchEvent(getActivityId());
   }
 
   @Override

@@ -21,7 +21,7 @@ public class MessageIntermediateThrowEventTest extends AbstractTest {
   @Test
   public void testCompleteTask() {
 
-    when(scenario.actsOnMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
+    when(scenario.waitsAtMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
@@ -38,7 +38,7 @@ public class MessageIntermediateThrowEventTest extends AbstractTest {
   @Test
   public void testDoNothing() {
 
-    when(scenario.actsOnMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
+    when(scenario.waitsAtMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         // Deal with externalTask but do nothing here
@@ -63,14 +63,14 @@ public class MessageIntermediateThrowEventTest extends AbstractTest {
   @Test
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.actsOnMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
+    when(scenario.waitsAtMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
       }
     });
 
-    when(otherScenario.actsOnMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
+    when(otherScenario.waitsAtMessageIntermediateThrowEvent("MessageIntermediateThrowEvent")).thenReturn(new MessageIntermediateThrowEventAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
       }

@@ -21,7 +21,7 @@ public class ReceiveTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testReceiveMessage() {
 
-    when(scenario.actsOnReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
+    when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
       @Override
       public void execute(EventSubscriptionDelegate messageEventSubscription) {
         messageEventSubscription.receive();
@@ -39,7 +39,7 @@ public class ReceiveTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testDoNothing() {
 
-    when(scenario.actsOnReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
+    when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
       @Override
       public void execute(EventSubscriptionDelegate messageEventSubscription) {
         // Deal with messageEventSubscription but do nothing here
@@ -66,14 +66,14 @@ public class ReceiveTaskTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ReceiveTaskTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.actsOnReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
+    when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
       @Override
       public void execute(EventSubscriptionDelegate messageEventSubscription) {
         messageEventSubscription.receive();
       }
     });
 
-    when(otherScenario.actsOnReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
+    when(otherScenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
       @Override
       public void execute(EventSubscriptionDelegate messageEventSubscription) {
       }

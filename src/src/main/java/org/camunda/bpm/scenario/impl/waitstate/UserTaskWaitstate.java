@@ -25,7 +25,7 @@ public class UserTaskWaitstate extends AbstractTaskDelegate {
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.actsOnUserTask(getActivityId());
+    return scenario.waitsAtUserTask(getActivityId());
   }
 
   @Override

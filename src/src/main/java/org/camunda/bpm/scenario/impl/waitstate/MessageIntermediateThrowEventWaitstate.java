@@ -20,7 +20,7 @@ public class MessageIntermediateThrowEventWaitstate extends ServiceTaskWaitstate
 
   @Override
   protected ScenarioAction<ExternalTaskDelegate> action(Scenario.Process scenario) {
-    return scenario.actsOnMessageIntermediateThrowEvent(getActivityId());
+    return scenario.waitsAtMessageIntermediateThrowEvent(getActivityId());
   }
 
   @Override

@@ -20,7 +20,7 @@ public class EventBasedGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testReceiveMessage() {
 
-    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.waitsAtEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
       public void execute(EventBasedGatewayDelegate gateway) {
         gateway.getEventSubscription("MessageIntermediateCatchEvent").receive();
@@ -39,7 +39,7 @@ public class EventBasedGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testDoNothing() {
 
-    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.waitsAtEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
       public void execute(EventBasedGatewayDelegate gateway) {
         // Do nothing means process moves forward because of the timers

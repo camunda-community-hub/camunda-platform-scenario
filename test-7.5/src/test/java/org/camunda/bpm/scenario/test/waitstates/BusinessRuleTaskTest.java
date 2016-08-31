@@ -21,7 +21,7 @@ public class BusinessRuleTaskTest extends AbstractTest {
   @Test
   public void testCompleteTask() {
 
-    when(scenario.actsOnBusinessRuleTask("BusinessRuleTask")).thenReturn(new BusinessRuleTaskAction() {
+    when(scenario.waitsAtBusinessRuleTask("BusinessRuleTask")).thenReturn(new BusinessRuleTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
@@ -38,7 +38,7 @@ public class BusinessRuleTaskTest extends AbstractTest {
   @Test
   public void testDoNothing() {
 
-    when(scenario.actsOnBusinessRuleTask("BusinessRuleTask")).thenReturn(new BusinessRuleTaskAction() {
+    when(scenario.waitsAtBusinessRuleTask("BusinessRuleTask")).thenReturn(new BusinessRuleTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         // Deal with externalTask but do nothing here
@@ -63,14 +63,14 @@ public class BusinessRuleTaskTest extends AbstractTest {
   @Test
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.actsOnBusinessRuleTask("BusinessRuleTask")).thenReturn(new BusinessRuleTaskAction() {
+    when(scenario.waitsAtBusinessRuleTask("BusinessRuleTask")).thenReturn(new BusinessRuleTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
       }
     });
 
-    when(otherScenario.actsOnBusinessRuleTask("BusinessRuleTask")).thenReturn(new BusinessRuleTaskAction() {
+    when(otherScenario.waitsAtBusinessRuleTask("BusinessRuleTask")).thenReturn(new BusinessRuleTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
       }

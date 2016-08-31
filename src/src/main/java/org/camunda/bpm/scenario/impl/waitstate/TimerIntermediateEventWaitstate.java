@@ -25,7 +25,7 @@ public class TimerIntermediateEventWaitstate extends AbstractProcessInstanceDele
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.actsOnTimerIntermediateEvent(getActivityId());
+    return scenario.waitsAtTimerIntermediateEvent(getActivityId());
   }
 
   public void execute() {

@@ -21,7 +21,7 @@ public class ServiceTaskTest extends AbstractTest {
   @Test
   public void testCompleteTask() {
 
-    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+    when(scenario.waitsAtServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
@@ -38,7 +38,7 @@ public class ServiceTaskTest extends AbstractTest {
   @Test
   public void testDoNothing() {
 
-    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+    when(scenario.waitsAtServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         // Deal with externalTask but do nothing here
@@ -63,14 +63,14 @@ public class ServiceTaskTest extends AbstractTest {
   @Test
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+    when(scenario.waitsAtServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
         externalTask.complete();
       }
     });
 
-    when(otherScenario.actsOnServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
+    when(otherScenario.waitsAtServiceTask("ServiceTask")).thenReturn(new ServiceTaskAction() {
       @Override
       public void execute(ExternalTaskDelegate externalTask) {
       }

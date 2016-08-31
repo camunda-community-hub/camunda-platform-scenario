@@ -21,14 +21,14 @@ public class ParallelGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ParallelGatewayTest.bpmn"})
   public void testCompleteTasks() {
 
-    when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();
       }
     });
 
-    when(scenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();
@@ -49,14 +49,14 @@ public class ParallelGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ParallelGatewayTest.bpmn"})
   public void testDoNothingOnBothTasks() {
 
-    when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
 
       }
     });
 
-    when(scenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
 
@@ -77,14 +77,14 @@ public class ParallelGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ParallelGatewayTest.bpmn"})
   public void testDoNothingOnOneTask() {
 
-    when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();
       }
     });
 
-    when(scenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
 
@@ -105,7 +105,7 @@ public class ParallelGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ParallelGatewayTest.bpmn"})
   public void testDoNotDealWithTask() {
 
-    when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();
@@ -120,27 +120,27 @@ public class ParallelGatewayTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/ParallelGatewayTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();
       }
     });
 
-    when(scenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();
       }
     });
 
-    when(otherScenario.actsOnUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
+    when(otherScenario.waitsAtUserTask("UserTaskOne")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
       }
     });
 
-    when(otherScenario.actsOnUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
+    when(otherScenario.waitsAtUserTask("UserTaskTwo")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
       }

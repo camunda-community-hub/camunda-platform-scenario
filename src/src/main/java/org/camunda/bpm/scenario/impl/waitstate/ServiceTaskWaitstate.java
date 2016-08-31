@@ -28,7 +28,7 @@ public class ServiceTaskWaitstate extends AbstractExternalTaskDelegate {
 
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
-    return scenario.actsOnServiceTask(getActivityId());
+    return scenario.waitsAtServiceTask(getActivityId());
   }
 
   protected void fetchAndLock() {

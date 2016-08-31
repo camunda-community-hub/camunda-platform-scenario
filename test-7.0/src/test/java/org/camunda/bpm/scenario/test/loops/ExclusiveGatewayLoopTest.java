@@ -26,7 +26,7 @@ public class ExclusiveGatewayLoopTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/loops/ExclusiveGatewayLoopTest.bpmn"})
   public void testDoNotLoop() {
 
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete(variables);
@@ -44,7 +44,7 @@ public class ExclusiveGatewayLoopTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/loops/ExclusiveGatewayLoopTest.bpmn"})
   public void testDoLoopASingleTime() {
 
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         variables.put("leave", false);
@@ -71,7 +71,7 @@ public class ExclusiveGatewayLoopTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/loops/ExclusiveGatewayLoopTest.bpmn"})
   public void testDoTaskTenTimes() {
 
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         variables.put("leave", ++loop == 10);

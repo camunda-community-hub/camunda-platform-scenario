@@ -21,7 +21,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testReceiveMessage() {
 
-    when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
+    when(scenario.waitsAtMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
       @Override
       public void execute(EventSubscriptionDelegate messageEventSubscription) {
         messageEventSubscription.receive();
@@ -39,7 +39,7 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testDoNothing() {
 
-    when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
+    when(scenario.waitsAtMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
       @Override
       public void execute(EventSubscriptionDelegate messageEventSubscription) {
         // Deal with messageEventSubscription but do nothing here
@@ -66,14 +66,14 @@ public class MessageIntermediateCatchEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageIntermediateCatchEventTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
+    when(scenario.waitsAtMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
       @Override
       public void execute(EventSubscriptionDelegate messageEventSubscription) {
         messageEventSubscription.receive();
       }
     });
 
-    when(otherScenario.actsOnMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
+    when(otherScenario.waitsAtMessageIntermediateCatchEvent("MessageIntermediateCatchEvent")).thenReturn(new MessageIntermediateCatchEventAction() {
       @Override
       public void execute(EventSubscriptionDelegate messageEventSubscription) {
       }

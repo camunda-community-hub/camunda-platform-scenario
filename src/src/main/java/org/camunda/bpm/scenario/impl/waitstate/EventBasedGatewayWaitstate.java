@@ -29,7 +29,7 @@ public class EventBasedGatewayWaitstate extends ExecutableWaitstate<EventBasedGa
 
   @Override
   protected ScenarioAction<EventBasedGatewayDelegate> action(Scenario.Process scenario) {
-    return scenario.actsOnEventBasedGateway(getActivityId());
+    return scenario.waitsAtEventBasedGateway(getActivityId());
   }
 
   @Override

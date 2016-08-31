@@ -33,28 +33,28 @@ public class Scenario {
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    UserTaskAction actsOnUserTask(String activityId);
+    UserTaskAction waitsAtUserTask(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    TimerIntermediateEventAction actsOnTimerIntermediateEvent(String activityId);
+    TimerIntermediateEventAction waitsAtTimerIntermediateEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    MessageIntermediateCatchEventAction actsOnMessageIntermediateCatchEvent(String activityId);
+    MessageIntermediateCatchEventAction waitsAtMessageIntermediateCatchEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final (as signallable execution only)
      * @since Camunda BPM 7.1.0-Final (as message event subscription)
      */
-    ReceiveTaskAction actsOnReceiveTask(String activityId);
+    ReceiveTaskAction waitsAtReceiveTask(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
      */
-    SignalIntermediateCatchEventAction actsOnSignalIntermediateCatchEvent(String activityId);
+    SignalIntermediateCatchEventAction waitsAtSignalIntermediateCatchEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.0.0-Final
@@ -64,27 +64,27 @@ public class Scenario {
     /**
      * @since Camunda BPM 7.1.0-Final
      */
-    EventBasedGatewayAction actsOnEventBasedGateway(String activityId);
+    EventBasedGatewayAction waitsAtEventBasedGateway(String activityId);
 
     /**
      * @since Camunda BPM 7.4.0
      */
-    ServiceTaskAction actsOnServiceTask(String activityId);
+    ServiceTaskAction waitsAtServiceTask(String activityId);
 
     /**
      * @since Camunda BPM 7.5.0
      */
-    SendTaskAction actsOnSendTask(String activityId);
+    SendTaskAction waitsAtSendTask(String activityId);
 
     /**
      * @since Camunda BPM 7.5.0
      */
-    MessageIntermediateThrowEventAction actsOnMessageIntermediateThrowEvent(String activityId);
+    MessageIntermediateThrowEventAction waitsAtMessageIntermediateThrowEvent(String activityId);
 
     /**
      * @since Camunda BPM 7.5.0
      */
-    BusinessRuleTaskAction actsOnBusinessRuleTask(String activityId);
+    BusinessRuleTaskAction waitsAtBusinessRuleTask(String activityId);
 
   }
 

@@ -29,7 +29,7 @@ public class CallActivityTest extends AbstractTest {
   public void testCompleteCallActivityUserTask() {
 
     when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(calledScenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();
@@ -53,7 +53,7 @@ public class CallActivityTest extends AbstractTest {
   public void testDoNothingCallActivityUserTask() {
 
     when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(calledScenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         // Deal with task but do nothing here
@@ -104,7 +104,7 @@ public class CallActivityTest extends AbstractTest {
 
     when(scenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
     when(otherScenario.runsCallActivity("CallActivity")).thenReturn(Scenario.use(calledScenario));
-    when(calledScenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(calledScenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
       }

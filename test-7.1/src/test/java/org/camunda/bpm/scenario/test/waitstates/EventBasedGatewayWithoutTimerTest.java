@@ -21,7 +21,7 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayWithoutTimerTest.bpmn"})
   public void testReceiveMessage() {
 
-    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.waitsAtEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
       public void execute(EventBasedGatewayDelegate gateway) {
         gateway.getEventSubscription("MessageIntermediateCatchEvent").receive();
@@ -40,7 +40,7 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayWithoutTimerTest.bpmn"})
   public void testDoNothing() {
 
-    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.waitsAtEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
       public void execute(EventBasedGatewayDelegate gateway) {
         // Do nothing means process remains here because of no timers
@@ -67,14 +67,14 @@ public class EventBasedGatewayWithoutTimerTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayWithoutTimerTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
-    when(scenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(scenario.waitsAtEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
       public void execute(EventBasedGatewayDelegate gateway) {
         gateway.getEventSubscription("MessageIntermediateCatchEvent").receive();
       }
     });
 
-    when(otherScenario.actsOnEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
+    when(otherScenario.waitsAtEventBasedGateway("EventBasedGateway")).thenReturn(new EventBasedGatewayAction() {
       @Override
       public void execute(EventBasedGatewayDelegate gateway) {
       }

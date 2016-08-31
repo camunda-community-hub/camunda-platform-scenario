@@ -25,19 +25,19 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/ParallelTimerIntermediateTest.bpmn"})
   public void testCompleteTaskImmediately() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();
@@ -59,19 +59,19 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/ParallelTimerIntermediateTest.bpmn"})
   public void testCompleteTaskAfterTwoMinutes() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(final TaskDelegate task) {
         task.defer("PT2M", new DeferredAction() {
@@ -98,19 +98,19 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/ParallelTimerIntermediateTest.bpmn"})
   public void testCompleteTaskAfterFiveMinutes() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(final TaskDelegate task) {
         task.defer("PT5M", new DeferredAction() {
@@ -137,19 +137,19 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/ParallelTimerIntermediateTest.bpmn"})
   public void testCompleteTaskAfterEightMinutes() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(final TaskDelegate task) {
         task.defer("PT8M", new DeferredAction() {
@@ -176,7 +176,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/ParallelTimerIntermediateTest.bpmn"})
   public void testDeferAnTimerIntermediateEventAction() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
         timer.defer("PT3M", new DeferredAction() {
@@ -188,13 +188,13 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();
@@ -210,7 +210,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/ParallelTimerIntermediateTest.bpmn"})
   public void testDeferAnTimerIntermediateEventActionForTooLong() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
         timer.defer("PT4M30S", new DeferredAction() {
@@ -222,13 +222,13 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventTwo")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
       }
     });
 
-    when(scenario.actsOnUserTask("UserTask")).thenReturn(new UserTaskAction() {
+    when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         task.complete();

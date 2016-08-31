@@ -23,7 +23,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testTriggerTimer() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate processInstance) {
         Job job = rule.getManagementService().createJobQuery().processInstanceId(processInstance.getId()).singleResult();
@@ -42,7 +42,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testDoNothing() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
         // Deal with timerEventSubscription but do nothing here
@@ -62,7 +62,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testDoSomethingDeferred() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(final ProcessInstanceDelegate pi) {
         pi.defer("PT3M", new DeferredAction() {
@@ -82,7 +82,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testDoSomethingDeferredToExactlyTheTimer() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(final ProcessInstanceDelegate pi) {
         pi.defer("PT5M", new DeferredAction() {
@@ -102,7 +102,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testDoSomethingTooLate() {
 
-    when(scenario.actsOnTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
+    when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(final ProcessInstanceDelegate pi) {
         pi.defer("PT8M", new DeferredAction() {
