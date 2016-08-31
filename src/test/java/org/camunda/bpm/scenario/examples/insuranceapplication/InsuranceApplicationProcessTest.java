@@ -4,7 +4,9 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.variable.Variables;
+import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.runner.ScenarioRun;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,8 +32,8 @@ public class InsuranceApplicationProcessTest {
   @Rule public ProcessEngineRule rule = new ProcessEngineRule();
 
   // Mock all waitstates in main process and call activity with a scenario
-  @Mock private Scenario.Process insuranceApplication;
-  @Mock private Scenario.Process documentRequest;
+  @Mock private ProcessScenario insuranceApplication;
+  @Mock private ProcessScenario documentRequest;
   private Map<String, Object> variables;
 
   // Setup a default behaviour for all "completable" waitstates in your
@@ -106,12 +108,12 @@ public class InsuranceApplicationProcessTest {
 
     variables.put("riskAssessment", "green");
 
-    ProcessInstance pi = Scenario.run(insuranceApplication)
+    ScenarioRun run = Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables) // either just start process by key ...
         .fromBefore("EndEventApplicationAccepted")
-        .execute().getProcessInstance();
+        .execute();
 
-    assertThat(pi).variables().containsEntry("riskAssessment", "green");
+    assertThat(run.getProcessInstance()).variables().containsEntry("riskAssessment", "green");
     verify(insuranceApplication, never()).hasStarted("SubProcessManualCheck");
     verify(insuranceApplication).hasFinished("EndEventApplicationAccepted");
 
@@ -125,13 +127,13 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    ProcessInstance pi = Scenario.run(insuranceApplication)
+    ScenarioRun run = Scenario.run(insuranceApplication)
       .startBy(() -> { // ... or define your own starter function
         return rule.getRuntimeService().startProcessInstanceByKey("InsuranceApplication", variables);
       })
-      .execute().getProcessInstance();
+      .execute();
 
-    assertThat(pi).variables().containsEntry("riskAssessment", "yellow");
+    assertThat(run.getProcessInstance()).variables().containsEntry("riskAssessment", "yellow");
     verify(insuranceApplication).hasCompleted("SubProcessManualCheck");
     verify(insuranceApplication).hasFinished("EndEventApplicationAccepted");
 
@@ -145,12 +147,11 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    ProcessInstance pi = Scenario.run(insuranceApplication)
+    ScenarioRun run = Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables)
-        .execute().getProcessInstance();
+        .execute();
 
-
-    assertThat(pi).variables().containsEntry("riskAssessment", "red");
+    assertThat(run.getProcessInstance()).variables().containsEntry("riskAssessment", "red");
 
     verify(insuranceApplication, never()).hasStarted("SubProcessManualCheck");
     verify(insuranceApplication).hasFinished("EndEventApplicationRejected");
@@ -165,11 +166,11 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    ProcessInstance pi = Scenario.run(insuranceApplication)
+    ScenarioRun run = Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables)
-        .execute().getProcessInstance();
+        .execute();
 
-    assertThat(pi).variables()
+    assertThat(run.getProcessInstance()).variables()
       .containsEntry("riskAssessment", "yellow")
       .containsEntry("approved", true);
 
@@ -190,11 +191,11 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", false));
     });
 
-    ProcessInstance pi = Scenario.run(insuranceApplication)
+    ScenarioRun run = Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables)
-        .execute().getProcessInstance();
+        .execute();
 
-    assertThat(pi).variables()
+    assertThat(run.getProcessInstance()).variables()
       .containsEntry("riskAssessment", "yellow")
       .containsEntry("approved", false);
 
