@@ -7,6 +7,7 @@ import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.action.ScenarioAction;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
+import org.camunda.bpm.scenario.impl.util.Time;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -25,6 +26,18 @@ public class TimerIntermediateEventWaitstate extends AbstractProcessInstanceDele
   @Override
   protected ScenarioAction action(Scenario.Process scenario) {
     return scenario.actsOnTimerIntermediateEvent(getActivityId());
+  }
+
+  public void execute() {
+    ScenarioAction action = action();
+    Time.set(isExecutableAt());
+    try {
+      if (action != null)
+        action.execute(this);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+    runner.setExecuted(this);
   }
 
 }

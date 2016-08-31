@@ -118,11 +118,14 @@ public class TimerIntermediateEventTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/TimerIntermediateEventTest.bpmn"})
   public void testDoNotDealWithTimerEvent() {
 
     Scenario.run(scenario).startByKey("TimerIntermediateEventTest").execute();
+
+    verify(scenario, times(1)).hasFinished("TimerIntermediateEvent");
+    verify(scenario, times(1)).hasFinished("EndEvent");
 
   }
 

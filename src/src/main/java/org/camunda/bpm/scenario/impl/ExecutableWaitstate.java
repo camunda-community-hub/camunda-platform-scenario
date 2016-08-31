@@ -37,7 +37,7 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
   }
 
   public void execute() {
-    ScenarioAction action = action(runner.scenario);
+    ScenarioAction action = action();
     if (action == null)
       throw new AssertionError("Process Instance {"
           + getProcessInstance().getProcessDefinitionId() + ", "
@@ -54,6 +54,10 @@ public abstract class ExecutableWaitstate<I> extends AbstractExecutable<I> {
   }
 
   protected abstract ScenarioAction action(Scenario.Process scenario);
+
+  protected final ScenarioAction action() {
+    return action(runner.scenario);
+  };
 
   public Date isExecutableAt() {
     return historicDelegate.getStartTime();
