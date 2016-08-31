@@ -28,6 +28,12 @@ public interface ProcessRunner {
 
     }
 
+    interface StartingByMessage extends ExecutableRunner {
+
+      ScenarioRun execute();
+
+    }
+
     interface StartingByStarter extends ExecutableRunner {
 
       ScenarioRun execute();
@@ -41,6 +47,10 @@ public interface ProcessRunner {
     ExecutableRunner.StartingByKey startByKey(String processDefinitionKey);
 
     ExecutableRunner.StartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables);
+
+    ExecutableRunner.StartingByMessage startByMessage(String messageName);
+
+    ExecutableRunner.StartingByMessage startByMessage(String messageName, Map<String, Object> variables);
 
     ExecutableRunner.StartingByStarter startBy(ProcessStarter starter);
 

@@ -9,6 +9,10 @@ import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.impl.util.Api;
 import org.camunda.bpm.scenario.impl.waitstate.CallActivityWaitstate;
 import org.camunda.bpm.scenario.runner.ProcessRunner;
+import org.camunda.bpm.scenario.runner.ProcessRunner.ExecutableRunner.StartingByKey;
+import org.camunda.bpm.scenario.runner.ProcessRunner.ExecutableRunner.StartingByMessage;
+import org.camunda.bpm.scenario.runner.ProcessRunner.ExecutableRunner.StartingByStarter;
+import org.camunda.bpm.scenario.runner.ProcessRunner.ToBeStartedBy;
 import org.camunda.bpm.scenario.runner.ProcessStarter;
 import org.camunda.bpm.scenario.runner.ScenarioRun;
 
@@ -22,9 +26,10 @@ import java.util.Set;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.StartingByKey, ProcessRunner.ToBeStartedBy, ProcessRunner.ExecutableRunner.StartingByStarter, ProcessRunner, Runner {
+public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, ToBeStartedBy, StartingByStarter, ProcessRunner, Runner {
 
   private String processDefinitionKey;
+  private String startMessage;
   private ProcessStarter processStarter;
   private Map<String, Object> variables;
   private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
@@ -57,6 +62,19 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
   @Override
   public StartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables) {
     this.processDefinitionKey = processDefinitionKey;
+    this.variables = variables;
+    return this;
+  }
+
+  @Override
+  public StartingByMessage startByMessage(String messageName) {
+    this.startMessage = messageName;
+    return this;
+  }
+
+  @Override
+  public StartingByMessage startByMessage(String messageName, Map<String, Object> variables) {
+    this.startMessage = messageName;
     this.variables = variables;
     return this;
   }
@@ -108,29 +126,38 @@ public class ProcessRunnerImpl implements ProcessRunner.ExecutableRunner.Startin
   }
 
   public ProcessInstance run() {
-    if (this.processInstance == null && this.processStarter == null) {
-      this.processStarter = new ProcessStarter() {
-        @Override
-        public ProcessInstance start() {
-          if (fromActivityIds.isEmpty()) {
-            return scenarioExecutor.processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
-          } else {
-            ProcessInstantiationBuilder builder = scenarioExecutor.processEngine.getRuntimeService().createProcessInstanceByKey(processDefinitionKey);
-            for (String activityId: fromActivityIds.keySet()) {
-              Boolean from = fromActivityIds.get(activityId);
-              if (from) {
-                builder.startBeforeActivity(activityId);
-              } else {
-                builder.startAfterActivity(activityId);
+    if (this.processInstance == null) {
+      if (this.processDefinitionKey != null) {
+        this.processStarter = new ProcessStarter() {
+          @Override
+          public ProcessInstance start() {
+            if (fromActivityIds.isEmpty()) {
+              return scenarioExecutor.processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
+            } else {
+              ProcessInstantiationBuilder builder = scenarioExecutor.processEngine.getRuntimeService().createProcessInstanceByKey(processDefinitionKey);
+              for (String activityId : fromActivityIds.keySet()) {
+                Boolean from = fromActivityIds.get(activityId);
+                if (from) {
+                  builder.startBeforeActivity(activityId);
+                } else {
+                  builder.startAfterActivity(activityId);
+                }
               }
+              if (variables != null) {
+                builder.setVariables(variables);
+              }
+              return builder.execute();
             }
-            if (variables != null) {
-              builder.setVariables(variables);
-            }
-            return builder.execute();
           }
-        }
-      };
+        };
+      } else if (this.startMessage != null) {
+        this.processStarter = new ProcessStarter() {
+          @Override
+          public ProcessInstance start() {
+            return scenarioExecutor.processEngine.getRuntimeService().startProcessInstanceByMessage(startMessage, variables);
+          }
+        };
+      }
     } if (processInstance == null) {
       this.processInstance = processStarter.start();
       setExecuted();
