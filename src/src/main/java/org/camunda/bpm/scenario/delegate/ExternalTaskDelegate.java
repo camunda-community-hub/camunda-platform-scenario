@@ -9,10 +9,19 @@ import java.util.Map;
  */
 public interface ExternalTaskDelegate extends ExternalTask, ProcessInstanceAwareDelegate, DeferrableDelegate {
 
+  /**
+   * @since Camunda BPM 7.4.0
+   */
   void complete();
 
+  /**
+   * @since Camunda BPM 7.4.0
+   */
   void complete(Map<String, Object> variables);
 
+  /**
+   * @since Camunda BPM 7.5.0
+   */
   void handleBpmnError(String errorCode);
 
 }
