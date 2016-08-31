@@ -7,13 +7,16 @@ import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-@Deployment(resources = {"org/camunda/bpm/scenario/test/errors/BoundaryErrorEventTest.bpmn"})
-public class BoundaryErrorEventTest extends AbstractTest {
+@Deployment(resources = {"org/camunda/bpm/scenario/test/errors/EventBasedErrorSubProcessTest.bpmn"})
+public class EventBasedErrorSubProcessTest extends AbstractTest {
 
   @Test
   public void testCompleteTask() {
@@ -25,7 +28,7 @@ public class BoundaryErrorEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startByKey("BoundaryErrorEventTest").execute();
+    Scenario.run(scenario).startByKey("EventBasedErrorSubProcessTest").execute();
 
     verify(scenario, times(1)).hasFinished("EndEventCompleted");
     verify(scenario, never()).hasFinished("EndEventError");
@@ -42,7 +45,7 @@ public class BoundaryErrorEventTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startByKey("BoundaryErrorEventTest").execute();
+    Scenario.run(scenario).startByKey("EventBasedErrorSubProcessTest").execute();
 
     verify(scenario, never()).hasFinished("EndEventCompleted");
     verify(scenario, times(1)).hasFinished("EndEventError");
