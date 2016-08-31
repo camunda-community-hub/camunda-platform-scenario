@@ -46,32 +46,32 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "VW")
       .putValue("carType", "Golf");
 
-    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       task.complete(withVariables("approved", true));
     });
 
-    when(insuranceApplication.actsOnUserTask("UserTaskCheckApplicationUnderwriter")).thenReturn((task) -> {
+    when(insuranceApplication.waitsAtUserTask("UserTaskCheckApplicationUnderwriter")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("underwriter");
       task.complete();
     });
 
-    when(insuranceApplication.actsOnUserTask("UserTaskCheckApplicationTeamlead")).thenReturn((task) -> {
+    when(insuranceApplication.waitsAtUserTask("UserTaskCheckApplicationTeamlead")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("teamlead");
       task.complete();
     });
 
-    when(insuranceApplication.actsOnUserTask("UserTaskSpeedUpManualCheck")).thenReturn((task) -> {
+    when(insuranceApplication.waitsAtUserTask("UserTaskSpeedUpManualCheck")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("management");
       assertThat(task.getProcessInstance()).isNotEnded();
       task.complete();
     });
 
-    when(insuranceApplication.actsOnSendTask("SendTaskSendPolicy")).thenReturn((externalTask) -> {
+    when(insuranceApplication.waitsAtSendTask("SendTaskSendPolicy")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
 
-    when(insuranceApplication.actsOnSendTask("SendTaskSendRejection")).thenReturn((externalTask) -> {
+    when(insuranceApplication.waitsAtSendTask("SendTaskSendRejection")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
@@ -79,22 +79,22 @@ public class InsuranceApplicationProcessTest {
     when(insuranceApplication.runsCallActivity("CallActivityDocumentRequest"))
       .thenReturn(Scenario.use(documentRequest));
 
-    when(documentRequest.actsOnSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
+    when(documentRequest.waitsAtSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
 
-    when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
+    when(documentRequest.waitsAtReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       assertThat(receiveTask.getEventType()).isEqualTo("message");
       assertThat(receiveTask.getEventName()).isEqualTo("MSG_DOCUMENT_RECEIVED");
       receiveTask.receive();
     });
 
-    when(documentRequest.actsOnUserTask("UserTaskCallCustomer")).thenReturn((task) -> {
+    when(documentRequest.waitsAtUserTask("UserTaskCallCustomer")).thenReturn((task) -> {
       task.complete();
     });
 
-    when(documentRequest.actsOnSendTask("SendTaskSendReminder")).thenReturn((externalTask) -> {
+    when(documentRequest.waitsAtSendTask("SendTaskSendReminder")).thenReturn((externalTask) -> {
       assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
       externalTask.complete();
     });
@@ -186,7 +186,7 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       task.complete(withVariables("approved", false));
     });
 
@@ -211,7 +211,7 @@ public class InsuranceApplicationProcessTest {
         .putValue("carManufacturer", "Porsche")
         .putValue("carType", "911");
 
-    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
@@ -232,12 +232,12 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
+    when(documentRequest.waitsAtReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       receiveTask.defer("P1DT1M", receiveTask::receive);
     });
 
@@ -249,7 +249,7 @@ public class InsuranceApplicationProcessTest {
     verify(insuranceApplication, never()).hasStarted("UserTaskSpeedUpManualCheck");
     verify(documentRequest).hasCompleted("SendTaskSendReminder");
 
-    verify(documentRequest, times(1)).actsOnReceiveTask("ReceiveTaskWaitForDocuments");
+    verify(documentRequest, times(1)).waitsAtReceiveTask("ReceiveTaskWaitForDocuments");
 
   }
 
@@ -261,12 +261,12 @@ public class InsuranceApplicationProcessTest {
         .putValue("carManufacturer", "Porsche")
         .putValue("carType", "911");
 
-    when(insuranceApplication.actsOnUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
+    when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.actsOnReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
+    when(documentRequest.waitsAtReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
       receiveTask.defer("P7DT1M", receiveTask::receive);
     });
 
