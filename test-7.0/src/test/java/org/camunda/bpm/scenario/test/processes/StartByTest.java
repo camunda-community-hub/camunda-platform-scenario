@@ -17,10 +17,10 @@ import static org.mockito.Mockito.*;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class StartByMessageTest extends AbstractTest {
+public class StartByTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByMessageTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByTest.bpmn"})
   public void testStartByKey() {
 
     when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
@@ -30,7 +30,7 @@ public class StartByMessageTest extends AbstractTest {
       }
     });
 
-    Scenario.run(scenario).startByKey("StartByMessageTest").execute();
+    Scenario.run(scenario).startByKey("StartByTest").execute();
 
     verify(scenario, times(1)).hasFinished("StartEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -38,7 +38,7 @@ public class StartByMessageTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByMessageTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByTest.bpmn"})
   public void testStartByMessage1() {
 
     when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
@@ -56,7 +56,7 @@ public class StartByMessageTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByMessageTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByTest.bpmn"})
   public void testStartByStarterMessage1() {
 
     when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
@@ -79,7 +79,7 @@ public class StartByMessageTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByMessageTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByTest.bpmn"})
   public void testStartByMessage2() {
 
     when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
@@ -97,7 +97,7 @@ public class StartByMessageTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByMessageTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByTest.bpmn"})
   public void testStartByStarterMessage2() {
 
     when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
@@ -120,7 +120,7 @@ public class StartByMessageTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByMessageTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByTest.bpmn"})
   public void testStartByMessageWithVariables() {
 
     when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {

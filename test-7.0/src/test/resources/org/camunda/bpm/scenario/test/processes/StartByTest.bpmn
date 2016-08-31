@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.2.2">
-  <bpmn:process id="StartByMessageTest" isExecutable="true">
+  <bpmn:process id="StartByTest" isExecutable="true">
     <bpmn:sequenceFlow id="SequenceFlow_1t1dgm4" sourceRef="StartEvent1" targetRef="ReceiveTask" />
     <bpmn:startEvent id="StartEvent1">
       <bpmn:outgoing>SequenceFlow_1t1dgm4</bpmn:outgoing>
@@ -29,7 +29,7 @@
   <bpmn:message id="Message_083e6lq" name="msg_StartEvent1" />
   <bpmn:message id="Message_0uwkuet" name="msg_StartEvent2" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="StartByMessageTest">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="StartByTest">
       <bpmndi:BPMNEdge id="SequenceFlow_1t1dgm4_di" bpmnElement="SequenceFlow_1t1dgm4">
         <di:waypoint xsi:type="dc:Point" x="209" y="120" />
         <di:waypoint xsi:type="dc:Point" x="251" y="120" />
