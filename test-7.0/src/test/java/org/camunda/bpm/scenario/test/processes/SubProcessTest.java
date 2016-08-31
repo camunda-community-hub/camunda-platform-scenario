@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.subprocesses;
+package org.camunda.bpm.scenario.test.processes;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 public class SubProcessTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/subprocesses/SubProcessTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/SubProcessTest.bpmn"})
   public void testCompleteTask() {
 
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -33,7 +33,7 @@ public class SubProcessTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/subprocesses/SubProcessTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/SubProcessTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
@@ -52,7 +52,7 @@ public class SubProcessTest extends AbstractTest {
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/subprocesses/SubProcessTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/SubProcessTest.bpmn"})
   public void testDoNotDealWithTask() {
 
     Scenario.run(scenario).startByKey("SubProcessTest").execute();
@@ -60,7 +60,7 @@ public class SubProcessTest extends AbstractTest {
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/subprocesses/SubProcessTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/SubProcessTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
