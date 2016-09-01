@@ -107,7 +107,7 @@ public class InsuranceApplicationProcessTest {
         .fromBefore("EndEventApplicationAccepted")
         .execute();
 
-    assertThat(scenario.getProcessInstance()).variables().containsEntry("riskAssessment", "green");
+    assertThat(scenario.getInstance(insuranceApplication)).variables().containsEntry("riskAssessment", "green");
     verify(insuranceApplication, never()).hasStarted("SubProcessManualCheck");
     verify(insuranceApplication).hasFinished("EndEventApplicationAccepted");
 
@@ -127,7 +127,7 @@ public class InsuranceApplicationProcessTest {
       })
       .execute();
 
-    assertThat(scenario.getProcessInstance()).variables().containsEntry("riskAssessment", "yellow");
+    assertThat(scenario.getInstance(insuranceApplication)).variables().containsEntry("riskAssessment", "yellow");
     verify(insuranceApplication).hasCompleted("SubProcessManualCheck");
     verify(insuranceApplication).hasFinished("EndEventApplicationAccepted");
 
@@ -145,7 +145,7 @@ public class InsuranceApplicationProcessTest {
         .startByKey("InsuranceApplication", variables)
         .execute();
 
-    assertThat(scenario.getProcessInstance()).variables().containsEntry("riskAssessment", "red");
+    assertThat(scenario.getInstance(insuranceApplication)).variables().containsEntry("riskAssessment", "red");
 
     verify(insuranceApplication, never()).hasStarted("SubProcessManualCheck");
     verify(insuranceApplication).hasFinished("EndEventApplicationRejected");
@@ -164,7 +164,7 @@ public class InsuranceApplicationProcessTest {
         .startByKey("InsuranceApplication", variables)
         .execute();
 
-    assertThat(scenario.getProcessInstance()).variables()
+    assertThat(scenario.getInstance(insuranceApplication)).variables()
       .containsEntry("riskAssessment", "yellow")
       .containsEntry("approved", true);
 
@@ -189,7 +189,7 @@ public class InsuranceApplicationProcessTest {
         .startByKey("InsuranceApplication", variables)
         .execute();
 
-    assertThat(scenario.getProcessInstance()).variables()
+    assertThat(scenario.getInstance(insuranceApplication)).variables()
       .containsEntry("riskAssessment", "yellow")
       .containsEntry("approved", false);
 
