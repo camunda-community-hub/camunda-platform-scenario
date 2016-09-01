@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario;
 
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.ScenarioExecutorImpl;
-import org.camunda.bpm.scenario.runner.ProcessRunner;
+import org.camunda.bpm.scenario.run.ProcessRunner;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>

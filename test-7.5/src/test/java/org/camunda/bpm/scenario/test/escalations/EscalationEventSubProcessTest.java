@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.test.escalations;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.action.UserTaskAction;
+import org.camunda.bpm.scenario.act.UserTaskAction;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;

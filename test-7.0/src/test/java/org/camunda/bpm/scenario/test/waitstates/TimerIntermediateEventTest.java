@@ -4,8 +4,8 @@ import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.action.DeferredAction;
-import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
+import org.camunda.bpm.scenario.act.TimerIntermediateEventAction;
+import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
@@ -63,7 +63,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
     when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(final ProcessInstanceDelegate pi) {
-        pi.defer("PT3M", new DeferredAction() {
+        pi.defer("PT3M", new Deferred() {
           @Override
           public void execute() throws Exception {
             throw new Exception(); // expected
@@ -83,7 +83,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
     when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(final ProcessInstanceDelegate pi) {
-        pi.defer("PT5M", new DeferredAction() {
+        pi.defer("PT5M", new Deferred() {
           @Override
           public void execute() throws Exception {
             throw new Exception(); // expected
@@ -103,7 +103,7 @@ public class TimerIntermediateEventTest extends AbstractTest {
     when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEvent")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(final ProcessInstanceDelegate pi) {
-        pi.defer("PT8M", new DeferredAction() {
+        pi.defer("PT8M", new Deferred() {
           @Override
           public void execute() throws Exception {
             throw new Exception(); // not expected

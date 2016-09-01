@@ -3,10 +3,10 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.scenario.ExecutedScenario;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.impl.util.Time;
-import org.camunda.bpm.scenario.runner.ProcessRunner;
-import org.camunda.bpm.scenario.runner.ScenarioRun;
+import org.camunda.bpm.scenario.run.ProcessRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ScenarioExecutorImpl {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
   }
 
-  protected ScenarioRun execute() {
+  protected ExecutedScenario execute() {
     init();
     Time.init();
     List<Executable> executables;
@@ -40,7 +40,7 @@ public class ScenarioExecutorImpl {
         executables.get(0).execute();
     } while (!executables.isEmpty());
     Time.reset();
-    return new ScenarioRun() {
+    return new ExecutedScenario() {
       @Override
       public ProcessInstance getProcessInstance() {
         return ((ProcessRunnerImpl) runners.get(0)).processInstance;

@@ -5,16 +5,16 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
+import org.camunda.bpm.scenario.ExecutedScenario;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.impl.util.Api;
-import org.camunda.bpm.scenario.impl.waitstate.CallActivityWaitstate;
-import org.camunda.bpm.scenario.runner.ProcessRunner;
-import org.camunda.bpm.scenario.runner.ProcessRunner.ExecutableRunner.StartingByKey;
-import org.camunda.bpm.scenario.runner.ProcessRunner.ExecutableRunner.StartingByMessage;
-import org.camunda.bpm.scenario.runner.ProcessRunner.ExecutableRunner.StartingByStarter;
-import org.camunda.bpm.scenario.runner.ProcessRunner.ToBeStartedBy;
-import org.camunda.bpm.scenario.runner.ProcessStarter;
-import org.camunda.bpm.scenario.runner.ScenarioRun;
+import org.camunda.bpm.scenario.impl.waitstate.CallActivityExecutable;
+import org.camunda.bpm.scenario.run.ProcessRunner;
+import org.camunda.bpm.scenario.run.ProcessRunner.ExecutableRunner.StartingByKey;
+import org.camunda.bpm.scenario.run.ProcessRunner.ExecutableRunner.StartingByMessage;
+import org.camunda.bpm.scenario.run.ProcessRunner.ExecutableRunner.StartingByStarter;
+import org.camunda.bpm.scenario.run.ProcessRunner.ToBeStartedBy;
+import org.camunda.bpm.scenario.run.ProcessStarter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,7 +110,7 @@ public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, ToBe
   }
 
   @Override
-  public ScenarioRun execute() {
+  public ExecutedScenario execute() {
     return scenarioExecutor.execute();
   }
 
@@ -118,7 +118,7 @@ public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, ToBe
     return scenarioExecutor.processEngine;
   }
 
-  public void running(CallActivityWaitstate waitstate) {
+  public void running(CallActivityExecutable waitstate) {
     this.scenarioExecutor = waitstate.runner.scenarioExecutor;
     this.scenarioExecutor.runners.add(this);
     this.processInstance = waitstate;
@@ -203,7 +203,7 @@ public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, ToBe
     }
   }
 
-  public void setExecuted(ExecutableWaitstate waitstate) {
+  public void setExecuted(WaitstateExecutable waitstate) {
     executed.add(waitstate.historicDelegate.getId());
     setExecuted();
   }

@@ -1,28 +1,28 @@
 package org.camunda.bpm.scenario.impl.delegate;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.scenario.action.DeferredAction;
+import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
-import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
+import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
 public class ProcessInstanceDelegateImpl extends AbstractDelegate<ProcessInstance> implements ProcessInstanceDelegate {
 
-  ExecutableWaitstate waitstate;
+  WaitstateExecutable waitstate;
 
-  protected ProcessInstanceDelegateImpl(ExecutableWaitstate waitstate, ProcessInstance processInstance) {
+  protected ProcessInstanceDelegateImpl(WaitstateExecutable waitstate, ProcessInstance processInstance) {
     super(processInstance);
     this.waitstate = waitstate;
   }
 
-  public static ProcessInstanceDelegate newInstance(ExecutableWaitstate waitstate, ProcessInstance processInstance) {
+  public static ProcessInstanceDelegate newInstance(WaitstateExecutable waitstate, ProcessInstance processInstance) {
     return processInstance != null ? new ProcessInstanceDelegateImpl(waitstate, processInstance) : null;
   }
 
   @Override
-  public void defer(String period, DeferredAction action) {
+  public void defer(String period, Deferred action) {
     waitstate.defer(period, action);
   }
 

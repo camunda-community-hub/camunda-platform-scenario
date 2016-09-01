@@ -1,7 +1,7 @@
 package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.scenario.action.DeferredAction;
+import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.impl.util.Time;
 
 import java.util.Date;
@@ -14,9 +14,9 @@ public class DeferredExecutable extends AbstractExecutable<HistoricActivityInsta
   private static int sequence;
   private Integer id = ++sequence;
   private Date isExecutableAt;
-  private DeferredAction action;
+  private Deferred action;
 
-  protected DeferredExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance, String period, DeferredAction action) {
+  protected DeferredExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance, String period, Deferred action) {
     super(runner);
     this.delegate = instance;
     this.isExecutableAt = Time.dateAfter(period);

@@ -3,9 +3,9 @@ package org.camunda.bpm.scenario.test.timers;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.action.DeferredAction;
-import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
-import org.camunda.bpm.scenario.action.UserTaskAction;
+import org.camunda.bpm.scenario.act.TimerIntermediateEventAction;
+import org.camunda.bpm.scenario.act.UserTaskAction;
+import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
@@ -72,7 +72,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(final TaskDelegate task) {
-        task.defer("PT2M", new DeferredAction() {
+        task.defer("PT2M", new Deferred() {
           @Override
           public void execute() {
             task.complete();
@@ -111,7 +111,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(final TaskDelegate task) {
-        task.defer("PT5M", new DeferredAction() {
+        task.defer("PT5M", new Deferred() {
           @Override
           public void execute() {
             task.complete();
@@ -150,7 +150,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(final TaskDelegate task) {
-        task.defer("PT8M", new DeferredAction() {
+        task.defer("PT8M", new Deferred() {
           @Override
           public void execute() {
             task.complete();
@@ -177,7 +177,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
     when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
-        timer.defer("PT3M", new DeferredAction() {
+        timer.defer("PT3M", new Deferred() {
           @Override
           public void execute() throws Exception {
             throw new Exception(); // expected
@@ -211,7 +211,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
     when(scenario.waitsAtTimerIntermediateEvent("TimerIntermediateEventOne")).thenReturn(new TimerIntermediateEventAction() {
       @Override
       public void execute(ProcessInstanceDelegate timer) {
-        timer.defer("PT4M30S", new DeferredAction() {
+        timer.defer("PT4M30S", new Deferred() {
           @Override
           public void execute() throws Exception {
             throw new Exception(); // not expected

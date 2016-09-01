@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.action.ServiceTaskAction;
+import org.camunda.bpm.scenario.act.ServiceTaskAction;
 import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;

@@ -1,22 +1,22 @@
 package org.camunda.bpm.scenario;
 
-import org.camunda.bpm.scenario.action.BusinessRuleTaskAction;
-import org.camunda.bpm.scenario.action.EventBasedGatewayAction;
-import org.camunda.bpm.scenario.action.MessageIntermediateCatchEventAction;
-import org.camunda.bpm.scenario.action.MessageIntermediateThrowEventAction;
-import org.camunda.bpm.scenario.action.ReceiveTaskAction;
-import org.camunda.bpm.scenario.action.SendTaskAction;
-import org.camunda.bpm.scenario.action.ServiceTaskAction;
-import org.camunda.bpm.scenario.action.SignalIntermediateCatchEventAction;
-import org.camunda.bpm.scenario.action.TimerIntermediateEventAction;
-import org.camunda.bpm.scenario.action.UserTaskAction;
-import org.camunda.bpm.scenario.runner.ProcessRunner;
-import org.camunda.bpm.scenario.runner.VerifiableScenario;
+import org.camunda.bpm.scenario.act.BusinessRuleTaskAction;
+import org.camunda.bpm.scenario.act.EventBasedGatewayAction;
+import org.camunda.bpm.scenario.act.MessageIntermediateCatchEventAction;
+import org.camunda.bpm.scenario.act.MessageIntermediateThrowEventAction;
+import org.camunda.bpm.scenario.act.ReceiveTaskAction;
+import org.camunda.bpm.scenario.act.SendTaskAction;
+import org.camunda.bpm.scenario.act.ServiceTaskAction;
+import org.camunda.bpm.scenario.act.SignalIntermediateCatchEventAction;
+import org.camunda.bpm.scenario.act.TimerIntermediateEventAction;
+import org.camunda.bpm.scenario.act.UserTaskAction;
+import org.camunda.bpm.scenario.run.ProcessRunner;
+import org.camunda.bpm.scenario.run.RunnableScenario;
 
 /**
- * Created by martin on 31.08.16.
+ * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ProcessScenario extends VerifiableScenario {
+public interface ProcessScenario extends RunnableScenario {
 
   /**
    * @since Camunda BPM 7.0.0-Final

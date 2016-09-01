@@ -33,10 +33,10 @@ public abstract class AbstractExecutable<I> extends AbstractProcessEngineService
     if (compared == 0) {
       if (this.getClass().equals(other.getClass())) {
         return 0;
-      } else if (other instanceof ExecutableJob) {
+      } else if (other instanceof JobExecutable) {
         return -1;
       } else {
-        return other instanceof ExecutableWaitstate ? -1 : 1;
+        return other instanceof WaitstateExecutable ? -1 : 1;
       }
     } else {
       return compared;

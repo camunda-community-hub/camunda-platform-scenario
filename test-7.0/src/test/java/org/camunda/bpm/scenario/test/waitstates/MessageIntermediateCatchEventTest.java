@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.action.MessageIntermediateCatchEventAction;
+import org.camunda.bpm.scenario.act.MessageIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;

@@ -3,9 +3,9 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.impl.persistence.entity.JobEntity;
 import org.camunda.bpm.engine.runtime.Job;
-import org.camunda.bpm.scenario.action.DeferredAction;
-import org.camunda.bpm.scenario.impl.job.ExecutableContinuation;
-import org.camunda.bpm.scenario.impl.waitstate.IgnoredWaitstate;
+import org.camunda.bpm.scenario.defer.Deferred;
+import org.camunda.bpm.scenario.impl.job.ContinuationExecutable;
+import org.camunda.bpm.scenario.impl.waitstate.IgnoredExecutable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,30 +24,30 @@ public interface Executable<S> extends Comparable<S> {
   class Waitstates {
 
     static Map<String, String> types = new HashMap<String, String>(); static {
-      types.put("userTask", "UserTaskWaitstate");
-      types.put("intermediateSignalCatch", "SignalIntermediateCatchEventWaitstate");
-      types.put("intermediateMessageCatch", "MessageIntermediateCatchEventWaitstate");
-      types.put("receiveTask", "ReceiveTaskWaitstate");
-      types.put("intermediateTimer", "TimerIntermediateEventWaitstate");
-      types.put("eventBasedGateway", "EventBasedGatewayWaitstate");
-      types.put("callActivity", "CallActivityWaitstate");
-      types.put("serviceTask", "ServiceTaskWaitstate");
-      types.put("businessRuleTask", "BusinessRuleTaskWaitstate");
-      types.put("sendTask", "SendTaskWaitstate");
-      types.put("intermediateMessageThrowEvent", "MessageIntermediateThrowEventWaitstate");
+      types.put("userTask", "UserTaskExecutable");
+      types.put("intermediateSignalCatch", "SignalIntermediateCatchEventExecutable");
+      types.put("intermediateMessageCatch", "MessageIntermediateCatchEventExecutable");
+      types.put("receiveTask", "ReceiveTaskExecutable");
+      types.put("intermediateTimer", "TimerIntermediateEventExecutable");
+      types.put("eventBasedGateway", "EventBasedGatewayExecutable");
+      types.put("callActivity", "CallActivityExecutable");
+      types.put("serviceTask", "ServiceTaskExecutable");
+      types.put("businessRuleTask", "BusinessRuleTaskExecutable");
+      types.put("sendTask", "SendTaskExecutable");
+      types.put("intermediateMessageThrowEvent", "MessageIntermediateThrowEventExecutable");
     }
 
-    static ExecutableWaitstate newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    static WaitstateExecutable newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
       if (!runner.isExecuted(instance)) {
         String type = instance.getActivityType();
         if (types.containsKey(type)) {
           try {
-            return (ExecutableWaitstate) Class.forName(IgnoredWaitstate.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class).newInstance(runner, instance);
+            return (WaitstateExecutable) Class.forName(IgnoredExecutable.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class).newInstance(runner, instance);
           } catch (Exception e) {
             throw new IllegalArgumentException(e);
           }
         }
-        return new IgnoredWaitstate(runner, instance);
+        return new IgnoredExecutable(runner, instance);
       }
       return null;
     }
@@ -64,18 +64,18 @@ public interface Executable<S> extends Comparable<S> {
   class Jobs {
 
     static Map<String, String> types = new HashMap<String, String>(); static {
-      types.put("async-continuation", "ExecutableContinuation");
-      types.put("timer-transition", "ExecutableTimerJob");
-      types.put("timer-intermediate-transition", "ExecutableTimerJob");
-      types.put("timer-start-event-subprocess", "ExecutableTimerJob");
+      types.put("async-continuation", "ContinuationExecutable");
+      types.put("timer-transition", "TimerJobExecutable");
+      types.put("timer-intermediate-transition", "TimerJobExecutable");
+      types.put("timer-start-event-subprocess", "TimerJobExecutable");
     }
 
-    static ExecutableJob newInstance(ProcessRunnerImpl runner, Job job) {
+    static JobExecutable newInstance(ProcessRunnerImpl runner, Job job) {
       JobEntity entity = (JobEntity) job;
       String type = entity.getJobHandlerType();
       if (types.containsKey(type)) {
         try {
-          return (ExecutableJob) Class.forName(ExecutableContinuation.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, Job.class).newInstance(runner, job);
+          return (JobExecutable) Class.forName(ContinuationExecutable.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, Job.class).newInstance(runner, job);
         } catch (Exception e) {
           throw new IllegalArgumentException(e);
         }
@@ -95,7 +95,7 @@ public interface Executable<S> extends Comparable<S> {
 
     private static Map<String, List<DeferredExecutable>> executablesMap = new HashMap<String, List<DeferredExecutable>>();
 
-    public static DeferredExecutable newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String period, DeferredAction action) {
+    public static DeferredExecutable newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String period, Deferred action) {
       return new DeferredExecutable(runner, instance, period, action);
     }
 

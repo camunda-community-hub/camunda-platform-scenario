@@ -1,10 +1,10 @@
 package org.camunda.bpm.scenario.impl.delegate;
 
 import org.camunda.bpm.engine.runtime.EventSubscription;
-import org.camunda.bpm.scenario.action.DeferredAction;
+import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
-import org.camunda.bpm.scenario.impl.ExecutableWaitstate;
+import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,18 +16,18 @@ import java.util.Map;
  */
 public class EventSubscriptionDelegateImpl extends AbstractDelegate<EventSubscription> implements EventSubscriptionDelegate {
 
-  ExecutableWaitstate waitstate;
+  WaitstateExecutable waitstate;
 
-  protected EventSubscriptionDelegateImpl(ExecutableWaitstate waitstate, EventSubscription eventSubscription) {
+  protected EventSubscriptionDelegateImpl(WaitstateExecutable waitstate, EventSubscription eventSubscription) {
     super(eventSubscription);
     this.waitstate = waitstate;
   }
 
-  public static EventSubscriptionDelegate newInstance(ExecutableWaitstate waitstate, EventSubscription eventSubscription) {
+  public static EventSubscriptionDelegate newInstance(WaitstateExecutable waitstate, EventSubscription eventSubscription) {
     return eventSubscription != null ? new EventSubscriptionDelegateImpl(waitstate, eventSubscription) : null;
   }
 
-  public static List<EventSubscriptionDelegate> newInstance(ExecutableWaitstate waitstate, List<EventSubscription> eventSubscriptions) {
+  public static List<EventSubscriptionDelegate> newInstance(WaitstateExecutable waitstate, List<EventSubscription> eventSubscriptions) {
     List<EventSubscriptionDelegate> delegates = new ArrayList<EventSubscriptionDelegate>();
     for (EventSubscription eventSubscription: eventSubscriptions) {
       delegates.add(newInstance(waitstate, eventSubscription));
@@ -41,7 +41,7 @@ public class EventSubscriptionDelegateImpl extends AbstractDelegate<EventSubscri
   }
 
   @Override
-  public void defer(String period, DeferredAction action) {
+  public void defer(String period, Deferred action) {
     waitstate.defer(period, action);
   }
 

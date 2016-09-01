@@ -2,8 +2,8 @@ package org.camunda.bpm.scenario.test.timers;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.action.DeferredAction;
-import org.camunda.bpm.scenario.action.UserTaskAction;
+import org.camunda.bpm.scenario.act.UserTaskAction;
+import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(final TaskDelegate task) {
-        task.defer("PT5M", new DeferredAction() {
+        task.defer("PT5M", new Deferred() {
           @Override
           public void execute() {
             // do nothing
@@ -69,7 +69,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(final TaskDelegate task) {
-        task.defer("PT6M", new DeferredAction() {
+        task.defer("PT6M", new Deferred() {
           @Override
           public void execute() {
             task.complete();
@@ -94,7 +94,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(final TaskDelegate task) {
-        task.defer("PT4M", new DeferredAction() {
+        task.defer("PT4M", new Deferred() {
           @Override
           public void execute() {
             task.complete();
