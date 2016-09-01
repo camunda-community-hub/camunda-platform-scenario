@@ -1,7 +1,6 @@
 package org.camunda.bpm.scenario.test.waitstates;
 
 import org.camunda.bpm.engine.runtime.Job;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.act.TimerIntermediateEventAction;
@@ -47,9 +46,9 @@ public class TimerIntermediateEventTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario)
+    Scenario.run(scenario)
         .startByKey("TimerIntermediateEventTest")
-        .execute().getProcessInstance();
+        .execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");

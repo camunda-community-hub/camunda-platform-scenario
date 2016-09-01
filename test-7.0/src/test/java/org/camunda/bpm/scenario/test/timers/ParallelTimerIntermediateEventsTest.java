@@ -1,7 +1,7 @@
 package org.camunda.bpm.scenario.test.timers;
 
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
+import org.camunda.bpm.scenario.ExecutedScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.act.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.act.UserTaskAction;
@@ -42,14 +42,14 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute().getProcessInstance();
+    ExecutedScenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
-    assertThat(pi).hasPassedInOrder("UserTask", "TimerIntermediateEventOne", "TimerIntermediateEventTwo");
+    assertThat(executed.getInstance(scenario)).hasPassedInOrder("UserTask", "TimerIntermediateEventOne", "TimerIntermediateEventTwo");
 
   }
 
@@ -81,14 +81,14 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute().getProcessInstance();
+    ExecutedScenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
-    assertThat(pi).hasPassedInOrder("UserTask", "TimerIntermediateEventOne", "TimerIntermediateEventTwo");
+    assertThat(executed.getInstance(scenario)).hasPassedInOrder("UserTask", "TimerIntermediateEventOne", "TimerIntermediateEventTwo");
 
   }
 
@@ -120,14 +120,14 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute().getProcessInstance();
+    ExecutedScenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
-    assertThat(pi).hasPassedInOrder("TimerIntermediateEventOne", "UserTask", "TimerIntermediateEventTwo");
+    assertThat(executed.getInstance(scenario)).hasPassedInOrder("TimerIntermediateEventOne", "UserTask", "TimerIntermediateEventTwo");
 
   }
 
@@ -159,14 +159,14 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ProcessInstance pi = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute().getProcessInstance();
+    ExecutedScenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
-    assertThat(pi).hasPassedInOrder("TimerIntermediateEventOne", "TimerIntermediateEventTwo", "UserTask");
+    assertThat(executed.getInstance(scenario)).hasPassedInOrder("TimerIntermediateEventOne", "TimerIntermediateEventTwo", "UserTask");
 
   }
 

@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ScenarioExecutorImpl {
+public class ScenarioExecutorImpl implements ExecutedScenario {
 
   private boolean executed;
 
@@ -40,12 +40,29 @@ public class ScenarioExecutorImpl {
         executables.get(0).execute();
     } while (!executables.isEmpty());
     Time.reset();
-    return new ExecutedScenario() {
-      @Override
-      public ProcessInstance getProcessInstance() {
-        return ((ProcessRunnerImpl) runners.get(0)).processInstance;
+    return this;
+  }
+
+  @Override
+  public ProcessInstance getInstance(ProcessScenario scenario) {
+    List<ProcessInstance> instances = getInstances(scenario);
+    if (instances.size() > 1)
+      throw new IllegalStateException("Scenario executed more than a single process instance based on the scenario provided as a parameter");
+    return instances.size() == 1 ? instances.get(0) : null;
+  }
+
+  @Override
+  public List<ProcessInstance> getInstances(ProcessScenario scenario) {
+    List<ProcessInstance> instances = new ArrayList<ProcessInstance>();
+    for (Runner runner: runners) {
+      if (runner instanceof ProcessRunnerImpl) {
+        ProcessRunnerImpl processRunner = (ProcessRunnerImpl) runner;
+        if (processRunner.scenario == scenario) {
+          instances.add(processRunner.processInstance);
+        }
       }
-    };
+    }
+    return instances;
   }
 
   protected void init() {
