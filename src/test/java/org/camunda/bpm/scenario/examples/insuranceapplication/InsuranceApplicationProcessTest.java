@@ -3,7 +3,6 @@ package org.camunda.bpm.scenario.examples.insuranceapplication;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.variable.Variables;
-import org.camunda.bpm.scenario.ExecutedScenario;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.junit.Before;
@@ -102,7 +101,7 @@ public class InsuranceApplicationProcessTest {
 
     variables.put("riskAssessment", "green");
 
-    ExecutedScenario scenario = Scenario.run(insuranceApplication)
+    Scenario scenario = Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables) // either just start process by key ...
         .fromBefore("EndEventApplicationAccepted")
         .execute();
@@ -121,7 +120,7 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    ExecutedScenario scenario = Scenario.run(insuranceApplication)
+    Scenario scenario = Scenario.run(insuranceApplication)
       .startBy(() -> { // ... or define your own starter function
         return rule.getRuntimeService().startProcessInstanceByKey("InsuranceApplication", variables);
       })
@@ -141,7 +140,7 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    ExecutedScenario scenario = Scenario.run(insuranceApplication)
+    Scenario scenario = Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables)
         .execute();
 
@@ -160,7 +159,7 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    ExecutedScenario scenario = Scenario.run(insuranceApplication)
+    Scenario scenario = Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables)
         .execute();
 
@@ -185,7 +184,7 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", false));
     });
 
-    ExecutedScenario scenario = Scenario.run(insuranceApplication)
+    Scenario scenario = Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables)
         .execute();
 
