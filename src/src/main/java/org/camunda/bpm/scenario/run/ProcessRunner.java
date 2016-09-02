@@ -1,8 +1,8 @@
 package org.camunda.bpm.scenario.run;
 
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.scenario.ExecutedScenario;
 import org.camunda.bpm.scenario.ProcessScenario;
+import org.camunda.bpm.scenario.Scenario;
 
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public interface ProcessRunner {
 
     ExecutableRunner engine(ProcessEngine processEngine);
 
-    ExecutedScenario execute();
+    Scenario execute();
 
     ToBeStartedBy run(ProcessScenario scenario);
 
@@ -25,19 +25,19 @@ public interface ProcessRunner {
 
       StartingByKey fromAfter(String activityId);
 
-      ExecutedScenario execute();
+      Scenario execute();
 
     }
 
     interface StartingByMessage extends ExecutableRunner {
 
-      ExecutedScenario execute();
+      Scenario execute();
 
     }
 
     interface StartingByStarter extends ExecutableRunner {
 
-      ExecutedScenario execute();
+      Scenario execute();
 
     }
 

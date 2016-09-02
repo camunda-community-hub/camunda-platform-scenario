@@ -3,8 +3,8 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.scenario.ExecutedScenario;
 import org.camunda.bpm.scenario.ProcessScenario;
+import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.impl.util.Time;
 import org.camunda.bpm.scenario.run.ProcessRunner;
 
@@ -15,18 +15,18 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ScenarioExecutorImpl implements ExecutedScenario {
+public class ScenarioImpl extends Scenario {
 
   private boolean executed;
 
   ProcessEngine processEngine;
   List<Runner> runners = new ArrayList<Runner>();
 
-  public ScenarioExecutorImpl(ProcessScenario scenario) {
+  public ScenarioImpl(ProcessScenario scenario) {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
   }
 
-  protected ExecutedScenario execute() {
+  protected Scenario execute() {
     init();
     Time.init();
     List<Executable> executables;
@@ -78,7 +78,7 @@ public class ScenarioExecutorImpl implements ExecutedScenario {
         String message = processEngines.size() == 0 ? "No ProcessEngine found to be " +
             "registered with " + ProcessEngines.class.getSimpleName() + "!"
             : String.format(processEngines.size() + " ProcessEngines initialized. " +
-            "Explicitely initialise engine by calling " + ScenarioExecutorImpl.class.getSimpleName() +
+            "Explicitely initialise engine by calling " + ScenarioImpl.class.getSimpleName() +
             "(scenario, engine)");
         throw new IllegalStateException(message);
       }

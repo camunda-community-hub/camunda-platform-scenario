@@ -1,7 +1,6 @@
 package org.camunda.bpm.scenario.test.timers;
 
 import org.camunda.bpm.engine.test.Deployment;
-import org.camunda.bpm.scenario.ExecutedScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.act.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.act.UserTaskAction;
@@ -42,7 +41,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ExecutedScenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
+    Scenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
@@ -81,7 +80,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ExecutedScenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
+    Scenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
@@ -120,7 +119,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ExecutedScenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
+    Scenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");
@@ -159,7 +158,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
       }
     });
 
-    ExecutedScenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
+    Scenario executed = Scenario.run(scenario).startByKey("ParallelTimerIntermediateTest").execute();
 
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventOne");
     verify(scenario, times(1)).hasFinished("TimerIntermediateEventTwo");

@@ -3,7 +3,6 @@ package org.camunda.bpm.scenario.test.processes;
 import org.camunda.bpm.engine.history.HistoricVariableInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
-import org.camunda.bpm.scenario.ExecutedScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.act.ReceiveTaskAction;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
@@ -130,7 +129,7 @@ public class StartByTest extends AbstractTest {
       }
     });
 
-    ExecutedScenario run = Scenario.run(scenario).startBy(new ProcessStarter() {
+    Scenario run = Scenario.run(scenario).startBy(new ProcessStarter() {
       @Override
       public ProcessInstance start() {
         return rule.getRuntimeService().startProcessInstanceByMessage("msg_StartEvent1", withVariables("variable", true));

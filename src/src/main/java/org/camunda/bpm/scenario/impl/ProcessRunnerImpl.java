@@ -5,8 +5,8 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
-import org.camunda.bpm.scenario.ExecutedScenario;
 import org.camunda.bpm.scenario.ProcessScenario;
+import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.impl.util.Api;
 import org.camunda.bpm.scenario.impl.waitstate.CallActivityExecutable;
 import org.camunda.bpm.scenario.run.ProcessRunner;
@@ -38,11 +38,11 @@ public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, ToBe
   private Set<String> started = new HashSet<String>();
   private Set<String> finished = new HashSet<String>();
 
-  ScenarioExecutorImpl scenarioExecutor;
+  ScenarioImpl scenarioExecutor;
   ProcessScenario scenario;
   ProcessInstance processInstance;
 
-  public ProcessRunnerImpl(ScenarioExecutorImpl scenarioExecutor, ProcessScenario scenario) {
+  public ProcessRunnerImpl(ScenarioImpl scenarioExecutor, ProcessScenario scenario) {
     this.scenarioExecutor = scenarioExecutor;
     this.scenario = scenario;
   }
@@ -110,7 +110,7 @@ public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, ToBe
   }
 
   @Override
-  public ExecutedScenario execute() {
+  public Scenario execute() {
     return scenarioExecutor.execute();
   }
 
