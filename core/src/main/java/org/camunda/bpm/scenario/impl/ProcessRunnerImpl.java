@@ -13,7 +13,7 @@ import org.camunda.bpm.scenario.run.ProcessRunner;
 import org.camunda.bpm.scenario.run.ProcessRunner.ExecutableRunner.StartingByKey;
 import org.camunda.bpm.scenario.run.ProcessRunner.ExecutableRunner.StartingByMessage;
 import org.camunda.bpm.scenario.run.ProcessRunner.ExecutableRunner.StartingByStarter;
-import org.camunda.bpm.scenario.run.ProcessRunner.ToBeStartedBy;
+import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 import org.camunda.bpm.scenario.run.ProcessStarter;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, ToBeStartedBy, StartingByStarter, ProcessRunner, Runner {
+public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, StartableRunner, StartingByStarter, ProcessRunner, Runner {
 
   private String processDefinitionKey;
   private String startMessage;
@@ -98,7 +98,7 @@ public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, ToBe
   }
 
   @Override
-  public ToBeStartedBy run(ProcessScenario scenario) {
+  public StartableRunner run(ProcessScenario scenario) {
     scenarioExecutor.runners.add(new ProcessRunnerImpl(scenarioExecutor, scenario));
     return scenarioExecutor.toBeStartedBy();
   }

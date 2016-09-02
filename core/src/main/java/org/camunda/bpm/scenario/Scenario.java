@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.ScenarioImpl;
 import org.camunda.bpm.scenario.run.ProcessRunner;
+import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public abstract class Scenario {
 
-  public static ProcessRunner.ToBeStartedBy run(ProcessScenario scenario) {
+  public static StartableRunner run(ProcessScenario scenario) {
     return new ScenarioImpl(scenario).toBeStartedBy();
   }
 

@@ -6,7 +6,7 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.impl.util.Time;
-import org.camunda.bpm.scenario.run.ProcessRunner;
+import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,8 +89,8 @@ public class ScenarioImpl extends Scenario {
     this.processEngine = processEngine;
   }
 
-  public ProcessRunner.ToBeStartedBy toBeStartedBy() {
-    return (ProcessRunner.ToBeStartedBy) runners.get(runners.size() - 1);
+  public StartableRunner toBeStartedBy() {
+    return (StartableRunner) runners.get(runners.size() - 1);
   }
 
 }

@@ -17,7 +17,7 @@ public interface ProcessRunner {
 
     Scenario execute();
 
-    ToBeStartedBy run(ProcessScenario scenario);
+    StartableRunner run(ProcessScenario scenario);
 
     interface StartingByKey extends ExecutableRunner {
 
@@ -43,7 +43,7 @@ public interface ProcessRunner {
 
   }
 
-  interface ToBeStartedBy {
+  interface StartableRunner {
 
     ExecutableRunner.StartingByKey startByKey(String processDefinitionKey);
 
