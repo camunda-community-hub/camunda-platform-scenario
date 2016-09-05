@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.2.2">
+  <bpmn:process id="MessageIntermediateThrowEventTest" isExecutable="true">
+    <bpmn:startEvent id="StartEvent">
+      <bpmn:outgoing>SequenceFlow_1oqvs4c</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1oqvs4c" sourceRef="StartEvent" targetRef="MessageIntermediateThrowEvent" />
+    <bpmn:endEvent id="EndEvent">
+      <bpmn:incoming>SequenceFlow_0lodtw4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0lodtw4" sourceRef="MessageIntermediateThrowEvent" targetRef="EndEvent" />
+    <bpmn:intermediateThrowEvent id="MessageIntermediateThrowEvent">
+      <bpmn:incoming>SequenceFlow_1oqvs4c</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0lodtw4</bpmn:outgoing>
+      <bpmn:messageEventDefinition camunda:type="external" camunda:topic="topic" />
+    </bpmn:intermediateThrowEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="MessageIntermediateThrowEventTest">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1oqvs4c_di" bpmnElement="SequenceFlow_1oqvs4c">
+        <di:waypoint xsi:type="dc:Point" x="209" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="274" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="196.5" y="95" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1jnl5w4_di" bpmnElement="EndEvent">
+        <dc:Bounds x="381" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="354" y="138" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0lodtw4_di" bpmnElement="SequenceFlow_0lodtw4">
+        <di:waypoint xsi:type="dc:Point" x="310" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="381" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="300.5" y="95" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="IntermediateThrowEvent_110imu3_di" bpmnElement="MessageIntermediateThrowEvent">
+        <dc:Bounds x="274" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="247" y="138" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
