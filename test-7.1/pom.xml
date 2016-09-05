@@ -5,14 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>camunda-bpm-assert-scenario-test-7.1</artifactId>
-    <version>0.1-SNAPSHOT</version>
 
     <properties>
         <camunda-bpm.version>7.1.0-Final</camunda-bpm.version>
     </properties>
 
     <parent>
-        <artifactId>camunda-bpm-assert-scenario-parent</artifactId>
+        <artifactId>camunda-bpm-assert-scenario-test-parent</artifactId>
         <groupId>org.camunda.bpm.extension</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>
@@ -23,34 +22,5 @@
             <artifactId>camunda-bpm-assert-scenario</artifactId>
         </dependency>
     </dependencies>
-
-    <developers>
-        <developer>
-            <name>Martin Schimak</name>
-            <organization>plexiti GmbH</organization>
-            <organizationUrl>http://plexiti.com/</organizationUrl>
-        </developer>
-    </developers>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <configuration>
-                        <skip>true</skip>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <configuration>
-                        <skip>true</skip>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
 
 </project>

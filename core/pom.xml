@@ -5,9 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>camunda-bpm-assert-scenario</artifactId>
-    <version>0.1-SNAPSHOT</version>
 
-    <url>https://github.com/camunda/camunda-bpm-assert</url>
+    <url>https://github.com/camunda/camunda-bpm-assert-scenario</url>
 
     <description>Camunda BPM Assert Scenario allows you to specify the actions
         needed at process wait states before you start the process instances
@@ -21,6 +20,7 @@
         <artifactId>camunda-bpm-assert-scenario-parent</artifactId>
         <groupId>org.camunda.bpm.extension</groupId>
         <version>0.1-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <dependencies>
@@ -31,6 +31,11 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <organization>
+        <name>plexiti GmbH</name>
+        <url>http://plexiti.com</url>
+    </organization>
 
     <developers>
         <developer>
