@@ -48,7 +48,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
-    assertThat(executed.getInstance(scenario)).hasPassedInOrder("UserTask", "TimerIntermediateEventOne", "TimerIntermediateEventTwo");
+    assertThat(executed.instance(scenario)).hasPassedInOrder("UserTask", "TimerIntermediateEventOne", "TimerIntermediateEventTwo");
 
   }
 
@@ -87,7 +87,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
-    assertThat(executed.getInstance(scenario)).hasPassedInOrder("UserTask", "TimerIntermediateEventOne", "TimerIntermediateEventTwo");
+    assertThat(executed.instance(scenario)).hasPassedInOrder("UserTask", "TimerIntermediateEventOne", "TimerIntermediateEventTwo");
 
   }
 
@@ -126,7 +126,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
-    assertThat(executed.getInstance(scenario)).hasPassedInOrder("TimerIntermediateEventOne", "UserTask", "TimerIntermediateEventTwo");
+    assertThat(executed.instance(scenario)).hasPassedInOrder("TimerIntermediateEventOne", "UserTask", "TimerIntermediateEventTwo");
 
   }
 
@@ -165,7 +165,7 @@ public class ParallelTimerIntermediateEventsTest extends AbstractTest {
     verify(scenario, times(1)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
-    assertThat(executed.getInstance(scenario)).hasPassedInOrder("TimerIntermediateEventOne", "TimerIntermediateEventTwo", "UserTask");
+    assertThat(executed.instance(scenario)).hasPassedInOrder("TimerIntermediateEventOne", "TimerIntermediateEventTwo", "UserTask");
 
   }
 

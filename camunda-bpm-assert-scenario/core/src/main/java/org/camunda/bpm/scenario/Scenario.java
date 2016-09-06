@@ -21,8 +21,8 @@ public abstract class Scenario {
     return new ProcessRunnerImpl(null, scenario);
   }
 
-  public abstract ProcessInstance getInstance(ProcessScenario scenario);
+  public abstract ProcessInstance instance(ProcessScenario scenario);
 
-  public abstract List<ProcessInstance> getInstances(ProcessScenario scenario);
+  public abstract List<ProcessInstance> instances(ProcessScenario scenario);
 
 }

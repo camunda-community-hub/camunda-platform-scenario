@@ -44,15 +44,15 @@ public class ScenarioImpl extends Scenario {
   }
 
   @Override
-  public ProcessInstance getInstance(ProcessScenario scenario) {
-    List<ProcessInstance> instances = getInstances(scenario);
+  public ProcessInstance instance(ProcessScenario scenario) {
+    List<ProcessInstance> instances = instances(scenario);
     if (instances.size() > 1)
       throw new IllegalStateException("Scenario executed more than a single process instance based on the scenario provided as a parameter");
     return instances.size() == 1 ? instances.get(0) : null;
   }
 
   @Override
-  public List<ProcessInstance> getInstances(ProcessScenario scenario) {
+  public List<ProcessInstance> instances(ProcessScenario scenario) {
     List<ProcessInstance> instances = new ArrayList<ProcessInstance>();
     for (Runner runner: runners) {
       if (runner instanceof ProcessRunnerImpl) {
