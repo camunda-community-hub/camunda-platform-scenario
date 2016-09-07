@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.2.2">
+  <bpmn:process id="EscalationEventSubProcessTriggeredTwiceIntermediateTest" isExecutable="true">
+    <bpmn:startEvent id="StartEvent">
+      <bpmn:outgoing>SequenceFlow_1oqvs4c</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1oqvs4c" sourceRef="StartEvent" targetRef="IntermediateEvent1" />
+    <bpmn:subProcess id="SubProcess_1hpqczp" triggeredByEvent="true">
+      <bpmn:endEvent id="EndEventEscalated">
+        <bpmn:incoming>SequenceFlow_06l7etv</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:startEvent id="StartEvent_1g38n9f" isInterrupting="false">
+        <bpmn:outgoing>SequenceFlow_1ighdkc</bpmn:outgoing>
+        <bpmn:escalationEventDefinition escalationRef="Escalation_0wqvgei" />
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_1ighdkc" sourceRef="StartEvent_1g38n9f" targetRef="UserTask2" />
+      <bpmn:userTask id="UserTask2" name="User Task 2">
+        <bpmn:incoming>SequenceFlow_1ighdkc</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_06l7etv</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:sequenceFlow id="SequenceFlow_06l7etv" sourceRef="UserTask2" targetRef="EndEventEscalated" />
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="SequenceFlow_0puw65n" sourceRef="IntermediateEvent1" targetRef="UserTask1" />
+    <bpmn:sequenceFlow id="SequenceFlow_078nszf" sourceRef="UserTask1" targetRef="IntermediateEvent2" />
+    <bpmn:intermediateThrowEvent id="IntermediateEvent1">
+      <bpmn:incoming>SequenceFlow_1oqvs4c</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0puw65n</bpmn:outgoing>
+      <bpmn:escalationEventDefinition escalationRef="Escalation_0wqvgei" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:userTask id="UserTask1" name="User Task 1">
+      <bpmn:incoming>SequenceFlow_0puw65n</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_078nszf</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateThrowEvent id="IntermediateEvent2">
+      <bpmn:incoming>SequenceFlow_078nszf</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_12dp67g</bpmn:outgoing>
+      <bpmn:escalationEventDefinition escalationRef="Escalation_0wqvgei" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_12dp67g" sourceRef="IntermediateEvent2" targetRef="UserTask3" />
+    <bpmn:endEvent id="EndEvent">
+      <bpmn:incoming>SequenceFlow_1922igs</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1922igs" sourceRef="UserTask3" targetRef="EndEvent" />
+    <bpmn:userTask id="UserTask3" name="User Task 3">
+      <bpmn:incoming>SequenceFlow_12dp67g</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1922igs</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmn:escalation id="Escalation_0wqvgei" name="escNonInterrupting" escalationCode="escNonInterrupting" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="EscalationEventSubProcessTriggeredTwiceIntermediateTest">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="146" y="138" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1oqvs4c_di" bpmnElement="SequenceFlow_1oqvs4c">
+        <di:waypoint xsi:type="dc:Point" x="209" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="258" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="189" y="95" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_19sllrq_di" bpmnElement="EndEventEscalated">
+        <dc:Bounds x="448" y="220" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="421" y="256" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_0egbb0p_di" bpmnElement="SubProcess_1hpqczp" isExpanded="true">
+        <dc:Bounds x="198" y="174" width="312" height="124" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_0tfftxu_di" bpmnElement="StartEvent_1g38n9f">
+        <dc:Bounds x="221" y="220" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="194" y="256" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1ighdkc_di" bpmnElement="SequenceFlow_1ighdkc">
+        <di:waypoint xsi:type="dc:Point" x="257" y="238" />
+        <di:waypoint xsi:type="dc:Point" x="301" y="238" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="234" y="213" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0puw65n_di" bpmnElement="SequenceFlow_0puw65n">
+        <di:waypoint xsi:type="dc:Point" x="294" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="341" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="272.5" y="95" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_078nszf_di" bpmnElement="SequenceFlow_078nszf">
+        <di:waypoint xsi:type="dc:Point" x="441" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="492" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="421.5" y="95" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="IntermediateThrowEvent_0rvqv9q_di" bpmnElement="IntermediateEvent1">
+        <dc:Bounds x="258" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="231" y="138" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_112rhdc_di" bpmnElement="UserTask1">
+        <dc:Bounds x="341" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_0i1ofss_di" bpmnElement="UserTask2">
+        <dc:Bounds x="301" y="198" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_06l7etv_di" bpmnElement="SequenceFlow_06l7etv">
+        <di:waypoint xsi:type="dc:Point" x="401" y="238" />
+        <di:waypoint xsi:type="dc:Point" x="448" y="238" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="379.5" y="213" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="IntermediateThrowEvent_1y4ee8g_di" bpmnElement="IntermediateEvent2">
+        <dc:Bounds x="492" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="465" y="138" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_12dp67g_di" bpmnElement="SequenceFlow_12dp67g">
+        <di:waypoint xsi:type="dc:Point" x="528" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="574" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="506" y="95" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_1vtw4li_di" bpmnElement="EndEvent">
+        <dc:Bounds x="708" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="681" y="138" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1922igs_di" bpmnElement="SequenceFlow_1922igs">
+        <di:waypoint xsi:type="dc:Point" x="674" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="708" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="646" y="95" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1u58zde_di" bpmnElement="UserTask3">
+        <dc:Bounds x="574" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
