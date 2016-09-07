@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessRunnerImpl implements StartingByKey, StartingByMessage, StartableRunner, StartingByStarter, ProcessRunner, Runner {
+public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, StartingByMessage, StartableRunner, StartingByStarter, ProcessRunner {
 
   private String processDefinitionKey;
   private String startMessage;

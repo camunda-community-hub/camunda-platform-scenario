@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ProcessRunner {
+public interface ProcessRunner extends Runner {
 
   interface ExecutableRunner {
 

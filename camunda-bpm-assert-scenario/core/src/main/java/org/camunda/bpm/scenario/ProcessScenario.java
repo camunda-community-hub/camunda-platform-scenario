@@ -10,13 +10,13 @@ import org.camunda.bpm.scenario.act.ServiceTaskAction;
 import org.camunda.bpm.scenario.act.SignalIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.act.TimerIntermediateEventAction;
 import org.camunda.bpm.scenario.act.UserTaskAction;
-import org.camunda.bpm.scenario.run.ProcessRunner;
-import org.camunda.bpm.scenario.run.RunnableScenario;
+import org.camunda.bpm.scenario.run.Runnable;
+import org.camunda.bpm.scenario.run.Runner;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface ProcessScenario extends RunnableScenario {
+public interface ProcessScenario extends Runnable {
 
   /**
    * @since Camunda BPM 7.0.0-Final
@@ -46,7 +46,7 @@ public interface ProcessScenario extends RunnableScenario {
   /**
    * @since Camunda BPM 7.0.0-Final
    */
-  ProcessRunner runsCallActivity(String activityId);
+  Runner runsCallActivity(String activityId);
 
   /**
    * @since Camunda BPM 7.1.0-Final

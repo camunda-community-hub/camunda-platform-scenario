@@ -20,7 +20,7 @@ public class ScenarioImpl extends Scenario {
   private boolean executed;
 
   ProcessEngine processEngine;
-  List<Runner> runners = new ArrayList<Runner>();
+  List<AbstractRunner> runners = new ArrayList<AbstractRunner>();
 
   public ScenarioImpl(ProcessScenario scenario) {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
@@ -32,7 +32,7 @@ public class ScenarioImpl extends Scenario {
     List<Executable> executables;
     do {
       executables = new ArrayList<Executable>();
-      for (Runner runner: runners) {
+      for (AbstractRunner runner: runners) {
         executables.addAll(runner.next());
       }
       executables = Executable.Helpers.first(executables);
@@ -54,7 +54,7 @@ public class ScenarioImpl extends Scenario {
   @Override
   public List<ProcessInstance> instances(ProcessScenario scenario) {
     List<ProcessInstance> instances = new ArrayList<ProcessInstance>();
-    for (Runner runner: runners) {
+    for (AbstractRunner runner: runners) {
       if (runner instanceof ProcessRunnerImpl) {
         ProcessRunnerImpl processRunner = (ProcessRunnerImpl) runner;
         if (processRunner.scenario == scenario) {

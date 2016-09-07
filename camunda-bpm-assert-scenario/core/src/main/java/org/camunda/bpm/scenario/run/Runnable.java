@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.run;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public interface RunnableScenario {
+public interface Runnable {
 
   /**
    * @since Camunda BPM 7.0.0-Final
