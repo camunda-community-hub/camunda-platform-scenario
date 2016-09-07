@@ -5,7 +5,6 @@ jdk:
   - oraclejdk7
   - openjdk6
 env:
-  - CAMUNDA=LATEST
   - CAMUNDA=RELEASE
   - CAMUNDA=7.5.0
   - CAMUNDA=7.4.0
