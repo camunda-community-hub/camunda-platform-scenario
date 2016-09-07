@@ -1,10 +1,13 @@
 package org.camunda.bpm.scenario.test.escalations;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
 
@@ -20,8 +23,10 @@ public class EscalationEventSubProcessTriggeredTwiceConventionalTest extends Abs
     ProcessInstance pi = rule.getRuntimeService()
         .startProcessInstanceByKey("EscalationEventSubProcessTriggeredTwiceTest");
 
-    complete(task("UserTask1", pi));
-    complete(task("UserTask2", pi));
+    complete(task("UserTask1", pi)); // --> Test Case fails here with a NullPointerException
+
+    List<Task> tasks = taskQuery().processInstanceId(pi.getId()).taskDefinitionKey("UserTask2").list();
+    complete(tasks.get(0)); // necessary as query returns two tasks at this point
 
     complete(task("UserTask2", pi));
 
