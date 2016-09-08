@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>camunda-bpm-assert-scenario-test-7.5</artifactId>
+    <artifactId>camunda-bpm-assert-scenario-test-7.4</artifactId>
 
     <properties>
-        <camunda-bpm.version>7.5.0</camunda-bpm.version>
+        <camunda-bpm.version>7.4.0</camunda-bpm.version>
     </properties>
 
     <parent>
-        <artifactId>camunda-bpm-assert-scenario-test-parent</artifactId>
+        <artifactId>camunda-bpm-assert-scenario-test</artifactId>
         <groupId>org.camunda.bpm.extension</groupId>
         <version>0.1-SNAPSHOT</version>
     </parent>

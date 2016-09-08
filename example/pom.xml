@@ -9,9 +9,9 @@
 
     <parent>
         <groupId>org.camunda.bpm.extension</groupId>
-        <artifactId>camunda-bpm-assert-scenario-test-parent</artifactId>
+        <artifactId>camunda-bpm-assert-scenario-test</artifactId>
         <version>0.1-SNAPSHOT</version>
-        <relativePath>../base/pom.xml</relativePath>
+        <relativePath>../test/pom.xml</relativePath>
     </parent>
 
     <properties>
