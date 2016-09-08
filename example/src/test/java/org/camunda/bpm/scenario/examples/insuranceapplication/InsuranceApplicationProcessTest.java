@@ -103,7 +103,6 @@ public class InsuranceApplicationProcessTest {
 
     Scenario scenario = Scenario.run(insuranceApplication)
         .startByKey("InsuranceApplication", variables) // either just start process by key ...
-        .fromBefore("EndEventApplicationAccepted")
         .execute();
 
     assertThat(scenario.instance(insuranceApplication)).variables().containsEntry("riskAssessment", "green");
