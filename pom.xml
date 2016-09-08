@@ -18,7 +18,8 @@
     <url>https://github.com/camunda/camunda-bpm-assert-scenario</url>
 
     <modules>
-        <module>base</module>
+        <module>core</module>
+        <module>test</module>
     </modules>
 
     <properties>

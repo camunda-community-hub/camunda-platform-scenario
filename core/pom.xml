@@ -20,7 +20,6 @@
         <artifactId>camunda-bpm-assert-scenario-parent</artifactId>
         <groupId>org.camunda.bpm.extension</groupId>
         <version>0.1-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <dependencies>
