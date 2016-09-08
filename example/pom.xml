@@ -11,7 +11,7 @@
         <groupId>org.camunda.bpm.extension</groupId>
         <artifactId>camunda-bpm-assert-scenario-test-parent</artifactId>
         <version>0.1-SNAPSHOT</version>
-        <relativePath>../camunda-bpm-assert-scenario/pom.xml</relativePath>
+        <relativePath>../base/pom.xml</relativePath>
     </parent>
 
     <properties>

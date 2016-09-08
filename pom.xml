@@ -18,7 +18,7 @@
     <url>https://github.com/camunda/camunda-bpm-assert-scenario</url>
 
     <modules>
-        <module>camunda-bpm-assert-scenario</module>
+        <module>base</module>
     </modules>
 
     <properties>
@@ -173,7 +173,7 @@
         <profile>
             <id>camunda-bpm-assert-scenario-examples</id>
             <modules>
-                <module>camunda-bpm-assert-scenario-examples</module>
+                <module>example</module>
             </modules>
             <activation>
                 <jdk>1.8</jdk>
