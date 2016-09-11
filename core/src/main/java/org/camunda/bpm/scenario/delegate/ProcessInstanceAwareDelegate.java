@@ -5,6 +5,11 @@ package org.camunda.bpm.scenario.delegate;
  */
 public interface ProcessInstanceAwareDelegate {
 
+  /**
+   * Get the process instance this object is associated to.
+   *
+   * @return process instance this object is associated to
+   */
   ProcessInstanceDelegate getProcessInstance();
 
 }
