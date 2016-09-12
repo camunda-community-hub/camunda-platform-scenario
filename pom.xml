@@ -11,7 +11,7 @@
 
     <groupId>org.camunda.bpm.extension</groupId>
     <artifactId>camunda-bpm-assert-scenario-parent</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
 
     <packaging>pom</packaging>
 
@@ -186,7 +186,7 @@
         <connection>scm:git:git@github.com:camunda/camunda-bpm-assert-scenario.git</connection>
         <url>scm:git:git@github.com:camunda/camunda-bpm-assert-scenario.git</url>
         <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-assert-scenario.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>0.1</tag>
     </scm>
 
     <build>
