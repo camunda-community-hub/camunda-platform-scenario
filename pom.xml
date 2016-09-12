@@ -183,9 +183,9 @@
     </profiles>
 
     <scm>
-        <connection>scm:git:git@github.com:camunda/camunda-bpm-assert.git</connection>
-        <url>scm:git:git@github.com:camunda/camunda-bpm-assert.git</url>
-        <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-assert.git</developerConnection>
+        <connection>scm:git:git@github.com:camunda/camunda-bpm-assert-scenario.git</connection>
+        <url>scm:git:git@github.com:camunda/camunda-bpm-assert-scenario.git</url>
+        <developerConnection>scm:git:git@github.com:camunda/camunda-bpm-assert-scenario.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
