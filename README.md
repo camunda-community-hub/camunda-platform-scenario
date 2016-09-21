@@ -167,7 +167,7 @@ Congrats! You are successfully using Camunda BPM Assert Scenario.
 
 ## Maintenance &amp; License
 
-<a href="http://plexiti.com"><img src="http://plexiti.com/logo" align="right" width="210"></img></a>Martin Schimak<br/>[Blog](http://plexiti.com) &#8226; [GitHub](https://github.com/martinschimak) &#8226; [eMail](mailto:martin.schimak@plexiti.com)<br/>Apache License, Version 2.0
+<a href="http://plexiti.com"><img src="http://plexiti.com/en/img/logo.png" align="right" width="210"></img></a>Martin Schimak<br/>[Blog](http://plexiti.com) &#8226; [GitHub](https://github.com/martinschimak) &#8226; [eMail](mailto:martin.schimak@plexiti.com)<br/>Apache License, Version 2.0
 
 ## Contributions and Sponsorship
 
