@@ -35,6 +35,7 @@ public interface Executable<S> extends Comparable<S> {
       types.put("businessRuleTask", "BusinessRuleTaskExecutable");
       types.put("sendTask", "SendTaskExecutable");
       types.put("intermediateMessageThrowEvent", "MessageIntermediateThrowEventExecutable");
+      types.put("messageEndEvent", "MessageEndEventExecutable");
     }
 
     static WaitstateExecutable newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance) {

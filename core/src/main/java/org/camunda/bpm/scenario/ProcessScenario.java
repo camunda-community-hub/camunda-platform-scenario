@@ -2,6 +2,7 @@ package org.camunda.bpm.scenario;
 
 import org.camunda.bpm.scenario.act.BusinessRuleTaskAction;
 import org.camunda.bpm.scenario.act.EventBasedGatewayAction;
+import org.camunda.bpm.scenario.act.MessageEndEventAction;
 import org.camunda.bpm.scenario.act.MessageIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.act.MessageIntermediateThrowEventAction;
 import org.camunda.bpm.scenario.act.ReceiveTaskAction;
@@ -169,6 +170,23 @@ public interface ProcessScenario extends Runnable {
    * @since Camunda BPM 7.5.0
    */
   MessageIntermediateThrowEventAction waitsAtMessageIntermediateThrowEvent(String activityId);
+
+  /**
+   * By implementing - or stubbing/mocking - this method, you
+   * define what should be done when the process reaches the
+   * message end event (waitstate) with the activity id provided.
+   * Note that a message intermediate throw event is only a
+   * waitstate in case you implement it by means of a Camunda BPM
+   * ExternalTask.
+   *
+   * @param activityId the activity id of the message end event
+   * (external task) reached.
+   * @return action to be executed when process reaches the message
+   * end event (external task waitstate) with the activity id provided.
+   *
+   * @since Camunda BPM 7.5.0
+   */
+  MessageEndEventAction waitsAtMessageEndEvent(String activityId);
 
   /**
    * By implementing - or stubbing/mocking - this method, you
