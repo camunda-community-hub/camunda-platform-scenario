@@ -1,6 +1,7 @@
 package org.camunda.bpm.scenario;
 
 import org.camunda.bpm.scenario.act.BusinessRuleTaskAction;
+import org.camunda.bpm.scenario.act.ConditionalIntermediateEventAction;
 import org.camunda.bpm.scenario.act.EventBasedGatewayAction;
 import org.camunda.bpm.scenario.act.MessageEndEventAction;
 import org.camunda.bpm.scenario.act.MessageIntermediateCatchEventAction;
@@ -204,5 +205,20 @@ public interface ProcessScenario extends Runnable {
    * @since Camunda BPM 7.5.0
    */
   BusinessRuleTaskAction waitsAtBusinessRuleTask(String activityId);
+
+  /**
+   * By implementing - or stubbing/mocking - this method, you
+   * define what should be done when the process reaches the
+   * conditional intermediate event (waitstate) with the activity id
+   * provided.
+   *
+   * @param activityId the activity id of the conditional intermediate
+   * event reached.
+   * @return action to be executed when process reaches the conditional
+   * intermediate event (waitstate) with the activity id provided.
+   *
+   * @since Camunda BPM 7.6.0
+   */
+  ConditionalIntermediateEventAction waitsAtConditionalIntermediateEvent(String activityId);
 
 }

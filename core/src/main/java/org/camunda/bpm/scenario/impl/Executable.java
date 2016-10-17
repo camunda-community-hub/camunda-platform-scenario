@@ -29,6 +29,7 @@ public interface Executable<S> extends Comparable<S> {
       types.put("intermediateMessageCatch", "MessageIntermediateCatchEventExecutable");
       types.put("receiveTask", "ReceiveTaskExecutable");
       types.put("intermediateTimer", "TimerIntermediateEventExecutable");
+      types.put("intermediateConditional", "ConditionalIntermediateEventExecutable");
       types.put("eventBasedGateway", "EventBasedGatewayExecutable");
       types.put("callActivity", "CallActivityExecutable");
       types.put("serviceTask", "ServiceTaskExecutable");
