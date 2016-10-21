@@ -19,7 +19,11 @@ import static org.mockito.Mockito.*;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-@Deployment(resources = {"InsuranceApplication.bpmn", "DocumentRequest.bpmn", "RiskCheck.dmn"})
+@Deployment(resources = {
+  "org/camunda/bpm/scenario/examples/insuranceapplication/InsuranceApplication.bpmn",
+  "org/camunda/bpm/scenario/examples/insuranceapplication/DocumentRequest.bpmn",
+  "org/camunda/bpm/scenario/examples/insuranceapplication/RiskCheck.dmn"
+})
 public class InsuranceApplicationProcessTest {
 
   @Rule public ProcessEngineRule rule = new ProcessEngineRule();
