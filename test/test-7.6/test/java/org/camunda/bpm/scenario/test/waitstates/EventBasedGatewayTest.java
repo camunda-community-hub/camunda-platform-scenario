@@ -42,7 +42,7 @@ public class EventBasedGatewayTest extends AbstractTest {
 
   }
 
-  @Test @Ignore // Testcase fails currently, investigating via comment on CAM-6602
+  @Test @Ignore // Testcase fails currently, investigating via comment on CAM-6882
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testConditionInitiallyTrue() {
 
@@ -67,7 +67,7 @@ public class EventBasedGatewayTest extends AbstractTest {
 
   }
 
-  @Test @Ignore // Testcase fails currently, investigating via comment on CAM-6602
+  @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testConditionInitiallyFalseThenSetConditionTrue() {
 
@@ -83,8 +83,6 @@ public class EventBasedGatewayTest extends AbstractTest {
     verify(scenario, times(1)).hasFinished("EventBasedGateway");
     verify(scenario, never()).hasFinished("MessageIntermediateCatchEvent");
     verify(scenario, never()).hasFinished("TimerIntermediateEvent");
-
-    // the following two statements fail, even though they shouldn't in my mind ...
     verify(scenario, times(1)).hasFinished("ConditionalIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
