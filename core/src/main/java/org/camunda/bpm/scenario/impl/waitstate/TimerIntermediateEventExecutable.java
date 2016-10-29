@@ -28,6 +28,7 @@ public class TimerIntermediateEventExecutable extends AbstractProcessInstanceDel
     return scenario.waitsAtTimerIntermediateEvent(getActivityId());
   }
 
+  @SuppressWarnings("unchecked")
   public void execute() {
     Action action = action();
     Time.set(isExecutableAt());

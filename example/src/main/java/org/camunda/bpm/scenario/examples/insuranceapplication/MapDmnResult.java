@@ -17,6 +17,7 @@ public class MapDmnResult implements ExecutionListener {
     Set<String> riskAssessments = new HashSet<String>();
     
     //DmnDecisionOutput vs DmnDecisionResult
+    @SuppressWarnings("unchecked")
     List<Map<String, Object>> resultList = (List<Map<String, Object>>) execution.getVariable("riskAssessmentResult");
     for (Map<String, Object> result : resultList) {
       risks.add((String)result.get("risk"));

@@ -18,6 +18,7 @@ public class IgnoredExecutable extends WaitstateExecutable<Object> {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public void execute() {
     runner.setExecuted(this);
   }

@@ -125,6 +125,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
     setExecuted();
   }
 
+  @SuppressWarnings("deprecation")
   public ProcessInstance run() {
     if (this.processInstance == null) {
       if (this.processDefinitionKey != null) {

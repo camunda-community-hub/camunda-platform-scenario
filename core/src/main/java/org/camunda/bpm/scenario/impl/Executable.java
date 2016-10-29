@@ -17,6 +17,7 @@ import java.util.Map;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
+@SuppressWarnings("unchecked")
 public interface Executable<S> extends Comparable<S> {
 
   void execute();

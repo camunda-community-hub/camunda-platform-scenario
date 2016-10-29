@@ -36,6 +36,7 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
     return historicDelegate.getActivityId();
   }
 
+  @SuppressWarnings("unchecked")
   public void execute() {
     Action action = action();
     if (action == null)
@@ -68,6 +69,7 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public int compareTo(AbstractExecutable other) {
     int compare = super.compareTo(other);
     return compare == 0 ? idComparator.compare(historicDelegate.getId(), ((WaitstateExecutable) other).historicDelegate.getId()) : compare;
