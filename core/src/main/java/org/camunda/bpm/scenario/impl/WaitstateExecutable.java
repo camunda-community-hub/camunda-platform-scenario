@@ -49,7 +49,7 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
     try {
       action.execute(this);
     } catch (Exception e) {
-      throw new RuntimeException(e);
+      throw e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException(e);
     }
     runner.setExecuted(this);
   }
