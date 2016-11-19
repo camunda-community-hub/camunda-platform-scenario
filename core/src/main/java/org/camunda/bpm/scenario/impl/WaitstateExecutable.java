@@ -43,7 +43,7 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
       throw new AssertionError("Process Instance {"
           + getProcessInstance().getProcessDefinitionId() + ", "
           + getProcessInstance().getProcessInstanceId() + "} "
-          + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 9)
+          + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 10)
           + " '" + historicDelegate.getActivityId() +"'.");
     Time.set(isExecutableAt());
     try {
