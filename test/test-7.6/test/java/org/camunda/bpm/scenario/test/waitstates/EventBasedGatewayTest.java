@@ -6,7 +6,6 @@ import org.camunda.bpm.scenario.act.EventBasedGatewayAction;
 import org.camunda.bpm.scenario.delegate.EventBasedGatewayDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
@@ -42,7 +41,7 @@ public class EventBasedGatewayTest extends AbstractTest {
 
   }
 
-  @Test @Ignore // Testcase fails currently, investigating via comment on CAM-6882
+  @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/EventBasedGatewayTest.bpmn"})
   public void testConditionInitiallyTrue() {
 
@@ -61,7 +60,6 @@ public class EventBasedGatewayTest extends AbstractTest {
     verify(scenario, never()).hasFinished("MessageIntermediateCatchEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
 
-    // the following two statements fail, even though they shouldn't in my mind ...
     verify(scenario, never()).hasFinished("TimerIntermediateEvent");
     verify(scenario, times(1)).hasFinished("ConditionalIntermediateEvent");
 

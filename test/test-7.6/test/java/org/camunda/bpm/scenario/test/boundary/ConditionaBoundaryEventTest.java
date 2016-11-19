@@ -7,7 +7,6 @@ import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.mockito.Mockito.*;
@@ -90,7 +89,7 @@ public class ConditionaBoundaryEventTest extends AbstractTest {
 
   }
 
-  @Test @Ignore // Testcase fails currently, investigating via comment on CAM-6882
+  @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/boundary/ConditionalBoundaryEventTest.bpmn"})
   public void testConditionInitiallyTrueAndCompleteTask() {
 
@@ -110,6 +109,8 @@ public class ConditionaBoundaryEventTest extends AbstractTest {
     verify(scenario, never()).hasFinished("EndEventAfterUserTask");
     verify(scenario, times(1)).hasFinished("EndEventAfterBoundaryEvent");
     verify(scenario, times(1)).hasFinished("UserTask");
+    verify(scenario, times(1)).hasCanceled("UserTask");
+    verify(scenario, never()).hasCompleted("UserTask");
 
   }
 
@@ -129,7 +130,7 @@ public class ConditionaBoundaryEventTest extends AbstractTest {
 
   }
 
-  @Test @Ignore // Testcase fails currently, investigating via comment on CAM-6882
+  @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/boundary/ConditionalBoundaryEventTest.bpmn"})
   public void testConditionInitiallyTrueAndDoNothing() {
 
