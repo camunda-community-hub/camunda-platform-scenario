@@ -57,9 +57,9 @@ public class EventSubscriptionDelegateImpl extends AbstractDelegate<EventSubscri
   @Override
   public void receive(Map<String, Object> variables) {
     if (getEventType().equals("message")) {
-      waitstate.getRuntimeService().messageEventReceived(getEventName(), getExecutionId());
+      waitstate.getRuntimeService().messageEventReceived(getEventName(), getExecutionId(), variables);
     } else {
-      waitstate.getRuntimeService().signalEventReceived(getEventName(), getExecutionId());
+      waitstate.getRuntimeService().signalEventReceived(getEventName(), getExecutionId(), variables);
     }
   }
 
