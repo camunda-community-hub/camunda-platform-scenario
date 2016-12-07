@@ -53,6 +53,7 @@ public class Time {
 
   public static void init() {
     Calendar cal = Calendar.getInstance();
+    cal.setTime(ClockUtil.getCurrentTime());
     cal.set(Calendar.MILLISECOND, milliseconds);
     Time.set(cal.getTime());
   }
