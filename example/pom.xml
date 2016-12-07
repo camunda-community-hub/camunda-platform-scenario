@@ -28,6 +28,10 @@
             <artifactId>camunda-engine</artifactId>
             <version>RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.camunda.bpm.extension</groupId>
+            <artifactId>camunda-bpm-process-test-coverage</artifactId>
+        </dependency>
     </dependencies>
 
     <developers>

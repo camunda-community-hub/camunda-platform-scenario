@@ -3,9 +3,11 @@ package org.camunda.bpm.scenario.examples.insuranceapplication;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.variable.Variables;
+import org.camunda.bpm.extension.process_test_coverage.junit.rules.TestCoverageProcessEngineRuleBuilder;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -26,7 +28,11 @@ import static org.mockito.Mockito.*;
 })
 public class InsuranceApplicationProcessTest {
 
-  @Rule public ProcessEngineRule rule = new ProcessEngineRule();
+  @Rule
+  @ClassRule
+  public static ProcessEngineRule rule =
+      TestCoverageProcessEngineRuleBuilder.create()
+        .withDetailedCoverageLogging().build();
 
   // Mock all waitstates in main process and call activity with a scenario
   @Mock private ProcessScenario insuranceApplication;
