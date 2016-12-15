@@ -8,11 +8,12 @@
         </encoder>
     </appender>
 
-    <logger name="org.camunda.bpm.engine.cmd" level="info" />
-    <logger name="org.camunda.bpm.engine.cfg" level="debug" />
-    <logger name="org.camunda.bpm.engine.test" level="debug" />
-    <logger name="org.camunda.bpm.engine.bpmn.behavior" level="debug" />
-    <logger name="org.camunda.bpm.engine.cmmn.behavior" level="debug" />
+    <logger name="org.camunda.bpm.scenario" level="debug" />
+    <logger name="org.camunda.bpm.engine.cmd" level="warn" />
+    <logger name="org.camunda.bpm.engine.cfg" level="warn" />
+    <logger name="org.camunda.bpm.engine.test" level="warn" />
+    <logger name="org.camunda.bpm.engine.bpmn.behavior" level="warn" />
+    <logger name="org.camunda.bpm.engine.cmmn.behavior" level="warn" />
 
     <root level="warn">
         <appender-ref ref="STDOUT" />

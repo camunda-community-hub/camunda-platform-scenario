@@ -1,5 +1,6 @@
 package org.camunda.bpm.scenario.test.timers;
 
+import org.camunda.bpm.engine.impl.persistence.entity.JobEntity;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.act.UserTaskAction;

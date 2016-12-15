@@ -52,7 +52,7 @@ public abstract class Log {
   private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
 
   public static  void log(Action action, HistoricActivityInstance instance) {
-    String message = String.format("%s %s '%s' (%s@%s)", Strings.rightpad(action.toString(), 9), instance.getActivityType(), Strings.trimAll(instance.getActivityName()), instance.getActivityId(), instance.getProcessDefinitionId());
+    String message = String.format("%s %s '%s' (%s@%s)", Strings.rightpad(action.toString(), 9), instance.getActivityType(), Strings.trimAll(instance.getActivityName()), instance.getActivityId(), instance.getProcessInstanceId());
     if (action.equals(Action.Started)) {
       if (logger.isDebugEnabled())
         logger.debug(message(action, message));
@@ -65,9 +65,9 @@ public abstract class Log {
   public static  void log(Action action, HistoricActivityInstance instance, Deferred deferred, Date executableAt) {
     String message;
     if (action.equals(Action.Deferring)) {
-      message = String.format("%s action on %s '%s' until %s (%s@%s): %s", Strings.rightpad(action.toString(), 9), instance.getActivityType(), Strings.trimAll(instance.getActivityName()), format.format(executableAt), instance.getActivityId(), instance.getProcessDefinitionId(), deferred);
+      message = String.format("%s action on %s '%s' until %s (%s@%s): %s", Strings.rightpad(action.toString(), 9), instance.getActivityType(), Strings.trimAll(instance.getActivityName()), format.format(executableAt), instance.getActivityId(), instance.getProcessInstanceId(), deferred);
     } else {
-      message = String.format("%s deferred action on %s '%s' (%s@%s): %s", Strings.rightpad(action.toString(), 9), instance.getActivityType(), Strings.trimAll(instance.getActivityName()), instance.getActivityId(), instance.getProcessDefinitionId(), deferred);
+      message = String.format("%s deferred action on %s '%s' (%s@%s): %s", Strings.rightpad(action.toString(), 9), instance.getActivityType(), Strings.trimAll(instance.getActivityName()), instance.getActivityId(), instance.getProcessInstanceId(), deferred);
     }
     logger.info(message(action, message));
   }
@@ -75,17 +75,27 @@ public abstract class Log {
   public static void log(Action action, Job instance) {
     JobEntity entity = (JobEntity) instance;
     String type = entity.getJobHandlerType();
-    String message = String.format("%s %s (%s@%s)", Strings.rightpad(action.toString(), 9), type, instance.getJobDefinitionId(), instance.getProcessDefinitionId());
+    String config;
+    if (Api.feature(JobEntity.class.getName(), "getJobHandlerConfigurationRaw").isSupported()) {
+      config = entity.getJobHandlerConfigurationRaw();
+    } else {
+      try {
+        config = (String) JobEntity.class.getMethod("getJobHandlerConfiguration").invoke(entity);
+      } catch (Exception e) {
+        config = "";
+      }
+    }
+    String message = String.format("%s %s (%s@%s)", Strings.rightpad(action.toString(), 9), type, config, entity.getProcessInstanceId());
     logger.debug(message(action, message));
   }
 
   private static String message(Action action, String message) {
     String time = format.format(Time.get());
     if (lastTime == null) {
-      logger.info(String.format("%s %s %s", space + "|", Action.StartingAt, time));
+      logger.info(String.format("%s %s %s", space + "*", Action.StartingAt, time));
       prefix = space + "|";
     } else if (!time.equals(lastTime)) {
-      logger.info(String.format("%s %s %s", space + "|", Action.FastForward, time));
+      logger.info(String.format("%s %s %s", space + "*", Action.FastForward, time));
       prefix = space + "|--"; space = space + "  ";
     } else  {
       prefix = action.equals(Action.ActingOn) ? space + "*" : space + "|";
