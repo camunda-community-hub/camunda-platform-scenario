@@ -1,6 +1,7 @@
 package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.runtime.Job;
+import org.camunda.bpm.scenario.impl.util.Log;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -23,6 +24,7 @@ public abstract class JobExecutable extends AbstractExecutable<Job> {
   }
 
   protected void executeJob() {
+    Log.log(Log.Action.Triggered, delegate);
     getManagementService().executeJob(delegate.getId());
   }
 

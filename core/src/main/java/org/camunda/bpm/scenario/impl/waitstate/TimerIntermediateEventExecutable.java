@@ -7,6 +7,7 @@ import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
+import org.camunda.bpm.scenario.impl.util.Log;
 import org.camunda.bpm.scenario.impl.util.Time;
 
 /**
@@ -33,8 +34,10 @@ public class TimerIntermediateEventExecutable extends AbstractProcessInstanceDel
     Action action = action();
     Time.set(isExecutableAt());
     try {
-      if (action != null)
+      if (action != null) {
+        Log.log(Log.Action.ActingOn, historicDelegate);
         action.execute(this);
+      }
     } catch (Exception e) {
       throw e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException(e);
     }

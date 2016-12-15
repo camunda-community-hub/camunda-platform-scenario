@@ -106,7 +106,10 @@ public class Api {
 
   private boolean supported() {
     try {
-      Class.forName(className).getMethod(methodName, parameterTypes);
+      Class cls = Class.forName(className);
+      if (methodName != null) {
+        cls.getMethod(methodName, parameterTypes);
+      }
     } catch (ClassNotFoundException e) {
       return false;
     } catch (NoSuchMethodException e) {

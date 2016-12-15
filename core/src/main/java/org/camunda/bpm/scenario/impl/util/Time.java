@@ -23,6 +23,10 @@ public class Time {
     ClockUtil.setCurrentTime(time);
   }
 
+  public static Date get() {
+    return ClockUtil.getCurrentTime();
+  }
+
   public static void reset() {
     ClockUtil.reset();
   }
@@ -56,6 +60,7 @@ public class Time {
     cal.setTime(ClockUtil.getCurrentTime());
     cal.set(Calendar.MILLISECOND, milliseconds);
     Time.set(cal.getTime());
+    Log.init();
   }
   // ***
 
