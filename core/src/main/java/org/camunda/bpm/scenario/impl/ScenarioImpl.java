@@ -5,6 +5,8 @@ import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.impl.util.Log;
+import org.camunda.bpm.scenario.impl.util.Log.Action;
 import org.camunda.bpm.scenario.impl.util.Time;
 import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 

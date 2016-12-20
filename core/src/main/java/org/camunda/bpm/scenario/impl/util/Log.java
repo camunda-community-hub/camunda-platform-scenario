@@ -1,10 +1,5 @@
 package org.camunda.bpm.scenario.impl.util;
 
-import org.camunda.bpm.engine.history.HistoricActivityInstance;
-import org.camunda.bpm.engine.impl.persistence.entity.JobEntity;
-import org.camunda.bpm.engine.runtime.Job;
-import org.camunda.bpm.scenario.defer.Deferred;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,118 +8,27 @@ import java.util.logging.Logger;
 
 public abstract class Log {
 
+  private static String LOGGER = "org.camunda.bpm.scenario";
+  private static ScenarioLog scenarioLog = Api.feature("org.slf4j.Logger").isSupported() ? new Slf4jLog() : new JavaLog();
+
   private static String space;
-  private static String lastTime;
   private static String prefix;
 
-  public enum Action {
-
-    StartingAt {
-      @Override
-      public String toString() {
-        return "Starting scenario at";
-      }
-    },
-    FastForward {
-      @Override
-      public String toString() {
-        return "Fast-forwarding time to";
-      }
-    },
-    Deferring,
-    Started,
-    Completed,
-    Finished,
-    Canceled,
-    ActingOn {
-      @Override
-      public String toString() {
-        return "Acting on";
-      }
-    },
-    Triggered
-
-  }
-
-  private static String LOGGER = "org.camunda.bpm.scenario";
-  private static SimpleLogger logger =
-      Api.feature("org.slf4j.Logger").isSupported() ? new Slf4jLog() : new JavaLog();
-  private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
-
-  public static  void log(Action action, HistoricActivityInstance instance) {
-    String message = String.format("%s %s '%s' (%s@%s)", Strings.rightpad(action.toString(), 9), instance.getActivityType(), Strings.trimAll(instance.getActivityName()), instance.getActivityId(), instance.getProcessInstanceId());
-    if (action.equals(Action.Started)) {
-      if (logger.isDebugEnabled())
-        logger.debug(message(action, message));
-    } else {
-      if (logger.isInfoEnabled())
-        logger.info(message(action, message));
-    }
-  }
-
-  public static  void log(Action action, HistoricActivityInstance instance, Deferred deferred, Date executableAt) {
-    String message;
-    if (action.equals(Action.Deferring)) {
-      message = String.format("%s action on %s '%s' until %s (%s@%s): %s", Strings.rightpad(action.toString(), 9), instance.getActivityType(), Strings.trimAll(instance.getActivityName()), format.format(executableAt), instance.getActivityId(), instance.getProcessInstanceId(), deferred);
-    } else {
-      message = String.format("%s deferred action on %s '%s' (%s@%s): %s", Strings.rightpad(action.toString(), 9), instance.getActivityType(), Strings.trimAll(instance.getActivityName()), instance.getActivityId(), instance.getProcessInstanceId(), deferred);
-    }
-    logger.info(message(action, message));
-  }
-
-  public static void log(Action action, Job instance) {
-    JobEntity entity = (JobEntity) instance;
-    String type = entity.getJobHandlerType();
-    String config;
-    if (Api.feature(JobEntity.class.getName(), "getJobHandlerConfigurationRaw").isSupported()) {
-      config = entity.getJobHandlerConfigurationRaw();
-    } else {
-      try {
-        config = (String) JobEntity.class.getMethod("getJobHandlerConfiguration").invoke(entity);
-      } catch (Exception e) {
-        config = "";
-      }
-    }
-    String message = String.format("%s %s (%s@%s)", Strings.rightpad(action.toString(), 9), type, config, entity.getProcessInstanceId());
-    logger.debug(message(action, message));
-  }
-
-  private static String message(Action action, String message) {
-    String time = format.format(Time.get());
-    if (lastTime == null) {
-      logger.info(String.format("%s %s %s", space + "*", Action.StartingAt, time));
-      prefix = space + "|";
-    } else if (!time.equals(lastTime)) {
-      logger.info(String.format("%s %s %s", space + "*", Action.FastForward, time));
-      prefix = space + "|--"; space = space + "  ";
-    } else  {
-      prefix = action.equals(Action.ActingOn) ? space + "*" : space + "|";
-    }
-    lastTime = time;
-    return String.format("%s %s", prefix, message);
-  }
-
-  private interface SimpleLogger {
+  private interface ScenarioLog {
 
     boolean isDebugEnabled();
-    boolean isInfoEnabled();
     void debug(String message);
     void info(String message);
 
   }
 
-  private static class Slf4jLog implements SimpleLogger {
+  private static class Slf4jLog implements ScenarioLog {
 
     org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LOGGER);
 
     @Override
     public boolean isDebugEnabled() {
       return log.isDebugEnabled();
-    }
-
-    @Override
-    public boolean isInfoEnabled() {
-      return log.isInfoEnabled();
     }
 
     @Override
@@ -139,18 +43,13 @@ public abstract class Log {
 
   }
 
-  private static class JavaLog implements SimpleLogger {
+  private static class JavaLog implements ScenarioLog {
 
     Logger log = Logger.getLogger(LOGGER);
 
     @Override
     public boolean isDebugEnabled() {
       return log.isLoggable(Level.FINE);
-    }
-
-    @Override
-    public boolean isInfoEnabled() {
-      return log.isLoggable(Level.INFO);
     }
 
     @Override
@@ -165,9 +64,207 @@ public abstract class Log {
 
   }
 
-  protected static void init() {
-    space = "";
-    lastTime = null;
+  private interface ScenarioLoggable {
+
+    String instanceFormat = "%s %s %s LABEL(%s @ %s # %s)";
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+
+    void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time);
+
+  }
+
+  public enum Action implements ScenarioLoggable {
+
+    StartingAt {
+
+      private void init() {
+        space = "";
+        prefix = "|";
+      }
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        init();
+        scenarioLog.info(String.format("%s Starting scenario at %s", "*", dateFormat.format(Time.get())));
+      }
+
+    },
+
+    FastForward {
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        scenarioLog.info(String.format("%s Fast-forwarding scenario to %s", prefix, dateFormat.format(Time.get())));
+        prefix = space + "|--";
+        space = space + "  ";
+      }
+
+    },
+
+    FinishingAt {
+
+      private void init() {
+        space = "";
+        prefix = "|";
+      }
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        scenarioLog.info(String.format("%s Finishing scenario at %s", space + "*", dateFormat.format(Time.get())));
+        init();
+      }
+
+    },
+
+    ActingOn {
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        String message;
+        if (activityName != null) {
+          message = String.format(ScenarioLoggable.instanceFormat.replace("LABEL", "'%s' "),
+              space + "*",
+              Strings.rightpad(toString(), 9),
+              Strings.rightpad(activityType, 18),
+              Strings.trimAll(activityName),
+              activityId,
+              processDefinitionKey,
+              processInstanceId);
+        } else {
+          message = String.format(ScenarioLoggable.instanceFormat.replace("LABEL", ""),
+              space + "*",
+              Strings.rightpad(toString(), 9),
+              Strings.rightpad(activityType, 18),
+              activityId,
+              processDefinitionKey,
+              processInstanceId);
+        }
+        scenarioLog.info(message);
+        prefix = space + "|";
+      }
+
+      @Override
+      public String toString() {
+        return "Acting on";
+      }
+
+    },
+
+    Deferring_Action {
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        if (scenarioLog.isDebugEnabled()) {
+          String message = String.format("%s %s %s '%s' until %s (%s @ %s # %s : %s)",
+              prefix,
+              Strings.rightpad("Deferring", 9),
+              Strings.rightpad("action on", 18),
+              Strings.trimAll(activityName),
+              dateFormat.format(time),
+              activityId,
+              processDefinitionKey,
+              processInstanceId,
+              actionId);
+          scenarioLog.debug(message);
+          prefix = space + "|";
+        }
+      }
+
+    },
+
+    Executing_Action {
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        String message = String.format("%s %s %s '%s' (%s @ %s # %s : %s)",
+            prefix,
+            Strings.rightpad("Executing", 9),
+            Strings.rightpad("action on", 18),
+            Strings.trimAll(activityName),
+            activityId,
+            processDefinitionKey,
+            processInstanceId,
+            actionId);
+        scenarioLog.info(message);
+        prefix = space + "|";
+      }
+
+    },
+
+    Executing_Job {
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        if (scenarioLog.isDebugEnabled()) {
+          String message = String.format("%s %s %s (%s @ %s # %s)",
+              prefix,
+              Strings.rightpad(toString(), 9),
+              Strings.rightpad(activityType, 18),
+              Strings.trimAll(activityName),
+              processDefinitionKey,
+              processInstanceId
+          );
+          scenarioLog.debug(message);
+          prefix = space + "|";
+        }
+      }
+
+    },
+
+    Started {
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        if (scenarioLog.isDebugEnabled()) {
+          scenarioLog.debug(message(this, activityType, activityName, activityId, processDefinitionKey, processInstanceId));
+          prefix = space + "|";
+        }
+      }
+
+    },
+
+    Finished {
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        scenarioLog.info(message(this, activityType, activityName, activityId, processDefinitionKey, processInstanceId));
+        prefix = space + "|";
+      }
+
+    },
+
+    Canceled {
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        scenarioLog.info(message(this, activityType, activityName, activityId, processDefinitionKey, processInstanceId));
+        prefix = space + "|";
+      }
+
+    },
+
+    Completed {
+
+      public void log(String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId, String actionId, Date time) {
+        scenarioLog.info(message(this, activityType, activityName, activityId, processDefinitionKey, processInstanceId));
+        prefix = space + "|";
+      }
+
+    },
+
+  }
+
+  private static String message(Action action, String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId) {
+    String message;
+    if (activityName != null) {
+      message = String.format(ScenarioLoggable.instanceFormat.replace("LABEL", "'%s' "),
+          prefix,
+          Strings.rightpad(action.toString(), 9),
+          Strings.rightpad(activityType, 18),
+          Strings.trimAll(activityName),
+          activityId,
+          processDefinitionKey,
+          processInstanceId);
+    } else {
+      message = String.format(ScenarioLoggable.instanceFormat.replace("LABEL", ""),
+          prefix,
+          Strings.rightpad(action.toString(), 9),
+          Strings.rightpad(activityType, 18),
+          activityId,
+          processDefinitionKey,
+          processInstanceId);
+    }
+    return message;
   }
 
 }

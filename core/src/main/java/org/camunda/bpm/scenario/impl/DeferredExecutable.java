@@ -3,7 +3,6 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.impl.util.Log;
-import org.camunda.bpm.scenario.impl.util.Log.Action;
 import org.camunda.bpm.scenario.impl.util.Time;
 
 import java.util.Date;
@@ -23,7 +22,15 @@ public class DeferredExecutable extends AbstractExecutable<HistoricActivityInsta
     this.delegate = instance;
     this.isExecutableAt = Time.dateAfter(period);
     this.action = action;
-    Log.log(Log.Action.Deferring, instance, action, isExecutableAt);
+    Log.Action.Deferring_Action.log(
+        instance.getActivityType(),
+        instance.getActivityName(),
+        instance.getActivityId(),
+        instance.getProcessDefinitionKey(),
+        instance.getProcessInstanceId(),
+        action.toString(),
+        isExecutableAt
+    );
     Deferreds.add(this);
   }
 
@@ -47,7 +54,15 @@ public class DeferredExecutable extends AbstractExecutable<HistoricActivityInsta
     if (getDelegate() != null) {
       Time.set(isExecutableAt());
       try {
-        Log.log(Action.Triggered, delegate, action, isExecutableAt);
+        Log.Action.Executing_Action.log(
+            delegate.getActivityType(),
+            delegate.getActivityName(),
+            delegate.getActivityId(),
+            delegate.getProcessDefinitionKey(),
+            delegate.getProcessInstanceId(),
+            action.toString(),
+            isExecutableAt
+        );
         action.execute();
       } catch (Exception e) {
         throw new RuntimeException(e);

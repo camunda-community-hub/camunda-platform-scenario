@@ -34,7 +34,15 @@ public class ConditionalIntermediateEventExecutable extends AbstractProcessInsta
     Time.set(isExecutableAt());
     try {
       if (action != null) {
-        Log.log(Log.Action.ActingOn, historicDelegate);
+        Log.Action.ActingOn.log(
+            historicDelegate.getActivityType(),
+            historicDelegate.getActivityName(),
+            historicDelegate.getActivityId(),
+            historicDelegate.getProcessDefinitionKey(),
+            historicDelegate.getProcessInstanceId(),
+            null,
+            null
+        );
         action.execute(this);
       }
     } catch (Exception e) {

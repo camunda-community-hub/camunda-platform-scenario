@@ -199,7 +199,15 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
     });
     for (HistoricActivityInstance instance: instances) {
       if (!started.contains(instance.getId())) {
-        Log.log(Action.Started, instance);
+        Log.Action.Started.log(
+            instance.getActivityType(),
+            instance.getActivityName(),
+            instance.getActivityId(),
+            instance.getProcessDefinitionKey(),
+            instance.getProcessInstanceId(),
+            null,
+            null
+        );
         scenario.hasStarted(instance.getActivityId());
         started.add(instance.getId());
       }
@@ -207,14 +215,38 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
         scenario.hasFinished(instance.getActivityId());
         if (supportsCanceled) {
           if (instance.isCanceled()) {
-            Log.log(Action.Canceled, instance);
+            Log.Action.Canceled.log(
+                instance.getActivityType(),
+                instance.getActivityName(),
+                instance.getActivityId(),
+                instance.getProcessDefinitionKey(),
+                instance.getProcessInstanceId(),
+                null,
+                null
+            );
             scenario.hasCanceled(instance.getActivityId());
           } else {
-            Log.log(Action.Completed, instance);
+            Log.Action.Completed.log(
+                instance.getActivityType(),
+                instance.getActivityName(),
+                instance.getActivityId(),
+                instance.getProcessDefinitionKey(),
+                instance.getProcessInstanceId(),
+                null,
+                null
+            );
             scenario.hasCompleted(instance.getActivityId());
           }
         } else {
-          Log.log(Action.Finished, instance);
+          Log.Action.Finished.log(
+              instance.getActivityType(),
+              instance.getActivityName(),
+              instance.getActivityId(),
+              instance.getProcessDefinitionKey(),
+              instance.getProcessInstanceId(),
+              null,
+              null
+          );
         }
         finished.add(instance.getId());
       }
