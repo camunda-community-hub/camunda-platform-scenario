@@ -38,7 +38,7 @@ public class ConditionalIntermediateEventExecutable extends AbstractProcessInsta
             historicDelegate.getActivityType(),
             historicDelegate.getActivityName(),
             historicDelegate.getActivityId(),
-            historicDelegate.getProcessDefinitionKey(),
+            runner.getProcessDefinitionKey(),
             historicDelegate.getProcessInstanceId(),
             null,
             null

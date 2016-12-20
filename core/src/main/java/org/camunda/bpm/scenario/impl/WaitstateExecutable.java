@@ -52,7 +52,7 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
           historicDelegate.getActivityType(),
           historicDelegate.getActivityName(),
           historicDelegate.getActivityId(),
-          historicDelegate.getProcessDefinitionKey(),
+          runner.getProcessDefinitionKey(),
           historicDelegate.getProcessInstanceId(),
           null,
           null

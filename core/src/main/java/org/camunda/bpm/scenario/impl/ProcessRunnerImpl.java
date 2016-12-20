@@ -33,7 +33,6 @@ import java.util.Set;
  */
 public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, StartingByMessage, StartableRunner, StartingByStarter, ProcessRunner {
 
-  private String processDefinitionKey;
   private String startMessage;
   private ProcessStarter processStarter;
   private Map<String, Object> variables;
@@ -46,6 +45,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
   ScenarioImpl scenarioExecutor;
   ProcessScenario scenario;
   ProcessInstance processInstance;
+  String processDefinitionKey;
 
   public ProcessRunnerImpl(ScenarioImpl scenarioExecutor, ProcessScenario scenario) {
     this.scenarioExecutor = scenarioExecutor;
@@ -123,6 +123,10 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
     return scenarioExecutor.processEngine;
   }
 
+  public String getProcessDefinitionKey() {
+    return processDefinitionKey;
+  }
+
   public void running(CallActivityExecutable waitstate) {
     this.scenarioExecutor = waitstate.runner.scenarioExecutor;
     this.scenarioExecutor.runners.add(this);
@@ -164,8 +168,12 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
           }
         };
       }
-    } if (processInstance == null) {
+    }
+    if (processInstance == null) {
       this.processInstance = processStarter.start();
+      if (processDefinitionKey == null) {
+        processDefinitionKey = engine().getRepositoryService().createProcessDefinitionQuery().processDefinitionId(processInstance.getProcessDefinitionId()).singleResult().getKey();
+      }
       setExecuted();
     }
     return this.processInstance;
@@ -203,7 +211,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
             instance.getActivityType(),
             instance.getActivityName(),
             instance.getActivityId(),
-            instance.getProcessDefinitionKey(),
+            processDefinitionKey,
             instance.getProcessInstanceId(),
             null,
             null
@@ -219,7 +227,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
                 instance.getActivityType(),
                 instance.getActivityName(),
                 instance.getActivityId(),
-                instance.getProcessDefinitionKey(),
+                processDefinitionKey,
                 instance.getProcessInstanceId(),
                 null,
                 null
@@ -230,7 +238,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
                 instance.getActivityType(),
                 instance.getActivityName(),
                 instance.getActivityId(),
-                instance.getProcessDefinitionKey(),
+                processDefinitionKey,
                 instance.getProcessInstanceId(),
                 null,
                 null
@@ -242,7 +250,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
               instance.getActivityType(),
               instance.getActivityName(),
               instance.getActivityId(),
-              instance.getProcessDefinitionKey(),
+              processDefinitionKey,
               instance.getProcessInstanceId(),
               null,
               null

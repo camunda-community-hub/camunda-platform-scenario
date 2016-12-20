@@ -26,7 +26,7 @@ public class DeferredExecutable extends AbstractExecutable<HistoricActivityInsta
         instance.getActivityType(),
         instance.getActivityName(),
         instance.getActivityId(),
-        instance.getProcessDefinitionKey(),
+        runner.getProcessDefinitionKey(),
         instance.getProcessInstanceId(),
         action.toString(),
         isExecutableAt
@@ -58,7 +58,7 @@ public class DeferredExecutable extends AbstractExecutable<HistoricActivityInsta
             delegate.getActivityType(),
             delegate.getActivityName(),
             delegate.getActivityId(),
-            delegate.getProcessDefinitionKey(),
+            runner.getProcessDefinitionKey(),
             delegate.getProcessInstanceId(),
             action.toString(),
             isExecutableAt

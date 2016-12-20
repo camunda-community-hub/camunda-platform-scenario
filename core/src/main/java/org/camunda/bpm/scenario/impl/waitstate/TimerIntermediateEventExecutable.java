@@ -39,7 +39,7 @@ public class TimerIntermediateEventExecutable extends AbstractProcessInstanceDel
             historicDelegate.getActivityType(),
             historicDelegate.getActivityName(),
             historicDelegate.getActivityId(),
-            historicDelegate.getProcessDefinitionKey(),
+            runner.getProcessDefinitionKey(),
             historicDelegate.getProcessInstanceId(),
             null,
             null
