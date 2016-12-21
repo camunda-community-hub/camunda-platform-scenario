@@ -131,6 +131,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
     this.scenarioExecutor = waitstate.runner.scenarioExecutor;
     this.scenarioExecutor.runners.add(this);
     this.processInstance = waitstate;
+    processDefinitionKey = engine().getRepositoryService().createProcessDefinitionQuery().processDefinitionId(processInstance.getProcessDefinitionId()).singleResult().getKey();
     setExecuted();
   }
 
