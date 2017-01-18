@@ -157,7 +157,7 @@ public void testHappyPath() {
 
 Congrats! You are successfully using Camunda BPM Assert Scenario.
 
-**Bonus** Add logging to your tests
+## Add extensive logging to your tests
 
 If you turn on info or debug level logging for the logger 'org.camunda.bpm.scenario' you will
 see detailed information about the execution of scenarios. For optimally readably output, it 
