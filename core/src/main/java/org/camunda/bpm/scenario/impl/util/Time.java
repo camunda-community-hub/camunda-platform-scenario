@@ -2,6 +2,7 @@ package org.camunda.bpm.scenario.impl.util;
 
 import org.camunda.bpm.engine.impl.calendar.DurationHelper;
 import org.camunda.bpm.engine.impl.util.ClockUtil;
+import org.camunda.bpm.scenario.impl.util.Log.Action;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -20,10 +21,18 @@ public class Time {
   }
 
   public static void set(Date time) {
+    Date currentTime = ClockUtil.getCurrentTime();
     ClockUtil.setCurrentTime(time);
+    if (!time.equals(currentTime))
+      Action.FastForward.log(null, null, null, null, null, null, null);
+  }
+
+  public static Date get() {
+    return ClockUtil.getCurrentTime();
   }
 
   public static void reset() {
+    Action.FinishingAt.log(null, null, null, null, null, null, null);
     ClockUtil.reset();
   }
 
@@ -55,7 +64,8 @@ public class Time {
     Calendar cal = Calendar.getInstance();
     cal.setTime(ClockUtil.getCurrentTime());
     cal.set(Calendar.MILLISECOND, milliseconds);
-    Time.set(cal.getTime());
+    ClockUtil.setCurrentTime(cal.getTime());
+    Log.Action.StartingAt.log(null, null, null, null, null, null, null);
   }
   // ***
 

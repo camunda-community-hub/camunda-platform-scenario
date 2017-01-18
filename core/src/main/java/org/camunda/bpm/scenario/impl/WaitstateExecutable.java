@@ -6,6 +6,7 @@ import org.camunda.bpm.scenario.act.Action;
 import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.delegate.ProcessInstanceDelegateImpl;
+import org.camunda.bpm.scenario.impl.util.Log;
 import org.camunda.bpm.scenario.impl.util.Time;
 
 import java.util.Date;
@@ -47,6 +48,15 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
           + " '" + historicDelegate.getActivityId() +"'.");
     Time.set(isExecutableAt());
     try {
+      Log.Action.ActingOn.log(
+          historicDelegate.getActivityType(),
+          historicDelegate.getActivityName(),
+          historicDelegate.getActivityId(),
+          runner.getProcessDefinitionKey(),
+          historicDelegate.getProcessInstanceId(),
+          null,
+          null
+      );
       action.execute(this);
     } catch (Exception e) {
       throw e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException(e);
