@@ -62,7 +62,6 @@ public class Time {
 
   public static void init() {
     Calendar cal = Calendar.getInstance();
-    cal.setTime(ClockUtil.getCurrentTime());
     cal.set(Calendar.MILLISECOND, milliseconds);
     ClockUtil.setCurrentTime(cal.getTime());
     Log.Action.StartingAt.log(null, null, null, null, null, null, null);
