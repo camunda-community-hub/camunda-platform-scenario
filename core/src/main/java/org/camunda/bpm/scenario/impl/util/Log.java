@@ -246,7 +246,7 @@ public abstract class Log {
 
   private static String message(Action action, String activityType, String activityName, String activityId, String processDefinitionKey, String processInstanceId) {
     String message;
-    if (activityName != null) {
+    if (activityName != null && !activityName.equals("")) {
       message = String.format(ScenarioLoggable.instanceFormat.replace("LABEL", "'%s' "),
           prefix,
           Strings.rightpad(action.toString(), 9),
