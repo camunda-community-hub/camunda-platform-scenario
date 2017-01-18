@@ -157,6 +157,35 @@ public void testHappyPath() {
 
 Congrats! You are successfully using Camunda BPM Assert Scenario.
 
+**Bonus** Add logging to your tests
+
+If you turn on info or debug level logging for the logger 'org.camunda.bpm.scenario' you will
+see detailed information about the execution of scenarios. For optimally readably output, it 
+can make a lot of sense to turn off all other logging, because scenario logging displays the
+"fast forwarding" of process time like e.g. shown in the following example test ouput:
+
+```bash
+...
+| Started   receiveTask        'Wait for documents' (ReceiveTaskWaitForDocuments @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+* Acting on receiveTask        'Wait for documents' (ReceiveTaskWaitForDocuments @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+| Deferring action on          'Wait for documents' until 2017-01-25 18:10:21 (ReceiveTaskWaitForDocuments @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4 ...
+| Fast-forwarding scenario to 2017-01-19 18:09:21
+|-- Executing timer-transition   (BoundaryEventDaily @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+  | Started   boundaryTimer      'daily' (BoundaryEventDaily @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+  | Completed boundaryTimer      'daily' (BoundaryEventDaily @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+  | Started   sendTask           'Send reminder' (SendTaskSendReminder @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+  * Acting on sendTask           'Send reminder' (SendTaskSendReminder @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+  | Completed sendTask           'Send reminder' (SendTaskSendReminder @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+  | Started   noneEndEvent       'Reminder sent' (EndEvent_1 @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+  | Completed noneEndEvent       'Reminder sent' (EndEvent_1 @ DocumentRequest # dad1fecf-dda0-11e6-906e-7ebec62e68c4)
+  | Fast-forwarding scenario to 2017-01-20 18:09:21
+  |-- Executing timer-transition   (BoundaryEvent_2 @ InsuranceApplication # dacca880-dda0-11e6-906e-7ebec62e68c4)
+    | Started   boundaryTimer      '2 days' (BoundaryEvent_2 @ InsuranceApplication # dacca880-dda0-11e6-906e-7ebec62e68c4)
+    | Completed boundaryTimer      '2 days' (BoundaryEvent_2 @ InsuranceApplication # dacca880-dda0-11e6-906e-7ebec62e68c4)
+    | Started   userTask           'Speed up manual check' (UserTaskSpeedUpManualCheck @ InsuranceApplication # dacca880-dda0-11e6-906e-7ebec62e68c4)
+...
+```
+
 ## Further Resources
 
 * [Blog](http://plexiti.com) - I will post a series of articles in the coming weeks
