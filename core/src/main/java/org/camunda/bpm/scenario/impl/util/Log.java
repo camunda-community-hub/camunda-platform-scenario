@@ -173,7 +173,7 @@ public abstract class Log {
         String message = String.format("%s %s %s '%s' (%s @ %s # %s : %s)",
             prefix,
             Strings.rightpad("Executing", 9),
-            Strings.rightpad("action on", 18),
+            Strings.rightpad("deferred action on", 18),
             Strings.trimAll(activityName),
             activityId,
             processDefinitionKey,
