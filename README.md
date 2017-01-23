@@ -123,7 +123,7 @@ Camunda BPM Assert Scenario is already used in real life projects at [WDW eLab](
 <dependency>
     <groupId>org.camunda.bpm.extension</groupId>
     <artifactId>camunda-bpm-assert-scenario</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <scope>test</scope>
 </dependency>
 ```
