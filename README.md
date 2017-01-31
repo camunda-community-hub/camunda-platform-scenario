@@ -159,8 +159,15 @@ Congrats! You are successfully using Camunda BPM Assert Scenario.
 
 ## Add extensive logging to your tests
 
-If you turn on info or debug level logging for the logger 'org.camunda.bpm.scenario' you will
-see detailed information about the execution of scenarios. For optimally readably output, it 
+Turn on the logger 'org.camunda.bpm.scenario' and you will see detailed information about the execution of scenarios. 
+The details of configuration depend on your logging framework - when using logback, you 
+would e.g. write in `logback.xml`
+
+```xml
+<logger name="org.camunda.bpm.scenario" level="debug" /> <!-- or info -->
+```
+
+For optimally readably output, it 
 can make a lot of sense to turn off all other logging, because scenario logging displays the
 "fast forwarding" of process time like e.g. shown in the following example test ouput:
 
@@ -185,6 +192,8 @@ can make a lot of sense to turn off all other logging, because scenario logging 
     | Started   userTask           'Speed up manual check' (UserTaskSpeedUpManualCheck @ InsuranceApplication # dacca880-dda0-11e6-906e-7ebec62e68c4)
 ...
 ```
+
+Whenever the scenario fast-forwards in time, the log output moves a bit to the right.
 
 ## Further Resources
 
