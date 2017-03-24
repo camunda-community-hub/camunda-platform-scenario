@@ -10,6 +10,7 @@ import org.camunda.bpm.scenario.impl.util.Log;
 import org.camunda.bpm.scenario.impl.util.Time;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
@@ -27,6 +28,10 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
   public ProcessInstanceDelegate getProcessInstance() {
     return ProcessInstanceDelegateImpl.newInstance(this, runner.processInstance);
   };
+
+  public Map<String, Object> getVariables() {
+    return getRuntimeService().getVariables(getExecutionId());
+  }
 
   @Override
   public String getExecutionId() {

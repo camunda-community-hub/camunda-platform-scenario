@@ -5,6 +5,8 @@ import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 
+import java.util.Map;
+
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
@@ -24,6 +26,11 @@ public class ProcessInstanceDelegateImpl extends AbstractDelegate<ProcessInstanc
   @Override
   public void defer(String period, Deferred action) {
     waitstate.defer(period, action);
+  }
+
+  @Override
+  public Map<String, Object> getVariables() {
+    return waitstate.getVariables();
   }
 
   public String getProcessDefinitionId() {
