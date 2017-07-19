@@ -1,0 +1,38 @@
+version: '3'
+services:   
+  postgres:
+    image: postgres:9.6.3-alpine
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    environment:
+      - POSTGRES_PASSWORD=camunda
+      - POSTGRES_USER=camunda
+      - POSTGRES_DB=camunda
+    volumes:
+      - camunda:/var/lib/postgresql/data
+  camunda:
+    image: camunda/camunda-bpm-platform:7.7.0
+    ports:
+      - "8080:8080"
+    networks:
+      - postgres
+    depends_on:
+      - postgres
+    environment:
+      - DB_DRIVER=org.postgresql.Driver
+      - DB_URL=jdbc:postgresql://postgres/camunda
+      - DB_USERNAME=camunda
+      - DB_PASSWORD=camunda
+      - TZ=Europe/Berlin
+    volumes:
+      - ./.camunda/bin:/camunda/bin
+      - ./.camunda/conf:/camunda/conf
+      - ./.camunda/lib:/camunda/lib
+      - ./.camunda/webapps:/camunda/webapps
+networks:
+  postgres:
+    driver: bridge
+volumes:
+  camunda:

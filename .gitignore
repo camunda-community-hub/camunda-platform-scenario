@@ -12,3 +12,4 @@ target
 .DS_Store
 generate-apidocs
 .java-version
+.camunda

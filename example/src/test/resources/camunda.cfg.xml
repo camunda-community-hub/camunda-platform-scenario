@@ -4,7 +4,12 @@
 
     <bean id="processEngineConfiguration" class="org.camunda.bpm.extension.process_test_coverage.junit.rules.ProcessCoverageInMemProcessEngineConfiguration">
 
-        <property name="history" value="audit" />
+        <property name="jdbcUrl" value="jdbc:h2:./.camunda/camunda-h2-dbs/process-engine;MVCC=TRUE;TRACE_LEVEL_FILE=0;DB_CLOSE_ON_EXIT=FALSE"/>
+        <property name="jdbcDriver" value="org.h2.Driver"/>
+        <property name="jdbcUsername" value="sa"/>
+        <property name="jdbcPassword" value="sa"/>
+
+        <property name="history" value="full" />
         <property name="databaseSchemaUpdate" value="true" />
         <property name="jobExecutorActivate" value="false" />
         <property name="expressionManager">
@@ -15,4 +20,5 @@
         </property>
 
     </bean>
+
 </beans>

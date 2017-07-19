@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn.xsd" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/1.0" id="definitions_0vo4bil" name="definitions" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="DeterminePrepayment" name="Determine Prepayment">
+    <extensionElements>
+      <biodi:bounds x="403" y="145" width="180" height="80" />
+      <biodi:edge source="InputData_0frxecq">
+        <biodi:waypoints x="362" y="295" />
+        <biodi:waypoints x="425" y="225" />
+      </biodi:edge>
+      <biodi:edge source="InputData_049xacg">
+        <biodi:waypoints x="493" y="297" />
+        <biodi:waypoints x="493" y="225" />
+      </biodi:edge>
+      <biodi:edge source="InputData_1uh3o6u">
+        <biodi:waypoints x="622" y="296" />
+        <biodi:waypoints x="561" y="225" />
+      </biodi:edge>
+    </extensionElements>
+    <informationRequirement>
+      <requiredInput href="#InputData_0frxecq" />
+    </informationRequirement>
+    <informationRequirement>
+      <requiredInput href="#InputData_049xacg" />
+    </informationRequirement>
+    <informationRequirement>
+      <requiredInput href="#InputData_1uh3o6u" />
+    </informationRequirement>
+    <decisionTable id="decisionTable">
+      <input id="input1" label="Postpaid Customer" camunda:inputVariable="">
+        <inputExpression id="inputExpression1" typeRef="boolean">        <text>postpaidCustomer</text>
+</inputExpression>
+      </input>
+      <input id="InputClause_1kae11v" label="Customer Value" camunda:inputVariable="">
+        <inputExpression id="LiteralExpression_05q2naf" typeRef="string">        <text>customerValue</text>
+</inputExpression>
+        <inputValues id="UnaryTests_08x1mun">        <text><![CDATA["A","B"]]></text>
+</inputValues>
+      </input>
+      <input id="InputClause_16j28du" label="Overdue Reminder" camunda:inputVariable="">
+        <inputExpression id="LiteralExpression_1wz2uah" typeRef="boolean">        <text>overdueReminder</text>
+</inputExpression>
+      </input>
+      <output id="output1" label="Prepayment" name="prepaymentNecessary" typeRef="boolean" />
+      <rule id="row-499730374-3">
+        <description>Postpaid Customer without Reminder pay with their next invoice</description>
+        <inputEntry id="UnaryTests_0z83w2f">        <text>true</text>
+</inputEntry>
+        <inputEntry id="UnaryTests_19235fn">        <text></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_0as25xc">        <text>false</text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0mdca9v">        <text>false</text>
+</outputEntry>
+      </rule>
+      <rule id="row-499730374-4">
+        <description>Postpaid Customers with a Customer Value Category A pay with their next invoice</description>
+        <inputEntry id="UnaryTests_1p5vyuu">        <text>true</text>
+</inputEntry>
+        <inputEntry id="UnaryTests_1or5tpt">        <text><![CDATA["A"]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_1cxew8k">        <text>true</text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0e5te0p">        <text>false</text>
+</outputEntry>
+      </rule>
+      <rule id="row-499730374-2">
+        <description>Postpaid Customers with a Customer Value Category lower than A and a Reminder need to pay in advance.</description>
+        <inputEntry id="UnaryTests_0qtaoea">        <text>true</text>
+</inputEntry>
+        <inputEntry id="UnaryTests_1a04hpe">        <text><![CDATA[not("A")]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_0yui4qr">        <text>true</text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_095jalt">        <text>true</text>
+</outputEntry>
+      </rule>
+      <rule id="row-499730374-1">
+        <description>Prepaid Customers need to pay in advance</description>
+        <inputEntry id="UnaryTests_1ucy8de">        <text>false</text>
+</inputEntry>
+        <inputEntry id="UnaryTests_1axikue">        <text></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_1eq83yn">        <text></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0m09rw2">        <text>true</text>
+</outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_0frxecq" name="Prepaid/Postpaid">
+    <extensionElements>
+      <biodi:bounds x="279" y="295" width="125" height="45" />
+    </extensionElements>
+  </inputData>
+  <inputData id="InputData_049xacg" name="Customer Value">
+    <extensionElements>
+      <biodi:bounds x="430" y="297" width="125" height="45" />
+    </extensionElements>
+  </inputData>
+  <inputData id="InputData_1uh3o6u" name="Overdue Reminder">
+    <extensionElements>
+      <biodi:bounds x="579" y="296" width="125" height="45" />
+    </extensionElements>
+  </inputData>
+  <knowledgeSource id="KnowledgeSource_0c2fs24" name="Internal Money Collection Memo">
+    <extensionElements>
+      <biodi:bounds x="661" y="152" width="100" height="63" />
+      <biodi:edge source="DeterminePrepayment">
+        <biodi:waypoints x="583" y="184" />
+        <biodi:waypoints x="661" y="184" />
+      </biodi:edge>
+    </extensionElements>
+    <authorityRequirement>
+      <requiredDecision href="#DeterminePrepayment" />
+    </authorityRequirement>
+  </knowledgeSource>
+</definitions>
