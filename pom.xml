@@ -24,7 +24,7 @@
 
     <properties>
 
-        <camunda-bpm.version>RELEASE</camunda-bpm.version>
+        <camunda-bpm.version>7.7.0</camunda-bpm.version>
 
         <camunda-bpm-assert.version>1.2</camunda-bpm-assert.version>
         <camunda-bpm-process-test-coverage.version>0.2.8</camunda-bpm-process-test-coverage.version>

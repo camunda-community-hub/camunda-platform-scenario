@@ -1,5 +1,6 @@
 package org.camunda.bpm.scenario.impl.delegate;
 
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
@@ -24,6 +25,11 @@ public class ProcessInstanceDelegateImpl extends AbstractDelegate<ProcessInstanc
   @Override
   public void defer(String period, Deferred action) {
     waitstate.defer(period, action);
+  }
+
+  @Override
+  public ProcessEngine getProcessEngine() {
+    return waitstate.getProcessEngine();
   }
 
   public String getProcessDefinitionId() {

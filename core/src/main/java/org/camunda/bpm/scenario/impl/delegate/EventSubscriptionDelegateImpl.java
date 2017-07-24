@@ -1,5 +1,18 @@
 package org.camunda.bpm.scenario.impl.delegate;
 
+import org.camunda.bpm.engine.AuthorizationService;
+import org.camunda.bpm.engine.CaseService;
+import org.camunda.bpm.engine.DecisionService;
+import org.camunda.bpm.engine.ExternalTaskService;
+import org.camunda.bpm.engine.FilterService;
+import org.camunda.bpm.engine.FormService;
+import org.camunda.bpm.engine.HistoryService;
+import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.ManagementService;
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.RepositoryService;
+import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
@@ -93,6 +106,11 @@ public class EventSubscriptionDelegateImpl extends AbstractDelegate<EventSubscri
 
   public Date getCreated() {
     return delegate.getCreated();
+  }
+
+  @Override
+  public ProcessEngine getProcessEngine() {
+    return waitstate.getProcessEngine();
   }
 
 }

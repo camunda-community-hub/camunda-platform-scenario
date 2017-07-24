@@ -13,11 +13,12 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
+import org.camunda.bpm.scenario.delegate.ProcessEngineAwareDelegate;
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public abstract class AbstractProcessEngineServicesDelegate {
+public abstract class AbstractProcessEngineServicesDelegate implements ProcessEngineAwareDelegate {
 
   protected ProcessEngine processEngine;
 
