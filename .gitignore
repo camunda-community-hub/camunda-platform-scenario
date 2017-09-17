@@ -1,14 +1,1 @@
-target
-*.iml
-*.ipr
-*.iws
-.idea
-# eclipse
-.classpath
-.project
-.settings
-.checkstyle
-# OSX
-.DS_Store
-generate-apidocs
-.java-version
+.camunda
