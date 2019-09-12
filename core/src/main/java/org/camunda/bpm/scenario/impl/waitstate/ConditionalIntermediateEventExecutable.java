@@ -51,4 +51,8 @@ public class ConditionalIntermediateEventExecutable extends AbstractProcessInsta
     runner.setExecuted(this);
   }
 
+  @Override
+  public String getRootProcessInstanceId() {
+    return getProcessInstance().getRootProcessInstanceId();
+  }
 }

@@ -53,4 +53,13 @@ public class ServiceTaskExecutable extends AbstractExternalTaskDelegate {
     getExternalTaskService().handleBpmnError(getDelegate().getId(), WORKER_ID, errorCode);
   }
 
+  @Override
+  public String getProcessDefinitionVersionTag() {
+    return getRepositoryService().getProcessDefinition(getProcessDefinitionId()).getVersionTag();
+  }
+
+  @Override
+  public String getBusinessKey() {
+    return getProcessInstance().getBusinessKey();
+  }
 }

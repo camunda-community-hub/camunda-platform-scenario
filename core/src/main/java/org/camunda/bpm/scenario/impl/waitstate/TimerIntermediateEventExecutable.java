@@ -52,4 +52,8 @@ public class TimerIntermediateEventExecutable extends AbstractProcessInstanceDel
     runner.setExecuted(this);
   }
 
+  @Override
+  public String getRootProcessInstanceId() {
+    return getProcessInstance().getRootProcessInstanceId();
+  }
 }

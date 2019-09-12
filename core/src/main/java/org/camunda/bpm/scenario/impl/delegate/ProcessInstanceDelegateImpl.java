@@ -8,17 +8,21 @@ import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessInstanceDelegateImpl extends AbstractDelegate<ProcessInstance> implements ProcessInstanceDelegate {
+public class ProcessInstanceDelegateImpl extends AbstractDelegate<ProcessInstance> implements
+    ProcessInstanceDelegate {
 
   WaitstateExecutable waitstate;
 
-  protected ProcessInstanceDelegateImpl(WaitstateExecutable waitstate, ProcessInstance processInstance) {
+  protected ProcessInstanceDelegateImpl(WaitstateExecutable waitstate,
+      ProcessInstance processInstance) {
     super(processInstance);
     this.waitstate = waitstate;
   }
 
-  public static ProcessInstanceDelegate newInstance(WaitstateExecutable waitstate, ProcessInstance processInstance) {
-    return processInstance != null ? new ProcessInstanceDelegateImpl(waitstate, processInstance) : null;
+  public static ProcessInstanceDelegate newInstance(WaitstateExecutable waitstate,
+      ProcessInstance processInstance) {
+    return processInstance != null ? new ProcessInstanceDelegateImpl(waitstate, processInstance)
+        : null;
   }
 
   @Override
@@ -26,34 +30,47 @@ public class ProcessInstanceDelegateImpl extends AbstractDelegate<ProcessInstanc
     waitstate.defer(period, action);
   }
 
+  @Override
   public String getProcessDefinitionId() {
     return delegate.getProcessDefinitionId();
   }
 
+  @Override
   public String getBusinessKey() {
     return delegate.getBusinessKey();
   }
 
+  @Override
+  public String getRootProcessInstanceId() {
+    return delegate.getRootProcessInstanceId();
+  }
+
+  @Override
   public String getCaseInstanceId() {
     return delegate.getCaseInstanceId();
   }
 
+  @Override
   public boolean isSuspended() {
     return delegate.isSuspended();
   }
 
+  @Override
   public String getId() {
     return delegate.getId();
   }
 
+  @Override
   public boolean isEnded() {
     return delegate.isEnded();
   }
 
+  @Override
   public String getProcessInstanceId() {
     return delegate.getProcessInstanceId();
   }
 
+  @Override
   public String getTenantId() {
     return delegate.getTenantId();
   }

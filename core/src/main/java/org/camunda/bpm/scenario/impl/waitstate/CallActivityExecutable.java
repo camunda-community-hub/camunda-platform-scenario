@@ -36,4 +36,8 @@ public class CallActivityExecutable extends AbstractProcessInstanceDelegate {
     return null;
   }
 
+  @Override
+  public String getRootProcessInstanceId() {
+    return getProcessInstance().getRootProcessInstanceId();
+  }
 }
