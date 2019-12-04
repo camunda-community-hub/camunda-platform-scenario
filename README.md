@@ -110,7 +110,7 @@ Note that we see here a call activity `Document Request` invoked by an event sub
 
 ## <a href="https://travis-ci.org/camunda/camunda-bpm-assert-scenario"><img src="https://travis-ci.org/camunda/camunda-bpm-assert.svg?branch=master" align="right"/></a>Just start to use it! Or are you too busy?
 
-Camunda BPM Assert Scenario is already used in real life projects at [WDW eLab](http://www.wdw-consulting.com). It works with **all versions of Camunda BPM** since 7.0 up to the most recent and *all the Java versions* (1.6, 1.7., 1.8) still relevant for Camunda BPM installations out there. This is continuously verified by executing around 150 test cases against a [travis ci test matrix](https://travis-ci.org/camunda/camunda-bpm-assert-scenario).
+Camunda BPM Assert Scenario is already used in real life projects at [WDW eLab](http://www.wdw-consulting.com). It works with **all versions of Camunda BPM** since 7.0 up to the most recent and *all the Java versions* (1.7., 1.8) still relevant for Camunda BPM installations out there. This is continuously verified by executing around 150 test cases against a [travis ci test matrix](https://travis-ci.org/camunda/camunda-bpm-assert-scenario).
 
 ![](/doc/img/are-you-too-busy.png)
 <p align="right"><sup>Credits to https://hakanforss.wordpress.com</sup></p>
