@@ -1,1 +1,4 @@
 .camunda
+*.iml
+target/
+.idea/
