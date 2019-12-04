@@ -8,21 +8,17 @@ import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessInstanceDelegateImpl extends AbstractDelegate<ProcessInstance> implements
-    ProcessInstanceDelegate {
+public class ProcessInstanceDelegateImpl extends AbstractDelegate<ProcessInstance> implements ProcessInstanceDelegate {
 
   WaitstateExecutable waitstate;
 
-  protected ProcessInstanceDelegateImpl(WaitstateExecutable waitstate,
-      ProcessInstance processInstance) {
+  protected ProcessInstanceDelegateImpl(WaitstateExecutable waitstate, ProcessInstance processInstance) {
     super(processInstance);
     this.waitstate = waitstate;
   }
 
-  public static ProcessInstanceDelegate newInstance(WaitstateExecutable waitstate,
-      ProcessInstance processInstance) {
-    return processInstance != null ? new ProcessInstanceDelegateImpl(waitstate, processInstance)
-        : null;
+  public static ProcessInstanceDelegate newInstance(WaitstateExecutable waitstate, ProcessInstance processInstance) {
+    return processInstance != null ? new ProcessInstanceDelegateImpl(waitstate, processInstance) : null;
   }
 
   @Override
