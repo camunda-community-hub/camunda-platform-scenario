@@ -24,7 +24,8 @@
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
-            <version>7.12.0</version>
+            <!-- we always compile against the last version and test whether it works with older versions, too -->
+            <version>7.12.0</version> 
             <scope>provided</scope>
         </dependency>
         <dependency>
