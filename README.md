@@ -108,7 +108,7 @@ Note that we see here a call activity `Document Request` invoked by an event sub
 1. Create a **realistic history** by defining time needed for all actions and "fast-forwarding" into the future
 1. Use scenarios with the classic [**Camunda BPM Assert**](https://github.com/camunda/camunda-bpm-assert) to verify current runtime state inside your waitstate actions
 
-## <a href="https://travis-ci.org/camunda/camunda-bpm-assert-scenario"><img src="https://travis-ci.org/camunda/camunda-bpm-assert.svg?branch=master" align="right"/></a>Just start to use it! Or are you too busy?
+## <a href="https://travis-ci.org/camunda/camunda-bpm-assert-scenario"><img src="https://travis-ci.org/camunda/camunda-bpm-assert-scenario.svg?branch=master" align="right"/></a>Just start to use it! Or are you too busy?
 
 Camunda BPM Assert Scenario is already used in real life projects at [WDW eLab](http://www.wdw-consulting.com). It works with **all versions of Camunda BPM** since 7.0 up to the most recent and *all the Java versions* (1.7., 1.8) still relevant for Camunda BPM installations out there. This is continuously verified by executing around 150 test cases against a [travis ci test matrix](https://travis-ci.org/camunda/camunda-bpm-assert-scenario).
 
