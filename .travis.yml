@@ -23,5 +23,7 @@ jobs:
   exclude:
     - jdk: oraclejdk7
       env: CAMUNDA=LATEST
+    - jdk: oraclejdk7
+      env: CAMUNDA=7.12.0
 install: true
 script: mvn -Dcamunda-bpm.version=$CAMUNDA
