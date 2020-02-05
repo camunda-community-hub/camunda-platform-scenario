@@ -6,7 +6,7 @@ import org.camunda.bpm.scenario.defer.Deferrable;
 import java.util.Map;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public interface TaskDelegate extends Task, ProcessInstanceAwareDelegate, Deferrable {
 

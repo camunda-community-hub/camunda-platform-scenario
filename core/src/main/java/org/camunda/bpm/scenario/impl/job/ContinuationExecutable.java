@@ -7,7 +7,7 @@ import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import java.util.Date;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public class ContinuationExecutable extends JobExecutable {
 

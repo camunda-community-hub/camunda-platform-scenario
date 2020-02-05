@@ -11,7 +11,7 @@ import java.util.List;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public class BoundaryEscalationEventTriggeredTwiceConventionalTest extends AbstractTest {
 

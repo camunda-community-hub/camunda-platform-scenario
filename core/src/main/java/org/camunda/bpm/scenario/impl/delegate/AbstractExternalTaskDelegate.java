@@ -9,7 +9,7 @@ import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 import java.util.Date;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public abstract class AbstractExternalTaskDelegate extends WaitstateExecutable<ExternalTask> implements ExternalTaskDelegate {
 

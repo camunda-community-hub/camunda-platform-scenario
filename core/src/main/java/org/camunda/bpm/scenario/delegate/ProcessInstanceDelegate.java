@@ -4,7 +4,7 @@ import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.defer.Deferrable;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public interface ProcessInstanceDelegate extends ProcessInstance, Deferrable {
 

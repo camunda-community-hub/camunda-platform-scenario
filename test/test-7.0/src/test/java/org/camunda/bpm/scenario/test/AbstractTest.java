@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.mockito.Mockito.*;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public class AbstractTest {
 

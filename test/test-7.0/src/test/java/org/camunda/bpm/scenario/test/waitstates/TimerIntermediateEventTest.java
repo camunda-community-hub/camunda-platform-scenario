@@ -12,7 +12,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public class TimerIntermediateEventTest extends AbstractTest {
 

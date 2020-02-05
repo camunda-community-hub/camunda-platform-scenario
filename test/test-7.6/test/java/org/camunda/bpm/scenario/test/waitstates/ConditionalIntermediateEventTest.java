@@ -13,7 +13,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ConditionalIntermediateEventTest.bpmn"})
 public class ConditionalIntermediateEventTest extends AbstractTest {

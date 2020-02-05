@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.test.gateways;
 import org.camunda.bpm.engine.test.Deployment;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public class EventBasedGatewayTest extends org.camunda.bpm.scenario.test.waitstates.EventBasedGatewayTest {
 

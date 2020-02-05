@@ -7,7 +7,7 @@ import org.camunda.bpm.scenario.Scenario;
 import java.util.Map;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public interface ProcessRunner extends Runner {
 
