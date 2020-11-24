@@ -10,6 +10,8 @@ import org.camunda.bpm.scenario.run.ProcessStarter;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
 import static org.mockito.Mockito.*;
 
@@ -18,10 +20,10 @@ import static org.mockito.Mockito.*;
  */
 public class StartByTest extends AbstractTest {
 
+
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByTest.bpmn"})
   public void testStartByKey() {
-
     when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
       @Override
       public void execute(EventSubscriptionDelegate message) throws Exception {
@@ -33,7 +35,46 @@ public class StartByTest extends AbstractTest {
 
     verify(scenario, times(1)).hasFinished("StartEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
+  }
 
+  @Test
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByTest.bpmn"})
+  public void testStartByKeyAndBusinessKey() {
+    final AtomicReference<String> holder = new AtomicReference<>();
+    String businessKey = "some-key";
+    when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
+      @Override
+      public void execute(EventSubscriptionDelegate message) {
+        holder.set(message.getProcessInstance().getBusinessKey());
+        message.receive();
+      }
+    });
+
+    Scenario.run(scenario).startByKey("StartByTest", businessKey).execute();
+
+    verify(scenario, times(1)).hasFinished("StartEvent");
+    verify(scenario, times(1)).hasFinished("EndEvent");
+    assertThat(holder.get()).isEqualTo(businessKey);
+  }
+
+  @Test
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/processes/StartByTest.bpmn"})
+  public void testStartByKeyAndBusinessKeyAndVariables() {
+    final AtomicReference<String> holder = new AtomicReference<>();
+    String businessKey = "some-key";
+    when(scenario.waitsAtReceiveTask("ReceiveTask")).thenReturn(new ReceiveTaskAction() {
+      @Override
+      public void execute(EventSubscriptionDelegate message) {
+        holder.set(message.getProcessInstance().getBusinessKey());
+        message.receive();
+      }
+    });
+
+    Scenario.run(scenario).startByKey("StartByTest", businessKey, variables).execute();
+
+    verify(scenario, times(1)).hasFinished("StartEvent");
+    verify(scenario, times(1)).hasFinished("EndEvent");
+    assertThat(holder.get()).isEqualTo(businessKey);
   }
 
   @Test
