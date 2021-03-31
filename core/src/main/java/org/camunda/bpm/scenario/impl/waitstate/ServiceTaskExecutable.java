@@ -32,7 +32,7 @@ public class ServiceTaskExecutable extends AbstractExternalTaskDelegate {
   }
 
   protected void fetchAndLock() {
-    getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID).topic(getDelegate().getTopicName(), Long.MAX_VALUE).execute();
+    getExternalTaskService().fetchAndLock(Integer.MAX_VALUE, WORKER_ID).topic(getDelegate().getTopicName(), Integer.MAX_VALUE).execute();
   }
 
   @Override
