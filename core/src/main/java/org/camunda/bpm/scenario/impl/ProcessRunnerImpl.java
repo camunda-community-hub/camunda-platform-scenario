@@ -123,8 +123,10 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
       .executable()
       .startEvent()
       .serviceTask()
-      .camundaType("external")
-      .camundaTopic("mockedCallActivity")
+        .id("callActivity")
+        .name("callActivity")
+        .camundaType("external")
+        .camundaTopic("callActivity")
       .endEvent()
       .done();
     scenarioExecutor.mockedCallActivities.add(mockedCallActivity);
