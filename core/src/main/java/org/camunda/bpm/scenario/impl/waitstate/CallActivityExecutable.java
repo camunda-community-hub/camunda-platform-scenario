@@ -4,7 +4,9 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
+import org.camunda.bpm.scenario.act.MockedCallActivityAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
+import org.camunda.bpm.scenario.impl.MockedProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
 
@@ -24,7 +26,9 @@ public class CallActivityExecutable extends AbstractProcessInstanceDelegate {
 
   @Override
   protected Action<ProcessInstanceDelegate> action(final ProcessScenario scenario) {
-    final ProcessRunnerImpl runner = (ProcessRunnerImpl) scenario.runsCallActivity(getActivityId());
+    final ProcessRunnerImpl mocked = (ProcessRunnerImpl) scenario.runsCallActivity(getActivityId());
+    final MockedCallActivityAction action = scenario.waitsAtMockedCallActivity(getActivityId());
+    final ProcessRunnerImpl runner = mocked != null ? mocked : (action != null ? new MockedProcessRunnerImpl(action) : null);
     if (runner != null) {
       return new Action<ProcessInstanceDelegate>() {
         @Override

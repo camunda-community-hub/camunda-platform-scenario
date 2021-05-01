@@ -6,6 +6,7 @@ import org.camunda.bpm.scenario.act.EventBasedGatewayAction;
 import org.camunda.bpm.scenario.act.MessageEndEventAction;
 import org.camunda.bpm.scenario.act.MessageIntermediateCatchEventAction;
 import org.camunda.bpm.scenario.act.MessageIntermediateThrowEventAction;
+import org.camunda.bpm.scenario.act.MockedCallActivityAction;
 import org.camunda.bpm.scenario.act.ReceiveTaskAction;
 import org.camunda.bpm.scenario.act.SendTaskAction;
 import org.camunda.bpm.scenario.act.ServiceTaskAction;
@@ -105,6 +106,20 @@ public interface ProcessScenario extends Runnable {
    * @since Camunda BPM 7.0.0-Final
    */
   Runner runsCallActivity(String activityId);
+
+  /**
+   * By implementing - or stubbing/mocking - this method, you
+   * define what should be done when the process reaches the
+   * mocked call activity (wait state) with the activity id provided.
+   *
+   * @param activityId the activity id of the signal intermediate
+   * catch event reached.
+   * @return action to be executed when process reaches the mocked
+   * call activity (wait state) with the activity id provided.
+   *
+   * @since Camunda BPM 7.4.0
+   */
+  MockedCallActivityAction waitsAtMockedCallActivity(String activityId);
 
   /**
    * By implementing - or stubbing/mocking - this method, you

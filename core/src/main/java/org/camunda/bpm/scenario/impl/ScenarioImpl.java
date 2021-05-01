@@ -2,7 +2,12 @@ package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
+import org.camunda.bpm.engine.repository.Deployment;
+import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.model.bpmn.Bpmn;
+import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.impl.util.Log;
@@ -10,6 +15,7 @@ import org.camunda.bpm.scenario.impl.util.Log.Action;
 import org.camunda.bpm.scenario.impl.util.Time;
 import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,25 +29,32 @@ public class ScenarioImpl extends Scenario {
 
   ProcessEngine processEngine;
   List<AbstractRunner> runners = new ArrayList<AbstractRunner>();
+  List<BpmnModelInstance> mockedCallActivities = new ArrayList<>();
+
+  private static final String DEPLOYMENT_ID = "camundaBpmAssertScenario";
 
   public ScenarioImpl(ProcessScenario scenario) {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
   }
 
   protected Scenario execute() {
-    init();
-    Time.init();
-    List<Executable> executables;
-    do {
-      executables = new ArrayList<Executable>();
-      for (AbstractRunner runner: runners) {
-        executables.addAll(runner.next());
-      }
-      executables = Executable.Helpers.first(executables);
-      if (!executables.isEmpty())
-        executables.get(0).execute();
-    } while (!executables.isEmpty());
-    Time.reset();
+    try {
+      init();
+      Time.init();
+      List<Executable> executables;
+      do {
+        executables = new ArrayList<Executable>();
+        for (AbstractRunner runner : runners) {
+          executables.addAll(runner.next());
+        }
+        executables = Executable.Helpers.first(executables);
+        if (!executables.isEmpty())
+          executables.get(0).execute();
+      } while (!executables.isEmpty());
+    } finally {
+      Time.reset();
+      cleanup();
+    }
     return this;
   }
 
@@ -85,10 +98,33 @@ public class ScenarioImpl extends Scenario {
         throw new IllegalStateException(message);
       }
     }
+    if (!mockedCallActivities.isEmpty()) {
+      DeploymentBuilder deployment = processEngine.getRepositoryService().createDeployment();
+      deployment.name(DEPLOYMENT_ID);
+      for (BpmnModelInstance mockedCallActivity: mockedCallActivities) {
+        String processDefinitionKey = mockedCallActivity
+           .getDefinitions().getChildElementsByType(Process.class).iterator().next().getId();
+        boolean exists = !processEngine.getRepositoryService().createProcessDefinitionQuery()
+           .processDefinitionKey(processDefinitionKey).list().isEmpty();
+        if (exists)
+          throw new AssertionError("Process '" + processDefinitionKey + "' declared to be mocked, " +
+             "but it is already deployed. Please remove from your list of explicit deployments.");
+        deployment.addModelInstance("mockedCallActivity.bpmn", mockedCallActivity);
+      }
+      deployment.deploy();
+    }
   }
 
   protected void init(ProcessEngine processEngine) {
     this.processEngine = processEngine;
+  }
+
+  protected void cleanup() {
+    Deployment deployment = processEngine.getRepositoryService().createDeploymentQuery()
+       .deploymentName(DEPLOYMENT_ID).singleResult();
+    if (deployment != null) {
+      processEngine.getRepositoryService().deleteDeployment(deployment.getId(), true);
+    }
   }
 
   public StartableRunner toBeStartedBy() {
