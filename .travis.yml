@@ -2,10 +2,14 @@ dist: precise
 sudo: false
 language: java
 jdk:
+  - openjdk11
   - oraclejdk8
   - oraclejdk7
 env:
   - CAMUNDA=LATEST
+  - CAMUNDA=7.15.0
+  - CAMUNDA=7.14.0
+  - CAMUNDA=7.13.0
   - CAMUNDA=7.12.0
   - CAMUNDA=7.11.0
   - CAMUNDA=7.10.0
@@ -18,12 +22,18 @@ env:
   - CAMUNDA=7.3.0
   - CAMUNDA=7.2.0
   - CAMUNDA=7.1.0-Final
-  - CAMUNDA=7.0.0-Final  
+  - CAMUNDA=7.0.0-Final
 jobs:
   exclude:
     - jdk: oraclejdk7
       env: CAMUNDA=LATEST
     - jdk: oraclejdk7
       env: CAMUNDA=7.12.0
+    - jdk: oraclejdk7
+      env: CAMUNDA=7.13.0
+    - jdk: oraclejdk7
+      env: CAMUNDA=7.14.0
+    - jdk: oraclejdk7
+      env: CAMUNDA=7.15.0
 install: true
 script: mvn -Dcamunda-bpm.version=$CAMUNDA
