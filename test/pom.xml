@@ -168,6 +168,7 @@
                 <module>test-7.4</module>
                 <module>test-7.5</module>
                 <module>test-7.6</module>
+                <module>test-7.10</module>
             </modules>
             <activation>
                 <property>
@@ -184,6 +185,7 @@
                 <module>test-7.4</module>
                 <module>test-7.5</module>
                 <module>test-7.6</module>
+                <module>test-7.10</module>
             </modules>
             <activation>
                 <property>
@@ -200,6 +202,7 @@
                 <module>test-7.4</module>
                 <module>test-7.5</module>
                 <module>test-7.6</module>
+                <module>test-7.10</module>
                 <module>test-7.12</module>
             </modules>
             <activation>
@@ -217,6 +220,7 @@
                 <module>test-7.4</module>
                 <module>test-7.5</module>
                 <module>test-7.6</module>
+                <module>test-7.10</module>
                 <module>test-7.12</module>
             </modules>
             <activation>
@@ -234,6 +238,7 @@
                 <module>test-7.4</module>
                 <module>test-7.5</module>
                 <module>test-7.6</module>
+                <module>test-7.10</module>
                 <module>test-7.12</module>
             </modules>
             <activation>
