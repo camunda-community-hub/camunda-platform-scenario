@@ -22,4 +22,22 @@ public interface TaskDelegate extends Task, ProcessInstanceAwareDelegate, Deferr
    */
   void complete(Map<String, Object> variables);
 
+  /**
+   * Handle a BPMN Error occurring with or raised by the human user.
+   *
+   * @param errorCode of the BPMN error raised.
+   * @since Camunda BPM 7.5.0
+   */
+  void handleBpmnError(String errorCode);
+
+  /**
+   * Handle a BPMN Error occurring with or raised by the human user
+   * and deliver a map of additional information to be stored as
+   * process instance variables.
+   *
+   * @param errorCode of the BPMN error raised.
+   * @since Camunda BPM 7.5.0
+   */
+  void handleBpmnError(String errorCode, Map<String, Object> variables);
+
 }
