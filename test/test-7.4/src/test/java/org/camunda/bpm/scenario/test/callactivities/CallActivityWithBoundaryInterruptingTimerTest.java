@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.test.timers;
+package org.camunda.bpm.scenario.test.callactivities;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class CallActivityWithBoundaryInterruptingTimerTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
   public void testCompleteTask() {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
@@ -40,7 +40,7 @@ public class CallActivityWithBoundaryInterruptingTimerTest extends AbstractTest 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
   public void testExactlyReachingMaximalTimeForTask() {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
@@ -66,7 +66,7 @@ public class CallActivityWithBoundaryInterruptingTimerTest extends AbstractTest 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
   public void testTakeMuchTooLongForTask() {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
@@ -91,7 +91,7 @@ public class CallActivityWithBoundaryInterruptingTimerTest extends AbstractTest 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
   public void testTakeABitTimeForTask() {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
@@ -117,7 +117,7 @@ public class CallActivityWithBoundaryInterruptingTimerTest extends AbstractTest 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
   public void testDoNothing() {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
@@ -138,7 +138,7 @@ public class CallActivityWithBoundaryInterruptingTimerTest extends AbstractTest 
   }
 
   @Test(expected=AssertionError.class)
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
   public void testDoNotDealWithTask() {
 
     Scenario.run(scenario).withMockedProcess("Child").startByKey("BoundaryInterruptingTimerTest").execute();
@@ -146,7 +146,7 @@ public class CallActivityWithBoundaryInterruptingTimerTest extends AbstractTest 
   }
 
   @Test
-  @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityWithBoundaryInterruptingTimerTest.bpmn"})
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
