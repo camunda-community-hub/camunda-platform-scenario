@@ -29,9 +29,9 @@ public class ScenarioImpl extends Scenario {
 
   ProcessEngine processEngine;
   List<AbstractRunner> runners = new ArrayList<AbstractRunner>();
-  List<BpmnModelInstance> mockedCallActivities = new ArrayList<>();
 
-  private static final String DEPLOYMENT_ID = "camundaBpmAssertScenario";
+  List<BpmnModelInstance> mockedCallActivities = new ArrayList<>();
+  private String deploymentId;
 
   public ScenarioImpl(ProcessScenario scenario) {
     this.runners.add(new ProcessRunnerImpl(this, scenario));
@@ -100,7 +100,6 @@ public class ScenarioImpl extends Scenario {
     }
     if (!mockedCallActivities.isEmpty()) {
       DeploymentBuilder deployment = processEngine.getRepositoryService().createDeployment();
-      deployment.name(DEPLOYMENT_ID);
       for (BpmnModelInstance mockedCallActivity: mockedCallActivities) {
         String processDefinitionKey = mockedCallActivity
            .getDefinitions().getChildElementsByType(Process.class).iterator().next().getId();
@@ -111,7 +110,7 @@ public class ScenarioImpl extends Scenario {
              "but it is already deployed. Please remove from your list of explicit deployments.");
         deployment.addModelInstance("mockedCallActivity.bpmn", mockedCallActivity);
       }
-      deployment.deploy();
+      deploymentId = deployment.deploy().getId();
     }
   }
 
@@ -120,10 +119,8 @@ public class ScenarioImpl extends Scenario {
   }
 
   protected void cleanup() {
-    Deployment deployment = processEngine.getRepositoryService().createDeploymentQuery()
-       .deploymentName(DEPLOYMENT_ID).singleResult();
-    if (deployment != null) {
-      processEngine.getRepositoryService().deleteDeployment(deployment.getId(), true);
+    if (deploymentId != null) {
+      processEngine.getRepositoryService().deleteDeployment(deploymentId, true);
     }
   }
 
