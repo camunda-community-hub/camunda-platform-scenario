@@ -34,4 +34,15 @@ public interface ExternalTaskDelegate extends ExternalTask, ProcessInstanceAware
    */
   void handleBpmnError(String errorCode);
 
+  /**
+   * Handle a BPMN Error occurring with or raised by the
+   * external worker and deliver a map of additional
+   * information to be stored as process instance variables.
+   *
+   * @param errorCode of the BPMN error raised.
+   * @param variables the process variables to be stored
+   * @since Camunda BPM 7.10.0
+   */
+  void handleBpmnError(String errorCode, Map<String, Object> variables);
+
 }
