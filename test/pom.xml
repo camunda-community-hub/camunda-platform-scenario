@@ -113,6 +113,103 @@
             </activation>
         </profile>
         <profile>
+            <id>7.7</id>
+            <modules>
+                <module>test-7.0</module>
+                <module>test-7.1</module>
+                <module>test-7.4</module>
+                <module>test-7.5</module>
+                <module>test-7.6</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.7.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>7.8</id>
+            <modules>
+                <module>test-7.0</module>
+                <module>test-7.1</module>
+                <module>test-7.4</module>
+                <module>test-7.5</module>
+                <module>test-7.6</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.8.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>7.9</id>
+            <modules>
+                <module>test-7.0</module>
+                <module>test-7.1</module>
+                <module>test-7.4</module>
+                <module>test-7.5</module>
+                <module>test-7.6</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.9.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>7.10</id>
+            <modules>
+                <module>test-7.0</module>
+                <module>test-7.1</module>
+                <module>test-7.4</module>
+                <module>test-7.5</module>
+                <module>test-7.6</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.10.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>7.11</id>
+            <modules>
+                <module>test-7.0</module>
+                <module>test-7.1</module>
+                <module>test-7.4</module>
+                <module>test-7.5</module>
+                <module>test-7.6</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.11.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
+            <id>7.12</id>
+            <modules>
+                <module>test-7.0</module>
+                <module>test-7.1</module>
+                <module>test-7.4</module>
+                <module>test-7.5</module>
+                <module>test-7.6</module>
+                <module>test-7.12</module>
+            </modules>
+            <activation>
+                <property>
+                    <name>camunda-bpm.version</name>
+                    <value>7.12.0</value>
+                </property>
+            </activation>
+        </profile>
+        <profile>
             <id>LATEST</id>
             <modules>
                 <module>test-7.0</module>
@@ -120,6 +217,7 @@
                 <module>test-7.4</module>
                 <module>test-7.5</module>
                 <module>test-7.6</module>
+                <module>test-7.12</module>
             </modules>
             <activation>
                 <property>
@@ -136,6 +234,7 @@
                 <module>test-7.4</module>
                 <module>test-7.5</module>
                 <module>test-7.6</module>
+                <module>test-7.12</module>
             </modules>
             <activation>
                 <activeByDefault>true</activeByDefault>
