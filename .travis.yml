@@ -22,7 +22,7 @@ env:
   - CAMUNDA=7.3.0
   - CAMUNDA=7.2.0
   - CAMUNDA=7.1.0-Final
-  - CAMUNDA=7.0.0-Final  
+  - CAMUNDA=7.0.0-Final
 jobs:
   exclude:
     - jdk: oraclejdk7

@@ -7,6 +7,7 @@ import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
@@ -67,6 +68,10 @@ public abstract class AbstractExternalTaskDelegate extends WaitstateExecutable<E
 
   public long getPriority() {
     return delegate.getPriority();
+  }
+
+  public Map<String, String> getExtensionProperties() {
+    return delegate.getExtensionProperties();
   }
 
 }

@@ -109,6 +109,26 @@ public interface ProcessRunner extends Runner {
      */
     ExecutableRunner.StartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables);
 
+
+    /**
+     * Start the new process instance by providing a process definition key, business key
+     * and provide a few process instance variables.
+     *
+     * @param processDefinitionKey to be used to start a process instance
+     * @param businessKey to be used to start a process by business key
+     * @param variables to be used as process instance variables from the start on.
+     */
+    ExecutableRunner.StartingByKey startByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables);
+
+    /**
+     * Start the new process instance by providing a process definition key, business key
+     * and provide a few process instance variables.
+     *
+     * @param processDefinitionKey to be used to start a process instance
+     * @param businessKey to be used to start a process by business key
+     */
+    ExecutableRunner.StartingByKey startByKey(String processDefinitionKey, String businessKey);
+
     /**
      * Start the new process instance by providing a message name.
      *

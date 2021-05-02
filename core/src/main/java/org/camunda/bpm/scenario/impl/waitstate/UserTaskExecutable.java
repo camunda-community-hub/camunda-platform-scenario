@@ -38,4 +38,14 @@ public class UserTaskExecutable extends AbstractTaskDelegate {
     getTaskService().complete(getDelegate().getId(), variables);
   }
 
+  @Override
+  public void handleBpmnError(String errorCode) {
+    getTaskService().handleBpmnError(getDelegate().getId(), errorCode);
+  }
+
+  @Override
+  public void handleBpmnError(String errorCode, Map<String, Object> variables) {
+    getTaskService().handleBpmnError(getDelegate().getId(), errorCode, null, variables);
+  }
+
 }

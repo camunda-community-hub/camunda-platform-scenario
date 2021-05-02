@@ -21,14 +21,8 @@ import org.camunda.bpm.scenario.run.ProcessRunner.ExecutableRunner.StartingBySta
 import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 import org.camunda.bpm.scenario.run.ProcessStarter;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
@@ -48,6 +42,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
   ProcessScenario scenario;
   ProcessInstance processInstance;
   String processDefinitionKey;
+  String businessKey;
 
   public ProcessRunnerImpl(ScenarioImpl scenarioExecutor, ProcessScenario scenario) {
     this.scenarioExecutor = scenarioExecutor;
@@ -71,6 +66,19 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
     this.processDefinitionKey = processDefinitionKey;
     this.variables = variables;
     return this;
+  }
+
+  @Override
+  public StartingByKey startByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables) {
+    this.processDefinitionKey = processDefinitionKey;
+    this.variables = variables;
+    this.businessKey = businessKey;
+    return this;
+  }
+
+  @Override
+  public StartingByKey startByKey(String processDefinitionKey, String businessKey) {
+     return startByKey(processDefinitionKey, businessKey, null);
   }
 
   @Override
@@ -162,7 +170,8 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
           @Override
           public ProcessInstance start() {
             if (fromActivityIds.isEmpty()) {
-              return scenarioExecutor.processEngine.getRuntimeService().startProcessInstanceByKey(processDefinitionKey, variables);
+              return scenarioExecutor.processEngine.getRuntimeService()
+                      .startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
             } else {
               ProcessInstantiationBuilder builder = scenarioExecutor.processEngine.getRuntimeService().createProcessInstanceByKey(processDefinitionKey);
               for (String activityId : fromActivityIds.keySet()) {
