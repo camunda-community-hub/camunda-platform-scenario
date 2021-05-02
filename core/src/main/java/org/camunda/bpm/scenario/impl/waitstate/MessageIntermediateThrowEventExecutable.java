@@ -38,4 +38,9 @@ public class MessageIntermediateThrowEventExecutable extends ServiceTaskExecutab
     super.handleBpmnError(errorCode);
   }
 
+  @Override
+  public void handleBpmnError(String errorCode, Map<String, Object> variables) {
+    super.handleBpmnError(errorCode, variables);
+  }
+
 }

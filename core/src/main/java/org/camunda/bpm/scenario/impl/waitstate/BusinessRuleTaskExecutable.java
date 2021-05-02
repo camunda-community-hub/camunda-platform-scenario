@@ -37,4 +37,9 @@ public class BusinessRuleTaskExecutable extends ServiceTaskExecutable {
     super.handleBpmnError(errorCode);
   }
 
+  @Override
+  public void handleBpmnError(String errorCode, Map<String, Object> variables) {
+    super.handleBpmnError(errorCode, variables);
+  }
+
 }
