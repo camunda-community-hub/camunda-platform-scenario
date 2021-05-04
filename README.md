@@ -125,7 +125,7 @@ Camunda Platform Scenario is already used in real life projects at [WDW eLab](ht
 <dependency>
     <groupId>org.camunda.bpm.extension</groupId>
     <artifactId>camunda-bpm-assert-scenario</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <scope>test</scope>
 </dependency>
 ```
