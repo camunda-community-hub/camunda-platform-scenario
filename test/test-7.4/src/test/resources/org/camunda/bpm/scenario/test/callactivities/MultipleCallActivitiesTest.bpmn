@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.5.0">
+  <bpmn:process id="MultipleCallActivitiesTest" isExecutable="true">
+    <bpmn:startEvent id="StartEvent">
+      <bpmn:outgoing>SequenceFlow_074vh3k</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_074vh3k" sourceRef="StartEvent" targetRef="CallActivity1" />
+    <bpmn:callActivity id="CallActivity1" name="Child1" calledElement="Child1">
+      <bpmn:incoming>SequenceFlow_074vh3k</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0vlxv8k</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:endEvent id="EndEvent">
+      <bpmn:incoming>Flow_15bnbwn</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_0vlxv8k" sourceRef="CallActivity1" targetRef="CallActivity2" />
+    <bpmn:callActivity id="CallActivity2" name="Child2" calledElement="Child2">
+      <bpmn:incoming>SequenceFlow_0vlxv8k</bpmn:incoming>
+      <bpmn:outgoing>Flow_0aw6sgk</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="Flow_0aw6sgk" sourceRef="CallActivity2" targetRef="CallActivity3" />
+    <bpmn:callActivity id="CallActivity3" name="Child1" calledElement="Child1">
+      <bpmn:incoming>Flow_0aw6sgk</bpmn:incoming>
+      <bpmn:outgoing>Flow_15bnbwn</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:sequenceFlow id="Flow_15bnbwn" sourceRef="CallActivity3" targetRef="EndEvent" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="MultipleCallActivitiesTest">
+      <bpmndi:BPMNEdge id="SequenceFlow_0vlxv8k_di" bpmnElement="SequenceFlow_0vlxv8k">
+        <di:waypoint x="330" y="115" />
+        <di:waypoint x="370" y="115" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="298" y="90" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_074vh3k_di" bpmnElement="SequenceFlow_074vh3k">
+        <di:waypoint x="197" y="115" />
+        <di:waypoint x="230" y="115" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="164" y="100" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0aw6sgk_di" bpmnElement="Flow_0aw6sgk">
+        <di:waypoint x="470" y="115" />
+        <di:waypoint x="520" y="115" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15bnbwn_di" bpmnElement="Flow_15bnbwn">
+        <di:waypoint x="620" y="115" />
+        <di:waypoint x="662" y="115" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_1b69jt9_di" bpmnElement="StartEvent">
+        <dc:Bounds x="161" y="97" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="129" y="133.4945919370698" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CallActivity_1dlne1d_di" bpmnElement="CallActivity1">
+        <dc:Bounds x="230" y="75" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_078j3vb_di" bpmnElement="CallActivity2">
+        <dc:Bounds x="370" y="75" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_007881h_di" bpmnElement="CallActivity3">
+        <dc:Bounds x="520" y="75" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0idrcjq_di" bpmnElement="EndEvent">
+        <dc:Bounds x="662" y="97" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="333" y="133" width="0" height="0" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
