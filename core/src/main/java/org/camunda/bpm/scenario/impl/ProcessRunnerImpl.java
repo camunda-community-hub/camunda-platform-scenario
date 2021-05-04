@@ -5,6 +5,8 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstantiationBuilder;
+import org.camunda.bpm.model.bpmn.Bpmn;
+import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.impl.util.Api;
@@ -123,6 +125,23 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
   }
 
   @Override
+  public StartableRunner withMockedProcess(String processDefinitionKey) {
+    BpmnModelInstance mockedCallActivity = Bpmn
+      .createProcess(processDefinitionKey)
+      .executable()
+      .startEvent()
+      .serviceTask()
+        .id("callActivity")
+        .name("callActivity")
+        .camundaType("external")
+        .camundaTopic("callActivity")
+      .endEvent()
+      .done();
+    scenarioExecutor.mockedCallActivities.add(mockedCallActivity);
+    return this;
+  }
+
+  @Override
   public Scenario execute() {
     return scenarioExecutor.execute();
   }
@@ -135,10 +154,10 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
     return processDefinitionKey;
   }
 
-  public void running(CallActivityExecutable waitstate) {
-    this.scenarioExecutor = waitstate.runner.scenarioExecutor;
+  public void running(CallActivityExecutable executable) {
+    this.scenarioExecutor = executable.runner.scenarioExecutor;
     this.scenarioExecutor.runners.add(this);
-    this.processInstance = waitstate;
+    this.processInstance = executable;
     processDefinitionKey = engine().getRepositoryService().createProcessDefinitionQuery().processDefinitionId(processInstance.getProcessDefinitionId()).singleResult().getKey();
     setExecuted();
   }

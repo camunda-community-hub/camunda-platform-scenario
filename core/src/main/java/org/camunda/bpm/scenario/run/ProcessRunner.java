@@ -152,6 +152,14 @@ public interface ProcessRunner extends Runner {
      */
     ExecutableRunner.StartingByStarter startBy(ProcessStarter starter);
 
+    /**
+     * Mock the scenario by deploying a process with the given process
+     * definition key, but only a single wait state to interact with
+     * (internally implemented with an external task).
+     * @param processDefinitionKey the process definition key to mock
+     */
+    StartableRunner withMockedProcess(String processDefinitionKey);
+
   }
 
 }

@@ -48,15 +48,16 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
           + " '" + historicDelegate.getActivityId() +"'.");
     Time.set(isExecutableAt());
     try {
-      Log.Action.ActingOn.log(
-          historicDelegate.getActivityType(),
-          historicDelegate.getActivityName(),
-          historicDelegate.getActivityId(),
-          runner.getProcessDefinitionKey(),
-          historicDelegate.getProcessInstanceId(),
-          null,
-          null
-      );
+      if (!(runner instanceof MockedProcessRunnerImpl))
+        Log.Action.ActingOn.log(
+            historicDelegate.getActivityType(),
+            historicDelegate.getActivityName(),
+            historicDelegate.getActivityId(),
+            runner.getProcessDefinitionKey(),
+            historicDelegate.getProcessInstanceId(),
+            null,
+            null
+        );
       action.execute(this);
     } catch (Exception e) {
       throw e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException(e);
