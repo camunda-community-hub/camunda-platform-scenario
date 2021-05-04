@@ -125,7 +125,7 @@ Camunda Platform Scenario is already used in real life projects at [WDW eLab](ht
 <dependency>
     <groupId>org.camunda.bpm.extension</groupId>
     <artifactId>camunda-bpm-assert-scenario</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -199,15 +199,16 @@ Whenever the scenario fast-forwards in time, the log output moves a bit to the r
 
 ## Further Resources
 
-* [Blog](http://plexiti.com) - I will post a series of articles in the coming weeks
-* [Issue Tracker](https://github.com/camunda/camunda-bpm-assert-scenario/issues) 
-* [Roadmap](https://github.com/camunda/camunda-bpm-assert-scenario/issues/milestones?state=open&with_issues=no) 
-* [Download](https://github.com/camunda/camunda-bpm-assert-scenario/releases)
+* [Maintenance](https://plexiti.com/)
+* [Issue Tracker](https://github.com/camunda-community-hub/camunda-platform-scenario/issues) 
+* [Roadmap](https://github.com/camunda-community-hub/camunda-platform-scenario/issues/milestones?state=open&with_issues=no) 
+* [Download](https://github.com/camunda-community-hub/camunda-platform-scenario/releases)
 * [Continuous Integration](https://travis-ci.org/camunda/camunda-bpm-assert-scenario)
+* [Blog](https://medium.com/plexiti)
 
 ## Maintenance &amp; License
 
-<a href="http://plexiti.com"><img src="https://plexiti.com/images/plexiti-transparent.png" align="right"></img></a>Martin Schimak<br/>[Blog](http://plexiti.com) &#8226; [GitHub](https://github.com/martinschimak) &#8226; [eMail](mailto:martin.schimak@plexiti.com)<br/>Apache License, Version 2.0
+<a href="http://plexiti.com"><img src="https://plexiti.com/images/plexiti-transparent.png" align="right"></img></a>Martin Schimak<br/>[Company](https://plexiti.com/) &#8226; [GitHub](https://github.com/martinschimak) &#8226; [eMail](mailto:martin.schimak@plexiti.com)<br/>Apache License, Version 2.0
 
 ## Contributions and Sponsorship
 
