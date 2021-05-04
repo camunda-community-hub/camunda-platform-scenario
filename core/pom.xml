@@ -17,7 +17,7 @@
     <parent>
         <artifactId>camunda-bpm-assert-scenario-parent</artifactId>
         <groupId>org.camunda.bpm.extension</groupId>
-        <version>1.1.1</version>
+        <version>1.1.2-SNAPSHOT</version>
     </parent>
 
     <dependencies>
