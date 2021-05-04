@@ -108,7 +108,7 @@ public class ScenarioImpl extends Scenario {
         if (exists)
           throw new AssertionError("Process '" + processDefinitionKey + "' declared to be mocked, " +
              "but it is already deployed. Please remove from your list of explicit deployments.");
-        deployment.addModelInstance("mockedCallActivity.bpmn", mockedCallActivity);
+        deployment.addModelInstance(processDefinitionKey + ".bpmn", mockedCallActivity);
       }
       deploymentId = deployment.deploy().getId();
     }
