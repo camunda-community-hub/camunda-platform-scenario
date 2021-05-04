@@ -1,10 +1,10 @@
 [![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
 
-# <img src="https://avatars.githubusercontent.com/u/2443838?s=23&v=4" width="23" height="23"></img>&nbsp;Camunda BPM <strong>Scenario</strong><a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario"><img src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario/badge.svg" align="right"/></a>
+# <img src="https://avatars.githubusercontent.com/u/2443838?s=23&v=4" width="23" height="23"></img>&nbsp;Camunda Platform <strong>Scenario</strong><a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario"><img src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario/badge.svg" align="right"/></a>
 
 <img src="/doc/img/clapboard.jpg" align="right" width="400"></img>
 
-This community extension to Camunda BPM enables you to write **robust test suites** for process models. The larger your process models, the more often you change them, the more value you will get out of using it. Look at a piece of test code:
+This community extension to Camunda Platform enables you to write **robust test suites** for process models. The larger your process models, the more often you change them, the more value you will get out of using it. Look at a piece of test code:
 
 ```groovy
 @Test
@@ -49,13 +49,13 @@ Note that such **time-aware scenarios** work across **interacting process instan
 
 ## Our motivations
 
-**Camunda BPM Assert Scenario** enables much **faster process development**, removing the need to adapt unit test suites for large executable models over and over again. When using it we experience that just those tests need to break that we want to break: when we change the "business relevant" aspect under test or **what** the process achieves. However, our test suites do not break at all when we just refactor a model's inner logic or **how** we achieve the desired business semantics.
+**Camunda Platform Scenario** enables much **faster process development**, removing the need to adapt unit test suites for large executable models over and over again. When using it we experience that just those tests need to break that we want to break: when we change the "business relevant" aspect under test or **what** the process achieves. However, our test suites do not break at all when we just refactor a model's inner logic or **how** we achieve the desired business semantics.
 
-Furthermore, _Camunda BPM Assert Scenario_ enables **realistic unit testing** with respect to **time-related** process behaviour: by deferring actions and "fast-forwarding" test scenarios into their "process future", we can check how several processes and call activities behave together. We however always remain in the driver's seat: _Camunda BPM Assert Scenario_ works in a single-treaded, easily mockable and controllable unit test environment.
+Furthermore, _Camunda Platform Scenario_ enables **realistic unit testing** with respect to **time-related** process behaviour: by deferring actions and "fast-forwarding" test scenarios into their "process future", we can check how several processes and call activities behave together. We however always remain in the driver's seat: _Camunda Platform Scenario_ works in a single-treaded, easily mockable and controllable unit test environment.
 
 ## Show me more code!
 
-The library provides you with a callback interface `ProcessScenario`. Implementing this interface allows you to define up front what needs to happen at the "waitstates" of your process under test. Typical "waitstates" are user tasks, receive tasks, intermediate catching events and some more, since Camunda BPM 7.4 in particular also "external" service tasks. But instead of simply implementing this interface you will typically mock its behaviour by making use of your preferred mocking framework. Let's look at an example using the Mockito framework:
+The library provides you with a callback interface `ProcessScenario`. Implementing this interface allows you to define up front what needs to happen at the "waitstates" of your process under test. Typical "waitstates" are user tasks, receive tasks, intermediate catching events and some more, since Camunda Platform 7.4 in particular also "external" service tasks. But instead of simply implementing this interface you will typically mock its behaviour by making use of your preferred mocking framework. Let's look at an example using the Mockito framework:
 
 ```groovy
 @Mock private ProcessScenario insuranceApplication;
@@ -94,7 +94,7 @@ Note that in the last line, we simply consult the mocking framework to tell us a
 
 ## An extensive example: applying for insurance with "Camundanzia"! :smile:
 
-The following process scenario has been executed by means of _Camunda BPM Assert Scenario_ and has been visualised with the [Camunda BPM Process Test Coverage](https://github.com/camunda/camunda-process-test-coverage) library:
+The following process scenario has been executed by means of _Camunda Platform Scenario_ and has been visualised with the [Camunda BPM Process Test Coverage](https://github.com/camunda/camunda-process-test-coverage) library:
 
 ![](/doc/img/insurance-application.png)
 
@@ -112,7 +112,7 @@ Note that we see here a call activity `Document Request` invoked by an event sub
 
 ## <a href="https://travis-ci.org/camunda/camunda-bpm-assert-scenario"><img src="https://travis-ci.org/camunda/camunda-bpm-assert-scenario.svg?branch=master" align="right"/></a>Just start to use it! Or are you too busy?
 
-Camunda BPM Assert Scenario is already used in real life projects at [WDW eLab](http://www.wdw-consulting.com). It works with **all versions of Camunda BPM** since 7.0 up to the most recent and *all the Java versions* (1.7., 1.8) still relevant for Camunda BPM installations out there. This is continuously verified by executing around 150 test cases against a [travis ci test matrix](https://travis-ci.org/camunda/camunda-bpm-assert-scenario).
+Camunda Platform Scenario is already used in real life projects at [WDW eLab](http://www.wdw-consulting.com). It works with **all versions of Camunda BPM** since 7.0 up to the most recent and *all the Java versions* (1.7., 1.8) still relevant for Camunda BPM installations out there. This is continuously verified by executing around 150 test cases against a [travis ci test matrix](https://travis-ci.org/camunda/camunda-bpm-assert-scenario).
 
 ![](/doc/img/are-you-too-busy.png)
 <p align="right"><sup>Credits to https://hakanforss.wordpress.com</sup></p>
@@ -157,7 +157,7 @@ public void testHappyPath() {
 
 <img src="http://camunda.github.io/camunda-bpm-assert/resources/images/green-bar.png" align="right"></img> Green bar? 
 
-Congrats! You are successfully using Camunda BPM Assert Scenario.
+Congrats! You are successfully using Camunda Platform Scenario.
 
 ## Add extensive logging to your tests
 
