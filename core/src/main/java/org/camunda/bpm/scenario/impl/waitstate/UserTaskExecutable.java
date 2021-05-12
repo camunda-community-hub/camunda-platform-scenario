@@ -24,7 +24,7 @@ public class UserTaskExecutable extends AbstractTaskDelegate {
   }
 
   @Override
-  protected Action action(ProcessScenario scenario) {
+  protected Action<?> action(ProcessScenario scenario) {
     return scenario.waitsAtUserTask(getActivityId());
   }
 
@@ -46,6 +46,16 @@ public class UserTaskExecutable extends AbstractTaskDelegate {
   @Override
   public void handleBpmnError(String errorCode, Map<String, Object> variables) {
     getTaskService().handleBpmnError(getDelegate().getId(), errorCode, null, variables);
+  }
+
+  @Override
+  public void handleEscalation(String escalationCode) {
+    getTaskService().handleEscalation(getDelegate().getId(), escalationCode);
+  }
+
+  @Override
+  public void handleEscalation(String escalationCode, Map<String, Object> variables) {
+    getTaskService().handleEscalation(getDelegate().getId(), escalationCode, variables);
   }
 
 }
