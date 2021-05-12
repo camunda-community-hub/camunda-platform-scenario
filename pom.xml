@@ -19,7 +19,7 @@
     <url>https://github.com/camunda-community-hub/camunda-platform-scenario</url>
 
     <modules>
-        <module>core</module>
+        <module>runner</module>
         <module>test</module>
         <module>example</module>
         <module>deprecated</module>
