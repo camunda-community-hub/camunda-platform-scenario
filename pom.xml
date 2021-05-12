@@ -177,12 +177,21 @@
 
     <profiles>
         <profile>
-            <id>camunda-bpm-assert-scenario-examples</id>
+          <id>examples-jdk-8</id>
+          <modules>
+            <module>example</module>
+          </modules>
+          <activation>
+            <jdk>1.8</jdk>
+          </activation>
+        </profile>
+        <profile>
+            <id>examples-jdk-11</id>
             <modules>
                 <module>example</module>
             </modules>
             <activation>
-                <jdk>1.8</jdk>
+                <jdk>11</jdk>
             </activation>
         </profile>
         <profile>
