@@ -3,14 +3,11 @@ package org.camunda.bpm.scenario.test.callactivities;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.act.MockedCallActivityAction;
-import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
+import org.camunda.bpm.scenario.delegate.MockedCallActivityDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
@@ -18,20 +15,20 @@ import static org.mockito.Mockito.when;
 public class CallActivityChildMockingTest extends AbstractTest {
 
   @Test
-  @Deployment(resources = { "org/camunda/bpm/scenario/test/callactivities/CallActivityTest.bpmn" })
+  @Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityTest.bpmn"})
   public void testCompleteCallActivity() {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
       @Override
-      public void execute(ExternalTaskDelegate callActivity) {
+      public void execute(MockedCallActivityDelegate callActivity) {
         callActivity.complete();
       }
     });
 
     Scenario.run(scenario)
-       .withMockedProcess("Child")
-       .startByKey("CallActivityTest")
-       .execute();
+      .withMockedProcess("Child")
+      .startByKey("CallActivityTest")
+      .execute();
 
     verify(scenario, times(1)).hasFinished("CallActivity");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -46,7 +43,7 @@ public class CallActivityChildMockingTest extends AbstractTest {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
       @Override
-      public void execute(ExternalTaskDelegate callActivity) {
+      public void execute(MockedCallActivityDelegate callActivity) {
         // Deal with task but do nothing here
       }
     });
@@ -59,7 +56,7 @@ public class CallActivityChildMockingTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test(expected = AssertionError.class)
   @Deployment(resources = {
     "org/camunda/bpm/scenario/test/callactivities/CallActivityTest.bpmn"
   })
@@ -69,16 +66,16 @@ public class CallActivityChildMockingTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test(expected = AssertionError.class)
   @Deployment(resources = {
-     "org/camunda/bpm/scenario/test/callactivities/CallActivityTest.bpmn",
-     "org/camunda/bpm/scenario/test/callactivities/Child.bpmn"
+    "org/camunda/bpm/scenario/test/callactivities/CallActivityTest.bpmn",
+    "org/camunda/bpm/scenario/test/callactivities/Child.bpmn"
   })
   public void testDoMockPresentCallActivity() {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
       @Override
-      public void execute(ExternalTaskDelegate callActivity) {
+      public void execute(MockedCallActivityDelegate callActivity) {
         // Deal with task but do nothing here
       }
     });
@@ -87,15 +84,15 @@ public class CallActivityChildMockingTest extends AbstractTest {
 
   }
 
-  @Test(expected=Exception.class)
+  @Test(expected = Exception.class)
   @Deployment(resources = {
-     "org/camunda/bpm/scenario/test/callactivities/CallActivityTest.bpmn"
+    "org/camunda/bpm/scenario/test/callactivities/CallActivityTest.bpmn"
   })
   public void testDoNotMockCallActivity() {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
       @Override
-      public void execute(ExternalTaskDelegate callActivity) {
+      public void execute(MockedCallActivityDelegate callActivity) {
         // Deal with task but do nothing here
       }
     });
@@ -112,14 +109,14 @@ public class CallActivityChildMockingTest extends AbstractTest {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
       @Override
-      public void execute(ExternalTaskDelegate callActivity) {
+      public void execute(MockedCallActivityDelegate callActivity) {
         callActivity.complete();
       }
     });
 
     when(otherScenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
       @Override
-      public void execute(ExternalTaskDelegate callActivity) {
+      public void execute(MockedCallActivityDelegate callActivity) {
       }
     });
 

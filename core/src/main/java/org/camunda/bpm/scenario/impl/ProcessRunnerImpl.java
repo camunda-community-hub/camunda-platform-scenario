@@ -12,7 +12,6 @@ import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.impl.util.Api;
 import org.camunda.bpm.scenario.impl.util.IdComparator;
 import org.camunda.bpm.scenario.impl.util.Log;
-import org.camunda.bpm.scenario.impl.util.Log.Action;
 import org.camunda.bpm.scenario.impl.waitstate.CallActivityExecutable;
 import org.camunda.bpm.scenario.run.ProcessRunner;
 import org.camunda.bpm.scenario.run.ProcessRunner.ExecutableRunner.StartingByKey;
@@ -22,27 +21,26 @@ import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 import org.camunda.bpm.scenario.run.ProcessStarter;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
 public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, StartingByMessage, StartableRunner, StartingByStarter, ProcessRunner {
 
-  private String startMessage;
-  private ProcessStarter processStarter;
-  private Map<String, Object> variables;
-  private Map<String, Boolean> fromActivityIds = new HashMap<String, Boolean>();
-
-  private Set<String> executed = new HashSet<String>();
-  private Set<String> started = new HashSet<String>();
-  private Set<String> finished = new HashSet<String>();
+  private final Map<String, Boolean> fromActivityIds = new HashMap<>();
+  private final Set<String> executed = new HashSet<>();
+  private final Set<String> started = new HashSet<>();
+  private final Set<String> finished = new HashSet<>();
 
   ScenarioImpl scenarioExecutor;
   ProcessScenario scenario;
   ProcessInstance processInstance;
   String processDefinitionKey;
   String businessKey;
+
+  private String startMessage;
+  private ProcessStarter processStarter;
+  private Map<String, Object> variables;
 
   public ProcessRunnerImpl(ScenarioImpl scenarioExecutor, ProcessScenario scenario) {
     this.scenarioExecutor = scenarioExecutor;
@@ -78,7 +76,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
 
   @Override
   public StartingByKey startByKey(String processDefinitionKey, String businessKey) {
-     return startByKey(processDefinitionKey, businessKey, null);
+    return startByKey(processDefinitionKey, businessKey, null);
   }
 
   @Override
@@ -97,8 +95,8 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
   @Override
   public StartingByKey fromBefore(String activityId) {
     Api.feature(RuntimeService.class.getName(), "createProcessInstanceByKey", String.class)
-        .fail("Outdated Camunda BPM version used will not allow to start process instances " +
-            "at explicitely selected activity IDs");
+      .fail("Outdated Camunda BPM version used will not allow to start process instances " +
+        "at explicitely selected activity IDs");
     fromActivityIds.put(activityId, true);
     return this;
   }
@@ -106,8 +104,8 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
   @Override
   public StartingByKey fromAfter(String activityId) {
     Api.feature(RuntimeService.class.getName(), "createProcessInstanceByKey", String.class)
-        .fail("Outdated Camunda BPM version used will not allow to start process instances " +
-            "at explicitely selected activity IDs");
+      .fail("Outdated Camunda BPM version used will not allow to start process instances " +
+        "at explicitely selected activity IDs");
     fromActivityIds.put(activityId, false);
     return this;
   }
@@ -130,11 +128,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
       .createProcess(processDefinitionKey)
       .executable()
       .startEvent()
-      .serviceTask()
-        .id("callActivity")
-        .name("callActivity")
-        .camundaType("external")
-        .camundaTopic("callActivity")
+      .userTask()
       .endEvent()
       .done();
     scenarioExecutor.mockedCallActivities.add(mockedCallActivity);
@@ -162,7 +156,6 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
     setExecuted();
   }
 
-  @SuppressWarnings("deprecation")
   public ProcessInstance run() {
     if (this.processInstance == null) {
       if (this.processDefinitionKey != null) {
@@ -171,7 +164,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
           public ProcessInstance start() {
             if (fromActivityIds.isEmpty()) {
               return scenarioExecutor.processEngine.getRuntimeService()
-                      .startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
+                .startProcessInstanceByKey(processDefinitionKey, businessKey, variables);
             } else {
               ProcessInstantiationBuilder builder = scenarioExecutor.processEngine.getRuntimeService().createProcessInstanceByKey(processDefinitionKey);
               for (String activityId : fromActivityIds.keySet()) {
@@ -211,7 +204,7 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
   @Override
   public List<Executable> next() {
     run();
-    List<Executable> executables = new ArrayList<Executable>();
+    List<Executable> executables = new ArrayList<>();
     executables.addAll(Executable.Deferreds.next(this));
     executables.addAll(Executable.Waitstates.next(this));
     executables.addAll(Executable.Jobs.next(this));
@@ -223,27 +216,28 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
   public void setExecuted() {
     boolean supportsCanceled = Api.feature(HistoricActivityInstance.class.getName(), "isCanceled")
       .warn("Outdated Camunda BPM version used will not allow to use " +
-          "'" + ProcessScenario.class.getName().replace('$', '.') +
-          ".hasCanceled(String activityId)' and '.hasCompleted(String activityId)' methods.");
+        "'" + ProcessScenario.class.getName().replace('$', '.') +
+        ".hasCanceled(String activityId)' and '.hasCompleted(String activityId)' methods.");
     List<HistoricActivityInstance> instances = scenarioExecutor.processEngine.getHistoryService()
-        .createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).list();
+      .createHistoricActivityInstanceQuery().processInstanceId(processInstance.getId()).list();
     Collections.sort(instances, new Comparator<HistoricActivityInstance>() {
-      IdComparator idComparator = new IdComparator();
+      final IdComparator idComparator = new IdComparator();
+
       @Override
       public int compare(HistoricActivityInstance instance1, HistoricActivityInstance instance2) {
         return idComparator.compare(instance1.getId(), instance2.getId());
       }
     });
-    for (HistoricActivityInstance instance: instances) {
+    for (HistoricActivityInstance instance : instances) {
       if (!started.contains(instance.getId())) {
         Log.Action.Started.log(
-            instance.getActivityType(),
-            instance.getActivityName(),
-            instance.getActivityId(),
-            processDefinitionKey,
-            instance.getProcessInstanceId(),
-            null,
-            null
+          instance.getActivityType(),
+          instance.getActivityName(),
+          instance.getActivityId(),
+          processDefinitionKey,
+          instance.getProcessInstanceId(),
+          null,
+          null
         );
         scenario.hasStarted(instance.getActivityId());
         started.add(instance.getId());
@@ -253,29 +247,6 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
         if (supportsCanceled) {
           if (instance.isCanceled()) {
             Log.Action.Canceled.log(
-                instance.getActivityType(),
-                instance.getActivityName(),
-                instance.getActivityId(),
-                processDefinitionKey,
-                instance.getProcessInstanceId(),
-                null,
-                null
-            );
-            scenario.hasCanceled(instance.getActivityId());
-          } else {
-            Log.Action.Completed.log(
-                instance.getActivityType(),
-                instance.getActivityName(),
-                instance.getActivityId(),
-                processDefinitionKey,
-                instance.getProcessInstanceId(),
-                null,
-                null
-            );
-            scenario.hasCompleted(instance.getActivityId());
-          }
-        } else {
-          Log.Action.Finished.log(
               instance.getActivityType(),
               instance.getActivityName(),
               instance.getActivityId(),
@@ -283,6 +254,29 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
               instance.getProcessInstanceId(),
               null,
               null
+            );
+            scenario.hasCanceled(instance.getActivityId());
+          } else {
+            Log.Action.Completed.log(
+              instance.getActivityType(),
+              instance.getActivityName(),
+              instance.getActivityId(),
+              processDefinitionKey,
+              instance.getProcessInstanceId(),
+              null,
+              null
+            );
+            scenario.hasCompleted(instance.getActivityId());
+          }
+        } else {
+          Log.Action.Finished.log(
+            instance.getActivityType(),
+            instance.getActivityName(),
+            instance.getActivityId(),
+            processDefinitionKey,
+            instance.getProcessInstanceId(),
+            null,
+            null
           );
         }
         finished.add(instance.getId());
@@ -290,8 +284,8 @@ public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, 
     }
   }
 
-  public void setExecuted(WaitstateExecutable waitstate) {
-    executed.add(waitstate.historicDelegate.getId());
+  public void setExecuted(WaitstateExecutable<?> executable) {
+    executed.add(executable.historicDelegate.getId());
     setExecuted();
   }
 
