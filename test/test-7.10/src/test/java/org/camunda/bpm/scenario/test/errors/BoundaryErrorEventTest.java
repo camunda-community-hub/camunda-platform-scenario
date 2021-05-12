@@ -1,9 +1,8 @@
 package org.camunda.bpm.scenario.test.errors;
 
-import org.camunda.bpm.engine.history.HistoricProcessInstance;
+import org.assertj.core.api.Assertions;
 import org.camunda.bpm.engine.history.HistoricVariableInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.engine.runtime.ProcessInstanceWithVariables;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.act.ServiceTaskAction;
@@ -14,8 +13,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.assertThat;
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.processEngine;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.processEngine;
 import static org.mockito.Mockito.*;
 
 /**
@@ -49,7 +47,7 @@ public class BoundaryErrorEventTest extends AbstractTest {
        .processInstanceId(pi.getId())
        .variableName("key")
        .singleResult();
-    assertThat(hvi.getValue()).isEqualTo("value");
+    Assertions.assertThat(hvi.getValue()).isEqualTo("value");
 
   }
 

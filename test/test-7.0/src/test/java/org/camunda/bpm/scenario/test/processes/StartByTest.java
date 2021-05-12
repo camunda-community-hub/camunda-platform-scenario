@@ -1,5 +1,6 @@
 package org.camunda.bpm.scenario.test.processes;
 
+import org.assertj.core.api.Assertions;
 import org.camunda.bpm.engine.history.HistoricVariableInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
@@ -12,7 +13,8 @@ import org.junit.Test;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.historyService;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.withVariables;
 import static org.mockito.Mockito.*;
 
 /**
@@ -54,7 +56,7 @@ public class StartByTest extends AbstractTest {
 
     verify(scenario, times(1)).hasFinished("StartEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
-    assertThat(holder.get()).isEqualTo(businessKey);
+    Assertions.assertThat(holder.get()).isEqualTo(businessKey);
   }
 
   @Test
@@ -74,7 +76,7 @@ public class StartByTest extends AbstractTest {
 
     verify(scenario, times(1)).hasFinished("StartEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
-    assertThat(holder.get()).isEqualTo(businessKey);
+    Assertions.assertThat(holder.get()).isEqualTo(businessKey);
   }
 
   @Test
@@ -178,8 +180,8 @@ public class StartByTest extends AbstractTest {
     }).execute();
 
     HistoricVariableInstance variable = historyService().createHistoricVariableInstanceQuery().variableName("variable").singleResult();
-    assertThat(variable).isNotNull();
-    assertThat((Boolean) variable.getValue()).isTrue();
+    Assertions.assertThat(variable).isNotNull();
+    Assertions.assertThat((Boolean) variable.getValue()).isTrue();
     verify(scenario, times(1)).hasFinished("StartEvent1");
     verify(scenario, times(1)).hasFinished("EndEvent");
 

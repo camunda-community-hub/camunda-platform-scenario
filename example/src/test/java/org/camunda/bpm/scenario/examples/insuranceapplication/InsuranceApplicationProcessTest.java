@@ -1,5 +1,6 @@
 package org.camunda.bpm.scenario.examples.insuranceapplication;
 
+import org.assertj.core.api.Assertions;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.variable.Variables;
@@ -15,7 +16,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Map;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.runtimeService;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.withVariables;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
@@ -72,12 +75,12 @@ public class InsuranceApplicationProcessTest {
     });
 
     when(insuranceApplication.waitsAtSendTask("SendTaskSendPolicy")).thenReturn((externalTask) -> {
-      assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
+      assertThat(externalTask).hasTopicName("SendMail");
       externalTask.complete();
     });
 
     when(insuranceApplication.waitsAtSendTask("SendTaskSendRejection")).thenReturn((externalTask) -> {
-      assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
+      assertThat(externalTask).hasTopicName("SendMail");
       externalTask.complete();
     });
 
@@ -85,13 +88,13 @@ public class InsuranceApplicationProcessTest {
       .thenReturn(Scenario.use(documentRequest));
 
     when(documentRequest.waitsAtSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
-      assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
+      assertThat(externalTask).hasTopicName("SendMail");
       externalTask.complete();
     });
 
     when(documentRequest.waitsAtReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      assertThat(receiveTask.getEventType()).isEqualTo("message");
-      assertThat(receiveTask.getEventName()).isEqualTo("MSG_DOCUMENT_RECEIVED");
+      Assertions.assertThat(receiveTask.getEventType()).isEqualTo("message");
+      Assertions.assertThat(receiveTask.getEventName()).isEqualTo("MSG_DOCUMENT_RECEIVED");
       receiveTask.receive();
     });
 
@@ -100,7 +103,7 @@ public class InsuranceApplicationProcessTest {
     });
 
     when(documentRequest.waitsAtSendTask("SendTaskSendReminder")).thenReturn((externalTask) -> {
-      assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
+      assertThat(externalTask).hasTopicName("SendMail");
       externalTask.complete();
     });
 
