@@ -20,6 +20,7 @@
 
     <modules>
         <module>runner</module>
+        <module>report</module>
         <module>test</module>
         <module>example</module>
         <module>deprecated</module>
@@ -241,6 +242,10 @@
                         <source>1.8</source>
                         <target>1.8</target>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>

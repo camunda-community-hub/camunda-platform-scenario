@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0c2j6f0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.5.0">
+  <bpmn:process id="Dinner" isExecutable="true">
+    <bpmn:startEvent id="DinnerUpcoming" name="Dinner is&#10;upcoming" camunda:asyncBefore="true">
+      <bpmn:outgoing>Flow_0hn49kw</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0hn49kw" sourceRef="DinnerUpcoming" targetRef="DecideAboutDinner" />
+    <bpmn:endEvent id="DinnerFinished" name="Dinner is&#10;finished" camunda:asyncAfter="true">
+      <bpmn:incoming>Flow_1r5tl54</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0m1n1to" sourceRef="PrepareDinner" targetRef="DinnerPrepared" />
+    <bpmn:serviceTask id="PrepareDinner" name="Prepare dinner" camunda:asyncBefore="true" camunda:type="external" camunda:topic="PrepareDinner">
+      <bpmn:incoming>Flow_1d0ikay</bpmn:incoming>
+      <bpmn:outgoing>Flow_0m1n1to</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="Event_0al4im0" name="Ingredients&#10;are missing" attachedToRef="PrepareDinner">
+      <bpmn:outgoing>Flow_1v8l5mz</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_02nz1hm" errorRef="Error_0npsgag" />
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="DinnerNotPrepared" name="Dinner is not&#10;prepared">
+      <bpmn:incoming>Flow_1v8l5mz</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1v8l5mz" sourceRef="Event_0al4im0" targetRef="DinnerNotPrepared" />
+    <bpmn:sequenceFlow id="Flow_1d0ikay" sourceRef="DecideAboutDinner" targetRef="PrepareDinner" />
+    <bpmn:businessRuleTask id="DecideAboutDinner" name="Decide&#10;about dish" camunda:asyncBefore="true" camunda:decisionRef="dish">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="numberOfGuests">#{5}</camunda:inputParameter>
+          <camunda:inputParameter name="season">Summer</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0hn49kw</bpmn:incoming>
+      <bpmn:outgoing>Flow_1d0ikay</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_1r5tl54" sourceRef="HaveDinnerTogether" targetRef="DinnerFinished" />
+    <bpmn:intermediateThrowEvent id="DinnerPrepared" name="Dinner is&#10;prepared">
+      <bpmn:incoming>Flow_0m1n1to</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dx3jzj</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_0dx3jzj" sourceRef="DinnerPrepared" targetRef="HaveDinnerTogether" />
+    <bpmn:userTask id="HaveDinnerTogether" name="Have dinner together" camunda:asyncBefore="true">
+      <bpmn:incoming>Flow_0dx3jzj</bpmn:incoming>
+      <bpmn:outgoing>Flow_1r5tl54</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmn:error id="Error_0npsgag" name="IngredientsMissing" errorCode="IngredientsMissing" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Dinner">
+      <bpmndi:BPMNEdge id="Flow_0dx3jzj_di" bpmnElement="Flow_0dx3jzj">
+        <di:waypoint x="618" y="117" />
+        <di:waypoint x="670" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1r5tl54_di" bpmnElement="Flow_1r5tl54">
+        <di:waypoint x="770" y="117" />
+        <di:waypoint x="822" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1d0ikay_di" bpmnElement="Flow_1d0ikay">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v8l5mz_di" bpmnElement="Flow_1v8l5mz">
+        <di:waypoint x="500" y="175" />
+        <di:waypoint x="500" y="230" />
+        <di:waypoint x="582" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0m1n1to_di" bpmnElement="Flow_0m1n1to">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="582" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hn49kw_di" bpmnElement="Flow_0hn49kw">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="DinnerUpcoming">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="177" y="142" width="48" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0sr88hm_di" bpmnElement="DinnerFinished">
+        <dc:Bounds x="822" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="820" y="142" width="44" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1kzlb3f_di" bpmnElement="PrepareDinner">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0mopwo7_di" bpmnElement="DinnerNotPrepared">
+        <dc:Bounds x="582" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="572" y="255" width="62" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fso07g_di" bpmnElement="DecideAboutDinner">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0or3o3g_di" bpmnElement="DinnerPrepared">
+        <dc:Bounds x="582" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="578" y="142" width="45" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19g7u4d_di" bpmnElement="HaveDinnerTogether">
+        <dc:Bounds x="670" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_04cf5zl_di" bpmnElement="Event_0al4im0">
+        <dc:Bounds x="482" y="139" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="512" y="173" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
