@@ -40,4 +40,24 @@ public interface TaskDelegate extends Task, ProcessInstanceAwareDelegate, Deferr
    */
   void handleBpmnError(String errorCode, Map<String, Object> variables);
 
+  /**
+   * Handle a BPMN escalation occurring with or raised by the human
+   * user.
+   *
+   * @param escalationCode of the BPMN escalation raised
+   * @since Camunda BPM 7.12.0
+   */
+  void handleEscalation(String escalationCode);
+
+  /**
+   * Handle a BPMN escalation occurring with or raised by the human
+   * user and deliver a map of additional information to be stored
+   * as process instance variables.
+   *
+   * @param escalationCode of the BPMN escalation raised
+   * @param variables      the process variables to be stored
+   * @since Camunda BPM 7.12.0
+   */
+  void handleEscalation(String escalationCode, Map<String, Object> variables);
+
 }
