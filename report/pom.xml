@@ -22,6 +22,13 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.camunda.bpm</groupId>
+            <artifactId>camunda-engine</artifactId>
+            <version>7.15.0</version> <!-- compile against explicitly set version -->
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.camunda.bpm.extension.scenario</groupId>
             <artifactId>camunda-platform-scenario-runner</artifactId>
             <scope>test</scope>
