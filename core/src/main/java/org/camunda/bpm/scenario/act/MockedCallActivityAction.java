@@ -1,11 +1,11 @@
 package org.camunda.bpm.scenario.act;
 
-import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
+import org.camunda.bpm.scenario.delegate.MockedCallActivityDelegate;
 
 /**
  * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
-public interface MockedCallActivityAction extends ServiceTaskAction {
+public interface MockedCallActivityAction extends Action<MockedCallActivityDelegate> {
 
   /**
    * Implement this action with custom code to be executed when the
@@ -13,11 +13,9 @@ public interface MockedCallActivityAction extends ServiceTaskAction {
    *
    * @param callActivity the external task the call activity internally
    *                     is mocked with.
-   *
    * @throws Exception in case your custom code throws checked exceptions.
-   * Such exceptions will be wrapped into RuntimeExceptions and rethrown.
+   *                   Such exceptions will be wrapped into RuntimeExceptions and rethrown.
    */
-  @Override
-  void execute(final ExternalTaskDelegate callActivity) throws Exception;
+  void execute(final MockedCallActivityDelegate callActivity) throws Exception;
 
 }

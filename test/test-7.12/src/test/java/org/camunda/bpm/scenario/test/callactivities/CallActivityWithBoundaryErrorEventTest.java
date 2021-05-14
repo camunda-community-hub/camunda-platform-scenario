@@ -1,22 +1,18 @@
-package org.camunda.bpm.scenario.test.errors;
+package org.camunda.bpm.scenario.test.callactivities;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.act.MockedCallActivityAction;
-import org.camunda.bpm.scenario.act.ServiceTaskAction;
-import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
+import org.camunda.bpm.scenario.delegate.MockedCallActivityDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
  */
-@Deployment(resources = {"org/camunda/bpm/scenario/test/errors/CallActivityWithBoundaryErrorEventTest.bpmn"})
+@Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityWithBoundaryErrorEventTest.bpmn"})
 public class CallActivityWithBoundaryErrorEventTest extends AbstractTest {
 
   @Test
@@ -24,7 +20,7 @@ public class CallActivityWithBoundaryErrorEventTest extends AbstractTest {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
       @Override
-      public void execute(ExternalTaskDelegate externalTask) {
+      public void execute(MockedCallActivityDelegate externalTask) {
         externalTask.complete();
       }
     });
@@ -41,7 +37,7 @@ public class CallActivityWithBoundaryErrorEventTest extends AbstractTest {
 
     when(scenario.waitsAtMockedCallActivity("CallActivity")).thenReturn(new MockedCallActivityAction() {
       @Override
-      public void execute(ExternalTaskDelegate externalTask) {
+      public void execute(MockedCallActivityDelegate externalTask) {
         externalTask.handleBpmnError("errorCode");
       }
     });
