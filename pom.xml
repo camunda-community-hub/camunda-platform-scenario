@@ -55,6 +55,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.camunda.bpm.extension.scenario</groupId>
+                <artifactId>camunda-platform-scenario-cucumber</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.camunda.bpm.extension</groupId>
                 <artifactId>camunda-bpm-junit5</artifactId>
                 <version>1.0.1</version>
@@ -201,6 +207,18 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
             <scope>test</scope>
         </dependency>
 
