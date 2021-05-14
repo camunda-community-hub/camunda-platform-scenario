@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.test.report.dinner;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.ProcessScenario;
-import org.camunda.bpm.scenario.report.junit.ProcessScenarioExtension;
+import org.camunda.bpm.scenario.report.junit.ProcessEngineExtensionWithReporting;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author Martin Schimak
  */
-@ExtendWith(ProcessScenarioExtension.class)
+@ExtendWith(ProcessEngineExtensionWithReporting.class)
 @Deployment(resources = {"org/camunda/bpm/scenario/test/report/dinner/Dinner.bpmn"})
 public class DinnerTest {
 

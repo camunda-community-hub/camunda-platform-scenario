@@ -7,7 +7,7 @@ import org.junit.runner.Description;
 /**
  * @author Martin Schimak
  */
-public class ProcessScenarioRule extends ProcessEngineRule {
+public class ProcessEngineRuleWithReporting extends ProcessEngineRule {
 
   @Override
   protected void succeeded(Description description) {

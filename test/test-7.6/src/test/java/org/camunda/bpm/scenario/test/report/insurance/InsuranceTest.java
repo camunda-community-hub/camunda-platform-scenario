@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.scenario.ProcessScenario;
-import org.camunda.bpm.scenario.report.junit.ProcessScenarioRule;
+import org.camunda.bpm.scenario.report.junit.ProcessEngineRuleWithReporting;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class InsuranceTest {
   private final ProcessScenario insuranceApplication = mock(ProcessScenario.class);
   private final ProcessScenario documentRequest = mock(ProcessScenario.class);
   @Rule
-  public ProcessEngineRule rule = new ProcessScenarioRule();
+  public ProcessEngineRule rule = new ProcessEngineRuleWithReporting();
   private Map<String, Object> variables;
 
   @Before

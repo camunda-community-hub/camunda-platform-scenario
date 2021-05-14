@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class ProcessScenarioExtension extends ProcessEngineExtension {
+public class ProcessEngineExtensionWithReporting extends ProcessEngineExtension {
 
   private void generateProcessScenarioTestReport(ExtensionContext context) {
     context.getTestMethod().ifPresent(method -> {
