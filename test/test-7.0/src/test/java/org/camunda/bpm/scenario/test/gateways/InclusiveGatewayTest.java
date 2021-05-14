@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class InclusiveGatewayTest extends AbstractTest {
 
@@ -194,7 +194,7 @@ public class InclusiveGatewayTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test(expected = AssertionError.class)
   @Deployment(resources = {"org/camunda/bpm/scenario/test/gateways/InclusiveGatewayTest.bpmn"})
   public void testDoNotDealWithTask() {
 

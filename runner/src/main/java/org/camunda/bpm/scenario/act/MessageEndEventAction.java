@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.act;
 import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface MessageEndEventAction extends Action<ExternalTaskDelegate> {
 
@@ -13,9 +13,8 @@ public interface MessageEndEventAction extends Action<ExternalTaskDelegate> {
    * waitstate).
    *
    * @param externalTask the message end event is implemented with.
-   *
    * @throws Exception in case your custom code throws checked exceptions.
-   * Such exceptions will be wrapped into RuntimeExceptions and rethrown.
+   *                   Such exceptions will be wrapped into RuntimeExceptions and rethrown.
    */
   @Override
   void execute(final ExternalTaskDelegate externalTask) throws Exception;

@@ -1,6 +1,5 @@
 package org.camunda.bpm.scenario.test.timers;
 
-import org.camunda.bpm.engine.impl.persistence.entity.JobEntity;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.act.UserTaskAction;
@@ -12,7 +11,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class BoundaryInterruptingTimerTest extends AbstractTest {
 
@@ -135,7 +134,7 @@ public class BoundaryInterruptingTimerTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test(expected = AssertionError.class)
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryInterruptingTimerTest.bpmn"})
   public void testDoNotDealWithTask() {
 

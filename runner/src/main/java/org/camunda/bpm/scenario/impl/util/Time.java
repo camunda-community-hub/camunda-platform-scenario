@@ -8,9 +8,23 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class Time {
+
+  // ***
+  // Necessary due to two possible Camunda Bugs with repeatable timers:
+  // 1) in case their last execution is finished in the millisecond of
+  // the timers due date, another timer is created.
+  //
+  // 2) Repeating timers always repeat at 0 milliseconds, so the first
+  // repeating timer actually triggers a few millisceonds too early.
+  //
+  // I circumvent both problems here for the scenarios - which simulate
+  // time anyway, by starting a process always at the "half" second and
+  // assuming that any timers and simulated time periods will always
+  // just work with an accuracy of seconds.
+  private static final int milliseconds = 500;
 
   public static Date dateAfter(String period) {
     try {
@@ -35,20 +49,6 @@ public class Time {
     Action.FinishingAt.log(null, null, null, null, null, null, null);
     ClockUtil.reset();
   }
-
-  // ***
-  // Necessary due to two possible Camunda Bugs with repeatable timers:
-  // 1) in case their last execution is finished in the millisecond of
-  // the timers due date, another timer is created.
-  //
-  // 2) Repeating timers always repeat at 0 milliseconds, so the first
-  // repeating timer actually triggers a few millisceonds too early.
-  //
-  // I circumvent both problems here for the scenarios - which simulate
-  // time anyway, by starting a process always at the "half" second and
-  // assuming that any timers and simulated time periods will always
-  // just work with an accuracy of seconds.
-  private static final int milliseconds = 500;
 
   public static Date correct(Date date) {
     Calendar cal = Calendar.getInstance();

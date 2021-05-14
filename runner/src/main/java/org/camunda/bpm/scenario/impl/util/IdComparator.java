@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.UUID;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class IdComparator implements Comparator<String> {
 
@@ -24,5 +24,5 @@ public class IdComparator implements Comparator<String> {
       }
     }
   }
-  
+
 }

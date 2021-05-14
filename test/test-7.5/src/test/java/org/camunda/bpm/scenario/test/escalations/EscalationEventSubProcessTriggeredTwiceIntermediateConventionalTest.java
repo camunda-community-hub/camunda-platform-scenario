@@ -12,16 +12,17 @@ import java.util.List;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class EscalationEventSubProcessTriggeredTwiceIntermediateConventionalTest extends AbstractTest {
 
-  @Test @Ignore // In my mind should work, but does not work due to a Camunda NullpointerExecption
+  @Test
+  @Ignore // In my mind should work, but does not work due to a Camunda NullpointerExecption
   @Deployment(resources = {"org/camunda/bpm/scenario/test/escalations/EscalationEventSubProcessTriggeredTwiceIntermediateTest.bpmn"})
   public void testCompleteTask1First_Conventional() {
 
     ProcessInstance pi = rule.getRuntimeService()
-        .startProcessInstanceByKey("EscalationEventSubProcessTriggeredTwiceIntermediateTest");
+      .startProcessInstanceByKey("EscalationEventSubProcessTriggeredTwiceIntermediateTest");
 
     complete(task("UserTask1", pi)); // --> Test Case fails here with a NullPointerException
 
@@ -32,8 +33,8 @@ public class EscalationEventSubProcessTriggeredTwiceIntermediateConventionalTest
     complete(task("UserTask3", pi));
 
     assertThat(pi)
-        .hasPassed("EndEvent")
-        .hasPassedInOrder("EndEventEscalated", "EndEventEscalated");
+      .hasPassed("EndEvent")
+      .hasPassedInOrder("EndEventEscalated", "EndEventEscalated");
 
   }
 
@@ -42,7 +43,7 @@ public class EscalationEventSubProcessTriggeredTwiceIntermediateConventionalTest
   public void testCompleteTask2First_Conventional() {
 
     ProcessInstance pi = rule.getRuntimeService()
-        .startProcessInstanceByKey("EscalationEventSubProcessTriggeredTwiceIntermediateTest");
+      .startProcessInstanceByKey("EscalationEventSubProcessTriggeredTwiceIntermediateTest");
 
     complete(task("UserTask2", pi));
     complete(task("UserTask1", pi));
@@ -51,8 +52,8 @@ public class EscalationEventSubProcessTriggeredTwiceIntermediateConventionalTest
     complete(task("UserTask3", pi));
 
     assertThat(pi)
-        .hasPassed("EndEvent")
-        .hasPassedInOrder("EndEventEscalated", "EndEventEscalated");
+      .hasPassed("EndEvent")
+      .hasPassedInOrder("EndEventEscalated", "EndEventEscalated");
 
   }
 

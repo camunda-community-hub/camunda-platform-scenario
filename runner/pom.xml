@@ -23,18 +23,20 @@
     </parent>
 
     <dependencies>
+
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
-            <!-- we always compile against the last version and test whether it works with older versions, too -->
-            <version>7.15.0</version>
+            <version>7.15.0</version> <!-- compile against explicitly set version -->
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>
         </dependency>
+
     </dependencies>
 
     <organization>

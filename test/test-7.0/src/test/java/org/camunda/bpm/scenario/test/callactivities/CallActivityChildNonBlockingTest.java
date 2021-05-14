@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class CallActivityChildNonBlockingTest extends AbstractTest {
 
@@ -76,9 +76,9 @@ public class CallActivityChildNonBlockingTest extends AbstractTest {
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.runsCallActivity("CallActivity"))
-        .thenReturn(Scenario.use(childScenario));
+      .thenReturn(Scenario.use(childScenario));
     when(otherScenario.runsCallActivity("CallActivity"))
-        .thenReturn(Scenario.use(otherChildScenario));
+      .thenReturn(Scenario.use(otherChildScenario));
 
     Scenario
       .run(scenario).startByKey("CallActivityTest")

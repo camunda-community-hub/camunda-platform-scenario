@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class CallActivityChildNonBlockingButAsyncTest extends AbstractTest {
 
@@ -53,7 +53,7 @@ public class CallActivityChildNonBlockingButAsyncTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test(expected = AssertionError.class)
   @Deployment(resources = {
     "org/camunda/bpm/scenario/test/callactivities/CallActivityTest.bpmn",
     "org/camunda/bpm/scenario/test/callactivities/CallActivityChildNonBlockingButAsyncTest.bpmn"
@@ -72,9 +72,9 @@ public class CallActivityChildNonBlockingButAsyncTest extends AbstractTest {
   public void testWhileOtherProcessInstanceIsRunning() {
 
     when(scenario.runsCallActivity("CallActivity"))
-        .thenReturn(Scenario.use(childScenario));
+      .thenReturn(Scenario.use(childScenario));
     when(otherScenario.runsCallActivity("CallActivity"))
-        .thenReturn(Scenario.use(otherChildScenario));
+      .thenReturn(Scenario.use(otherChildScenario));
 
     Scenario
       .run(scenario).startByKey("CallActivityTest")

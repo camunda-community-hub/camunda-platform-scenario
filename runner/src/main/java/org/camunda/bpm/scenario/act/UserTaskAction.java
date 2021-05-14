@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.act;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface UserTaskAction extends Action<TaskDelegate> {
 
@@ -12,9 +12,8 @@ public interface UserTaskAction extends Action<TaskDelegate> {
    * process instance arrives at an user task.
    *
    * @param task the user task waiting for completion by a human
-   *
    * @throws Exception in case your custom code throws checked exceptions.
-   * Such exceptions will be wrapped into RuntimeExceptions and rethrown.
+   *                   Such exceptions will be wrapped into RuntimeExceptions and rethrown.
    */
   @Override
   void execute(final TaskDelegate task) throws Exception;

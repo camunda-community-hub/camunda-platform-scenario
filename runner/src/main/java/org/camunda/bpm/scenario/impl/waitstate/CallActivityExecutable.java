@@ -11,7 +11,7 @@ import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class CallActivityExecutable extends AbstractProcessInstanceDelegate {
 

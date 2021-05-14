@@ -2,35 +2,28 @@ package org.camunda.bpm.scenario.impl;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.engine.repository.Deployment;
 import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.model.bpmn.Bpmn;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
-import org.camunda.bpm.scenario.impl.util.Log;
-import org.camunda.bpm.scenario.impl.util.Log.Action;
 import org.camunda.bpm.scenario.impl.util.Time;
 import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class ScenarioImpl extends Scenario {
 
-  private boolean executed;
-
   ProcessEngine processEngine;
   List<AbstractRunner> runners = new ArrayList<AbstractRunner>();
-
   List<BpmnModelInstance> mockedCallActivities = new ArrayList<>();
+  private boolean executed;
   private String deploymentId;
 
   public ScenarioImpl(ProcessScenario scenario) {
@@ -69,7 +62,7 @@ public class ScenarioImpl extends Scenario {
   @Override
   public List<ProcessInstance> instances(ProcessScenario scenario) {
     List<ProcessInstance> instances = new ArrayList<ProcessInstance>();
-    for (AbstractRunner runner: runners) {
+    for (AbstractRunner runner : runners) {
       if (runner instanceof ProcessRunnerImpl) {
         ProcessRunnerImpl processRunner = (ProcessRunnerImpl) runner;
         if (processRunner.scenario == scenario) {
@@ -83,7 +76,7 @@ public class ScenarioImpl extends Scenario {
   protected void init() {
     if (executed)
       throw new IllegalStateException("Scenarios may use execute() just once per Scenario.run(). " +
-          "Please create a new Scenario.run().");
+        "Please create a new Scenario.run().");
     executed = true;
     if (processEngine == null) {
       Map<String, ProcessEngine> processEngines = ProcessEngines.getProcessEngines();
@@ -91,23 +84,23 @@ public class ScenarioImpl extends Scenario {
         init(processEngines.values().iterator().next());
       } else {
         String message = processEngines.size() == 0 ? "No ProcessEngine found to be " +
-            "registered with " + ProcessEngines.class.getSimpleName() + "!"
-            : String.format(processEngines.size() + " ProcessEngines initialized. " +
-            "Explicitely initialise engine by calling " + ScenarioImpl.class.getSimpleName() +
-            "(scenario, engine)");
+          "registered with " + ProcessEngines.class.getSimpleName() + "!"
+          : String.format(processEngines.size() + " ProcessEngines initialized. " +
+          "Explicitely initialise engine by calling " + ScenarioImpl.class.getSimpleName() +
+          "(scenario, engine)");
         throw new IllegalStateException(message);
       }
     }
     if (!mockedCallActivities.isEmpty()) {
       DeploymentBuilder deployment = processEngine.getRepositoryService().createDeployment();
-      for (BpmnModelInstance mockedCallActivity: mockedCallActivities) {
+      for (BpmnModelInstance mockedCallActivity : mockedCallActivities) {
         String processDefinitionKey = mockedCallActivity
-           .getDefinitions().getChildElementsByType(Process.class).iterator().next().getId();
+          .getDefinitions().getChildElementsByType(Process.class).iterator().next().getId();
         boolean exists = !processEngine.getRepositoryService().createProcessDefinitionQuery()
-           .processDefinitionKey(processDefinitionKey).list().isEmpty();
+          .processDefinitionKey(processDefinitionKey).list().isEmpty();
         if (exists)
           throw new AssertionError("Process '" + processDefinitionKey + "' declared to be mocked, " +
-             "but it is already deployed. Please remove from your list of explicit deployments.");
+            "but it is already deployed. Please remove from your list of explicit deployments.");
         deployment.addModelInstance(processDefinitionKey + ".bpmn", mockedCallActivity);
       }
       deploymentId = deployment.deploy().getId();

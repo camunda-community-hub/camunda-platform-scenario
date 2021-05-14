@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class MultiInstanceLoopTest extends AbstractTest {
 
@@ -51,7 +51,7 @@ public class MultiInstanceLoopTest extends AbstractTest {
 
     variables.put("cardinality", 2);
 
-    Scenario.run(scenario).startByKey("MultiInstanceLoopTest",variables).execute();
+    Scenario.run(scenario).startByKey("MultiInstanceLoopTest", variables).execute();
 
     verify(scenario, times(2)).hasFinished("UserTask");
     verify(scenario, times(1)).hasFinished("EndEvent");

@@ -11,7 +11,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class BoundaryNonInterruptingTimerTest extends AbstractTest {
 
@@ -135,7 +135,7 @@ public class BoundaryNonInterruptingTimerTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test(expected = AssertionError.class)
   @Deployment(resources = {"org/camunda/bpm/scenario/test/timers/BoundaryNonInterruptingTimerTest.bpmn"})
   public void testDoNotDealWithTask() {
 
