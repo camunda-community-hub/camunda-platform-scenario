@@ -1,23 +1,11 @@
 package org.camunda.bpm.scenario;
 
-import org.camunda.bpm.scenario.act.BusinessRuleTaskAction;
-import org.camunda.bpm.scenario.act.ConditionalIntermediateEventAction;
-import org.camunda.bpm.scenario.act.EventBasedGatewayAction;
-import org.camunda.bpm.scenario.act.MessageEndEventAction;
-import org.camunda.bpm.scenario.act.MessageIntermediateCatchEventAction;
-import org.camunda.bpm.scenario.act.MessageIntermediateThrowEventAction;
-import org.camunda.bpm.scenario.act.MockedCallActivityAction;
-import org.camunda.bpm.scenario.act.ReceiveTaskAction;
-import org.camunda.bpm.scenario.act.SendTaskAction;
-import org.camunda.bpm.scenario.act.ServiceTaskAction;
-import org.camunda.bpm.scenario.act.SignalIntermediateCatchEventAction;
-import org.camunda.bpm.scenario.act.TimerIntermediateEventAction;
-import org.camunda.bpm.scenario.act.UserTaskAction;
+import org.camunda.bpm.scenario.act.*;
 import org.camunda.bpm.scenario.run.Runnable;
 import org.camunda.bpm.scenario.run.Runner;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface ProcessScenario extends Runnable {
 
@@ -29,7 +17,6 @@ public interface ProcessScenario extends Runnable {
    * @param activityId the activity id of the user task reached.
    * @return action to be executed when process reaches the user
    * task (waitstate) with the activity id provided.
-   *
    * @since Camunda BPM 7.0.0-Final
    */
   UserTaskAction waitsAtUserTask(String activityId);
@@ -41,10 +28,9 @@ public interface ProcessScenario extends Runnable {
    * provided.
    *
    * @param activityId the activity id of the timer intermediate
-   * event reached.
+   *                   event reached.
    * @return action to be executed when process reaches the timer
    * intermediate event (waitstate) with the activity id provided.
-   *
    * @since Camunda BPM 7.0.0-Final
    */
   TimerIntermediateEventAction waitsAtTimerIntermediateEvent(String activityId);
@@ -56,11 +42,10 @@ public interface ProcessScenario extends Runnable {
    * activity id provided.
    *
    * @param activityId the activity id of the message intermediate
-   * catch event reached.
+   *                   catch event reached.
    * @return action to be executed when process reaches the message
    * intermediate catch event (waitstate) with the activity id
    * provided.
-   *
    * @since Camunda BPM 7.0.0-Final
    */
   MessageIntermediateCatchEventAction waitsAtMessageIntermediateCatchEvent(String activityId);
@@ -73,7 +58,6 @@ public interface ProcessScenario extends Runnable {
    * @param activityId the activity id of the receive task reached.
    * @return action to be executed when process reaches the receive
    * task (waitstate) with the activity id provided.
-   *
    * @since Camunda BPM 7.1.0-Final (as message event subscription)
    */
   ReceiveTaskAction waitsAtReceiveTask(String activityId);
@@ -85,11 +69,10 @@ public interface ProcessScenario extends Runnable {
    * activity id provided.
    *
    * @param activityId the activity id of the signal intermediate
-   * catch event reached.
+   *                   catch event reached.
    * @return action to be executed when process reaches the signal
    * intermediate catch event (waitstate) with the activity id
    * provided.
-   *
    * @since Camunda BPM 7.0.0-Final
    */
   SignalIntermediateCatchEventAction waitsAtSignalIntermediateCatchEvent(String activityId);
@@ -102,7 +85,6 @@ public interface ProcessScenario extends Runnable {
    * @param activityId the activity id of the call activity.
    * @return scenario runner to be executed when process runs
    * the call activity with the activity id provided.
-   *
    * @since Camunda BPM 7.0.0-Final
    */
   Runner runsCallActivity(String activityId);
@@ -113,10 +95,9 @@ public interface ProcessScenario extends Runnable {
    * mocked call activity (wait state) with the activity id provided.
    *
    * @param activityId the activity id of the signal intermediate
-   * catch event reached.
+   *                   catch event reached.
    * @return action to be executed when process reaches the mocked
    * call activity (wait state) with the activity id provided.
-   *
    * @since Camunda BPM 7.4.0
    */
   MockedCallActivityAction waitsAtMockedCallActivity(String activityId);
@@ -127,10 +108,9 @@ public interface ProcessScenario extends Runnable {
    * event based gateway (waitstate) with the activity id provided.
    *
    * @param activityId the activity id of the event based gateway
-   * reached.
+   *                   reached.
    * @return action to be executed when process reaches the event
    * based gateway (waitstate) with the activity id provided.
-   *
    * @since Camunda BPM 7.1.0-Final
    */
   EventBasedGatewayAction waitsAtEventBasedGateway(String activityId);
@@ -143,11 +123,10 @@ public interface ProcessScenario extends Runnable {
    * implement it by means of a Camunda BPM ExternalTask.
    *
    * @param activityId the activity id of the send task
-   * (external task) reached.
+   *                   (external task) reached.
    * @return action to be executed when process reaches the
    * service task (external task waitstate) with the activity
    * id provided.
-   *
    * @since Camunda BPM 7.4.0
    */
   ServiceTaskAction waitsAtServiceTask(String activityId);
@@ -160,11 +139,10 @@ public interface ProcessScenario extends Runnable {
    * implement it by means of a Camunda BPM ExternalTask.
    *
    * @param activityId the activity id of the send task
-   * (external task) reached.
+   *                   (external task) reached.
    * @return action to be executed when process reaches the
    * service task (external task waitstate) with the activity
    * id provided.
-   *
    * @since Camunda BPM 7.5.0
    */
   SendTaskAction waitsAtSendTask(String activityId);
@@ -178,11 +156,10 @@ public interface ProcessScenario extends Runnable {
    * it by means of a Camunda BPM ExternalTask.
    *
    * @param activityId the activity id of the message intermediate
-   * throw event (external task) reached.
+   *                   throw event (external task) reached.
    * @return action to be executed when process reaches the message
    * intermediate throw event (external task waitstate) with the
    * activity id provided.
-   *
    * @since Camunda BPM 7.5.0
    */
   MessageIntermediateThrowEventAction waitsAtMessageIntermediateThrowEvent(String activityId);
@@ -196,10 +173,9 @@ public interface ProcessScenario extends Runnable {
    * ExternalTask.
    *
    * @param activityId the activity id of the message end event
-   * (external task) reached.
+   *                   (external task) reached.
    * @return action to be executed when process reaches the message
    * end event (external task waitstate) with the activity id provided.
-   *
    * @since Camunda BPM 7.5.0
    */
   MessageEndEventAction waitsAtMessageEndEvent(String activityId);
@@ -212,11 +188,10 @@ public interface ProcessScenario extends Runnable {
    * implement it by means of a Camunda BPM ExternalTask.
    *
    * @param activityId the activity id of the business rule task
-   * (external task) reached.
+   *                   (external task) reached.
    * @return action to be executed when process reaches the
    * business rule task (external task waitstate) with the activity
    * id provided.
-   *
    * @since Camunda BPM 7.5.0
    */
   BusinessRuleTaskAction waitsAtBusinessRuleTask(String activityId);
@@ -228,10 +203,9 @@ public interface ProcessScenario extends Runnable {
    * provided.
    *
    * @param activityId the activity id of the conditional intermediate
-   * event reached.
+   *                   event reached.
    * @return action to be executed when process reaches the conditional
    * intermediate event (waitstate) with the activity id provided.
-   *
    * @since Camunda BPM 7.6.0
    */
   ConditionalIntermediateEventAction waitsAtConditionalIntermediateEvent(String activityId);

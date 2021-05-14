@@ -10,7 +10,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/MessageEndEventTest.bpmn"})
 public class MessageEndEventTest extends AbstractTest {
@@ -49,7 +49,7 @@ public class MessageEndEventTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test(expected = AssertionError.class)
   public void testDoNotDealWithTask() {
 
     Scenario.run(scenario).startByKey("MessageEndEventTest").execute();

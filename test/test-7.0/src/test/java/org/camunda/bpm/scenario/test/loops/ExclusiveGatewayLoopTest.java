@@ -11,9 +11,11 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class ExclusiveGatewayLoopTest extends AbstractTest {
+
+  private int loop = 0;
 
   @Before
   public void setVariable() {
@@ -62,8 +64,6 @@ public class ExclusiveGatewayLoopTest extends AbstractTest {
     verify(scenario, times(1)).hasFinished("EndEvent");
 
   }
-
-  private int loop = 0;
 
   @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/loops/ExclusiveGatewayLoopTest.bpmn"})

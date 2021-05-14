@@ -10,7 +10,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 @Deployment(resources = {"org/camunda/bpm/scenario/test/callactivities/CallActivityWithBoundaryErrorEventTest.bpmn"})
 public class CallActivityWithBoundaryErrorEventTest extends AbstractTest {

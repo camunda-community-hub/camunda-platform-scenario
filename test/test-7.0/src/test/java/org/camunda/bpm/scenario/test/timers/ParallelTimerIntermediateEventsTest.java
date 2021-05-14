@@ -10,11 +10,11 @@ import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class ParallelTimerIntermediateEventsTest extends AbstractTest {
 

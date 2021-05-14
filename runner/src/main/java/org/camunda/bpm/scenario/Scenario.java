@@ -9,7 +9,7 @@ import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 import java.util.List;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public abstract class Scenario {
 
@@ -17,8 +17,9 @@ public abstract class Scenario {
    * Run a new process instance by means of the scenario interface
    * provided as parameter.
    * .
+   *
    * @param scenario interface to be used for running the process
-   * instance
+   *                 instance
    */
   public static StartableRunner run(ProcessScenario scenario) {
     return new ScenarioImpl(scenario).toBeStartedBy();
@@ -30,7 +31,7 @@ public abstract class Scenario {
    * provided as parameter.
    *
    * @param scenario interface to be used for running the process
-   * instance
+   *                 instance
    */
   public static ProcessRunner use(ProcessScenario scenario) {
     return new ProcessRunnerImpl(null, scenario);
@@ -43,8 +44,8 @@ public abstract class Scenario {
    * @param scenario for which the process instance should be delivered
    * @return the process instance run by that scenario.
    * @throws IllegalStateException in case the scenario executed more
-   * than a single process instance based on the scenario provided as
-   * a parameter.
+   *                               than a single process instance based on the scenario provided as
+   *                               a parameter.
    */
   public abstract ProcessInstance instance(ProcessScenario scenario);
 

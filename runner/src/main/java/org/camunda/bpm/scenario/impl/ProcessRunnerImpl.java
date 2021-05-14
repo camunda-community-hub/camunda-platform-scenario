@@ -23,7 +23,7 @@ import org.camunda.bpm.scenario.run.ProcessStarter;
 import java.util.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class ProcessRunnerImpl extends AbstractRunner implements StartingByKey, StartingByMessage, StartableRunner, StartingByStarter, ProcessRunner {
 

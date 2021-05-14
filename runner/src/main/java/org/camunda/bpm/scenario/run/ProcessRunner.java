@@ -7,7 +7,7 @@ import org.camunda.bpm.scenario.Scenario;
 import java.util.Map;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface ProcessRunner extends Runner {
 
@@ -33,8 +33,9 @@ public interface ProcessRunner extends Runner {
      * Run another new process instance by means of the
      * scenario interface provided as parameter.
      * .
+     *
      * @param scenario interface to be used for running the process
-     * instance
+     *                 instance
      */
     StartableRunner run(ProcessScenario scenario);
 
@@ -45,7 +46,7 @@ public interface ProcessRunner extends Runner {
        * just from before the activity id provided as parameter.
        *
        * @param activityId from before which the new process instance
-       * should be started
+       *                   should be started
        */
       StartingByKey fromBefore(String activityId);
 
@@ -54,7 +55,7 @@ public interface ProcessRunner extends Runner {
        * just from after the activity id provided as parameter.
        *
        * @param activityId from after which the new process instance
-       * should be started
+       *                   should be started
        */
       StartingByKey fromAfter(String activityId);
 
@@ -105,7 +106,7 @@ public interface ProcessRunner extends Runner {
      * and provide a few process instance variables.
      *
      * @param processDefinitionKey to be used to start a process instance
-     * @param variables to be used as process instance variables from the start on.
+     * @param variables            to be used as process instance variables from the start on.
      */
     ExecutableRunner.StartingByKey startByKey(String processDefinitionKey, Map<String, Object> variables);
 
@@ -115,8 +116,8 @@ public interface ProcessRunner extends Runner {
      * and provide a few process instance variables.
      *
      * @param processDefinitionKey to be used to start a process instance
-     * @param businessKey to be used to start a process by business key
-     * @param variables to be used as process instance variables from the start on.
+     * @param businessKey          to be used to start a process by business key
+     * @param variables            to be used as process instance variables from the start on.
      */
     ExecutableRunner.StartingByKey startByKey(String processDefinitionKey, String businessKey, Map<String, Object> variables);
 
@@ -125,7 +126,7 @@ public interface ProcessRunner extends Runner {
      * and provide a few process instance variables.
      *
      * @param processDefinitionKey to be used to start a process instance
-     * @param businessKey to be used to start a process by business key
+     * @param businessKey          to be used to start a process by business key
      */
     ExecutableRunner.StartingByKey startByKey(String processDefinitionKey, String businessKey);
 
@@ -141,13 +142,14 @@ public interface ProcessRunner extends Runner {
      * and provide a few process instance variables.
      *
      * @param messageName to be used to start a process instance
-     * @param variables to be used as process instance variables from the start on.
+     * @param variables   to be used as process instance variables from the start on.
      */
     ExecutableRunner.StartingByMessage startByMessage(String messageName, Map<String, Object> variables);
 
     /**
      * Start the new process instance by means of custom code. Implement
      * the ProcessStarter.start() method to create a process instance.
+     *
      * @param starter interface which delivers a new process instance
      */
     ExecutableRunner.StartingByStarter startBy(ProcessStarter starter);
@@ -156,6 +158,7 @@ public interface ProcessRunner extends Runner {
      * Mock the scenario by deploying a process with the given process
      * definition key, but only a single wait state to interact with
      * (internally implemented with an external task).
+     *
      * @param processDefinitionKey the process definition key to mock
      */
     StartableRunner withMockedProcess(String processDefinitionKey);

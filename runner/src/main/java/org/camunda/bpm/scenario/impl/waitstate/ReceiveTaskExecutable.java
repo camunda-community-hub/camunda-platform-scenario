@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class ReceiveTaskExecutable extends MessageIntermediateCatchEventExecutable {
 
@@ -59,15 +59,15 @@ public class ReceiveTaskExecutable extends MessageIntermediateCatchEventExecutab
   public String getEventType() {
     if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
-          "used without a message event subscription.");
-      return super.getEventType();
+        "used without a message event subscription.");
+    return super.getEventType();
   }
 
   @Override
   public String getEventName() {
     if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
-          "used without a message event subscription.");
+        "used without a message event subscription.");
     return super.getEventName();
   }
 
@@ -75,7 +75,7 @@ public class ReceiveTaskExecutable extends MessageIntermediateCatchEventExecutab
   public String getProcessInstanceId() {
     if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
-          "used without a message event subscription.");
+        "used without a message event subscription.");
     return super.getProcessInstanceId();
   }
 
@@ -83,7 +83,7 @@ public class ReceiveTaskExecutable extends MessageIntermediateCatchEventExecutab
   public String getTenantId() {
     if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
-          "used without a message event subscription.");
+        "used without a message event subscription.");
     return super.getTenantId();
   }
 
@@ -91,7 +91,7 @@ public class ReceiveTaskExecutable extends MessageIntermediateCatchEventExecutab
   public Date getCreated() {
     if (delegate == null)
       throw new UnsupportedOperationException("Not supported for Receive Tasks " +
-          "used without a message event subscription.");
+        "used without a message event subscription.");
     return super.getCreated();
   }
 

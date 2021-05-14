@@ -11,7 +11,7 @@ import org.camunda.bpm.scenario.impl.util.Log;
 import org.camunda.bpm.scenario.impl.util.Time;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class TimerIntermediateEventExecutable extends AbstractProcessInstanceDelegate {
 
@@ -36,13 +36,13 @@ public class TimerIntermediateEventExecutable extends AbstractProcessInstanceDel
     try {
       if (action != null) {
         Log.Action.ActingOn.log(
-            historicDelegate.getActivityType(),
-            historicDelegate.getActivityName(),
-            historicDelegate.getActivityId(),
-            runner.getProcessDefinitionKey(),
-            historicDelegate.getProcessInstanceId(),
-            null,
-            null
+          historicDelegate.getActivityType(),
+          historicDelegate.getActivityName(),
+          historicDelegate.getActivityId(),
+          runner.getProcessDefinitionKey(),
+          historicDelegate.getProcessInstanceId(),
+          null,
+          null
         );
         action.execute(this);
       }

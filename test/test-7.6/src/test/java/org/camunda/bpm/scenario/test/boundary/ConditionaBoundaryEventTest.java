@@ -12,7 +12,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 @Deployment(resources = {"org/camunda/bpm/scenario/test/boundary/ConditionalBoundaryEventTest.bpmn"})
 public class ConditionaBoundaryEventTest extends AbstractTest {
@@ -34,8 +34,8 @@ public class ConditionaBoundaryEventTest extends AbstractTest {
     });
 
     Scenario.run(scenario)
-        .startByKey("ConditionalBoundaryEventTest", variables)
-        .execute();
+      .startByKey("ConditionalBoundaryEventTest", variables)
+      .execute();
 
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, never()).hasFinished("UserTask");
@@ -57,8 +57,8 @@ public class ConditionaBoundaryEventTest extends AbstractTest {
     });
 
     Scenario.run(scenario)
-        .startByKey("ConditionalBoundaryEventTest", variables)
-        .execute();
+      .startByKey("ConditionalBoundaryEventTest", variables)
+      .execute();
 
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");
@@ -144,8 +144,8 @@ public class ConditionaBoundaryEventTest extends AbstractTest {
     variables.put("condition", true);
 
     Scenario.run(scenario)
-        .startByKey("ConditionalBoundaryEventTest", variables)
-        .execute();
+      .startByKey("ConditionalBoundaryEventTest", variables)
+      .execute();
 
     verify(scenario, times(1)).hasStarted("UserTask");
     verify(scenario, times(1)).hasFinished("UserTask");

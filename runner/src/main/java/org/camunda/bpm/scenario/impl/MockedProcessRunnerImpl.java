@@ -11,7 +11,7 @@ import org.camunda.bpm.scenario.run.Runner;
 import java.util.Map;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class MockedProcessRunnerImpl extends ProcessRunnerImpl {
 

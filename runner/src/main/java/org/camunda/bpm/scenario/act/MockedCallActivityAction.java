@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.act;
 import org.camunda.bpm.scenario.delegate.MockedCallActivityDelegate;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface MockedCallActivityAction extends Action<MockedCallActivityDelegate> {
 

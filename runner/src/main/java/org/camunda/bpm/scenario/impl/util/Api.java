@@ -19,21 +19,19 @@ import java.util.logging.Logger;
  * (Maybe even with a Camunda BPM '7.5'-ish maven dependency version
  * 'classifier' element? I like. But it's actually not so often used.)
  *
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class Api {
 
   private static Logger log = Logger.getLogger(Api.class.getName());
-
-  private String className;
-  private String methodName;
-  private Class<?>[] parameterTypes;
-  private String signature;
-
   // maps signatures to a "supported" Boolean, true means supported.
   // false and null means not supported, but null means that a warning
   // was already logged, too. We don't want to warn a thousand times.
   private static Map<String, Boolean> support = new HashMap<String, Boolean>();
+  private String className;
+  private String methodName;
+  private Class<?>[] parameterTypes;
+  private String signature;
 
   private Api(String className, String methodName, Class<?>... parameterTypes) {
     this.className = className;

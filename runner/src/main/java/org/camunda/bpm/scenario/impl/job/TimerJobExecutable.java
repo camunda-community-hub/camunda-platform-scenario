@@ -8,7 +8,7 @@ import org.camunda.bpm.scenario.impl.util.Time;
 import java.util.Date;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class TimerJobExecutable extends JobExecutable {
 

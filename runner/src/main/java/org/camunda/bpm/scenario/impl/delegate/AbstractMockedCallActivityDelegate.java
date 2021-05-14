@@ -7,7 +7,7 @@ import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import java.util.Date;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public abstract class AbstractMockedCallActivityDelegate implements MockedCallActivityDelegate {
 

@@ -3,11 +3,10 @@ package org.camunda.bpm.scenario.impl;
 import org.camunda.bpm.engine.impl.persistence.entity.JobEntity;
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.impl.util.Api;
-import org.camunda.bpm.scenario.impl.util.Log;
 import org.camunda.bpm.scenario.impl.util.Log.Action;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public abstract class JobExecutable extends AbstractExecutable<Job> {
 
@@ -57,13 +56,13 @@ public abstract class JobExecutable extends AbstractExecutable<Job> {
       }
     }
     Action.Executing_Job.log(
-        type,
-        config,
-        null,
-        getRepositoryService().createProcessDefinitionQuery().processDefinitionId(runner.processInstance.getProcessDefinitionId()).singleResult().getKey(),
-        runner.processInstance.getId(),
-        null,
-        null
+      type,
+      config,
+      null,
+      getRepositoryService().createProcessDefinitionQuery().processDefinitionId(runner.processInstance.getProcessDefinitionId()).singleResult().getKey(),
+      runner.processInstance.getId(),
+      null,
+      null
     );
   }
 

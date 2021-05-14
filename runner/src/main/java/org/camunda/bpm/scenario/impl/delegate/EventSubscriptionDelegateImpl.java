@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class EventSubscriptionDelegateImpl extends AbstractDelegate<EventSubscription> implements EventSubscriptionDelegate {
 
@@ -29,7 +29,7 @@ public class EventSubscriptionDelegateImpl extends AbstractDelegate<EventSubscri
 
   public static List<EventSubscriptionDelegate> newInstance(WaitstateExecutable waitstate, List<EventSubscription> eventSubscriptions) {
     List<EventSubscriptionDelegate> delegates = new ArrayList<EventSubscriptionDelegate>();
-    for (EventSubscription eventSubscription: eventSubscriptions) {
+    for (EventSubscription eventSubscription : eventSubscriptions) {
       delegates.add(newInstance(waitstate, eventSubscription));
     }
     return delegates;

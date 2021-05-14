@@ -10,7 +10,7 @@ import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
 import java.util.Map;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class MessageIntermediateThrowEventExecutable extends ServiceTaskExecutable {
 
