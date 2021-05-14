@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.report;
+package org.camunda.bpm.scenario.test.report.insurance;
 
 import org.assertj.core.api.Assertions;
 import org.camunda.bpm.engine.test.Deployment;
@@ -23,11 +23,11 @@ import static org.mockito.Mockito.when;
  */
 
 @Deployment(resources = {
-  "org/camunda/bpm/scenario/report/InsuranceApplication.bpmn",
-  "org/camunda/bpm/scenario/report/DocumentRequest.bpmn",
-  "org/camunda/bpm/scenario/report/RiskCheck.dmn"
+  "org/camunda/bpm/scenario/test/report/insurance/InsuranceApplication.bpmn",
+  "org/camunda/bpm/scenario/test/report/insurance/DocumentRequest.bpmn",
+  "org/camunda/bpm/scenario/test/report/insurance/RiskCheck.dmn"
 })
-public class ProcessScenarioReportTest {
+public class InsuranceTest {
 
   private final ProcessScenario insuranceApplication = mock(ProcessScenario.class);
   private final ProcessScenario documentRequest = mock(ProcessScenario.class);

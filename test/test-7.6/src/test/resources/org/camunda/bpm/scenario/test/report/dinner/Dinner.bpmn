@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0c2j6f0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.5.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0c2j6f0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
   <bpmn:process id="Dinner" isExecutable="true">
     <bpmn:startEvent id="DinnerUpcoming" name="Dinner is&#10;upcoming" camunda:asyncBefore="true">
       <bpmn:outgoing>Flow_0hn49kw</bpmn:outgoing>
@@ -22,7 +22,7 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1v8l5mz" sourceRef="Event_0al4im0" targetRef="DinnerNotPrepared" />
     <bpmn:sequenceFlow id="Flow_1d0ikay" sourceRef="DecideAboutDinner" targetRef="PrepareDinner" />
-    <bpmn:businessRuleTask id="DecideAboutDinner" name="Decide&#10;about dish" camunda:asyncBefore="true" camunda:decisionRef="dish">
+    <bpmn:businessRuleTask id="DecideAboutDinner" name="Decide&#10;about dish" camunda:asyncBefore="true" camunda:expression="#{true}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="numberOfGuests">#{5}</camunda:inputParameter>

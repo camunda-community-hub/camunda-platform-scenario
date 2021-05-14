@@ -134,7 +134,7 @@
     </bpmn2:endEvent>
     <bpmn2:businessRuleTask id="BusinessRuleTaskCheckApplicationAutomatically" name="Check application automatically" camunda:asyncBefore="true" camunda:resultVariable="riskAssessmentResult" camunda:decisionRef="RiskCheck">
       <bpmn2:extensionElements>
-        <camunda:executionListener class="org.camunda.bpm.scenario.report.MapDmnResult" event="end" />
+        <camunda:executionListener class="org.camunda.bpm.scenario.test.report.insurance.MapDmnResult" event="end" />
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>

@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.dinner;
+package org.camunda.bpm.scenario.test.report.dinner;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.ProcessScenario;
@@ -14,10 +14,7 @@ import static org.mockito.Mockito.*;
  * @author Martin Schimak
  */
 @ExtendWith(ProcessScenarioExtension.class)
-@Deployment(resources = {
-  "org/camunda/bpm/scenario/dinner/Dinner.dmn",
-  "org/camunda/bpm/scenario/dinner/Dinner.bpmn",
-})
+@Deployment(resources = {"org/camunda/bpm/scenario/test/report/dinner/Dinner.bpmn"})
 public class DinnerTest {
 
   ProcessScenario process = mock(ProcessScenario.class);

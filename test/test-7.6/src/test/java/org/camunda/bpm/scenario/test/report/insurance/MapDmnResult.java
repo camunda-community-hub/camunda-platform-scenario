@@ -1,4 +1,4 @@
-package org.camunda.bpm.scenario.report;
+package org.camunda.bpm.scenario.test.report.insurance;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.ExecutionListener;

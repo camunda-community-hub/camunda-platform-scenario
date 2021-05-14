@@ -50,6 +50,20 @@
             </dependency>
 
             <dependency>
+                <groupId>org.camunda.bpm.extension.scenario</groupId>
+                <artifactId>camunda-platform-scenario-report</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.camunda.bpm.extension</groupId>
+                <artifactId>camunda-bpm-junit5</artifactId>
+                <version>1.0.1</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.camunda.bpm.assert</groupId>
                 <artifactId>camunda-bpm-assert</artifactId>
                 <version>10.0.0</version>
@@ -109,6 +123,20 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.13.2</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.7.1</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>5.7.1</version>
                 <scope>test</scope>
             </dependency>
 
