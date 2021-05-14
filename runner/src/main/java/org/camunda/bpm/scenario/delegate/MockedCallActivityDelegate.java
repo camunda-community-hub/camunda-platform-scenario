@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.delegate;
 import java.util.Map;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface MockedCallActivityDelegate extends TaskDelegate {
 

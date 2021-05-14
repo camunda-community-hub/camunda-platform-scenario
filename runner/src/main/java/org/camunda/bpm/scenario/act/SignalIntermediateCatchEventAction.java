@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.act;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface SignalIntermediateCatchEventAction extends Action<EventSubscriptionDelegate> {
 
@@ -12,9 +12,8 @@ public interface SignalIntermediateCatchEventAction extends Action<EventSubscrip
    * process instance arrives at a signal intermediate catch event.
    *
    * @param signal the event subscription waiting for a signal.
-   *
    * @throws Exception in case your custom code throws checked exceptions.
-   * Such exceptions will be wrapped into RuntimeExceptions and rethrown.
+   *                   Such exceptions will be wrapped into RuntimeExceptions and rethrown.
    */
   @Override
   void execute(final EventSubscriptionDelegate signal) throws Exception;

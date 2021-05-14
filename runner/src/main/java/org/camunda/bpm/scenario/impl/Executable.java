@@ -7,15 +7,10 @@ import org.camunda.bpm.scenario.defer.Deferred;
 import org.camunda.bpm.scenario.impl.job.ContinuationExecutable;
 import org.camunda.bpm.scenario.impl.waitstate.IgnoredExecutable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 @SuppressWarnings("unchecked")
 public interface Executable<S> extends Comparable<S> {
@@ -24,7 +19,9 @@ public interface Executable<S> extends Comparable<S> {
 
   class Waitstates {
 
-    static Map<String, String> types = new HashMap<String, String>(); static {
+    static Map<String, String> types = new HashMap<String, String>();
+
+    static {
       types.put("userTask", "UserTaskExecutable");
       types.put("intermediateSignalCatch", "SignalIntermediateCatchEventExecutable");
       types.put("intermediateMessageCatch", "MessageIntermediateCatchEventExecutable");
@@ -57,8 +54,8 @@ public interface Executable<S> extends Comparable<S> {
 
     static List<Executable> next(ProcessRunnerImpl runner) {
       List<HistoricActivityInstance> instances = runner.scenarioExecutor.processEngine
-          .getHistoryService().createHistoricActivityInstanceQuery()
-          .processInstanceId(runner.processInstance.getId()).unfinished().list();
+        .getHistoryService().createHistoricActivityInstanceQuery()
+        .processInstanceId(runner.processInstance.getId()).unfinished().list();
       return Helpers.next(runner, instances);
     }
 
@@ -66,7 +63,9 @@ public interface Executable<S> extends Comparable<S> {
 
   class Jobs {
 
-    static Map<String, String> types = new HashMap<String, String>(); static {
+    static Map<String, String> types = new HashMap<String, String>();
+
+    static {
       types.put("async-continuation", "ContinuationExecutable");
       types.put("timer-transition", "TimerJobExecutable");
       types.put("timer-intermediate-transition", "TimerJobExecutable");
@@ -88,7 +87,7 @@ public interface Executable<S> extends Comparable<S> {
 
     static List<Executable> next(ProcessRunnerImpl runner) {
       List<Job> jobs = runner.scenarioExecutor.processEngine.getManagementService()
-          .createJobQuery().processInstanceId(runner.processInstance.getId()).list();
+        .createJobQuery().processInstanceId(runner.processInstance.getId()).list();
       return Helpers.next(runner, jobs);
     }
 
@@ -105,8 +104,8 @@ public interface Executable<S> extends Comparable<S> {
     static List<Executable> next(ProcessRunnerImpl runner) {
       List<Executable> e = new ArrayList<Executable>();
       Collection<List<DeferredExecutable>> executablesCollection = executablesMap.values();
-      for (List<DeferredExecutable> executablesList: executablesCollection) {
-        for (Executable executable: executablesList) {
+      for (List<DeferredExecutable> executablesList : executablesCollection) {
+        for (Executable executable : executablesList) {
           e.add(executable);
         }
       }
@@ -143,10 +142,10 @@ public interface Executable<S> extends Comparable<S> {
 
     static List<Executable> next(ProcessRunnerImpl runner, List instances) {
       List<Executable> executables = new ArrayList<Executable>();
-      for (Object instance: instances) {
+      for (Object instance : instances) {
         Executable executable = instance instanceof Job
-            ? Jobs.newInstance(runner, (Job) instance)
-            : Waitstates.newInstance(runner, (HistoricActivityInstance) instance);
+          ? Jobs.newInstance(runner, (Job) instance)
+          : Waitstates.newInstance(runner, (HistoricActivityInstance) instance);
         if (executable != null)
           executables.add(executable);
       }

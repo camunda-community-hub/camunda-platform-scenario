@@ -10,7 +10,7 @@ import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 import java.util.Date;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public abstract class AbstractTaskDelegate extends WaitstateExecutable<Task> implements TaskDelegate {
 
@@ -122,12 +122,12 @@ public abstract class AbstractTaskDelegate extends WaitstateExecutable<Task> imp
     delegate.delegate(userId);
   }
 
-  public void setParentTaskId(String parentTaskId) {
-    delegate.setParentTaskId(parentTaskId);
-  }
-
   public String getParentTaskId() {
     return delegate.getParentTaskId();
+  }
+
+  public void setParentTaskId(String parentTaskId) {
+    delegate.setParentTaskId(parentTaskId);
   }
 
   public boolean isSuspended() {

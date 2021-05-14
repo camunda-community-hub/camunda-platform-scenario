@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.act;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface ReceiveTaskAction extends MessageIntermediateCatchEventAction {
 
@@ -12,11 +12,10 @@ public interface ReceiveTaskAction extends MessageIntermediateCatchEventAction {
    * process instance arrives at a receive task.
    *
    * @param message the event subscription waiting for a message or an
-   * object able to signal the receive task execution to move on in case
-   * you do not use the receive task with a message subscription.
-   *
+   *                object able to signal the receive task execution to move on in case
+   *                you do not use the receive task with a message subscription.
    * @throws Exception in case your custom code throws checked exceptions.
-   * Such exceptions will be wrapped into RuntimeExceptions and rethrown.
+   *                   Such exceptions will be wrapped into RuntimeExceptions and rethrown.
    */
   @Override
   void execute(final EventSubscriptionDelegate message) throws Exception;

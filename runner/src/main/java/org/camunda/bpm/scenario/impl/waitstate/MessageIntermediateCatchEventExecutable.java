@@ -13,7 +13,7 @@ import org.camunda.bpm.scenario.impl.delegate.EventSubscriptionDelegateImpl;
 import java.util.Map;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class MessageIntermediateCatchEventExecutable extends AbstractEventSubscriptionDelegate {
 

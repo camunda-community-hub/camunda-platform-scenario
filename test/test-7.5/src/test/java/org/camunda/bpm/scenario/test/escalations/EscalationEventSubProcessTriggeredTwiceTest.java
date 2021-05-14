@@ -12,11 +12,12 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class EscalationEventSubProcessTriggeredTwiceTest extends AbstractTest {
 
-  @Test @Ignore // In my mind should work, but does not work due to a Camunda NullpointerExecption
+  @Test
+  @Ignore // In my mind should work, but does not work due to a Camunda NullpointerExecption
   @Deployment(resources = {"org/camunda/bpm/scenario/test/escalations/EscalationEventSubProcessTriggeredTwiceTest.bpmn"})
   public void testCompleteTask1First() {
 

@@ -12,7 +12,7 @@ import org.camunda.bpm.scenario.impl.util.Time;
 import java.util.Date;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
 
@@ -26,7 +26,9 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
 
   public ProcessInstanceDelegate getProcessInstance() {
     return ProcessInstanceDelegateImpl.newInstance(this, runner.processInstance);
-  };
+  }
+
+  ;
 
   @Override
   public String getExecutionId() {
@@ -42,21 +44,21 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
     Action action = action();
     if (action == null)
       throw new AssertionError("Process Instance {"
-          + getProcessInstance().getProcessDefinitionId() + ", "
-          + getProcessInstance().getProcessInstanceId() + "} "
-          + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 10)
-          + " '" + historicDelegate.getActivityId() +"'.");
+        + getProcessInstance().getProcessDefinitionId() + ", "
+        + getProcessInstance().getProcessInstanceId() + "} "
+        + "waits at an unexpected " + getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 10)
+        + " '" + historicDelegate.getActivityId() + "'.");
     Time.set(isExecutableAt());
     try {
       if (!(runner instanceof MockedProcessRunnerImpl))
         Log.Action.ActingOn.log(
-            historicDelegate.getActivityType(),
-            historicDelegate.getActivityName(),
-            historicDelegate.getActivityId(),
-            runner.getProcessDefinitionKey(),
-            historicDelegate.getProcessInstanceId(),
-            null,
-            null
+          historicDelegate.getActivityType(),
+          historicDelegate.getActivityName(),
+          historicDelegate.getActivityId(),
+          runner.getProcessDefinitionKey(),
+          historicDelegate.getProcessInstanceId(),
+          null,
+          null
         );
       action.execute(this);
     } catch (Exception e) {
@@ -69,7 +71,9 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
 
   protected final Action action() {
     return action(runner.scenario);
-  };
+  }
+
+  ;
 
   public Date isExecutableAt() {
     return historicDelegate.getStartTime();

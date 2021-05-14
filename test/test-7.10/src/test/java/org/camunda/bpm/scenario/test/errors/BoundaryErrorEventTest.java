@@ -17,7 +17,7 @@ import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.processE
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 @Deployment(resources = {"org/camunda/bpm/scenario/test/errors/BoundaryErrorEventTest.bpmn"})
 public class BoundaryErrorEventTest extends AbstractTest {
@@ -35,18 +35,18 @@ public class BoundaryErrorEventTest extends AbstractTest {
     });
 
     ProcessInstance pi = Scenario
-       .run(scenario)
-       .startByKey("BoundaryErrorEventTest")
-       .execute()
-       .instance(scenario);
+      .run(scenario)
+      .startByKey("BoundaryErrorEventTest")
+      .execute()
+      .instance(scenario);
 
     verify(scenario, never()).hasFinished("EndEventCompleted");
     verify(scenario, times(1)).hasFinished("EndEventError");
 
     HistoricVariableInstance hvi = processEngine().getHistoryService().createHistoricVariableInstanceQuery()
-       .processInstanceId(pi.getId())
-       .variableName("key")
-       .singleResult();
+      .processInstanceId(pi.getId())
+      .variableName("key")
+      .singleResult();
     Assertions.assertThat(hvi.getValue()).isEqualTo("value");
 
   }

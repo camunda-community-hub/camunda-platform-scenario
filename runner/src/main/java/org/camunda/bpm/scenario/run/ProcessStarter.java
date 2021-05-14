@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.run;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface ProcessStarter {
 

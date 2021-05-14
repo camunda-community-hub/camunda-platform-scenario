@@ -5,7 +5,7 @@ import org.camunda.bpm.scenario.run.Runner;
 import java.util.List;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public abstract class AbstractRunner implements Runner {
 

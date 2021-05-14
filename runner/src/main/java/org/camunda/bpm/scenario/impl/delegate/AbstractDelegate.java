@@ -1,7 +1,7 @@
 package org.camunda.bpm.scenario.impl.delegate;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public abstract class AbstractDelegate<D> {
 

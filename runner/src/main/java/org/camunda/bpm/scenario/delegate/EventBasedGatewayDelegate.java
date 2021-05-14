@@ -5,7 +5,7 @@ import org.camunda.bpm.scenario.defer.Deferrable;
 import java.util.List;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public interface EventBasedGatewayDelegate extends ProcessInstanceAwareDelegate, Deferrable {
 
@@ -22,7 +22,7 @@ public interface EventBasedGatewayDelegate extends ProcessInstanceAwareDelegate,
    * activity id provided as parameter.
    *
    * @param activityId the activity id of the requested event subscription's
-   * event (or receive task) symbol
+   *                   event (or receive task) symbol
    * @return the list of event subscriptions defined for this gateway.
    */
   EventSubscriptionDelegate getEventSubscription(String activityId);
@@ -33,8 +33,8 @@ public interface EventBasedGatewayDelegate extends ProcessInstanceAwareDelegate,
    *
    * @return the event subscription defined for this gateway.
    * @throws org.camunda.bpm.engine.ProcessEngineException in case more
-   * than one such event subscription is defined for this event based
-   * gateway.
+   *                                                       than one such event subscription is defined for this event based
+   *                                                       gateway.
    */
   EventSubscriptionDelegate getEventSubscription();
 
