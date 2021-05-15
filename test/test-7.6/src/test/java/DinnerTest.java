@@ -1,11 +1,10 @@
-package org.camunda.bpm.scenario.test.report.dinner;
-
 import org.camunda.bpm.engine.test.Deployment;
+import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.scenario.ProcessScenario;
-import org.camunda.bpm.scenario.report.junit.ProcessEngineExtensionWithReporting;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.camunda.bpm.scenario.report.junit.ProcessEngineRuleWithReporting;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 import static org.camunda.bpm.scenario.Scenario.run;
 import static org.mockito.Mockito.*;
@@ -13,13 +12,15 @@ import static org.mockito.Mockito.*;
 /**
  * @author Martin Schimak
  */
-@ExtendWith(ProcessEngineExtensionWithReporting.class)
-@Deployment(resources = {"org/camunda/bpm/scenario/test/report/dinner/Dinner.bpmn"})
+@Deployment(resources = {"Dinner.bpmn"})
 public class DinnerTest {
 
   ProcessScenario process = mock(ProcessScenario.class);
 
-  @BeforeEach
+  @Rule
+  public ProcessEngineRule processEngineRule = new ProcessEngineRuleWithReporting();
+
+  @Before
   public void everything_works_out_as_expected() {
     when(process.waitsAtServiceTask("PrepareDinner"))
       .thenReturn(task -> task.complete());
@@ -49,7 +50,7 @@ public class DinnerTest {
   }
 
   public void when_a_dinner_is_upcoming() {
-    run(process).startByKey("Dinner").execute();
+    run(process).startByKey("Dinner2").execute();
   }
 
   public void then_the_dinner_is_prepared() {

@@ -7,7 +7,7 @@ import org.junit.runner.Description;
 /**
  * @author Martin Schimak
  */
-public class ProcessScenarioRule extends ProcessEngineRule {
+public class ProcessEngineRuleWithReporting extends ProcessEngineRule {
 
   @Override
   protected void succeeded(Description description) {
@@ -22,7 +22,13 @@ public class ProcessScenarioRule extends ProcessEngineRule {
   }
 
   private void generateProcessScenarioTestReport(Description description) {
-    new ProcessScenarioTestReportGenerator(description.getClassName(), description.getMethodName()).generate(deploymentId);
+    Package featurePackage = description.getTestClass().getPackage();
+    String featurePackageName = featurePackage != null ? featurePackage.getName() : null;
+    new ProcessScenarioTestReportGenerator(
+      featurePackageName,
+      description.getTestClass().getSimpleName(),
+      description.getMethodName()
+    ).generate(deploymentId);
   }
 
 }
