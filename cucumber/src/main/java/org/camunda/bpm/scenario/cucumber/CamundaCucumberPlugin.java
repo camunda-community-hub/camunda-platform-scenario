@@ -35,29 +35,61 @@ public class CamundaCucumberPlugin implements ConcurrentEventListener {
     eventPublisher.registerHandlerFor(TestCaseFinished.class, testCaseFinishedEventHandler);
   }
 
-  protected final EventHandler<TestCaseStarted> testCaseStartedEventHandler = event -> deploy(event);
-  protected final EventHandler<TestCaseFinished> testCaseFinishedEventHandler = event -> undeploy(event);
+  protected final EventHandler<TestCaseStarted> testCaseStartedEventHandler = event -> start(event);
+  protected final EventHandler<TestCaseFinished> testCaseFinishedEventHandler = event -> finish(event);
 
-  protected void deploy(TestCaseStarted event) {
+  protected void start(TestCaseStarted event) {
+
     testMethod = when(event);
+
     Deployment deployment = deploymentAnnotation(testMethod);
+
     if (deployment != null) {
+
       deploymentId = TestHelper.annotationDeploymentSetUp(
         getProcessEngine(),
         testMethod.getDeclaringClass(),
         event.getTestCase().getName(),
         deployment
       );
+
     }
+
   }
 
-  protected void undeploy(TestCaseFinished event) {
-    TestHelper.annotationDeploymentTearDown(
-      getProcessEngine(),
-      deploymentId,
-      testMethod.getDeclaringClass(),
-      event.getTestCase().getName()
-    );
+  protected void finish(TestCaseFinished event) {
+
+    if (deploymentId != null) {
+
+      try {
+
+        Class<?> reportGeneratorClass = Class.forName("org.camunda.bpm.scenario.report.cucumber.CamundaCucumberPluginReportGenerator");
+        reportGeneratorClass.getDeclaredConstructor(TestCase.class, String.class)
+          .newInstance(event.getTestCase(), deploymentId);
+
+      } catch (Exception exception) {
+
+        // If report generator is not on classpath, we simply don't generate a report
+
+      }
+
+      try {
+
+        TestHelper.annotationDeploymentTearDown(
+          getProcessEngine(),
+          deploymentId,
+          testMethod.getDeclaringClass(),
+          event.getTestCase().getName()
+        );
+
+      } finally {
+
+        deploymentId = null;
+
+      }
+
+    }
+
   }
 
   protected Deployment deploymentAnnotation(Method method) {
