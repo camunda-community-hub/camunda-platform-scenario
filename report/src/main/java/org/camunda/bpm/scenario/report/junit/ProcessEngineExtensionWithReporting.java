@@ -21,7 +21,13 @@ public class ProcessEngineExtensionWithReporting extends ProcessEngineExtension 
 
   private void generateProcessScenarioTestReport(ExtensionContext context) {
     context.getTestMethod().ifPresent(method -> {
-      new ProcessScenarioTestReportGenerator(method.getDeclaringClass().getCanonicalName(), method.getName()).generate(deploymentId);
+      Package featurePackage = method.getDeclaringClass().getPackage();
+      String featurePackageName = featurePackage != null ? featurePackage.getName() : null;
+      new ProcessScenarioTestReportGenerator(
+        featurePackageName,
+        method.getDeclaringClass().getSimpleName(),
+        method.getName()
+      ).generate(deploymentId);
     });
   }
 
