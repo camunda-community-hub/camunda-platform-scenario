@@ -1,6 +1,8 @@
-[![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
+<a href="https://github.com/camunda-community-hub/community" target="_blank"><img src="https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700" align="left"/></a>
+<a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario" target="_blank"><img src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario/badge.svg"/></a>
+<a href="https://travis-ci.com/github/camunda-community-hub/camunda-platform-scenario" target="_blank"><img src="https://travis-ci.com/camunda-community-hub/camunda-platform-scenario.svg?branch=master" align="right"/></a>
 
-# <img src="https://avatars.githubusercontent.com/u/2443838?s=23&v=4" width="23" height="23"></img>&nbsp;Camunda Platform <strong>Scenario</strong><a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario"><img src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario/badge.svg" align="right"/></a>
+# <img src="https://avatars.githubusercontent.com/u/2443838?s=23&v=4" width="23" height="23"></img>&nbsp;Camunda Platform <strong>Scenario</strong><a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario"></a>
 
 <img src="/doc/img/clapboard.jpg" align="right" width="400"></img>
 
@@ -144,7 +146,7 @@ necessary to create this particular scenario!
 1. Use scenarios with the classic [**Camunda BPM Assert**](https://github.com/camunda/camunda-bpm-assert) to verify
    current runtime state inside your waitstate actions
 
-## <a href="https://travis-ci.org/camunda/camunda-bpm-assert-scenario"><img src="https://travis-ci.org/camunda/camunda-bpm-assert-scenario.svg?branch=master" align="right"/></a>Just start to use it! Or are you too busy?
+## <a href="https://travis-ci.com/github/camunda-community-hub/camunda-platform-scenario" target="_blank"><img src="https://travis-ci.com/camunda-community-hub/camunda-platform-scenario.svg?branch=master" align="right"/></a></a>Just start to use it! Or are you too busy?
 
 Camunda Platform Scenario is already used in real life projects at [WDW eLab](http://www.wdw-consulting.com). It works
 with **all versions of Camunda BPM** since 7.0 up to the most recent and *all the Java versions* (1.7., 1.8) still
