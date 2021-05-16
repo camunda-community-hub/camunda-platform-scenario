@@ -2,7 +2,9 @@ package org.camunda.bpm.scenario.test.variables;
 
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.act.ReceiveTaskAction;
 import org.camunda.bpm.scenario.act.UserTaskAction;
+import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
 import org.camunda.bpm.scenario.delegate.TaskDelegate;
 import org.camunda.bpm.scenario.test.AbstractTest;
 import org.junit.Test;
@@ -26,10 +28,18 @@ public class VariablesTest extends AbstractTest {
       }
     });
 
+    when(scenario.waitsAtReceiveTask("Waitstate")).thenReturn(new ReceiveTaskAction() {
+      @Override
+      public void execute(EventSubscriptionDelegate delegate) {
+        assertThat(delegate.getVariables())
+          .hasSize(0);
+      }
+    });
+
     Scenario.run(scenario).startByKey("VariablesTest").execute();
 
     verify(scenario, times(1)).hasFinished("SubProcess");
-    verify(scenario, times(1)).hasFinished("EndEvent");
+    verify(scenario, never()).hasFinished("EndEvent");
 
   }
 
@@ -43,32 +53,49 @@ public class VariablesTest extends AbstractTest {
       @Override
       public void execute(TaskDelegate task) {
         assertThat(task.getVariables()).containsEntry("globalVariable", "globalVariableValue");
-        task.complete();
+        task.complete(withVariables("locallySetGlobalVariable", "locallySetGlobalVariableValue"));
+      }
+    });
+
+    when(scenario.waitsAtReceiveTask("Waitstate")).thenReturn(new ReceiveTaskAction() {
+      @Override
+      public void execute(EventSubscriptionDelegate delegate) {
+        assertThat(delegate.getVariables())
+          .hasSize(2)
+          .containsEntry("globalVariable", "globalVariableValue")
+          .containsEntry("locallySetGlobalVariable", "locallySetGlobalVariableValue");
       }
     });
 
     Scenario.run(scenario).startByKey("VariablesTest", variables).execute();
 
     verify(scenario, times(1)).hasFinished("SubProcess");
-    verify(scenario, times(1)).hasFinished("EndEvent");
+    verify(scenario, never()).hasFinished("EndEvent");
 
   }
 
-  @Test(expected = AssertionError.class)
+  @Test
   @Deployment(resources = {"org/camunda/bpm/scenario/test/variables/VariablesTest.bpmn"})
   public void testVariableSetAtInstanceLevelFailure() {
+
+    variables.put("globalVariable", "globalVariableValue");
 
     when(scenario.waitsAtUserTask("UserTask")).thenReturn(new UserTaskAction() {
       @Override
       public void execute(TaskDelegate task) {
         assertThat(task.getVariables()).hasSize(1)
             .containsEntry("globalVariable", "globalVariableValue");
-        task.complete(withVariables("localVariable", "localVariableValue"));
-        assertThat(task.getVariables()).hasSize(2)
-            .containsEntry("localVariable", "localVariableValue")
-            .containsEntry("globalVariable", "globalVariableValue");
-        assertThat(task.getProcessInstance().getVariables()).hasSize(1)
-            .containsEntry("globalVariable", "globalVariableValue");
+        task.complete(withVariables("locallySetGlobalVariable", "locallySetGlobalVariableValue"));
+      }
+    });
+
+    when(scenario.waitsAtReceiveTask("Waitstate")).thenReturn(new ReceiveTaskAction() {
+      @Override
+      public void execute(EventSubscriptionDelegate delegate) {
+        assertThat(delegate.getVariables())
+          .hasSize(2)
+          .containsEntry("globalVariable", "globalVariableValue")
+          .containsEntry("locallySetGlobalVariable", "locallySetGlobalVariableValue");
       }
     });
 
