@@ -40,6 +40,11 @@ public class MockedProcessRunnerImpl extends ProcessRunnerImpl {
               }
 
               @Override
+              public Map<String, Object> getVariables() {
+                return task.getVariables();
+              }
+
+              @Override
               public void handleBpmnError(String errorCode) {
                 task.handleBpmnError(errorCode);
               }
