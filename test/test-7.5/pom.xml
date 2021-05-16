@@ -24,6 +24,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.camunda.bpm.extension.scenario</groupId>
+            <artifactId>camunda-platform-scenario-cucumber</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

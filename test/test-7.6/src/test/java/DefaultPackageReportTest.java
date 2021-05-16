@@ -12,8 +12,8 @@ import static org.mockito.Mockito.*;
 /**
  * @author Martin Schimak
  */
-@Deployment(resources = {"Dinner.bpmn"})
-public class DinnerTest {
+@Deployment(resources = {"DefaultPackageReportTest.bpmn"})
+public class DefaultPackageReportTest {
 
   ProcessScenario process = mock(ProcessScenario.class);
 

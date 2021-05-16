@@ -21,6 +21,7 @@
     <modules>
         <module>runner</module>
         <module>report</module>
+        <module>cucumber</module>
         <module>test</module>
         <module>deprecated</module>
     </modules>
@@ -49,6 +50,12 @@
             <dependency>
                 <groupId>org.camunda.bpm.extension.scenario</groupId>
                 <artifactId>camunda-platform-scenario-report</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.camunda.bpm.extension.scenario</groupId>
+                <artifactId>camunda-platform-scenario-cucumber</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -125,6 +132,18 @@
             </dependency>
 
             <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-java</artifactId>
+                <version>6.10.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.cucumber</groupId>
+                <artifactId>cucumber-junit</artifactId>
+                <version>6.10.4</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.fasterxml.uuid</groupId>
                 <artifactId>java-uuid-generator</artifactId>
                 <version>4.0.1</version>
@@ -187,6 +206,18 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
             <scope>test</scope>
         </dependency>
 
