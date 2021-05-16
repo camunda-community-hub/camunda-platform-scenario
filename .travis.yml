@@ -4,7 +4,6 @@ language: java
 jdk:
   - openjdk11
   - oraclejdk8
-  - oraclejdk7
 env:
   - CAMUNDA=LATEST
   - CAMUNDA=7.15.0
@@ -25,15 +24,25 @@ env:
   - CAMUNDA=7.0.0-Final
 jobs:
   exclude:
-    - jdk: oraclejdk7
-      env: CAMUNDA=LATEST
-    - jdk: oraclejdk7
-      env: CAMUNDA=7.12.0
-    - jdk: oraclejdk7
-      env: CAMUNDA=7.13.0
-    - jdk: oraclejdk7
-      env: CAMUNDA=7.14.0
-    - jdk: oraclejdk7
-      env: CAMUNDA=7.15.0
+    - jdk: openjdk11
+      env: CAMUNDA=7.9.0
+    - jdk: openjdk11
+      env: CAMUNDA=7.8.0
+    - jdk: openjdk11
+      env: CAMUNDA=7.7.0
+    - jdk: openjdk11
+      env: CAMUNDA=7.6.0
+    - jdk: openjdk11
+      env: CAMUNDA=7.5.0
+    - jdk: openjdk11
+      env: CAMUNDA=7.4.0
+    - jdk: openjdk11
+      env: CAMUNDA=7.3.0
+    - jdk: openjdk11
+      env: CAMUNDA=7.2.0
+    - jdk: openjdk11
+      env: CAMUNDA=7.1.0-Final
+    - jdk: openjdk11
+      env: CAMUNDA=7.0.0-Final
 install: true
-script: mvn -Dcamunda-bpm.version=$CAMUNDA
+script: mvn -Dcamunda-platform-version=$CAMUNDA

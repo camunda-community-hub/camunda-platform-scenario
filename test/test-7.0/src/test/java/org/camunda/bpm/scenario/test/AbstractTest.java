@@ -12,23 +12,20 @@ import org.mockito.MockitoAnnotations;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class AbstractTest {
 
   @Rule
   public ProcessEngineRule rule = new ProcessEngineRule();
-
+  public Map<String, Object> variables = new HashMap<String, Object>();
   @Mock
   protected ProcessScenario scenario;
-
   @Mock
   protected ProcessScenario otherScenario;
-
-  public Map<String, Object> variables = new HashMap<String, Object>();
 
   @Before
   public void setup() {

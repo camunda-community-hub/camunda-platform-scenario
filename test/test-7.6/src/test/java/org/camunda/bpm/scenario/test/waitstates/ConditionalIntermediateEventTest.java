@@ -13,7 +13,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 @Deployment(resources = {"org/camunda/bpm/scenario/test/waitstates/ConditionalIntermediateEventTest.bpmn"})
 public class ConditionalIntermediateEventTest extends AbstractTest {
@@ -54,8 +54,8 @@ public class ConditionalIntermediateEventTest extends AbstractTest {
     });
 
     Scenario.run(scenario)
-        .startByKey("ConditionalIntermediateEventTest", variables)
-        .execute();
+      .startByKey("ConditionalIntermediateEventTest", variables)
+      .execute();
 
     verify(scenario, never()).hasFinished("ConditionalIntermediateEvent");
     verify(scenario, never()).hasFinished("EndEvent");
@@ -74,8 +74,8 @@ public class ConditionalIntermediateEventTest extends AbstractTest {
     });
 
     Scenario.run(scenario)
-        .startByKey("ConditionalIntermediateEventTest", variables)
-        .execute();
+      .startByKey("ConditionalIntermediateEventTest", variables)
+      .execute();
 
     verify(scenario, times(1)).hasFinished("ConditionalIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");
@@ -107,8 +107,8 @@ public class ConditionalIntermediateEventTest extends AbstractTest {
     variables.put("condition", true);
 
     Scenario.run(scenario)
-        .startByKey("ConditionalIntermediateEventTest", variables)
-        .execute();
+      .startByKey("ConditionalIntermediateEventTest", variables)
+      .execute();
 
     verify(scenario, times(1)).hasFinished("ConditionalIntermediateEvent");
     verify(scenario, times(1)).hasFinished("EndEvent");

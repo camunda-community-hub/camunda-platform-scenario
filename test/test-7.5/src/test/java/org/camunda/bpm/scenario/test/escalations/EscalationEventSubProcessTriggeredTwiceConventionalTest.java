@@ -12,16 +12,17 @@ import java.util.List;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class EscalationEventSubProcessTriggeredTwiceConventionalTest extends AbstractTest {
 
-  @Test @Ignore // In my mind should work, but does not work due to a Camunda NullpointerExecption
+  @Test
+  @Ignore // In my mind should work, but does not work due to a Camunda NullpointerExecption
   @Deployment(resources = {"org/camunda/bpm/scenario/test/escalations/EscalationEventSubProcessTriggeredTwiceTest.bpmn"})
   public void testCompleteTask1First_Conventional() {
 
     ProcessInstance pi = rule.getRuntimeService()
-        .startProcessInstanceByKey("EscalationEventSubProcessTriggeredTwiceTest");
+      .startProcessInstanceByKey("EscalationEventSubProcessTriggeredTwiceTest");
 
     complete(task("UserTask1", pi)); // --> Test Case fails here with a NullPointerException
 
@@ -31,8 +32,8 @@ public class EscalationEventSubProcessTriggeredTwiceConventionalTest extends Abs
     complete(task("UserTask2", pi));
 
     assertThat(pi)
-        .hasPassed("EndEvent")
-        .hasPassedInOrder("EndEventEscalated", "EndEventEscalated");
+      .hasPassed("EndEvent")
+      .hasPassedInOrder("EndEventEscalated", "EndEventEscalated");
 
   }
 
@@ -41,7 +42,7 @@ public class EscalationEventSubProcessTriggeredTwiceConventionalTest extends Abs
   public void testCompleteTask2First_Conventional() {
 
     ProcessInstance pi = rule.getRuntimeService()
-        .startProcessInstanceByKey("EscalationEventSubProcessTriggeredTwiceTest");
+      .startProcessInstanceByKey("EscalationEventSubProcessTriggeredTwiceTest");
 
     complete(task("UserTask2", pi));
     complete(task("UserTask1", pi));
@@ -49,8 +50,8 @@ public class EscalationEventSubProcessTriggeredTwiceConventionalTest extends Abs
     complete(task("UserTask2", pi));
 
     assertThat(pi)
-        .hasPassed("EndEvent")
-        .hasPassedInOrder("EndEventEscalated", "EndEventEscalated");
+      .hasPassed("EndEvent")
+      .hasPassedInOrder("EndEventEscalated", "EndEventEscalated");
 
   }
 

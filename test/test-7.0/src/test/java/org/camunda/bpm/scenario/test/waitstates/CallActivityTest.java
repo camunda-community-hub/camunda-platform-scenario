@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 public class CallActivityTest extends AbstractTest {
 
@@ -45,8 +45,8 @@ public class CallActivityTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
+    "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+    "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testDoNothingCallActivityUserTask() {
 
@@ -69,10 +69,10 @@ public class CallActivityTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test(expected = AssertionError.class)
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
+    "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+    "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testDoNotDealWithCallActivity() {
 
@@ -80,10 +80,10 @@ public class CallActivityTest extends AbstractTest {
 
   }
 
-  @Test(expected=AssertionError.class)
+  @Test(expected = AssertionError.class)
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
+    "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+    "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testDoNotDealWithCallActivityUserTask() {
 
@@ -95,8 +95,8 @@ public class CallActivityTest extends AbstractTest {
 
   @Test
   @Deployment(resources = {
-      "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
-      "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
+    "org/camunda/bpm/scenario/test/waitstates/CallActivityTest.bpmn",
+    "org/camunda/bpm/scenario/test/waitstates/UserTaskTest.bpmn"
   })
   public void testWhileOtherProcessInstanceIsRunning() {
 

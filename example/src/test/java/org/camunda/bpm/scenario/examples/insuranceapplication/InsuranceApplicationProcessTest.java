@@ -1,25 +1,24 @@
 package org.camunda.bpm.scenario.examples.insuranceapplication;
 
+import org.assertj.core.api.Assertions;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.variable.Variables;
-import org.camunda.bpm.extension.process_test_coverage.junit.rules.TestCoverageProcessEngineRuleBuilder;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.util.Map;
 
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.runtimeService;
+import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.withVariables;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
 import static org.mockito.Mockito.*;
 
 /**
- * @author <a href="martin.schimak@plexiti.com">Martin Schimak</a>
+ * @author Martin Schimak
  */
 @Deployment(resources = {
   "org/camunda/bpm/scenario/examples/insuranceapplication/InsuranceApplication.bpmn",
@@ -29,14 +28,12 @@ import static org.mockito.Mockito.*;
 public class InsuranceApplicationProcessTest {
 
   @Rule
-  @ClassRule
-  public static ProcessEngineRule rule =
-      TestCoverageProcessEngineRuleBuilder.create()
-        .withDetailedCoverageLogging().build();
+  public ProcessEngineRule rule = new ProcessEngineRule();
 
   // Mock all waitstates in main process and call activity with a scenario
-  @Mock private ProcessScenario insuranceApplication;
-  @Mock private ProcessScenario documentRequest;
+  private ProcessScenario insuranceApplication = mock(ProcessScenario.class);
+  private ProcessScenario documentRequest = mock(ProcessScenario.class);
+
   private Map<String, Object> variables;
 
   // Setup a default behaviour for all "completable" waitstates in your
@@ -44,16 +41,12 @@ public class InsuranceApplicationProcessTest {
   @Before
   public void setupDefaultScenario() {
 
-    MockitoAnnotations.initMocks(this);
-
     variables = Variables.createVariables()
       .putValue("applicantAge", "30")
       .putValue("carManufacturer", "VW")
       .putValue("carType", "Golf");
 
-    when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
-      task.complete(withVariables("approved", true));
-    });
+    when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> task.complete(withVariables("approved", true)));
 
     when(insuranceApplication.waitsAtUserTask("UserTaskCheckApplicationUnderwriter")).thenReturn((task) -> {
       assertThat(task).hasCandidateGroup("underwriter");
@@ -72,12 +65,12 @@ public class InsuranceApplicationProcessTest {
     });
 
     when(insuranceApplication.waitsAtSendTask("SendTaskSendPolicy")).thenReturn((externalTask) -> {
-      assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
+      assertThat(externalTask).hasTopicName("SendMail");
       externalTask.complete();
     });
 
     when(insuranceApplication.waitsAtSendTask("SendTaskSendRejection")).thenReturn((externalTask) -> {
-      assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
+      assertThat(externalTask).hasTopicName("SendMail");
       externalTask.complete();
     });
 
@@ -85,22 +78,20 @@ public class InsuranceApplicationProcessTest {
       .thenReturn(Scenario.use(documentRequest));
 
     when(documentRequest.waitsAtSendTask("SendTaskRequestDocuments")).thenReturn((externalTask) -> {
-      assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
+      assertThat(externalTask).hasTopicName("SendMail");
       externalTask.complete();
     });
 
     when(documentRequest.waitsAtReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      assertThat(receiveTask.getEventType()).isEqualTo("message");
-      assertThat(receiveTask.getEventName()).isEqualTo("MSG_DOCUMENT_RECEIVED");
+      Assertions.assertThat(receiveTask.getEventType()).isEqualTo("message");
+      Assertions.assertThat(receiveTask.getEventName()).isEqualTo("MSG_DOCUMENT_RECEIVED");
       receiveTask.receive();
     });
 
-    when(documentRequest.waitsAtUserTask("UserTaskCallCustomer")).thenReturn((task) -> {
-      task.complete();
-    });
+    when(documentRequest.waitsAtUserTask("UserTaskCallCustomer")).thenReturn((task) -> task.complete());
 
     when(documentRequest.waitsAtSendTask("SendTaskSendReminder")).thenReturn((externalTask) -> {
-      assertThat(externalTask.getTopicName()).isEqualTo("SendMail");
+      assertThat(externalTask).hasTopicName("SendMail");
       externalTask.complete();
     });
 
@@ -112,8 +103,8 @@ public class InsuranceApplicationProcessTest {
     variables.put("riskAssessment", "green");
 
     Scenario scenario = Scenario.run(insuranceApplication)
-        .startByKey("InsuranceApplication", variables) // either just start process by key ...
-        .execute();
+      .startByKey("InsuranceApplication", variables) // either just start process by key ...
+      .execute();
 
     assertThat(scenario.instance(insuranceApplication)).variables().containsEntry("riskAssessment", "green");
     verify(insuranceApplication, never()).hasStarted("SubProcessManualCheck");
@@ -150,8 +141,8 @@ public class InsuranceApplicationProcessTest {
       .putValue("carType", "911");
 
     Scenario scenario = Scenario.run(insuranceApplication)
-        .startByKey("InsuranceApplication", variables)
-        .execute();
+      .startByKey("InsuranceApplication", variables)
+      .execute();
 
     assertThat(scenario.instance(insuranceApplication)).variables().containsEntry("riskAssessment", "red");
 
@@ -169,8 +160,8 @@ public class InsuranceApplicationProcessTest {
       .putValue("carType", "911");
 
     Scenario scenario = Scenario.run(insuranceApplication)
-        .startByKey("InsuranceApplication", variables)
-        .execute();
+      .startByKey("InsuranceApplication", variables)
+      .execute();
 
     assertThat(scenario.instance(insuranceApplication)).variables()
       .containsEntry("riskAssessment", "yellow")
@@ -189,13 +180,11 @@ public class InsuranceApplicationProcessTest {
       .putValue("carManufacturer", "Porsche")
       .putValue("carType", "911");
 
-    when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
-      task.complete(withVariables("approved", false));
-    });
+    when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> task.complete(withVariables("approved", false)));
 
     Scenario scenario = Scenario.run(insuranceApplication)
-        .startByKey("InsuranceApplication", variables)
-        .execute();
+      .startByKey("InsuranceApplication", variables)
+      .execute();
 
     assertThat(scenario.instance(insuranceApplication)).variables()
       .containsEntry("riskAssessment", "yellow")
@@ -210,9 +199,9 @@ public class InsuranceApplicationProcessTest {
   public void testDocumentRequestScenario() {
 
     variables = Variables.createVariables()
-        .putValue("applicantAge", 30)
-        .putValue("carManufacturer", "Porsche")
-        .putValue("carType", "911");
+      .putValue("applicantAge", 30)
+      .putValue("carManufacturer", "Porsche")
+      .putValue("carType", "911");
 
     when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
@@ -220,8 +209,8 @@ public class InsuranceApplicationProcessTest {
     });
 
     Scenario.run(insuranceApplication)
-        .startByKey("InsuranceApplication", variables)
-        .execute();
+      .startByKey("InsuranceApplication", variables)
+      .execute();
 
     verify(insuranceApplication).hasCompleted("CallActivityDocumentRequest");
 
@@ -240,13 +229,11 @@ public class InsuranceApplicationProcessTest {
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.waitsAtReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      receiveTask.defer("P1DT1M", receiveTask::receive);
-    });
+    when(documentRequest.waitsAtReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> receiveTask.defer("P1DT1M", receiveTask::receive));
 
     Scenario.run(insuranceApplication)
-        .startByKey("InsuranceApplication", variables)
-        .execute();
+      .startByKey("InsuranceApplication", variables)
+      .execute();
 
     verify(insuranceApplication).hasCompleted("CallActivityDocumentRequest");
     verify(insuranceApplication, never()).hasStarted("UserTaskSpeedUpManualCheck");
@@ -260,22 +247,20 @@ public class InsuranceApplicationProcessTest {
   public void testDocumentRequestVeryLateScenario() {
 
     variables = Variables.createVariables()
-        .putValue("applicantAge", 30)
-        .putValue("carManufacturer", "Porsche")
-        .putValue("carType", "911");
+      .putValue("applicantAge", 30)
+      .putValue("carManufacturer", "Porsche")
+      .putValue("carType", "911");
 
     when(insuranceApplication.waitsAtUserTask("UserTaskDecideAboutApplication")).thenReturn((task) -> {
       runtimeService().correlateMessage("msgDocumentNecessary");
       task.complete(withVariables("approved", true));
     });
 
-    when(documentRequest.waitsAtReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> {
-      receiveTask.defer("P7DT1M", receiveTask::receive);
-    });
+    when(documentRequest.waitsAtReceiveTask("ReceiveTaskWaitForDocuments")).thenReturn((receiveTask) -> receiveTask.defer("P7DT1M", receiveTask::receive));
 
     Scenario.run(insuranceApplication)
-        .startByKey("InsuranceApplication", variables)
-        .execute();
+      .startByKey("InsuranceApplication", variables)
+      .execute();
 
     verify(insuranceApplication, times(1)).hasStarted("UserTaskSpeedUpManualCheck");
     verify(insuranceApplication).hasCompleted("EndEventApplicationAccepted");

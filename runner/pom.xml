@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.camunda.bpm.extension.scenario</groupId>
+    <artifactId>camunda-platform-scenario-runner</artifactId>
+
+    <url>https://github.com/camunda-community-hub/camunda-platform-scenario</url>
+
+    <description>Camunda Platform Scenarios allow you to specify the actions
+        needed at process wait states before you start the process run. As a
+        consequence, writing process tests becomes "behavioral" as well as
+        easier and faster than ever before. Refactoring and changing large
+        process models and their test suites can almost be done in the blink
+        of an eye: ;-) Done! Check it out and judge yourself!
+    </description>
+
+    <parent>
+        <groupId>org.camunda.bpm.extension.scenario.project</groupId>
+        <artifactId>camunda-platform-scenario-root</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.camunda.bpm</groupId>
+            <artifactId>camunda-engine</artifactId>
+            <version>7.15.0</version> <!-- compile against explicitly set version -->
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <organization>
+        <name>plexiti GmbH</name>
+        <url>http://plexiti.com</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Martin Schimak</name>
+            <organization>plexiti GmbH</organization>
+            <organizationUrl>http://plexiti.com/</organizationUrl>
+        </developer>
+    </developers>
+
+</project>
