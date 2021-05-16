@@ -6,6 +6,6 @@ import org.camunda.bpm.scenario.defer.Deferrable;
 /**
  * @author Martin Schimak
  */
-public interface ProcessInstanceDelegate extends ProcessInstance, Deferrable {
+public interface ProcessInstanceDelegate extends ProcessInstance, VariablesAwareDelegate, Deferrable {
 
 }
