@@ -20,6 +20,7 @@
 
     <modules>
         <module>runner</module>
+        <module>report</module>
         <module>test</module>
         <module>deprecated</module>
     </modules>
@@ -43,6 +44,18 @@
                 <groupId>org.camunda.bpm.extension.scenario</groupId>
                 <artifactId>camunda-platform-scenario-runner</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.camunda.bpm.extension.scenario</groupId>
+                <artifactId>camunda-platform-scenario-report</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.camunda.bpm.extension</groupId>
+                <artifactId>camunda-bpm-junit5</artifactId>
+                <version>1.0.1</version>
             </dependency>
 
             <dependency>
@@ -94,6 +107,18 @@
             </dependency>
 
             <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>5.7.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>5.7.1</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>3.19.0</version>
@@ -130,8 +155,26 @@
         </dependency>
 
         <dependency>
+            <groupId>org.camunda.bpm.extension</groupId>
+            <artifactId>camunda-bpm-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -465,6 +508,10 @@
                         <source>8</source>
                         <target>8</target>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
