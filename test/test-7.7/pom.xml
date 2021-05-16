@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>camunda-platform-scenario-test-7.7</artifactId>
+
+    <properties>
+        <camunda-platform-version>7.7.0</camunda-platform-version>
+    </properties>
+
+    <parent>
+        <groupId>org.camunda.bpm.extension.scenario.project</groupId>
+        <artifactId>camunda-platform-scenario-test</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.camunda.bpm.extension.scenario</groupId>
+            <artifactId>camunda-platform-scenario-runner</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.camunda.bpm.extension.scenario</groupId>
+            <artifactId>camunda-platform-scenario-report</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>
