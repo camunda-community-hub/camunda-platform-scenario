@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.function.Supplier;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author Martin Schimak
  */
 public class ProcessEngineExtensionWithReporting extends ProcessEngineExtension {
 

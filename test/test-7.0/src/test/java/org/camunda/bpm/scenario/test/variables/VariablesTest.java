@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author Martin Schimak
  */
 public class VariablesTest extends AbstractTest {
 
