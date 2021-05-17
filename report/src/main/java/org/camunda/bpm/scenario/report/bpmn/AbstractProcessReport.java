@@ -68,18 +68,8 @@ abstract class AbstractProcessReport<T> implements Report<T> {
     return activityInstanceList;
   }
 
-  protected List<HistoricActivityInstance> findActivityInstancesByProcessDefinitionId(String processDefinitionId) {
-    return processEngine.getHistoryService().createHistoricActivityInstanceQuery()
-      .processDefinitionId(processDefinitionId).list();
-  }
-
   protected List<HistoricActivityInstance> findActivityInstancesByProcessDefinitionKey(String processDefinitionKey) {
     return historicActivityInstances.get(processDefinitionKey);
-  }
-
-  protected String getLatestProcessDefinitionId(String processDefinitionKey) {
-    return processEngine.getRepositoryService().createProcessDefinitionQuery()
-      .processDefinitionKey(processDefinitionKey).latestVersion().singleResult().getId();
   }
 
 }
