@@ -16,16 +16,17 @@ import java.util.Map;
  */
 abstract class AbstractProcessReport<T> implements Report<T> {
 
-  private static final Map<String, List<HistoricActivityInstance>> historicActivityInstances = new HashMap<>();
-  private static final Map<String, BpmnModelInstance> bpmnModelInstances = new HashMap<>();
+  private static final Map<String, List<HistoricActivityInstance>> coverageActivityInstances = new HashMap<>();
+  private static final Map<String, BpmnModelInstance> coverageBpmnModelInstances = new HashMap<>();
+  private static final Map<String, BpmnModelInstance> scenarioBpmnModelInstances = new HashMap<>();
 
   protected ProcessEngine processEngine;
 
-  public AbstractProcessReport(ProcessEngine processEngine) {
+  protected AbstractProcessReport(ProcessEngine processEngine) {
     this.processEngine = processEngine;
   }
 
-  public AbstractProcessReport() {
+  protected AbstractProcessReport() {
     this(processEngine());
   }
 
@@ -42,18 +43,24 @@ abstract class AbstractProcessReport<T> implements Report<T> {
     }
   }
 
-  protected BpmnModelInstance getBpmnModelInstanceByProcessDefinitionId(String processDefinitionId) {
-    BpmnModelInstance bpmnModelInstance = processEngine.getRepositoryService().getBpmnModelInstance(processDefinitionId);
-    bpmnModelInstance.getDefinitions().getChildElementsByType(Process.class).forEach(process -> {
-      String processDefinitionKey = process.getId();
-      if (process.isExecutable())
-        bpmnModelInstances.putIfAbsent(processDefinitionKey, bpmnModelInstance);
-    });
+  protected BpmnModelInstance getBpmnModelInstanceForScenario(String processDefinitionId) {
+    String processDefinitionKey = processEngine.getRepositoryService().createProcessDefinitionQuery()
+      .processDefinitionId(processDefinitionId).singleResult().getKey();
+    BpmnModelInstance bpmnModelInstance = scenarioBpmnModelInstances.get(processDefinitionKey);
+    if (bpmnModelInstance == null)
+      bpmnModelInstance = processEngine.getRepositoryService().getBpmnModelInstance(processDefinitionId);
+    for (Process process : bpmnModelInstance.getDefinitions().getChildElementsByType(Process.class)) {
+      processDefinitionKey = process.getId();
+      if (process.isExecutable()) {
+        scenarioBpmnModelInstances.putIfAbsent(processDefinitionKey, bpmnModelInstance);
+        coverageBpmnModelInstances.putIfAbsent(processDefinitionKey, bpmnModelInstance);
+      }
+    }
     return bpmnModelInstance;
   }
 
-  protected BpmnModelInstance getBpmnModelInstanceByProcessDefinitionKey(String processDefinitionKey) {
-    return bpmnModelInstances.get(processDefinitionKey).clone();
+  protected BpmnModelInstance getBpmnModelInstanceForCoverage(String processDefinitionKey) {
+    return coverageBpmnModelInstances.get(processDefinitionKey).clone();
   }
 
   protected List<HistoricActivityInstance> findActivityInstancesByProcessInstanceId(String processInstanceId) {
@@ -61,15 +68,15 @@ abstract class AbstractProcessReport<T> implements Report<T> {
       .processInstanceId(processInstanceId).list();
     if (!activityInstanceList.isEmpty()) {
       String processDefinitionKey = activityInstanceList.iterator().next().getProcessDefinitionKey();
-      if (historicActivityInstances.putIfAbsent(processDefinitionKey, activityInstanceList) != null) {
-        historicActivityInstances.get(processDefinitionKey).addAll(activityInstanceList);
+      if (coverageActivityInstances.putIfAbsent(processDefinitionKey, activityInstanceList) != null) {
+        coverageActivityInstances.get(processDefinitionKey).addAll(activityInstanceList);
       }
     }
     return activityInstanceList;
   }
 
   protected List<HistoricActivityInstance> findActivityInstancesByProcessDefinitionKey(String processDefinitionKey) {
-    return historicActivityInstances.get(processDefinitionKey);
+    return coverageActivityInstances.get(processDefinitionKey);
   }
 
 }

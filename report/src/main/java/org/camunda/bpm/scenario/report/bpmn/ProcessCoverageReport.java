@@ -13,7 +13,7 @@ public class ProcessCoverageReport extends AbstractProcessReport<BpmnModelInstan
   @Override
   public BpmnModelInstance generate(String processDefinitionKey) {
     List<HistoricActivityInstance> activityInstances = findActivityInstancesByProcessDefinitionKey(processDefinitionKey);
-    return BpmnModelInstanceColoring.color(getBpmnModelInstanceByProcessDefinitionKey(processDefinitionKey), activityInstances);
+    return BpmnModelInstanceColoring.color(getBpmnModelInstanceForCoverage(processDefinitionKey), activityInstances);
   }
 
 }

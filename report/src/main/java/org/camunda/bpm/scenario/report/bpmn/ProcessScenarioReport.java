@@ -13,8 +13,8 @@ public class ProcessScenarioReport extends AbstractProcessReport<BpmnModelInstan
   @Override
   public BpmnModelInstance generate(String processInstanceId) {
     List<HistoricActivityInstance> activityInstances = findActivityInstancesByProcessInstanceId(processInstanceId);
-    String processDefinitionId = activityInstances.size() > 0 ? activityInstances.get(0).getProcessDefinitionId() : null;
-    return BpmnModelInstanceColoring.color(getBpmnModelInstanceByProcessDefinitionId(processDefinitionId), activityInstances);
+    String processDefinitionId = activityInstances.get(0).getProcessDefinitionId();
+    return BpmnModelInstanceColoring.color(getBpmnModelInstanceForScenario(processDefinitionId), activityInstances);
   }
 
 }
