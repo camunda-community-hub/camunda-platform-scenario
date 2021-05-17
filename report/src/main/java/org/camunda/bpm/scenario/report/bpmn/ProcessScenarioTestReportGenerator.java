@@ -31,16 +31,16 @@ public class ProcessScenarioTestReportGenerator extends AbstractProcessReport<Pr
   private static final String COVERAGE_REPORTS_FILE_NAME_CASE = "coverage.reports.file.name.case";
 
   private static final String DEFAULT_REPORTS_PATH = "./target/camunda-reports/";
-  private static final String DEFAULT_SCENARIO_FOLDER = "scenario";
-  private static final String DEFAULT_COVERAGE_FOLDER = "coverage";
+  private static final String SCENARIO = "scenario";
+  private static final String COVERAGE = "coverage";
 
   static {
 
     // default properties
-    PROPERTIES.setProperty(SCENARIO_REPORTS_PATH, DEFAULT_REPORTS_PATH + DEFAULT_SCENARIO_FOLDER);
-    PROPERTIES.setProperty(SCENARIO_REPORTS_FILE_NAME_CASE, Case.CAMEL.key());
-    PROPERTIES.setProperty(COVERAGE_REPORTS_PATH, DEFAULT_REPORTS_PATH + DEFAULT_COVERAGE_FOLDER);
-    PROPERTIES.setProperty(COVERAGE_REPORTS_FILE_NAME_CASE, Case.CAMEL.key());
+    PROPERTIES.setProperty(SCENARIO_REPORTS_PATH, DEFAULT_REPORTS_PATH + SCENARIO);
+    PROPERTIES.setProperty(SCENARIO_REPORTS_FILE_NAME_CASE, Case.camel.name());
+    PROPERTIES.setProperty(COVERAGE_REPORTS_PATH, DEFAULT_REPORTS_PATH + COVERAGE);
+    PROPERTIES.setProperty(COVERAGE_REPORTS_FILE_NAME_CASE, Case.camel.name());
 
     // camunda-platform-scenario.properties
     InputStream resourcePropertiesStream = ProcessScenarioTestReportGenerator.class
@@ -78,8 +78,8 @@ public class ProcessScenarioTestReportGenerator extends AbstractProcessReport<Pr
   private final String featureName;
   private final String scenarioName;
 
-  private final Case scenarioReportsFileNameCase = Case.valueOfKey(PROPERTIES.getProperty(SCENARIO_REPORTS_FILE_NAME_CASE));
-  private final Case coverageReportsFileNameCase = Case.valueOfKey(PROPERTIES.getProperty(COVERAGE_REPORTS_FILE_NAME_CASE));
+  private final Case scenarioReportsFileNameCase = Case.valueOf(PROPERTIES.getProperty(SCENARIO_REPORTS_FILE_NAME_CASE));
+  private final Case coverageReportsFileNameCase = Case.valueOf(PROPERTIES.getProperty(COVERAGE_REPORTS_FILE_NAME_CASE));
 
   public ProcessScenarioTestReportGenerator(
     String featurePackageName,
@@ -103,8 +103,8 @@ public class ProcessScenarioTestReportGenerator extends AbstractProcessReport<Pr
       featurePackageName,
       featureName,
       scenarioName,
-      Paths.get(reportsPath, DEFAULT_SCENARIO_FOLDER).toString(),
-      Paths.get(reportsPath, DEFAULT_COVERAGE_FOLDER).toString()
+      Paths.get(reportsPath, SCENARIO).toString(),
+      Paths.get(reportsPath, COVERAGE).toString()
     );
   }
 
@@ -147,8 +147,8 @@ public class ProcessScenarioTestReportGenerator extends AbstractProcessReport<Pr
           bpmnModelNameMatcher.group(2) != null ? bpmnModelNameMatcher.group(2).replace('/', '.') : "";
         String bpmnModelSimpleName = bpmnModelNameMatcher.group(3);
 
-        String scenarioReportFeatureName = scenarioReportsFileNameCase.convert(featureName);
-        String scenarioReportScenarioName = scenarioReportsFileNameCase.convert(scenarioName);
+        String scenarioReportFeatureName = scenarioReportsFileNameCase.from(featureName);
+        String scenarioReportScenarioName = scenarioReportsFileNameCase.from(scenarioName);
 
         String scenarioReportFolder = Paths.get(
           scenarioReportsPath,
@@ -160,12 +160,12 @@ public class ProcessScenarioTestReportGenerator extends AbstractProcessReport<Pr
         for (int i = 0; i < total; i++) {
 
           String bpmnModelScenarioName = String.format("%s%s%s.bpmn",
-            bpmnModelSimpleName,
-            scenarioReportsFileNameCase.separator(),
-            scenarioReportsFileNameCase.convert(
-              String.format("Scenario%s%s%s",
-                (total == 1) ? "" : scenarioReportsFileNameCase.separator() + (i + 1),
-                scenarioReportsFileNameCase.separator(),
+            scenarioReportsFileNameCase.from(bpmnModelSimpleName),
+            scenarioReportsFileNameCase.separator,
+            scenarioReportsFileNameCase.from(
+              String.format("%s%s%s%s", SCENARIO,
+                (total == 1) ? "" : scenarioReportsFileNameCase.separator + (i + 1),
+                scenarioReportsFileNameCase.separator,
                 scenarioReportScenarioName)
             ));
 
@@ -182,9 +182,9 @@ public class ProcessScenarioTestReportGenerator extends AbstractProcessReport<Pr
         ).toString();
 
         String bpmnModelCoverageName = String.format("%s%s%s.bpmn",
-          bpmnModelSimpleName,
-          coverageReportsFileNameCase.separator(),
-          coverageReportsFileNameCase.convert("Coverage")
+          coverageReportsFileNameCase.from(bpmnModelSimpleName),
+          coverageReportsFileNameCase.separator,
+          coverageReportsFileNameCase.from(COVERAGE)
         );
 
         Path coverageReportFile = Paths.get(coverageReportFolder, bpmnModelCoverageName);
