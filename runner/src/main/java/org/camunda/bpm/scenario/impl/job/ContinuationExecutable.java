@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.impl.job;
 
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.impl.JobExecutable;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ import java.util.Date;
  */
 public class ContinuationExecutable extends JobExecutable {
 
-  public ContinuationExecutable(ProcessRunnerImpl runner, Job job) {
+  public ContinuationExecutable(ProcessInstanceRunner runner, Job job) {
     super(runner, job);
   }
 

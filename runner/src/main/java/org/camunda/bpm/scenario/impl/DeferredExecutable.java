@@ -13,11 +13,11 @@ import java.util.Date;
 public class DeferredExecutable extends AbstractExecutable<HistoricActivityInstance> {
 
   private static int sequence;
-  private Integer id = ++sequence;
-  private Date isExecutableAt;
-  private Deferred action;
+  private final Integer id = ++sequence;
+  private final Date isExecutableAt;
+  private final Deferred action;
 
-  protected DeferredExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance, String period, Deferred action) {
+  protected DeferredExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance, String period, Deferred action) {
     super(runner);
     this.delegate = instance;
     this.isExecutableAt = Time.dateAfter(period);

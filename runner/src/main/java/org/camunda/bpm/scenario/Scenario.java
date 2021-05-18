@@ -1,9 +1,8 @@
 package org.camunda.bpm.scenario;
 
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
-import org.camunda.bpm.scenario.impl.ScenarioImpl;
-import org.camunda.bpm.scenario.run.ProcessRunner;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
+import org.camunda.bpm.scenario.impl.ScenarioRunner;
 import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public abstract class Scenario {
    *                 instance
    */
   public static StartableRunner run(ProcessScenario scenario) {
-    return new ScenarioImpl(scenario).toBeStartedBy();
+    return new ScenarioRunner(scenario).toBeStartedBy();
   }
 
   /**
@@ -33,8 +32,8 @@ public abstract class Scenario {
    * @param scenario interface to be used for running the process
    *                 instance
    */
-  public static ProcessRunner use(ProcessScenario scenario) {
-    return new ProcessRunnerImpl(null, scenario);
+  public static org.camunda.bpm.scenario.run.ProcessRunner use(ProcessScenario scenario) {
+    return new ProcessInstanceRunner(null, scenario);
   }
 
   /**

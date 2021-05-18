@@ -19,7 +19,7 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
 
   protected HistoricActivityInstance historicDelegate;
 
-  protected WaitstateExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  protected WaitstateExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner);
     this.historicDelegate = instance;
     this.delegate = getDelegate();
@@ -28,8 +28,6 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
   public ProcessInstanceDelegate getProcessInstance() {
     return ProcessInstanceDelegateImpl.newInstance(this, runner.processInstance);
   }
-
-  ;
 
   public Map<String, Object> getVariables() {
     return getRuntimeService().getVariables(getExecutionId());
@@ -55,7 +53,7 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
         + " '" + historicDelegate.getActivityId() + "'.");
     Time.set(isExecutableAt());
     try {
-      if (!(runner instanceof MockedProcessRunnerImpl))
+      if (!(runner instanceof MockedProcessInstanceRunner))
         Log.Action.ActingOn.log(
           historicDelegate.getActivityType(),
           historicDelegate.getActivityName(),
@@ -75,10 +73,8 @@ public abstract class WaitstateExecutable<I> extends AbstractExecutable<I> {
   protected abstract Action action(ProcessScenario scenario);
 
   protected final Action action() {
-    return action(runner.scenario);
+    return action(runner.processScenario);
   }
-
-  ;
 
   public Date isExecutableAt() {
     return historicDelegate.getStartTime();

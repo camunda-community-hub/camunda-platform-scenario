@@ -6,7 +6,7 @@ import org.camunda.bpm.engine.runtime.EventSubscription;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.delegate.AbstractEventSubscriptionDelegate;
 import org.camunda.bpm.scenario.impl.delegate.EventSubscriptionDelegateImpl;
 
@@ -17,9 +17,9 @@ import java.util.Map;
  */
 public class MessageIntermediateCatchEventExecutable extends AbstractEventSubscriptionDelegate {
 
-  private EventSubscriptionDelegate eventSubscriptionDelegate;
+  private final EventSubscriptionDelegate eventSubscriptionDelegate;
 
-  public MessageIntermediateCatchEventExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public MessageIntermediateCatchEventExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
     eventSubscriptionDelegate = EventSubscriptionDelegateImpl.newInstance(this, delegate);
   }

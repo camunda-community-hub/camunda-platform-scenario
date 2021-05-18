@@ -4,7 +4,7 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.delegate.AbstractTaskDelegate;
 
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class UserTaskExecutable extends AbstractTaskDelegate {
 
-  public UserTaskExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public UserTaskExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 

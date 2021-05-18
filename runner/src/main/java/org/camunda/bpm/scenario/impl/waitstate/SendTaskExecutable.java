@@ -4,7 +4,7 @@ package org.camunda.bpm.scenario.impl.waitstate;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 
 import java.util.Map;
 
@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class SendTaskExecutable extends ServiceTaskExecutable {
 
-  public SendTaskExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public SendTaskExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 

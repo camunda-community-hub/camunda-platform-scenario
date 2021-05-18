@@ -6,8 +6,8 @@ import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
 import org.camunda.bpm.scenario.act.MockedCallActivityAction;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
-import org.camunda.bpm.scenario.impl.MockedProcessRunnerImpl;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.MockedProcessInstanceRunner;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
 
 /**
@@ -15,7 +15,7 @@ import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
  */
 public class CallActivityExecutable extends AbstractProcessInstanceDelegate {
 
-  public CallActivityExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public CallActivityExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 
@@ -26,9 +26,9 @@ public class CallActivityExecutable extends AbstractProcessInstanceDelegate {
 
   @Override
   protected Action<ProcessInstanceDelegate> action(final ProcessScenario scenario) {
-    final ProcessRunnerImpl mocked = (ProcessRunnerImpl) scenario.runsCallActivity(getActivityId());
+    final ProcessInstanceRunner mocked = (ProcessInstanceRunner) scenario.runsCallActivity(getActivityId());
     final MockedCallActivityAction action = scenario.waitsAtMockedCallActivity(getActivityId());
-    final ProcessRunnerImpl runner = mocked != null ? mocked : (action != null ? new MockedProcessRunnerImpl(action) : null);
+    final ProcessInstanceRunner runner = mocked != null ? mocked : (action != null ? new MockedProcessInstanceRunner(action) : null);
     if (runner != null) {
       return new Action<ProcessInstanceDelegate>() {
         @Override

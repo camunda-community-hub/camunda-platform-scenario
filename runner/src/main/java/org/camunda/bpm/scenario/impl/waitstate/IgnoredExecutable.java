@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.impl.waitstate;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class IgnoredExecutable extends WaitstateExecutable<Object> {
 
-  public IgnoredExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public IgnoredExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 

@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.impl.delegate;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.delegate.ProcessInstanceDelegate;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 
 /**
@@ -11,7 +11,7 @@ import org.camunda.bpm.scenario.impl.WaitstateExecutable;
  */
 public abstract class AbstractProcessInstanceDelegate extends WaitstateExecutable<ProcessInstance> implements ProcessInstanceDelegate {
 
-  public AbstractProcessInstanceDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public AbstractProcessInstanceDelegate(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 

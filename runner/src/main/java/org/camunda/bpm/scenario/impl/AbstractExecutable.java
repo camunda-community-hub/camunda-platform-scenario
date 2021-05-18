@@ -12,11 +12,11 @@ public abstract class AbstractExecutable<I> extends AbstractProcessEngineService
 
   protected static IdComparator idComparator = new IdComparator();
 
-  protected ProcessRunnerImpl runner;
+  protected ProcessInstanceRunner runner;
   protected I delegate;
 
-  protected AbstractExecutable(ProcessRunnerImpl runner) {
-    super(runner.scenarioExecutor.processEngine);
+  protected AbstractExecutable(ProcessInstanceRunner runner) {
+    super(runner.scenarioRunner.processEngine);
     this.runner = runner;
   }
 

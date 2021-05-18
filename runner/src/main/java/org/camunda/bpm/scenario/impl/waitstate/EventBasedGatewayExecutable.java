@@ -7,7 +7,7 @@ import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
 import org.camunda.bpm.scenario.delegate.EventBasedGatewayDelegate;
 import org.camunda.bpm.scenario.delegate.EventSubscriptionDelegate;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 import org.camunda.bpm.scenario.impl.delegate.EventSubscriptionDelegateImpl;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class EventBasedGatewayExecutable extends WaitstateExecutable<EventBasedGatewayDelegate> implements EventBasedGatewayDelegate {
 
-  public EventBasedGatewayExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public EventBasedGatewayExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 

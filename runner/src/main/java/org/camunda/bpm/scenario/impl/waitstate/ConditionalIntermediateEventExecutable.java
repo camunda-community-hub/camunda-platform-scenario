@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.delegate.AbstractProcessInstanceDelegate;
 import org.camunda.bpm.scenario.impl.util.Log;
 import org.camunda.bpm.scenario.impl.util.Time;
@@ -15,7 +15,7 @@ import org.camunda.bpm.scenario.impl.util.Time;
  */
 public class ConditionalIntermediateEventExecutable extends AbstractProcessInstanceDelegate {
 
-  public ConditionalIntermediateEventExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public ConditionalIntermediateEventExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 

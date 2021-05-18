@@ -37,12 +37,12 @@ public interface Executable<S> extends Comparable<S> {
       types.put("messageEndEvent", "MessageEndEventExecutable");
     }
 
-    static WaitstateExecutable newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+    static WaitstateExecutable newInstance(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
       if (!runner.isExecuted(instance)) {
         String type = instance.getActivityType();
         if (types.containsKey(type)) {
           try {
-            return (WaitstateExecutable) Class.forName(IgnoredExecutable.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, HistoricActivityInstance.class).newInstance(runner, instance);
+            return (WaitstateExecutable) Class.forName(IgnoredExecutable.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessInstanceRunner.class, HistoricActivityInstance.class).newInstance(runner, instance);
           } catch (Exception e) {
             throw new IllegalArgumentException(e);
           }
@@ -52,8 +52,8 @@ public interface Executable<S> extends Comparable<S> {
       return null;
     }
 
-    static List<Executable> next(ProcessRunnerImpl runner) {
-      List<HistoricActivityInstance> instances = runner.scenarioExecutor.processEngine
+    static List<Executable> next(ProcessInstanceRunner runner) {
+      List<HistoricActivityInstance> instances = runner.scenarioRunner.processEngine
         .getHistoryService().createHistoricActivityInstanceQuery()
         .processInstanceId(runner.processInstance.getId()).unfinished().list();
       return Helpers.next(runner, instances);
@@ -72,12 +72,12 @@ public interface Executable<S> extends Comparable<S> {
       types.put("timer-start-event-subprocess", "TimerJobExecutable");
     }
 
-    static JobExecutable newInstance(ProcessRunnerImpl runner, Job job) {
+    static JobExecutable newInstance(ProcessInstanceRunner runner, Job job) {
       JobEntity entity = (JobEntity) job;
       String type = entity.getJobHandlerType();
       if (types.containsKey(type)) {
         try {
-          return (JobExecutable) Class.forName(ContinuationExecutable.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessRunnerImpl.class, Job.class).newInstance(runner, job);
+          return (JobExecutable) Class.forName(ContinuationExecutable.class.getPackage().getName() + "." + types.get(type)).getConstructor(ProcessInstanceRunner.class, Job.class).newInstance(runner, job);
         } catch (Exception e) {
           throw new IllegalArgumentException(e);
         }
@@ -85,8 +85,8 @@ public interface Executable<S> extends Comparable<S> {
       return null;
     }
 
-    static List<Executable> next(ProcessRunnerImpl runner) {
-      List<Job> jobs = runner.scenarioExecutor.processEngine.getManagementService()
+    static List<Executable> next(ProcessInstanceRunner runner) {
+      List<Job> jobs = runner.scenarioRunner.processEngine.getManagementService()
         .createJobQuery().processInstanceId(runner.processInstance.getId()).list();
       return Helpers.next(runner, jobs);
     }
@@ -95,13 +95,13 @@ public interface Executable<S> extends Comparable<S> {
 
   class Deferreds {
 
-    private static Map<String, List<DeferredExecutable>> executablesMap = new HashMap<String, List<DeferredExecutable>>();
+    private static final Map<String, List<DeferredExecutable>> executablesMap = new HashMap<String, List<DeferredExecutable>>();
 
-    public static DeferredExecutable newInstance(ProcessRunnerImpl runner, HistoricActivityInstance instance, String period, Deferred action) {
+    public static DeferredExecutable newInstance(ProcessInstanceRunner runner, HistoricActivityInstance instance, String period, Deferred action) {
       return new DeferredExecutable(runner, instance, period, action);
     }
 
-    static List<Executable> next(ProcessRunnerImpl runner) {
+    static List<Executable> next(ProcessInstanceRunner runner) {
       List<Executable> e = new ArrayList<Executable>();
       Collection<List<DeferredExecutable>> executablesCollection = executablesMap.values();
       for (List<DeferredExecutable> executablesList : executablesCollection) {
@@ -140,7 +140,7 @@ public interface Executable<S> extends Comparable<S> {
       return first;
     }
 
-    static List<Executable> next(ProcessRunnerImpl runner, List instances) {
+    static List<Executable> next(ProcessInstanceRunner runner, List instances) {
       List<Executable> executables = new ArrayList<Executable>();
       for (Object instance : instances) {
         Executable executable = instance instanceof Job

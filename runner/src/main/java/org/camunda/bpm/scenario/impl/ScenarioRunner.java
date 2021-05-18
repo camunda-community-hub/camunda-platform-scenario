@@ -18,16 +18,16 @@ import java.util.Map;
 /**
  * @author Martin Schimak
  */
-public class ScenarioImpl extends Scenario {
+public class ScenarioRunner extends Scenario {
 
   ProcessEngine processEngine;
   List<AbstractRunner> runners = new ArrayList<AbstractRunner>();
-  List<BpmnModelInstance> mockedCallActivities = new ArrayList<>();
+  List<BpmnModelInstance> mockedProcesses = new ArrayList<>();
   private boolean executed;
   private String deploymentId;
 
-  public ScenarioImpl(ProcessScenario scenario) {
-    this.runners.add(new ProcessRunnerImpl(this, scenario));
+  public ScenarioRunner(ProcessScenario scenario) {
+    this.runners.add(new ProcessInstanceRunner(this, scenario));
   }
 
   protected Scenario execute() {
@@ -63,10 +63,10 @@ public class ScenarioImpl extends Scenario {
   public List<ProcessInstance> instances(ProcessScenario scenario) {
     List<ProcessInstance> instances = new ArrayList<ProcessInstance>();
     for (AbstractRunner runner : runners) {
-      if (runner instanceof ProcessRunnerImpl) {
-        ProcessRunnerImpl processRunner = (ProcessRunnerImpl) runner;
-        if (processRunner.scenario == scenario) {
-          instances.add(processRunner.processInstance);
+      if (runner instanceof ProcessInstanceRunner) {
+        ProcessInstanceRunner processInstanceRunner = (ProcessInstanceRunner) runner;
+        if (processInstanceRunner.processScenario == scenario) {
+          instances.add(processInstanceRunner.processInstance);
         }
       }
     }
@@ -86,14 +86,14 @@ public class ScenarioImpl extends Scenario {
         String message = processEngines.size() == 0 ? "No ProcessEngine found to be " +
           "registered with " + ProcessEngines.class.getSimpleName() + "!"
           : String.format(processEngines.size() + " ProcessEngines initialized. " +
-          "Explicitely initialise engine by calling " + ScenarioImpl.class.getSimpleName() +
+          "Explicitely initialise engine by calling " + ScenarioRunner.class.getSimpleName() +
           "(scenario, engine)");
         throw new IllegalStateException(message);
       }
     }
-    if (!mockedCallActivities.isEmpty()) {
+    if (!mockedProcesses.isEmpty()) {
       DeploymentBuilder deployment = processEngine.getRepositoryService().createDeployment();
-      for (BpmnModelInstance mockedCallActivity : mockedCallActivities) {
+      for (BpmnModelInstance mockedCallActivity : mockedProcesses) {
         String processDefinitionKey = mockedCallActivity
           .getDefinitions().getChildElementsByType(Process.class).iterator().next().getId();
         boolean exists = !processEngine.getRepositoryService().createProcessDefinitionQuery()
@@ -114,6 +114,7 @@ public class ScenarioImpl extends Scenario {
   protected void cleanup() {
     if (deploymentId != null) {
       processEngine.getRepositoryService().deleteDeployment(deploymentId, true);
+      deploymentId = null;
     }
   }
 

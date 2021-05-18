@@ -3,7 +3,7 @@ package org.camunda.bpm.scenario.impl.delegate;
 import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.delegate.ExternalTaskDelegate;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.WaitstateExecutable;
 
 import java.util.Date;
@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public abstract class AbstractExternalTaskDelegate extends WaitstateExecutable<ExternalTask> implements ExternalTaskDelegate {
 
-  public AbstractExternalTaskDelegate(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public AbstractExternalTaskDelegate(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 

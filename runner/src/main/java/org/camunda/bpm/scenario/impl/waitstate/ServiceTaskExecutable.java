@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.externaltask.ExternalTask;
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.act.Action;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.delegate.AbstractExternalTaskDelegate;
 
 import java.util.Map;
@@ -17,7 +17,7 @@ public class ServiceTaskExecutable extends AbstractExternalTaskDelegate {
 
   private static final String WORKER_ID = "workerId";
 
-  public ServiceTaskExecutable(ProcessRunnerImpl runner, HistoricActivityInstance instance) {
+  public ServiceTaskExecutable(ProcessInstanceRunner runner, HistoricActivityInstance instance) {
     super(runner, instance);
   }
 

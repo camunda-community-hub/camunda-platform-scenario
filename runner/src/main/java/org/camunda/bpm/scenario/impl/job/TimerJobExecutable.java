@@ -2,7 +2,7 @@ package org.camunda.bpm.scenario.impl.job;
 
 import org.camunda.bpm.engine.runtime.Job;
 import org.camunda.bpm.scenario.impl.JobExecutable;
-import org.camunda.bpm.scenario.impl.ProcessRunnerImpl;
+import org.camunda.bpm.scenario.impl.ProcessInstanceRunner;
 import org.camunda.bpm.scenario.impl.util.Time;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class TimerJobExecutable extends JobExecutable {
 
-  public TimerJobExecutable(ProcessRunnerImpl runner, Job job) {
+  public TimerJobExecutable(ProcessInstanceRunner runner, Job job) {
     super(runner, job);
   }
 
