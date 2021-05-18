@@ -126,6 +126,8 @@ public class ProcessScenarioTestReportGenerator extends AbstractProcessReport<Pr
   @Override
   public ProcessScenarioTestReportGenerator generate(String deploymentId) {
 
+    Report<BpmnModelInstance> scenarioReportGenerator = Report.processScenarioReport();
+
     List<ProcessDefinition> processDefinitions =
       processEngine.getRepositoryService().createProcessDefinitionQuery()
         .deploymentId(deploymentId).list();
@@ -170,7 +172,7 @@ public class ProcessScenarioTestReportGenerator extends AbstractProcessReport<Pr
             ));
 
           Path scenarioReportFile = Paths.get(scenarioReportFolder, bpmnModelScenarioName);
-          BpmnModelInstance scenarioReportModel = Report.processScenarioReport().generate(processInstances.get(i).getId());
+          BpmnModelInstance scenarioReportModel = scenarioReportGenerator.generate(processInstances.get(i).getId());
 
           writeReport(scenarioReportFile, scenarioReportModel);
 
