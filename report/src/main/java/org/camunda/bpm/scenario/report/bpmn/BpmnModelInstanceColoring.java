@@ -2,8 +2,10 @@ package org.camunda.bpm.scenario.report.bpmn;
 
 import org.camunda.bpm.engine.history.HistoricActivityInstance;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
+import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.model.bpmn.instance.bpmndi.BpmnDiagram;
 import org.camunda.bpm.model.bpmn.instance.bpmndi.BpmnShape;
+import org.camunda.bpm.model.xml.instance.ModelElementInstance;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,8 +21,8 @@ enum BpmnModelInstanceColoring {
   CANCELED_INNER("lightgrey"), CANCELED_OUTER("darkgrey"),
   UNTOUCHED_INNER("white"), UNTOUCHED_OUTER("black");
 
-  private static final String namespace = "http://bpmn.io/schema/bpmn/biocolor/1.0";
-  private static final String prefix = "bioc";
+  private static final String NAMESPACE = "http://bpmn.io/schema/bpmn/biocolor/1.0";
+  private static final String PREFIX = "bioc";
 
   private final String code;
 
@@ -30,9 +32,16 @@ enum BpmnModelInstanceColoring {
 
   public static BpmnModelInstance color(BpmnModelInstance bpmnModelInstance, List<HistoricActivityInstance> activities) {
 
-    bpmnModelInstance.getDocument().registerNamespace(prefix, namespace);
+    String processDefinitionKey = activities.get(0).getProcessDefinitionKey();
+    bpmnModelInstance.getDocument().registerNamespace(PREFIX, NAMESPACE);
     BpmnDiagram bpmnDiagram = bpmnModelInstance.getDefinitions().getBpmDiagrams().iterator().next();
-    Collection<BpmnShape> bpmnShapes = bpmnDiagram.getBpmnPlane().getChildElementsByType(BpmnShape.class);
+    Collection<BpmnShape> bpmnShapes = bpmnDiagram.getBpmnPlane().getChildElementsByType(BpmnShape.class)
+      .stream().filter(shape -> {
+        ModelElementInstance element = shape.getBpmnElement();
+        while (!(element == null || element instanceof Process))
+          element = element.getParentElement();
+        return element != null && ((Process) element).getId().equals(processDefinitionKey);
+      }).collect(Collectors.toList());
     bpmnShapes.forEach(bpmnShape -> color(bpmnShape, activities));
     return bpmnModelInstance;
 
@@ -61,8 +70,8 @@ enum BpmnModelInstanceColoring {
       }
     }
 
-    bpmnShape.setAttributeValueNs(BpmnModelInstanceColoring.namespace, "stroke", outer.code);
-    bpmnShape.setAttributeValueNs(BpmnModelInstanceColoring.namespace, "fill", inner.code);
+    bpmnShape.setAttributeValueNs(BpmnModelInstanceColoring.NAMESPACE, "stroke", outer.code);
+    bpmnShape.setAttributeValueNs(BpmnModelInstanceColoring.NAMESPACE, "fill", inner.code);
 
     return bpmnShape;
 
