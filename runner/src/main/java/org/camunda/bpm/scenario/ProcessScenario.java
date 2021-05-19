@@ -79,7 +79,8 @@ public interface ProcessScenario extends Runnable {
 
   /**
    * By implementing - or stubbing/mocking - this method, you
-   * define what should be done when the process runs the
+   * define what should be done when the scenario explicitly
+   * starts to run another process instance by means of the
    * call activity with the activity id provided.
    *
    * @param activityId the activity id of the call activity.
@@ -88,6 +89,20 @@ public interface ProcessScenario extends Runnable {
    * @since Camunda BPM 7.0.0-Final
    */
   Runner runsCallActivity(String activityId);
+
+  /**
+   * By implementing - or stubbing/mocking - this method, you
+   * define what should be done when the scenario implicitly
+   * starts to run another process instance with the process
+   * definition key provided.
+   *
+   * @param processDefinitionKey the process definition key of
+   *                             the started process instance.
+   * @return scenario runner to be executed when process starts
+   * a process instance with the process definition key provided.
+   * @since Camunda BPM 7.0.0-Final
+   */
+  Runner runsProcessInstance(String processDefinitionKey);
 
   /**
    * By implementing - or stubbing/mocking - this method, you

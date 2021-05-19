@@ -53,7 +53,7 @@ public class CallActivityChildNonBlockingTest extends AbstractTest {
 
   }
 
-  @Test
+  @Test(expected = AssertionError.class)
   @Deployment(resources = {
     "org/camunda/bpm/scenario/test/callactivities/CallActivityTest.bpmn",
     "org/camunda/bpm/scenario/test/callactivities/CallActivityChildNonBlockingTest.bpmn"

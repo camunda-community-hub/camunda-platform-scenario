@@ -39,7 +39,7 @@ public abstract class JobExecutable extends AbstractExecutable<Job> {
   @Override
   public int compareTo(AbstractExecutable other) {
     int compare = super.compareTo(other);
-    return compare == 0 ? idComparator.compare(delegate.getId(), other.delegate.getId()) : compare;
+    return compare == 0 ? idComparator.compare(delegate.getId(), ((JobExecutable) other).delegate.getId()) : compare;
   }
 
   private void log() {

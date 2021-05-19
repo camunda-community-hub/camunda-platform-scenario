@@ -1,19 +1,22 @@
 package org.camunda.bpm.scenario.impl;
 
+import org.camunda.bpm.engine.ActivityTypes;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
+import org.camunda.bpm.engine.history.HistoricActivityInstance;
+import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.model.bpmn.BpmnModelInstance;
 import org.camunda.bpm.model.bpmn.instance.Process;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
+import org.camunda.bpm.scenario.impl.delegate.HistoricProcessInstanceDelegateImpl;
 import org.camunda.bpm.scenario.impl.util.Time;
 import org.camunda.bpm.scenario.run.ProcessRunner.StartableRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Martin Schimak
@@ -21,13 +24,15 @@ import java.util.Map;
 public class ScenarioRunner extends Scenario {
 
   ProcessEngine processEngine;
-  List<AbstractRunner> runners = new ArrayList<AbstractRunner>();
+  List<ProcessInstanceRunner> runners = new ArrayList<>();
   List<BpmnModelInstance> mockedProcesses = new ArrayList<>();
+
   private boolean executed;
   private String deploymentId;
+  private List<String> preExistingProcessInstanceIds;
 
   public ScenarioRunner(ProcessScenario scenario) {
-    this.runners.add(new ProcessInstanceRunner(this, scenario));
+    runners.add(new ProcessInstanceRunner(this, scenario));
   }
 
   protected Scenario execute() {
@@ -35,15 +40,17 @@ public class ScenarioRunner extends Scenario {
       init();
       Time.init();
       List<Executable> executables;
+      boolean caughtSomething;
       do {
-        executables = new ArrayList<Executable>();
-        for (AbstractRunner runner : runners) {
+        executables = new ArrayList<>();
+        for (ProcessInstanceRunner runner : runners) {
           executables.addAll(runner.next());
         }
         executables = Executable.Helpers.first(executables);
         if (!executables.isEmpty())
           executables.get(0).execute();
-      } while (!executables.isEmpty());
+        caughtSomething = catchAndRun(); // TODO when to call this so that the log appears in the correct order?
+      } while (!executables.isEmpty() || caughtSomething);
     } finally {
       Time.reset();
       cleanup();
@@ -91,6 +98,10 @@ public class ScenarioRunner extends Scenario {
         throw new IllegalStateException(message);
       }
     }
+    preExistingProcessInstanceIds = processEngine.getHistoryService().
+      createHistoricProcessInstanceQuery().list().stream()
+      .map(processInstance -> processInstance.getId())
+      .collect(Collectors.toList());
     if (!mockedProcesses.isEmpty()) {
       DeploymentBuilder deployment = processEngine.getRepositoryService().createDeployment();
       for (BpmnModelInstance mockedCallActivity : mockedProcesses) {
@@ -109,6 +120,61 @@ public class ScenarioRunner extends Scenario {
 
   protected void init(ProcessEngine processEngine) {
     this.processEngine = processEngine;
+  }
+
+  protected boolean catchAndRun() {
+    List<String> managedProcessInstanceIds = runners.stream().map(r -> r.processInstance.getId()).collect(Collectors.toList());
+    List<HistoricProcessInstance> processInstances = processEngine.getHistoryService().createHistoricProcessInstanceQuery().list();
+    List<HistoricProcessInstance> startedInstances = processInstances.stream()
+      .filter(processInstance -> !managedProcessInstanceIds.contains(processInstance.getId())
+        && !preExistingProcessInstanceIds.contains(processInstance.getId()))
+      .collect(Collectors.toList());
+    for (HistoricProcessInstance startedInstance : startedInstances) {
+      ProcessInstanceRunner childRunner = null;
+      Iterator<ProcessInstanceRunner> processInstanceRunners = runners.iterator();
+      while (processInstanceRunners.hasNext()) {
+        ProcessInstanceRunner instanceRunner = processInstanceRunners.next();
+        if (startedInstance.getSuperProcessInstanceId() == null) {
+          childRunner = (ProcessInstanceRunner) instanceRunner.processScenario.
+            runsProcessInstance(startedInstance.getProcessDefinitionKey());
+          if (childRunner == null && !processInstanceRunners.hasNext()) {
+            throw new AssertionError("Unexpected Process Instance {"
+              + startedInstance.getProcessDefinitionId() + ", " + startedInstance.getId() + "} "
+              + "started during scenario run, but not process scenario has been defined for it.");
+          }
+        } else if(instanceRunner.processInstance.getId().equals(startedInstance.getSuperProcessInstanceId())) {
+          Optional<HistoricActivityInstance> callActivity = processEngine.getHistoryService().createHistoricActivityInstanceQuery()
+            .processInstanceId(startedInstance.getSuperProcessInstanceId())
+            .activityType(ActivityTypes.CALL_ACTIVITY).finished().list()
+            .stream().filter(activityInstance -> activityInstance.getCalledProcessInstanceId().equals(startedInstance.getId()))
+            .findFirst();
+          if (callActivity.isPresent() ) {
+            childRunner = (ProcessInstanceRunner) instanceRunner.processScenario.runsCallActivity(callActivity.get().getActivityId());
+            if (childRunner == null && !processInstanceRunners.hasNext()) {
+              throw new AssertionError("Unexpected Process Instance {"
+                + startedInstance.getProcessDefinitionId() + ", " + startedInstance.getId() + "} "
+                + "started during scenario run, but not process scenario has been defined for it.");
+            }
+          }
+        }
+        if (childRunner != null) {
+          runners.add(childRunner);
+          childRunner.scenarioRunner = this;
+          childRunner.processInstance = processEngine.getRuntimeService()
+            .createProcessInstanceQuery().processInstanceId(startedInstance.getId()).singleResult();
+          if (childRunner.processInstance == null)
+            childRunner.processInstance = new HistoricProcessInstanceDelegateImpl(startedInstance);
+          childRunner.processDefinitionKey = processEngine.getRepositoryService()
+            .createProcessDefinitionQuery()
+            .processDefinitionId(startedInstance.getProcessDefinitionId())
+            .singleResult().getKey();
+          childRunner.businessKey = startedInstance.getBusinessKey();
+          childRunner.setExecuted();
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   protected void cleanup() {
