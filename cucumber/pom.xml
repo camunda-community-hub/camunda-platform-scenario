@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.camunda.bpm.extension.scenario</groupId>
-    <artifactId>camunda-platform-scenario-report</artifactId>
+    <artifactId>camunda-platform-scenario-cucumber</artifactId> <!-- TODO Consider camunda-platform-cucumber -->
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -26,44 +26,28 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Cucumber -->
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Scenario Runner -->
+
         <dependency>
             <groupId>org.camunda.bpm.extension.scenario</groupId>
             <artifactId>camunda-platform-scenario-runner</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit Testing -->
+        <!-- Logging -->
 
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.camunda.bpm.extension</groupId>
-            <artifactId>camunda-bpm-junit5</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Cucumber Testing -->
-
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <scope>provided</scope>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

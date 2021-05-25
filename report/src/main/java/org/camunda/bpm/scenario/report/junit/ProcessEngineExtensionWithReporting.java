@@ -5,7 +5,7 @@ import org.camunda.bpm.scenario.report.bpmn.ProcessScenarioTestReportGenerator;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
- * @author Martin Schimak <martin.schimak@plexiti.com>
+ * @author Martin Schimak
  */
 public class ProcessEngineExtensionWithReporting extends ProcessEngineExtension {
 
