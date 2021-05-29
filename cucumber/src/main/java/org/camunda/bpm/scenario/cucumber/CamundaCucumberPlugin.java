@@ -67,9 +67,13 @@ public class CamundaCucumberPlugin implements ConcurrentEventListener {
         reportGeneratorClass.getDeclaredConstructor(TestCase.class, String.class)
           .newInstance(event.getTestCase(), deploymentId);
 
-      } catch (Exception exception) {
+      } catch (ClassNotFoundException exception) {
 
         // If report generator is not on classpath, we simply don't generate a report
+
+      } catch (Exception exception) {
+
+        throw new RuntimeException(exception);
 
       }
 

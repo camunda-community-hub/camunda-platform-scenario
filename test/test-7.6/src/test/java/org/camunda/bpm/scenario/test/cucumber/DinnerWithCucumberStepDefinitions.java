@@ -12,19 +12,19 @@ import static org.mockito.Mockito.*;
 /**
  * @author Martin Schimak
  */
-public class DinnerStepDefinitions {
+public class DinnerWithCucumberStepDefinitions {
 
   ProcessScenario process = mock(ProcessScenario.class);
 
-  @Given("all activities not explicitly mentioned complete successfully")
-  public void given_all_activities_not_explicitly_mentioned_complete_successfully() {
+  @Given("Things will work out fine")
+  public void assume_things_basically_work_out_fine() {
     when(process.waitsAtServiceTask("PrepareMeal"))
       .thenReturn(task -> task.complete());
     when(process.waitsAtServiceTask("HaveMealTogether"))
       .thenReturn(task -> task.complete());
   }
 
-  @Given("ingredients are missing")
+  @Given("Ingredients will be missing")
   public void given_ingredients_are_missing() {
     when(process.waitsAtServiceTask("PrepareMeal"))
       .thenReturn(task -> task.handleBpmnError("IngredientsMissing"));
