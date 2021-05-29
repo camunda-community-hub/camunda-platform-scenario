@@ -16,51 +16,63 @@ public class DinnerWithCucumberStepDefinitions {
 
   ProcessScenario process = mock(ProcessScenario.class);
 
-  @Given("Unmentioned activities complete successfully")
-  public void assume_things_basically_work_out_fine() {
-    when(process.waitsAtServiceTask("PrepareMeal"))
-      .thenReturn(task -> task.complete());
-    when(process.waitsAtServiceTask("HaveMealTogether"))
+  @Given("Having the meal together completes successfully")
+  public void HavingTheMealTogetherCompletesSuccessfully() {
+    when(process.waitsAtServiceTask("HaveMealTogetherTask"))
       .thenReturn(task -> task.complete());
   }
 
-  @Given("The meal preparation fails because of missing ingredients")
-  public void the_meal_preparation_fails_because_of_missing_ingredients() {
-    when(process.waitsAtServiceTask("PrepareMeal"))
-      .thenReturn(task -> task.handleBpmnError("IngredientsMissing"));
+  @Given("Preparing the meal completes successfully")
+  public void PreparingTheMealCompletesSuccessfully() {
+    when(process.waitsAtServiceTask("PrepareMealTask"))
+      .thenReturn(task -> task.complete());
   }
 
-  @When("a meal is upcoming")
+  @Given("Preparing the meal fails because ingredients are missing")
+  public void preparingTheMealFailsBecauseOfMissingIngredients() {
+    when(process.waitsAtServiceTask("PrepareMealTask"))
+      .thenReturn(task -> task.handleBpmnError("IngredientsAreMissingError"));
+  }
+
+  @When("the meal is upcoming")
   @Deployment(resources = "org/camunda/bpm/scenario/test/cucumber/DinnerWithCucumber.bpmn")
-  public void when_a_meal_is_upcoming() {
+  public void theMealIsUpcoming() {
     run(process).startByKey("DinnerWithCucumber").execute();
   }
 
-  @Then("the meal will be prepared")
-  public void then_the_meal_will_be_prepared() {
-    verify(process, times(1)).hasFinished("MealPrepared");
-    verify(process, never()).hasFinished("MealNotPrepared");
+  @Then("preparing the meal will complete")
+  public void theMealWillBePrepared() {
+    verify(process, times(1)).hasCompleted("PrepareMealTask");
   }
 
-  @Then("the meal will not be prepared")
-  public void then_the_meal_will_not_be_prepared() {
-    verify(process, times(1)).hasFinished("MealNotPrepared");
-    verify(process, never()).hasFinished("MealPrepared");
+  @Then("preparing the meal will not complete")
+  public void preparingTheMailWillNotComplete() {
+    verify(process, never()).hasCompleted("PrepareMealTask");
   }
 
-  @Then("we will have meal together")
-  public void then_we_will_have_meal_together() {
-    verify(process, times(1)).hasFinished("HaveMealTogether");
+  @Then("having the meal together will complete")
+  public void havingTheMealTogetherWillComplete() {
+    verify(process, times(1)).hasFinished("HaveMealTogetherTask");
   }
 
-  @Then("we will not have meal together")
-  public void then_we_dont_have_meal_together() {
-    verify(process, never()).hasFinished("HaveMealTogether");
+  @Then("having the meal together will not start")
+  public void havingTheMealTogetherWillNotStart() {
+    verify(process, never()).hasStarted("HaveMealTogetherTask");
   }
 
-  @Then("the meal will be finished")
-  public void then_the_meal_will_be_finished() {
-    verify(process, times(1)).hasFinished("MealFinished");
+  @Then("the meal is finished")
+  public void theMealIsFinished() {
+    verify(process, times(1)).hasFinished("MealIsFinishedEndEvent");
+  }
+
+  @Then("the meal is prepared")
+  public void theMealIsPrepared() {
+    verify(process, times(1)).hasFinished("MealIsPreparedEvent");
+  }
+
+  @Then("the meal is not prepared")
+  public void theMealIsNotPrepared() {
+    verify(process, times(1)).hasFinished("MealIsNotPreparedEndEvent");
   }
 
 }

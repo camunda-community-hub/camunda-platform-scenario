@@ -2,18 +2,20 @@ Feature: Dinner
   We are going to prepare and have dinner together
 
   Background:
-    * Unmentioned activities complete successfully
+    * Preparing the meal completes successfully
+    * Having the meal together completes successfully
 
   Scenario: Happy dinner
 
-    When a meal is upcoming
-    Then the meal will be prepared
-    And we will have meal together
-    And the meal will be finished
+    When the meal is upcoming
+    Then preparing the meal will complete
+    And having the meal together will complete
+    And the meal is finished
 
   Scenario: Ingredients are missing
-    * The meal preparation fails because of missing ingredients
+    * Preparing the meal fails because ingredients are missing
 
-    When a meal is upcoming
-    Then the meal will not be prepared
-    And we will not have meal together
+    When the meal is upcoming
+    Then preparing the meal will not complete
+    And the meal is not prepared
+    And having the meal together will not start
