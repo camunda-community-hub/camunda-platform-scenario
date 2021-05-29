@@ -7,4 +7,4 @@ import org.junit.runner.RunWith;
  * @author Martin Schimak
  */
 @RunWith(Cucumber.class)
-public class DinnerTest {}
+public class DinnerWithCucumberTest {}
