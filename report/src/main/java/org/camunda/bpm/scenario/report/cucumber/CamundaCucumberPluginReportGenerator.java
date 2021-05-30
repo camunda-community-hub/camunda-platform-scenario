@@ -51,7 +51,7 @@ public class CamundaCucumberPluginReportGenerator {
     Matcher uriMatcher = Pattern.compile(".*\\/(.*?)\\.feature")
       .matcher(testCase.getUri().toString());
     if (uriMatcher.matches()) {
-      return uriMatcher.group(2);
+      return uriMatcher.group(1);
     } else {
       Matcher defaultPackageMatcher = Pattern.compile("classpath\\:(.*?)\\.feature")
         .matcher(testCase.getUri().toString());

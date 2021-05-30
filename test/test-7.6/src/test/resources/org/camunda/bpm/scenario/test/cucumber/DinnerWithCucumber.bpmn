@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0c2j6f0" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
   <bpmn:process id="DinnerWithCucumber" isExecutable="true">
-    <bpmn:startEvent id="MealUpcoming" name="Meal is&#10;upcoming" camunda:asyncBefore="true">
+    <bpmn:startEvent id="MealIsUpcomingStartEvent" name="Meal is&#10;upcoming" camunda:asyncBefore="true">
       <bpmn:outgoing>Flow_0hn49kw</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="Flow_0hn49kw" sourceRef="MealUpcoming" targetRef="DecideAboutMeal" />
-    <bpmn:endEvent id="MealFinished" name="Meal is&#10;finished" camunda:asyncAfter="true">
+    <bpmn:sequenceFlow id="Flow_0hn49kw" sourceRef="MealIsUpcomingStartEvent" targetRef="DecideAboutMealTask" />
+    <bpmn:endEvent id="MealIsFinishedEndEvent" name="Meal is&#10;finished" camunda:asyncAfter="true">
       <bpmn:incoming>Flow_1r5tl54</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0m1n1to" sourceRef="PrepareMeal" targetRef="MealPrepared" />
-    <bpmn:serviceTask id="PrepareMeal" name="Prepare meal" camunda:asyncBefore="true" camunda:type="external" camunda:topic="PrepareMeal">
+    <bpmn:sequenceFlow id="Flow_0m1n1to" sourceRef="PrepareMealTask" targetRef="MealIsPreparedEvent" />
+    <bpmn:serviceTask id="PrepareMealTask" name="Prepare meal" camunda:asyncBefore="true" camunda:type="external" camunda:topic="PrepareMeal">
       <bpmn:incoming>Flow_1d0ikay</bpmn:incoming>
       <bpmn:outgoing>Flow_0m1n1to</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:boundaryEvent id="Event_0al4im0" name="Ingredients&#10;are missing" attachedToRef="PrepareMeal">
+    <bpmn:boundaryEvent id="IngredientsAreMissingBoundaryEvent" name="Ingredients&#10;are missing" attachedToRef="PrepareMealTask">
       <bpmn:outgoing>Flow_1v8l5mz</bpmn:outgoing>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_02nz1hm" errorRef="Error_0npsgag" />
     </bpmn:boundaryEvent>
-    <bpmn:endEvent id="MealNotPrepared" name="Meal is not&#10;prepared">
+    <bpmn:endEvent id="MealIsNotPreparedEndEvent" name="Meal is not&#10;prepared">
       <bpmn:incoming>Flow_1v8l5mz</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1v8l5mz" sourceRef="Event_0al4im0" targetRef="MealNotPrepared" />
-    <bpmn:sequenceFlow id="Flow_1d0ikay" sourceRef="DecideAboutMeal" targetRef="PrepareMeal" />
-    <bpmn:businessRuleTask id="DecideAboutMeal" name="Decide&#10;about meal" camunda:asyncBefore="true" camunda:expression="#{true}">
+    <bpmn:sequenceFlow id="Flow_1v8l5mz" sourceRef="IngredientsAreMissingBoundaryEvent" targetRef="MealIsNotPreparedEndEvent" />
+    <bpmn:sequenceFlow id="Flow_1d0ikay" sourceRef="DecideAboutMealTask" targetRef="PrepareMealTask" />
+    <bpmn:businessRuleTask id="DecideAboutMealTask" name="Decide&#10;about meal" camunda:asyncBefore="true" camunda:expression="#{true}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="guestCount">#{5}</camunda:inputParameter>
@@ -32,18 +32,18 @@
       <bpmn:incoming>Flow_0hn49kw</bpmn:incoming>
       <bpmn:outgoing>Flow_1d0ikay</bpmn:outgoing>
     </bpmn:businessRuleTask>
-    <bpmn:serviceTask id="HaveMealTogether" name="Have meal together" camunda:asyncBefore="true" camunda:type="external" camunda:topic="HaveMealTogether">
+    <bpmn:serviceTask id="HaveMealTogetherTask" name="Have meal together" camunda:asyncBefore="true" camunda:type="external" camunda:topic="HaveMealTogether">
       <bpmn:incoming>Flow_0dx3jzj</bpmn:incoming>
       <bpmn:outgoing>Flow_1r5tl54</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_1r5tl54" sourceRef="HaveMealTogether" targetRef="MealFinished" />
-    <bpmn:intermediateThrowEvent id="MealPrepared" name="Meal is&#10;prepared">
+    <bpmn:sequenceFlow id="Flow_1r5tl54" sourceRef="HaveMealTogetherTask" targetRef="MealIsFinishedEndEvent" />
+    <bpmn:intermediateThrowEvent id="MealIsPreparedEvent" name="Meal is&#10;prepared">
       <bpmn:incoming>Flow_0m1n1to</bpmn:incoming>
       <bpmn:outgoing>Flow_0dx3jzj</bpmn:outgoing>
     </bpmn:intermediateThrowEvent>
-    <bpmn:sequenceFlow id="Flow_0dx3jzj" sourceRef="MealPrepared" targetRef="HaveMealTogether" />
+    <bpmn:sequenceFlow id="Flow_0dx3jzj" sourceRef="MealIsPreparedEvent" targetRef="HaveMealTogetherTask" />
   </bpmn:process>
-  <bpmn:error id="Error_0npsgag" name="IngredientsMissing" errorCode="IngredientsMissing" />
+  <bpmn:error id="Error_0npsgag" name="IngredientsAreMissingError" errorCode="IngredientsAreMissingError" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="DinnerWithCucumber">
       <bpmndi:BPMNEdge id="Flow_0dx3jzj_di" bpmnElement="Flow_0dx3jzj">
@@ -71,40 +71,40 @@
         <di:waypoint x="215" y="117" />
         <di:waypoint x="270" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="MealUpcoming">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="MealIsUpcomingStartEvent">
         <dc:Bounds x="179" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="177" y="142" width="48" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0sr88hm_di" bpmnElement="MealFinished">
+      <bpmndi:BPMNShape id="Event_0sr88hm_di" bpmnElement="MealIsFinishedEndEvent">
         <dc:Bounds x="822" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="823" y="142" width="38" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1kzlb3f_di" bpmnElement="PrepareMeal">
+      <bpmndi:BPMNShape id="Activity_1kzlb3f_di" bpmnElement="PrepareMealTask">
         <dc:Bounds x="430" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0mopwo7_di" bpmnElement="MealNotPrepared">
+      <bpmndi:BPMNShape id="Event_0mopwo7_di" bpmnElement="MealIsNotPreparedEndEvent">
         <dc:Bounds x="582" y="212" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="576" y="255" width="54" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0fso07g_di" bpmnElement="DecideAboutMeal">
+      <bpmndi:BPMNShape id="Activity_0fso07g_di" bpmnElement="DecideAboutMealTask">
         <dc:Bounds x="270" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_11baikc_di" bpmnElement="HaveMealTogether">
+      <bpmndi:BPMNShape id="Activity_11baikc_di" bpmnElement="HaveMealTogetherTask">
         <dc:Bounds x="670" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0or3o3g_di" bpmnElement="MealPrepared">
+      <bpmndi:BPMNShape id="Event_0or3o3g_di" bpmnElement="MealIsPreparedEvent">
         <dc:Bounds x="582" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="578" y="142" width="45" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_04cf5zl_di" bpmnElement="Event_0al4im0">
+      <bpmndi:BPMNShape id="Event_04cf5zl_di" bpmnElement="IngredientsAreMissingBoundaryEvent">
         <dc:Bounds x="482" y="139" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="512" y="173" width="57" height="27" />

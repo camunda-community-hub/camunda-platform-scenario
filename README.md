@@ -1,10 +1,10 @@
-<a href="https://github.com/camunda-community-hub/community" target="_blank"><img src="https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700" align="left"/></a>
-<a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario" target="_blank"><img src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario/badge.svg"/></a>
-<a href="https://travis-ci.com/github/camunda-community-hub/camunda-platform-scenario" target="_blank"><img src="https://travis-ci.com/camunda-community-hub/camunda-platform-scenario.svg?branch=master" align="right"/></a>
+<a href="https://travis-ci.com/github/camunda-community-hub/camunda-platform-scenario" target="_blank"><img src="https://travis-ci.com/camunda-community-hub/camunda-platform-scenario.svg?branch=master" align="right"></img></a>
+<a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.scenario/camunda-platform-scenario-runner" target="_blank"><img src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.scenario/camunda-platform-scenario-runner/badge.svg?style=social" align="right"></img></a>
+<a href="https://github.com/camunda-community-hub/community" target="_blank"><img src="https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700"></img></a>
 
-# <img src="https://avatars.githubusercontent.com/u/2443838?s=23&v=4" width="23" height="23"></img>&nbsp;Camunda Platform <strong>Scenario</strong><a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario"></a>
+# <img src="https://avatars.githubusercontent.com/u/2443838?s=23&v=4" width="23" height="23"></img>&nbsp;Camunda Platform <strong>Scenario</strong><a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.scenario/camunda-platform-scenario-runner"></a>
 
-<img src="/doc/img/clapboard.jpg" align="right" width="400"></img>
+<img src="https://github.com/camunda-community-hub/camunda-platform-scenario/raw/master/doc/img/clapboard.jpg" align="right" width="400"></img>
 
 This community extension to Camunda Platform enables you to write **robust test suites** for process models. The larger
 your process models, the more often you change them, the more value you will get out of using it. Look at a piece of
@@ -37,7 +37,7 @@ in charge of the work needs to be reminded daily to actually do it! :smile: In o
 of processes, the library allows to "defer" actions for specified time periods. The following test code snippet verifies
 the example case, that the colleague should be reminded twice, in case he needs 2 1/2 days to complete the work.
 
-<img src="/doc/img/readme-process.png" width="400" align="left"/>
+<img src="https://github.com/camunda-community-hub/camunda-platform-scenario/raw/master/doc/img/readme-process.png" width="400" align="left"/>
 
 ```groovy
 @Test
@@ -125,14 +125,14 @@ execution with the `ProcessScenario` interface provided by us.
 ## An extensive example: applying for insurance with "Camundanzia"! :smile:
 
 The following process scenario has been executed by means of _Camunda Platform Scenario_ and has been visualised with
-the [Camunda BPM Process Test Coverage](https://github.com/camunda/camunda-process-test-coverage) library:
+the [Camunda Process Test Coverage](https://github.com/camunda-community-hub/camunda-bpm-process-test-coverage) library:
 
-![](/doc/img/insurance-application.png)
+![](https://github.com/camunda-community-hub/camunda-platform-scenario/raw/master/doc/img/insurance-application.png)
 
 Note that we see here a call activity `Document Request` invoked by an event sub process. Why does our scenario run show
 this path? Who takes care of the call activity's details? And why does the boundary timer `2 days` actually trigger?
 Please have a look at
-the [few lines of test code](https://github.com/camunda/camunda-bpm-assert-scenario/blob/master/example/src/test/java/org/camunda/bpm/scenario/examples/insuranceapplication/InsuranceApplicationProcessTest.java#L250)
+the [few lines of test code](https://github.com/camunda-community-hub/camunda-platform-scenario/blob/master/example/src/test/java/org/camunda/bpm/scenario/examples/insuranceapplication/InsuranceApplicationProcessTest.java#L247)
 necessary to create this particular scenario!
 
 ## Highlights
@@ -143,23 +143,23 @@ necessary to create this particular scenario!
 1. Execute **several process instances** alongside each other including whole **trees of call activities**
 1. Enable realistic **time-related** unit testing by **deferring** waitstate actions for a period of time
 1. Create a **realistic history** by defining time needed for all actions and "fast-forwarding" into the future
-1. Use scenarios with the classic [**Camunda BPM Assert**](https://github.com/camunda/camunda-bpm-assert) to verify
+1. Use scenarios with the classic [**Camunda Platform Assert**](https://github.com/camunda/camunda-bpm-assert) to verify
    current runtime state inside your waitstate actions
 
 ## <a href="https://travis-ci.com/github/camunda-community-hub/camunda-platform-scenario" target="_blank"><img src="https://travis-ci.com/camunda-community-hub/camunda-platform-scenario.svg?branch=master" align="right"/></a></a>Just start to use it! Or are you too busy?
 
-Camunda Platform Scenario is already used in real life projects at [WDW eLab](http://www.wdw-consulting.com). It works
-with **all versions of Camunda BPM** since 7.0 up to the most recent and *all the Java versions* (1.7., 1.8) still
-relevant for Camunda BPM installations out there. This is continuously verified by executing around 150 test cases
-against a [travis ci test matrix](https://travis-ci.org/camunda/camunda-bpm-assert-scenario).
+Camunda Platform Scenario is used in real life projects since years and works
+with **all versions of Camunda Platform** since 7.0 up to the most recent and *all the Java versions* (8, 11) relevant for Camunda Platform installations out there. This is continuously verified by executing more than 200 test cases
+against a [travis ci test matrix](https://travis-ci.com/camunda-community-hub/camunda-platform-scenario).
 
-![](/doc/img/are-you-too-busy.png)
+![](https://github.com/camunda-community-hub/camunda-platform-scenario/raw/master/doc/img/are-you-too-busy.png)
 <p align="right"><sup>Credits to https://hakanforss.wordpress.com</sup></p>
 
 ## Get started in _3 simple steps_!
 
-<a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario"><img src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-assert-scenario/badge.svg" align="right"/></a>**
-1.** Add a maven **test dependency** to your project:
+**1.** Add a maven **test dependency** to the last stable 1.x release or the upcoming 2.x release to your project:
+
+**Stable version 1.x**
 
 ```xml  
 <dependency>
@@ -170,14 +170,24 @@ against a [travis ci test matrix](https://travis-ci.org/camunda/camunda-bpm-asse
 </dependency>
 ```
 
+**or upcoming version 2.x**: <a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.scenario/camunda-platform-scenario-runner"><img src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension.scenario/camunda-platform-scenario-runner/badge.svg?style=social" style="vertical-align: middle" align="right"></img></a>
+
+```xml  
+<dependency>
+    <groupId>org.camunda.bpm.extension.scenario</groupId>
+    <artifactId>camunda-platform-scenario-runner</artifactId>
+    <version><!-- See version badge above -->></version>
+    <scope>test</scope>
+</dependency>
+```
+
 **2.** Add a mocked `ProcessScenario` to your test class
 
 Create your test case just as described in
-the [Camunda BPM Testing Guide](https://docs.camunda.org/manual/latest/user-guide/testing/). Then add Camunda BPM Assert
-Scenario by mocking its main interface - the example shown here makes use of Mockito:
+the [Camunda Platform Testing Guide](https://docs.camunda.org/manual/latest/user-guide/testing/). Then add Camunda Platform Scenario Runner by mocking its main interface - the example shown here makes use of Mockito:
 
-```groovy
-@Mock private ProcessScenario insuranceApplication;
+```java
+ProcessScenario insuranceApplication = mock(ProcessScenario.class);
 ...
 @Before
 public void defineHappyScenario() {
@@ -189,7 +199,7 @@ public void defineHappyScenario() {
 
 **3.** Start executing and verifying your scenarios in your **test methods**
 
-```groovy
+```java
 @Test
 public void testHappyPath() {
   Scenario.run(insuranceApplication).startByKey("InsuranceApplication").execute();
@@ -197,7 +207,7 @@ public void testHappyPath() {
 }
 ```
 
-<img src="http://camunda.github.io/camunda-bpm-assert/resources/images/green-bar.png" align="right"></img> Green bar?
+<img src="https://camo.githubusercontent.com/5c81e269a45d0fd7bb672d8614240ea530d8bf5819a206c7aa9f05d6c78444fd/687474703a2f2f63616d756e64612e6769746875622e696f2f63616d756e64612d62706d2d6173736572742f7265736f75726365732f696d616765732f677265656e2d6261722e706e67" align="right"></img> Green bar?
 
 Congrats! You are successfully using Camunda Platform Scenario.
 
@@ -245,7 +255,7 @@ Whenever the scenario fast-forwards in time, the log output moves a bit to the r
 * [Issue Tracker](https://github.com/camunda-community-hub/camunda-platform-scenario/issues)
 * [Roadmap](https://github.com/camunda-community-hub/camunda-platform-scenario/issues/milestones?state=open&with_issues=no)
 * [Download](https://github.com/camunda-community-hub/camunda-platform-scenario/releases)
-* [Continuous Integration](https://travis-ci.org/camunda/camunda-bpm-assert-scenario)
+* [Continuous Integration](https://travis-ci.com/github/camunda-community-hub/camunda-platform-scenario)
 * [Blog](https://medium.com/plexiti)
 
 ## Maintenance &amp; License
